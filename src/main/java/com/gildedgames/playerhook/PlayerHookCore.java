@@ -13,6 +13,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.playerhook.common.player.PlayerHook;
+import com.gildedgames.playerhook.common.player.PlayerHookManager;
+import com.gildedgames.playerhook.common.util.NBTDataHandler;
 import com.gildedgames.playerhook.server.ServerProxy;
 	
 @Mod(modid = PlayerHookCore.MOD_ID, name = "Player Hook Utility", version = PlayerHookCore.VERSION)
@@ -30,30 +33,6 @@ public class PlayerHookCore
 	public static ServerProxy proxy;
 
 	public static SimpleNetworkWrapper NETWORK;
-
-	/**
-	 * Returns the game's current networking Side.
-	 */
-	public static Side getAppState()
-	{
-		return FMLCommonHandler.instance().getEffectiveSide();
-	}
-
-	/**
-	 * Returns whether the game's state is Client-Side or not.
-	 */
-	public static boolean isClient()
-	{
-		return getAppState() == Side.CLIENT;
-	}
-
-	/**
-	 * Returns whether the game's state is Server-Side or not.
-	 */
-	public static boolean isServer()
-	{
-		return getAppState() == Side.SERVER;
-	}
 	
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -70,13 +49,29 @@ public class PlayerHookCore
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		
+		flushDataIn();
 	}
 	
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		
+		flushDataOut();
+
+		PlayerHookManager.clear();
+	}
+	
+	public static void flushDataIn()
+	{
+		NBTDataHandler dataHandler = new NBTDataHandler();
+
+		PlayerHookManager.instance(Side.SERVER).setPlayers(dataHandler.load(PlayerHook.class, "playersUniverseAPI.dat"));
+	}
+	
+	public static void flushDataOut()
+	{
+		NBTDataHandler dataHandler = new NBTDataHandler();
+
+		dataHandler.save("playersUniverseAPI.dat", PlayerHookManager.instance(Side.SERVER).getPlayers());
 	}
 	
 	/**
