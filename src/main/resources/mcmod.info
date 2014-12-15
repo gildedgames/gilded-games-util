@@ -1,0 +1,16 @@
+[
+{
+  "modid": "player-hook-util",
+  "name": "Player Hook Utility",
+  "description": "A module for Minecraft mod development. Incorporates an automated system for hooking into EntityPlayer functionality and saving new player-specific data.",
+  "version": "1.8-1.0",
+  "mcversion": "${mcversion}",
+  "url": "www.gilded-games.com/player-hook-util/",
+  "updateUrl": "www.gilded-games.com/player-hook-util/",
+  "authorList": ["Gilded Games"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

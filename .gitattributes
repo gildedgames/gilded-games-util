@@ -1,0 +1,11 @@
+* text eol=lf
+*.bat text eol=crlf
+*.patch text
+*.png binary
+*.exe binary
+*.dll binary
+*.zip binary
+*.ogg binary
+*.mp3 binary
+*.wav binary
+*.rar binary
