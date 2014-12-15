@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 
 version = "1.8-1.0"
-group= "com.gildedgames.player-hook-util" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "com.gildedgames.playerhook" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "player-hook-util"
 
 minecraft {
