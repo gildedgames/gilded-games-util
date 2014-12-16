@@ -25,13 +25,16 @@ public class PlayerHookManager<T extends IPlayerHook>
 	private InternalManager<T> clientHandler;
 
 	private InternalManager<T> serverHandler;
+
+	private String name;
 	
 	private Class<T> type;
 	
 	private int id;
 	
-	public PlayerHookManager(Class<T> playerHookType)
+	public PlayerHookManager(String name, Class<T> playerHookType)
 	{
+		this.name = name;
 		this.type = playerHookType;
 		this.id = PlayerHookManager.managers.size();
 		
@@ -90,6 +93,11 @@ public class PlayerHookManager<T extends IPlayerHook>
 		return this.id;
 	}
 	
+	public String getName()
+	{
+		return this.name;
+	}
+	
 	public static List<PlayerHookManager> getManagers()
 	{
 		return PlayerHookManager.managers;
@@ -145,9 +153,9 @@ public class PlayerHookManager<T extends IPlayerHook>
 			this.playerHookType = type;
 		}
 		
-		private void addPlayer(T player)
+		public void addPlayer(T player)
 		{
-			this.playerMap.put(player.getProfile().getEntity().getUniqueID(), player);
+			this.playerMap.put(player.getProfile().getUUID(), player);
 		}
 
 		public T get(UUID uuid)
@@ -170,12 +178,12 @@ public class PlayerHookManager<T extends IPlayerHook>
 				try
 				{
 					player = this.playerHookType.newInstance();
-					
+
 					PlayerProfile profile = new PlayerProfile();
 					profile.setUUID(uuid);
 					
 					player.setProfile(profile);
-					
+
 					this.addPlayer(player);
 				}
 				catch (InstantiationException e)
@@ -186,6 +194,14 @@ public class PlayerHookManager<T extends IPlayerHook>
 				{
 					e.printStackTrace();
 				}
+			}
+			
+			if (player.getProfile() == null)
+			{
+				PlayerProfile profile = new PlayerProfile();
+				profile.setUUID(uuid);
+				
+				player.setProfile(profile);
 			}
 
 			return player;

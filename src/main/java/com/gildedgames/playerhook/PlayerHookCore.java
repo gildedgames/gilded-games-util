@@ -16,8 +16,10 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.playerhook.common.PlayerEventHandler;
 import com.gildedgames.playerhook.common.PlayerHookManager;
-import com.gildedgames.playerhook.common.player.IPlayerHook;
-import com.gildedgames.playerhook.common.util.NBTDataHandler;
+import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHook;
+import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookClient;
+import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookRequest;
+import com.gildedgames.playerhook.server.PlayerHookSaveHandler;
 import com.gildedgames.playerhook.server.ServerProxy;
 	
 @Mod(modid = PlayerHookCore.MOD_ID, name = "Player Hook Utility", version = PlayerHookCore.VERSION)
@@ -36,33 +38,42 @@ public class PlayerHookCore
 
 	public static SimpleNetworkWrapper NETWORK;
 	
+	public PlayerHookSaveHandler playerHookSaveHandler = new PlayerHookSaveHandler();
+	
+	public PlayerEventHandler playerEventHandler = new PlayerEventHandler();
+	
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event)
 	{
 		NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(PlayerHookCore.MOD_ID);
+		
+		NETWORK.registerMessage(MessagePlayerHook.Handler.class, MessagePlayerHook.class, 0, Side.CLIENT);
+		NETWORK.registerMessage(MessagePlayerHookClient.Handler.class, MessagePlayerHookClient.class, 1, Side.SERVER);
+		NETWORK.registerMessage(MessagePlayerHookRequest.Handler.class, MessagePlayerHookRequest.class, 2, Side.SERVER);
 	}
 	
 	@EventHandler
 	public void load(FMLInitializationEvent event)
 	{
 		this.proxy.init();
-		
-		PlayerEventHandler playerEventHandler = new PlayerEventHandler();
-		
-		MinecraftForge.EVENT_BUS.register(playerEventHandler);
-		FMLCommonHandler.instance().bus().register(playerEventHandler);
+
+		MinecraftForge.EVENT_BUS.register(this.playerHookSaveHandler);
+		FMLCommonHandler.instance().bus().register(this.playerHookSaveHandler);
+
+		MinecraftForge.EVENT_BUS.register(this.playerEventHandler);
+		FMLCommonHandler.instance().bus().register(this.playerEventHandler);
 	}
 	
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		flushDataIn();
+		
 	}
 	
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		flushDataOut();
+		this.playerHookSaveHandler.flushData();
 
 		for (PlayerHookManager manager : PlayerHookManager.getManagers())
 		{
@@ -76,27 +87,7 @@ public class PlayerHookCore
 			}
 		}
 	}
-	
-	public static void flushDataIn()
-	{
-		NBTDataHandler dataHandler = new NBTDataHandler();
 
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
-		{
-			manager.instance(Side.SERVER).setPlayers(dataHandler.load(IPlayerHook.class, "players.dat"));
-		}
-	}
-	
-	public static void flushDataOut()
-	{
-		NBTDataHandler dataHandler = new NBTDataHandler();
-
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
-		{
-			dataHandler.save("players.dat", manager.instance(Side.SERVER).getPlayers());
-		}
-	}
-	
 	/**
 	 * Used to represent that a particular ResourceLocation is assigned to the mod.
 	 * @return The appropriate address for the mod

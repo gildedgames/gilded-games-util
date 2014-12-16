@@ -34,7 +34,7 @@ public class PlayerEventHandler
 			for (PlayerHookManager manager : PlayerHookManager.getManagers())
 			{
 				manager.get(player).getProfile().entityInit(player);
-				manager.get(player).onJoinWorld(player);
+				manager.get(player).onJoinWorld();
 			}
 		}
 	}
@@ -162,28 +162,6 @@ public class PlayerEventHandler
 		
 			playerHook.onRespawn();
 		}
-	}
-	
-	@SubscribeEvent
-	public void onTick(ServerTickEvent event)
-	{
-		if (event.side == Side.SERVER)
-		{
-			if (event.phase == Phase.START)
-			{
-				tickCounter++;
-				
-				if (minutesHasPassed(3))
-				{
-					PlayerHookCore.flushDataOut();
-				}
-			}
-		}
-	}
-
-	public boolean minutesHasPassed(int minutes)
-	{
-		return this.tickCounter % (1200 * minutes) == 0;
 	}
 	
 }

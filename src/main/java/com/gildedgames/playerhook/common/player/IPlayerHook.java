@@ -20,7 +20,7 @@ public interface IPlayerHook extends INBT, ISyncable
 	
 	void onUpdate();
 	
-	void onJoinWorld(EntityPlayer player);
+	void onJoinWorld();
 	
 	boolean onLivingAttack(DamageSource source);
 	
