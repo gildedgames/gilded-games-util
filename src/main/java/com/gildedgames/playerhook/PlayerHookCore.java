@@ -1,5 +1,6 @@
 package com.gildedgames.playerhook;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -13,8 +14,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.playerhook.common.player.PlayerHook;
-import com.gildedgames.playerhook.common.player.PlayerHookManager;
+import com.gildedgames.playerhook.common.PlayerEventHandler;
+import com.gildedgames.playerhook.common.PlayerHookManager;
+import com.gildedgames.playerhook.common.player.IPlayerHook;
 import com.gildedgames.playerhook.common.util.NBTDataHandler;
 import com.gildedgames.playerhook.server.ServerProxy;
 	
@@ -44,6 +46,11 @@ public class PlayerHookCore
 	public void load(FMLInitializationEvent event)
 	{
 		this.proxy.init();
+		
+		PlayerEventHandler playerEventHandler = new PlayerEventHandler();
+		
+		MinecraftForge.EVENT_BUS.register(playerEventHandler);
+		FMLCommonHandler.instance().bus().register(playerEventHandler);
 	}
 	
 	@EventHandler
@@ -57,21 +64,37 @@ public class PlayerHookCore
 	{
 		flushDataOut();
 
-		PlayerHookManager.clear();
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			if (manager != null)
+			{
+				manager.clear();
+			}
+			else
+			{
+				// TO-DO: error log here, manager should never be null
+			}
+		}
 	}
 	
 	public static void flushDataIn()
 	{
 		NBTDataHandler dataHandler = new NBTDataHandler();
 
-		PlayerHookManager.instance(Side.SERVER).setPlayers(dataHandler.load(PlayerHook.class, "playersUniverseAPI.dat"));
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			manager.instance(Side.SERVER).setPlayers(dataHandler.load(IPlayerHook.class, "players.dat"));
+		}
 	}
 	
 	public static void flushDataOut()
 	{
 		NBTDataHandler dataHandler = new NBTDataHandler();
 
-		dataHandler.save("playersUniverseAPI.dat", PlayerHookManager.instance(Side.SERVER).getPlayers());
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			dataHandler.save("players.dat", manager.instance(Side.SERVER).getPlayers());
+		}
 	}
 	
 	/**

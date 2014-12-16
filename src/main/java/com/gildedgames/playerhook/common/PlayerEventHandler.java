@@ -1,0 +1,189 @@
+package com.gildedgames.playerhook.common;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.playerhook.PlayerHookCore;
+import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHook;
+import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookClient;
+import com.gildedgames.playerhook.common.player.IPlayerHook;
+
+public class PlayerEventHandler
+{
+	
+	private int tickCounter;
+
+	@SubscribeEvent
+	public void onJoinWorld(EntityJoinWorldEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) event.entity;
+			
+			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			{
+				manager.get(player).getProfile().entityInit(player);
+				manager.get(player).onJoinWorld(player);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onLivingAttack(LivingAttackEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
+		{
+			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			{
+				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
+				{
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onLivingUpdate(LivingUpdateEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
+		{
+			EntityPlayer player = (EntityPlayer) event.entity;
+
+			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			{
+				IPlayerHook playerHook = manager.get(player);
+				
+				if (playerHook.getProfile().getEntity() == null)
+				{
+					playerHook.getProfile().setEntity(player);
+				}
+
+				playerHook.onUpdate();
+				
+				if (event.entity.worldObj.isRemote)
+				{
+					this.refreshServer(playerHook);
+				}
+				else
+				{
+					this.refreshClients(playerHook);
+				}
+			}
+		}
+	}
+	
+	public void refreshServer(IPlayerHook playerHook)
+	{
+		if (playerHook.isDirty())
+		{
+			PlayerHookCore.NETWORK.sendToServer(new MessagePlayerHookClient(playerHook));
+			playerHook.markClean();
+		}
+	}
+	
+	public void refreshClients(IPlayerHook playerHook)
+	{
+		if (playerHook.isDirty())
+		{
+			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			playerHook.markClean();
+		}
+	}
+
+	@SubscribeEvent
+	public void onLivingDeath(LivingDeathEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
+		{
+			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			{
+				EntityPlayer player = (EntityPlayer) event.entity;
+				manager.get(player).onDeath();
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onLoggedIn(PlayerLoggedInEvent event)
+	{
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			IPlayerHook playerHook = manager.get(event.player);
+			
+			playerHook.getProfile().setLoggedIn(true);
+			
+			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+		}
+	}
+	
+	@SubscribeEvent
+	public void onLoggedOut(PlayerLoggedOutEvent event)
+	{
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			IPlayerHook playerHook = manager.get(event.player);
+
+			playerHook.getProfile().setEntity(null);
+			playerHook.getProfile().setLoggedIn(false);
+
+			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+		}
+	}
+	
+	@SubscribeEvent
+	public void onChangedDimension(PlayerChangedDimensionEvent event)
+	{
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			IPlayerHook playerHook = manager.get(event.player);
+		
+			playerHook.onChangedDimension();
+		}
+	}
+	
+	@SubscribeEvent
+	public void onRespawn(PlayerRespawnEvent event)
+	{
+		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		{
+			IPlayerHook playerHook = manager.get(event.player);
+		
+			playerHook.onRespawn();
+		}
+	}
+	
+	@SubscribeEvent
+	public void onTick(ServerTickEvent event)
+	{
+		if (event.side == Side.SERVER)
+		{
+			if (event.phase == Phase.START)
+			{
+				tickCounter++;
+				
+				if (minutesHasPassed(3))
+				{
+					PlayerHookCore.flushDataOut();
+				}
+			}
+		}
+	}
+
+	public boolean minutesHasPassed(int minutes)
+	{
+		return this.tickCounter % (1200 * minutes) == 0;
+	}
+	
+}

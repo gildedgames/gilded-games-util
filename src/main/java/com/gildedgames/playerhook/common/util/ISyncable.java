@@ -5,13 +5,13 @@ import io.netty.buffer.ByteBuf;
 public interface ISyncable
 {
 
-	void writeServerData(ByteBuf buf);
+	void writeToClient(ByteBuf buf);
 
-	void readServerData(ByteBuf buf);
+	void readFromServer(ByteBuf buf);
 	
-	void writeClientData(ByteBuf buf);
+	void writeToServer(ByteBuf buf);
 	
-	void readClientData(ByteBuf buf);
+	void readFromClient(ByteBuf buf);
 
 	void markDirty();
 
