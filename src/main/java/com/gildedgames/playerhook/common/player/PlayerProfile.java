@@ -7,9 +7,6 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.playerhook.PlayerHookCore;
-import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHook;
-import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookClient;
 import com.gildedgames.playerhook.common.util.INBT;
 import com.gildedgames.playerhook.common.util.ISyncable;
 
@@ -50,6 +47,11 @@ public class PlayerProfile implements INBT, ISyncable
 	public void setLoggedIn(boolean isLoggedIn)
 	{
 		this.isLoggedIn = isLoggedIn;
+	}
+	
+	public String getUsername()
+	{
+		return this.player.getCommandSenderEntity().getName();
 	}
 
 	public UUID getUUID()

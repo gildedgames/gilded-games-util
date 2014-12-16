@@ -107,11 +107,13 @@ public class PlayerHookSaveHandler
 					PlayerProfile profile = new PlayerProfile();
 					
 					profile.readFromNBT(tag);
-
-					playerHook.readFromNBT(tag);
+					
+					profile.setEntity(entityplayer);
 					
 					playerHook.setProfile(profile);
-					
+
+					playerHook.readFromNBT(tag);
+
 					manager.instance(Side.SERVER).addPlayer(playerHook);
 					
 					return tag;
