@@ -34,6 +34,18 @@ minecraft {
     mappings = "snapshot_nodoc_20140930"
 }
 
+repositories {
+	maven {
+		name = "mvn-storage"
+		url "https://raw.github.com/gildedgames/mvn-storage/master/"
+	}
+}
+
+dependencies {
+	compile 'com.gildedgames.playerhook:player-hook-util:1.8-1.01'
+	compile 'com.gildedgames.tabapi:tab-api:1.8-1.021'
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.
