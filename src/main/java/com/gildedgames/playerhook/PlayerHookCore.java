@@ -75,7 +75,7 @@ public class PlayerHookCore
 	{
 		this.playerHookSaveHandler.flushData();
 
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 		{
 			if (manager != null)
 			{

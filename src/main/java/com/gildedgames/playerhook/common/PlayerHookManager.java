@@ -22,9 +22,9 @@ public class PlayerHookManager<T extends IPlayerHook>
 	
 	private static List<PlayerHookManager> managers = new ArrayList<PlayerHookManager>();
 	
-	private InternalManager<T> clientHandler;
+	private HashMap<UUID, T> playerMap = new HashMap<UUID, T>();
 
-	private InternalManager<T> serverHandler;
+	private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
 
 	private String name;
 	
@@ -38,49 +38,22 @@ public class PlayerHookManager<T extends IPlayerHook>
 		this.type = playerHookType;
 		this.id = PlayerHookManager.managers.size();
 		
-		this.clientHandler = new InternalManager<T>(this, this.type);
-		this.serverHandler = new InternalManager<T>(this, this.type);
-		
-		PlayerHookManager.managers.add(this);
+		PlayerHookCore.proxy.getManagers().add(this);
 	}
 	
 	public void clear()
 	{
-		this.clear(Side.SERVER);
-		this.clear(Side.CLIENT);
+		this.playerMap = new HashMap<UUID, T>();
+		this.sentRequests = new ArrayList<UUID>();
 	}
 
-	public void clear(Side side)
-	{
-		if (side.isClient())
-		{
-			this.clientHandler = new InternalManager<T>(this, this.type);
-		}
-		else
-		{
-			this.serverHandler = new InternalManager<T>(this, this.type);
-		}
-	}
-
-	public InternalManager<T> instance(Side side)
-	{
-		if (side.isClient())
-		{
-			return this.clientHandler;
-		}
-		else
-		{
-			return this.serverHandler;
-		}
-	}
-	
 	public T get(EntityPlayer player)
 	{
 		boolean isRemote = player.worldObj.isRemote;
 		
 		Side side = isRemote ? Side.CLIENT : Side.SERVER;
 		
-		return this.instance(side).get(player.getUniqueID());
+		return this.get(player.getUniqueID());
 	}
 	
 	public Class<T> getPlayerHookType()
@@ -98,11 +71,6 @@ public class PlayerHookManager<T extends IPlayerHook>
 		return this.name;
 	}
 	
-	public static List<PlayerHookManager> getManagers()
-	{
-		return PlayerHookManager.managers;
-	}
-	
 	public static void writeReference(IPlayerHook playerHook, ByteBuf buf)
 	{
 		buf.writeInt(playerHook.getManager().getID());
@@ -112,7 +80,7 @@ public class PlayerHookManager<T extends IPlayerHook>
 	
 	public static IPlayerHook readReference(EntityPlayer player, ByteBuf buf)
 	{
-		PlayerHookManager manager = PlayerHookManager.getManagers().get(buf.readInt());
+		PlayerHookManager manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
 		
 		PlayerProfile profile = new PlayerProfile();
 		
@@ -125,101 +93,82 @@ public class PlayerHookManager<T extends IPlayerHook>
 	
 	public static IPlayerHook readReference(Side side, ByteBuf buf)
 	{
-		PlayerHookManager manager = PlayerHookManager.getManagers().get(buf.readInt());
+		PlayerHookManager manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
 		
 		PlayerProfile profile = new PlayerProfile();
 		
 		profile.readFromServer(buf);
     	
-    	IPlayerHook playerHook = manager.instance(side).get(profile.getUUID());
+    	IPlayerHook playerHook = manager.get(profile.getUUID());
     	
     	return playerHook;
 	}
-	
-	public static class InternalManager<T extends IPlayerHook>
+
+	public void addPlayer(T player)
 	{
-		
-		private PlayerHookManager parent;
-		
-		private Class<T> playerHookType;
-		
-		private HashMap<UUID, T> playerMap = new HashMap<UUID, T>();
+		this.playerMap.put(player.getProfile().getUUID(), player);
+	}
 
-		private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
-		
-		public InternalManager(PlayerHookManager parent, Class<T> type)
-		{
-			this.parent = parent;
-			this.playerHookType = type;
-		}
-		
-		public void addPlayer(T player)
-		{
-			this.playerMap.put(player.getProfile().getUUID(), player);
-		}
+	public T get(UUID uuid)
+	{
+		T player = this.playerMap.get(uuid);
 
-		public T get(UUID uuid)
+		if (player == null)
 		{
-			T player = this.playerMap.get(uuid);
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
 
-			if (player == null)
+			if (side.isClient())
 			{
-				Side side = FMLCommonHandler.instance().getEffectiveSide();
-
-				if (side.isClient())
+				if (!this.sentRequests.contains(uuid))
 				{
-					if (!this.sentRequests.contains(uuid))
-					{
-						PlayerHookCore.NETWORK.sendToServer(new MessagePlayerHookRequest(this.parent, uuid));
-						this.sentRequests.add(uuid);
-					}
-				}
-
-				try
-				{
-					player = this.playerHookType.newInstance();
-
-					PlayerProfile profile = new PlayerProfile();
-					profile.setUUID(uuid);
-					
-					player.setProfile(profile);
-
-					this.addPlayer(player);
-				}
-				catch (InstantiationException e)
-				{
-					e.printStackTrace();
-				}
-				catch (IllegalAccessException e)
-				{
-					e.printStackTrace();
+					PlayerHookCore.NETWORK.sendToServer(new MessagePlayerHookRequest(this, uuid));
+					this.sentRequests.add(uuid);
 				}
 			}
-			
-			if (player.getProfile() == null)
+
+			try
 			{
+				player = this.type.newInstance();
+
 				PlayerProfile profile = new PlayerProfile();
 				profile.setUUID(uuid);
 				
 				player.setProfile(profile);
-			}
 
-			return player;
-		}
-
-		public void setPlayers(ArrayList<T> players)
-		{
-			for (T player : players)
-			{
 				this.addPlayer(player);
 			}
-		}
-
-		public Collection<T> getPlayers()
-		{
-			return this.playerMap.values();
+			catch (InstantiationException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
+		if (player.getProfile() == null)
+		{
+			PlayerProfile profile = new PlayerProfile();
+			profile.setUUID(uuid);
+			
+			player.setProfile(profile);
+		}
+
+		return player;
+	}
+
+	public void setPlayers(ArrayList<T> players)
+	{
+		for (T player : players)
+		{
+			this.addPlayer(player);
+		}
+	}
+
+	public Collection<T> getPlayers()
+	{
+		return this.playerMap.values();
 	}
 
 }

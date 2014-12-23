@@ -31,7 +31,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 			
-			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 			{
 				manager.get(player).getProfile().entityInit(player);
 				manager.get(player).onJoinWorld();
@@ -44,7 +44,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 			{
 				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
 				{
@@ -61,7 +61,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 			{
 				IPlayerHook playerHook = manager.get(player);
 				
@@ -107,7 +107,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (PlayerHookManager manager : PlayerHookManager.getManagers())
+			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 			{
 				EntityPlayer player = (EntityPlayer) event.entity;
 				manager.get(player).onDeath();
@@ -118,7 +118,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 			
@@ -131,7 +131,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
@@ -145,7 +145,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onChangedDimension(PlayerChangedDimensionEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 		
@@ -156,7 +156,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onRespawn(PlayerRespawnEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookManager.getManagers())
+		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 		

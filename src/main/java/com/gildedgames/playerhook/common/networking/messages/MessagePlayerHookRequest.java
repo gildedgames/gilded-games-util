@@ -35,7 +35,7 @@ public class MessagePlayerHookRequest implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.manager = PlayerHookManager.getManagers().get(buf.readInt());
+		this.manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 	}
 
@@ -58,7 +58,7 @@ public class MessagePlayerHookRequest implements IMessage
         	{
         		EntityPlayer player = ctx.getServerHandler().playerEntity;
         		
-        		PlayerHookCore.NETWORK.sendTo(new MessagePlayerHook(message.manager.instance(Side.SERVER).get(message.uuid)), (EntityPlayerMP) player);
+        		PlayerHookCore.NETWORK.sendTo(new MessagePlayerHook(message.manager.get(message.uuid)), (EntityPlayerMP) player);
         	}
 
         	return null;

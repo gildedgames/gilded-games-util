@@ -52,7 +52,7 @@ public class MessagePlayerHook implements IMessage
         {
         	if (ctx.side.isClient())
         	{
-        		PlayerHookManager manager = PlayerHookManager.getManagers().get(message.buf.readInt());
+        		PlayerHookManager manager = PlayerHookCore.proxy.getManagers().get(message.buf.readInt());
             	
             	IPlayerHook playerHook = manager.get(PlayerHookCore.proxy.getPlayer());
         		
