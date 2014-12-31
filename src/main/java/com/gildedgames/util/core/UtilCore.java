@@ -28,6 +28,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 	
 	public static final String VERSION = "1.8-1.0";
 	
+	private static final boolean DEBUG_MODE = true;
+	
 	@Instance(UtilCore.MOD_ID)
 	public static UtilCore instance;
 	
@@ -160,5 +162,21 @@ public class UtilCore extends PlayerHookServices implements ICore
 
         return Side.CLIENT;
     }
+    
+	public static void debugPrint(Object line)
+	{
+		if (DEBUG_MODE && line != null)
+		{
+			System.out.println("[ORBIS_CORE DEV]: " + line.toString());
+		}
+	}
+
+	public static void print(Object line)
+	{
+		if (line != null)
+		{
+			System.out.println("[ORBIS_CORE]: " + line.toString());
+		}
+	}
 	
 }

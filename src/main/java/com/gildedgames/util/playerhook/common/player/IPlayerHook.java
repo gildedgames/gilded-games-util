@@ -3,8 +3,8 @@ package com.gildedgames.util.playerhook.common.player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
-import com.gildedgames.util.iomanager.INBT;
-import com.gildedgames.util.iomanager.ISyncable;
+import com.gildedgames.util.io_manager.io.INBT;
+import com.gildedgames.util.io_manager.networking.ISyncable;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
 public interface IPlayerHook extends INBT, ISyncable

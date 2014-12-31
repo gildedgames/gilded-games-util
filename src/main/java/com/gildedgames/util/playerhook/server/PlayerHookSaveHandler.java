@@ -60,9 +60,9 @@ public class PlayerHookSaveHandler
 			
 			NBTTagCompound tag = new NBTTagCompound();
 			
-			playerHook.getProfile().writeToNBT(tag);
+			playerHook.getProfile().write(tag);
 			
-			playerHook.writeToNBT(tag);
+			playerHook.write(tag);
 			
 			File prefix = new File(this.playerDirectory, manager.getName());
 			
@@ -116,13 +116,13 @@ public class PlayerHookSaveHandler
 					
 					PlayerProfile profile = new PlayerProfile();
 					
-					profile.readFromNBT(tag);
+					profile.read(tag);
 					
 					profile.setEntity(entityplayer);
 					
 					playerHook.setProfile(profile);
 
-					playerHook.readFromNBT(tag);
+					playerHook.read(tag);
 
 					manager.add(playerHook);
 					

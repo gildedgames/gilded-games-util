@@ -1,4 +1,4 @@
-package com.gildedgames.util.iomanager;
+package com.gildedgames.util.io_manager.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.gildedgames.util.io_manager.io.INBT;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +38,7 @@ public class NBTDataHandler
 		for (INBT object : objects)
 		{
 			NBTTagCompound tag = new NBTTagCompound();
-			object.writeToNBT(tag);
+			object.write(tag);
 			tagList.appendTag(tag);
 		}
 
@@ -82,7 +84,7 @@ public class NBTDataHandler
 				try
 				{
 					INBT object = clazz.newInstance();
-					object.readFromNBT(objectTag);
+					object.read(objectTag);
 					list.add(object);
 				}
 				catch (InstantiationException e)
@@ -116,11 +118,11 @@ public class NBTDataHandler
 			NBTTagCompound tag = new NBTTagCompound();
 
 			NBTTagCompound tag1 = new NBTTagCompound();
-			((INBT) entry.getKey()).writeToNBT(tag1);
+			((INBT) entry.getKey()).write(tag1);
 			tag.setTag("key", tag1);
 
 			NBTTagCompound tag2 = new NBTTagCompound();
-			((INBT) entry.getValue()).writeToNBT(tag2);
+			((INBT) entry.getValue()).write(tag2);
 			tag.setTag("value", tag2);
 
 			tagList.appendTag(tag);
@@ -168,10 +170,10 @@ public class NBTDataHandler
 				try
 				{
 					INBT key = keyClass.newInstance();
-					key.readFromNBT(objectTag.getCompoundTag("key"));
+					key.read(objectTag.getCompoundTag("key"));
 
 					INBT value = valueClass.newInstance();
-					value.readFromNBT(objectTag.getCompoundTag("value"));
+					value.read(objectTag.getCompoundTag("value"));
 
 					map.put(key, value);
 

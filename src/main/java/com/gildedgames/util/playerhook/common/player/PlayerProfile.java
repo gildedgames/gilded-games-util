@@ -2,6 +2,7 @@ package com.gildedgames.util.playerhook.common.player;
 
 import io.netty.buffer.ByteBuf;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,14 +75,14 @@ public class PlayerProfile implements IPlayerProfile
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag)
+	public void write(NBTTagCompound tag)
 	{
 		tag.setLong("UUIDMost", this.uuid.getMostSignificantBits());
         tag.setLong("UUIDLeast", this.uuid.getLeastSignificantBits());
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag)
+	public void read(NBTTagCompound tag)
 	{
 		if (tag.hasKey("UUIDMost", 4) && tag.hasKey("UUIDLeast", 4))
         {
@@ -101,14 +102,14 @@ public class PlayerProfile implements IPlayerProfile
 		
 		buf.writeBoolean(this.isLoggedIn);
 	}
-
+	
 	@Override
 	public void readFromServer(ByteBuf buf)
 	{
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 		this.isLoggedIn = buf.readBoolean();
 	}
-
+	
 	@Override
 	public void writeToServer(ByteBuf buf)
 	{
@@ -138,5 +139,5 @@ public class PlayerProfile implements IPlayerProfile
 	{
 		return this.isDirty;
 	}
-	
+
 }

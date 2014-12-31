@@ -2,11 +2,13 @@ package com.gildedgames.util.playerhook.util;
 
 import io.netty.buffer.ByteBuf;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.playerhook.common.player.IPlayerProfile;
 
 public class NullPlayerProfile implements IPlayerProfile
@@ -32,10 +34,10 @@ public class NullPlayerProfile implements IPlayerProfile
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {}
+	public void write(NBTTagCompound tag) {}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {}
+	public void read(NBTTagCompound tag) {}
 
 	@Override
 	public void writeToClient(ByteBuf buf) {}
