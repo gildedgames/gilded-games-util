@@ -24,7 +24,7 @@ import com.gildedgames.util.io_manager.factory.IObjectFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOFile;
 
-public class IOManager<READER extends IReader<FILE>, WRITER extends IWriter<FILE>, FILE extends IOFile<READER, WRITER>> implements IObjectFactory<Object>
+public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> implements IObjectFactory<Object>
 {
 	private final Map<Integer, Class> IDtoClassMapping = new HashMap<Integer, Class>();
 
@@ -63,7 +63,7 @@ public class IOManager<READER extends IReader<FILE>, WRITER extends IWriter<FILE
 
 		final FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
 		final READER reader = rwFac.getReader(dataInput, this);
-		reader.preReading(ioFile, file);
+		rwFac.preReading(ioFile, file, reader);
 		
 		ioFile.readFileData(this, reader);
 		ioFile.readFileData(this, reader);
@@ -124,7 +124,7 @@ public class IOManager<READER extends IReader<FILE>, WRITER extends IWriter<FILE
 
 		ioFile.writeFileData(this, writer);
 
-		writer.finishWriting(dataOutput);
+		rwFac.finishWriting(dataOutput, writer);
 
 		dataOutput.close();
 	}

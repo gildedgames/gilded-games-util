@@ -9,9 +9,8 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.IOManager;
-import com.gildedgames.util.io_manager.IWriter;
 
-public class Output<FILE extends IOFile> implements DataOutput, IWriter<FILE>
+public class Output<FILE extends IOFile> implements DataOutput
 {
 
 	protected final IOManager manager;
@@ -175,11 +174,6 @@ public class Output<FILE extends IOFile> implements DataOutput, IWriter<FILE>
 	public IOManager getIOManager()
 	{
 		return this.manager;
-	}
-
-	@Override
-	public void finishWriting(DataOutputStream input)
-	{
 	}
 
 }

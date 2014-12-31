@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.gildedgames.util.io_manager.IOManager;
-import com.gildedgames.util.io_manager.IReader;
 
-public class Input<FILE extends IOFile> implements DataInput, IReader<FILE>
+public class Input<FILE extends IOFile> implements DataInput
 {
 
 	protected final IOManager manager;
@@ -176,11 +175,4 @@ public class Input<FILE extends IOFile> implements DataInput, IReader<FILE>
 	{
 		return this.dataInput;
 	}
-
-	@Override
-	public void preReading(FILE data, File from)
-	{
-
-	}
-
 }

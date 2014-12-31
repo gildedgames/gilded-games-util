@@ -7,7 +7,7 @@ import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.Input;
 import com.gildedgames.util.io_manager.io.Output;
 
-public class DefaultRWFactory<FILE extends IOFile> implements IReaderWriterFactory<FILE, Input, Output>
+public class DefaultRWFactory<FILE extends IOFile<Input, Output>> implements IReaderWriterFactory<FILE, Input, Output>
 {
 
 	private final File baseDirectory;
@@ -33,6 +33,16 @@ public class DefaultRWFactory<FILE extends IOFile> implements IReaderWriterFacto
 	public Output getWriter(DataOutputStream output, IOManager manager)
 	{
 		return new Output(manager, output);
+	}
+
+	@Override
+	public void preReading(FILE data, File from, Input input) 
+	{
+	}
+
+	@Override
+	public void finishWriting(DataOutputStream input, Output output) 
+	{
 	}
 
 }

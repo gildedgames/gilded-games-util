@@ -6,13 +6,17 @@ import java.io.File;
 
 import com.gildedgames.util.io_manager.io.IOFile;
 
-public interface IReaderWriterFactory<FILE extends IOFile, I extends IReader, O extends IWriter>
+public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>
 {
-	
-	public I getReader(DataInputStream input, IOManager manager);
 
-	public O getWriter(DataOutputStream output, IOManager manager);
+	I getReader(DataInputStream input, IOManager manager);
 
-	public File getFileFromName(FILE data, String name);
-	
+	O getWriter(DataOutputStream output, IOManager manager);
+
+	File getFileFromName(FILE data, String name);
+
+	void preReading(FILE data, File from, I reader);
+
+	void finishWriting(DataOutputStream output, O writer);
+
 }
