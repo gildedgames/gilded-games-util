@@ -1,6 +1,4 @@
-package com.gildedgames.playerhook.common;
-
-import io.netty.buffer.ByteBuf;
+package com.gildedgames.util.playerhook.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,16 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.playerhook.PlayerHookCore;
-import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookRequest;
-import com.gildedgames.playerhook.common.player.IPlayerHook;
-import com.gildedgames.playerhook.common.player.PlayerProfile;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookRequest;
+import com.gildedgames.util.playerhook.common.player.IPlayerHook;
+import com.gildedgames.util.playerhook.common.player.PlayerProfile;
 
-public class PlayerHookManager<T extends IPlayerHook>
+public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {
-	
-	private static List<PlayerHookManager> managers = new ArrayList<PlayerHookManager>();
-	
+
 	private HashMap<UUID, T> playerMap = new HashMap<UUID, T>();
 
 	private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
@@ -29,24 +25,21 @@ public class PlayerHookManager<T extends IPlayerHook>
 	private String name;
 	
 	private Class<T> type;
-	
-	private int id;
-	
-	public PlayerHookManager(String name, Class<T> playerHookType)
+
+	public PlayerHookPool(String name, Class<T> playerHookType)
 	{
 		this.name = name;
 		this.type = playerHookType;
-		this.id = PlayerHookManager.managers.size();
-		
-		PlayerHookCore.proxy.getManagers().add(this);
 	}
 	
+	@Override
 	public void clear()
 	{
 		this.playerMap = new HashMap<UUID, T>();
 		this.sentRequests = new ArrayList<UUID>();
 	}
 
+	@Override
 	public T get(EntityPlayer player)
 	{
 		boolean isRemote = player.worldObj.isRemote;
@@ -56,59 +49,25 @@ public class PlayerHookManager<T extends IPlayerHook>
 		return this.get(player.getUniqueID());
 	}
 	
+	@Override
 	public Class<T> getPlayerHookType()
 	{
 		return this.type;
 	}
-	
-	public int getID()
-	{
-		return this.id;
-	}
-	
+
+	@Override
 	public String getName()
 	{
 		return this.name;
 	}
-	
-	public static void writeReference(IPlayerHook playerHook, ByteBuf buf)
-	{
-		buf.writeInt(playerHook.getManager().getID());
-		
-		playerHook.getProfile().writeToClient(buf);
-	}
-	
-	public static IPlayerHook readReference(EntityPlayer player, ByteBuf buf)
-	{
-		PlayerHookManager manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
-		
-		PlayerProfile profile = new PlayerProfile();
-		
-		profile.readFromServer(buf);
-    	
-    	IPlayerHook playerHook = manager.get(player);
-    	
-    	return playerHook;
-	}
-	
-	public static IPlayerHook readReference(Side side, ByteBuf buf)
-	{
-		PlayerHookManager manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
-		
-		PlayerProfile profile = new PlayerProfile();
-		
-		profile.readFromServer(buf);
-    	
-    	IPlayerHook playerHook = manager.get(profile.getUUID());
-    	
-    	return playerHook;
-	}
 
-	public void addPlayer(T player)
+	@Override
+	public void add(T player)
 	{
 		this.playerMap.put(player.getProfile().getUUID(), player);
 	}
 
+	@Override
 	public T get(UUID uuid)
 	{
 		T player = this.playerMap.get(uuid);
@@ -121,7 +80,7 @@ public class PlayerHookManager<T extends IPlayerHook>
 			{
 				if (!this.sentRequests.contains(uuid))
 				{
-					PlayerHookCore.NETWORK.sendToServer(new MessagePlayerHookRequest(this, uuid));
+					UtilCore.NETWORK.sendToServer(new MessagePlayerHookRequest(this, uuid));
 					this.sentRequests.add(uuid);
 				}
 			}
@@ -135,7 +94,7 @@ public class PlayerHookManager<T extends IPlayerHook>
 				
 				player.setProfile(profile);
 
-				this.addPlayer(player);
+				this.add(player);
 			}
 			catch (InstantiationException e)
 			{
@@ -158,17 +117,25 @@ public class PlayerHookManager<T extends IPlayerHook>
 		return player;
 	}
 
-	public void setPlayers(ArrayList<T> players)
+	@Override
+	public void setPlayerHooks(List<T> players)
 	{
 		for (T player : players)
 		{
-			this.addPlayer(player);
+			this.add(player);
 		}
 	}
 
-	public Collection<T> getPlayers()
+	@Override
+	public Collection<T> getPlayerHooks()
 	{
 		return this.playerMap.values();
 	}
 
+	@Override
+	public boolean shouldSave()
+	{
+		return true;
+	}
+	
 }

@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.common;
+package com.gildedgames.util.playerhook.common;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -10,14 +10,12 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensio
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.playerhook.PlayerHookCore;
-import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHook;
-import com.gildedgames.playerhook.common.networking.messages.MessagePlayerHookClient;
-import com.gildedgames.playerhook.common.player.IPlayerHook;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHook;
+import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookClient;
+import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 
 public class PlayerEventHandler
 {
@@ -31,7 +29,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 			
-			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
 				manager.get(player).onJoinWorld();
@@ -44,7 +42,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
 				{
@@ -61,7 +59,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				IPlayerHook playerHook = manager.get(player);
 				
@@ -88,7 +86,7 @@ public class PlayerEventHandler
 	{
 		if (playerHook.isDirty())
 		{
-			PlayerHookCore.NETWORK.sendToServer(new MessagePlayerHookClient(playerHook));
+			UtilCore.NETWORK.sendToServer(new MessagePlayerHookClient(playerHook));
 			playerHook.markClean();
 		}
 	}
@@ -97,7 +95,7 @@ public class PlayerEventHandler
 	{
 		if (playerHook.isDirty())
 		{
-			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 			playerHook.markClean();
 		}
 	}
@@ -107,7 +105,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				EntityPlayer player = (EntityPlayer) event.entity;
 				manager.get(player).onDeath();
@@ -118,34 +116,34 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 			
 			playerHook.getProfile().setLoggedIn(true);
 			
-			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
 	
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
 			playerHook.getProfile().setEntity(null);
 			playerHook.getProfile().setLoggedIn(false);
 
-			PlayerHookCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
 	
 	@SubscribeEvent
 	public void onChangedDimension(PlayerChangedDimensionEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 		
@@ -156,7 +154,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onRespawn(PlayerRespawnEvent event)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 		

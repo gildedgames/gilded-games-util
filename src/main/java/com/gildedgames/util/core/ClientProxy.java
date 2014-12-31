@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.client;
+package com.gildedgames.util.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,14 +6,11 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gildedgames.playerhook.common.PlayerHookManager;
-import com.gildedgames.playerhook.server.ServerProxy;
+import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
 public class ClientProxy extends ServerProxy
 {
-	
-	private List<PlayerHookManager> managers = new ArrayList<PlayerHookManager>();
-	
+
 	private Minecraft mc = Minecraft.getMinecraft();
 
 	@Override
@@ -26,12 +23,6 @@ public class ClientProxy extends ServerProxy
 	public EntityPlayer getPlayer()
 	{
 		return this.mc.thePlayer;
-	}
-	
-	@Override
-	public List<PlayerHookManager> getManagers()
-	{
-		return this.managers;
 	}
 	
 }

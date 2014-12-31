@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.server;
+package com.gildedgames.util.playerhook.server;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,10 +16,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import com.gildedgames.playerhook.PlayerHookCore;
-import com.gildedgames.playerhook.common.PlayerHookManager;
-import com.gildedgames.playerhook.common.player.IPlayerHook;
-import com.gildedgames.playerhook.common.player.PlayerProfile;
+import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.common.IPlayerHookPool;
+import com.gildedgames.util.playerhook.common.player.IPlayerHook;
+import com.gildedgames.util.playerhook.common.player.PlayerProfile;
 
 public class PlayerHookSaveHandler
 {
@@ -49,8 +49,13 @@ public class PlayerHookSaveHandler
 
 	public void writePlayerData(UUID uuid, EntityPlayer entityplayer)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
+			if (!manager.shouldSave())
+			{
+				continue;
+			}
+			
 			IPlayerHook playerHook = manager.get(entityplayer);
 			
 			NBTTagCompound tag = new NBTTagCompound();
@@ -86,8 +91,13 @@ public class PlayerHookSaveHandler
 
 	public NBTTagCompound readPlayerData(UUID uuid, EntityPlayer entityplayer)
 	{
-		for (PlayerHookManager manager : PlayerHookCore.proxy.getManagers())
+		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
+			if (!manager.shouldSave())
+			{
+				continue;
+			}
+			
 			File prefix = new File(this.playerDirectory, manager.getName());
 			
 			prefix.mkdirs();
@@ -114,7 +124,7 @@ public class PlayerHookSaveHandler
 
 					playerHook.readFromNBT(tag);
 
-					manager.addPlayer(playerHook);
+					manager.add(playerHook);
 					
 					return tag;
 				}

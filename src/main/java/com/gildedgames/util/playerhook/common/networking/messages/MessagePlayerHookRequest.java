@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.common.networking.messages;
+package com.gildedgames.util.playerhook.common.networking.messages;
 
 import io.netty.buffer.ByteBuf;
 
@@ -9,40 +9,42 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.playerhook.PlayerHookCore;
-import com.gildedgames.playerhook.common.PlayerHookManager;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
 public class MessagePlayerHookRequest implements IMessage
 {
 
 	private UUID uuid;
 	
-	private PlayerHookManager manager;
+	private IPlayerHookPool pool;
 
 	public MessagePlayerHookRequest()
 	{
 
 	}
 
-	public MessagePlayerHookRequest(PlayerHookManager manager, UUID uuid)
+	public MessagePlayerHookRequest(IPlayerHookPool pool, UUID uuid)
 	{
-		this.manager = manager;
+		this.pool = pool;
 		this.uuid = uuid;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.manager = PlayerHookCore.proxy.getManagers().get(buf.readInt());
+		this.pool = PlayerHookCore.locate().getPools().get(buf.readInt());
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(this.manager.getID());
+		int poolID = PlayerHookCore.locate().getPoolID(this.pool);
+		
+		buf.writeInt(poolID);
 		
 		buf.writeLong(this.uuid.getMostSignificantBits());
 		buf.writeLong(this.uuid.getLeastSignificantBits());
@@ -58,7 +60,7 @@ public class MessagePlayerHookRequest implements IMessage
         	{
         		EntityPlayer player = ctx.getServerHandler().playerEntity;
         		
-        		PlayerHookCore.NETWORK.sendTo(new MessagePlayerHook(message.manager.get(message.uuid)), (EntityPlayerMP) player);
+        		UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
         	}
 
         	return null;

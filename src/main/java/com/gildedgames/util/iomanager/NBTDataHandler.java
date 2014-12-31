@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.common.util;
+package com.gildedgames.util.iomanager;
 
 import java.io.File;
 import java.io.FileInputStream;

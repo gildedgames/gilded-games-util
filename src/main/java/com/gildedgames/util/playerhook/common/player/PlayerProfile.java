@@ -1,4 +1,4 @@
-package com.gildedgames.playerhook.common.player;
+package com.gildedgames.util.playerhook.common.player;
 
 import io.netty.buffer.ByteBuf;
 
@@ -7,10 +7,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.playerhook.common.util.INBT;
-import com.gildedgames.playerhook.common.util.ISyncable;
-
-public class PlayerProfile implements INBT, ISyncable
+public class PlayerProfile implements IPlayerProfile
 {
 
 	protected EntityPlayer player;
