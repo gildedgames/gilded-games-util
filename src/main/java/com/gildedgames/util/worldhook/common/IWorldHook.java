@@ -1,4 +1,4 @@
-package com.gildedgames.util.worldhook;
+package com.gildedgames.util.worldhook.common;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -8,8 +8,14 @@ import com.gildedgames.util.io_manager.io.IO;
 public interface IWorldHook extends IO<NBTTagCompound, NBTTagCompound>
 {
 	
-	public void onUpdate();
+	void onLoad();
+	
+	void onUnload();
+	
+	void onSave();
+	
+	void onUpdate();
 
-	public World getWorld();
+	World getWorld();
 	
 }

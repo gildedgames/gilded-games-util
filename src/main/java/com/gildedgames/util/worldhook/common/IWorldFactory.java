@@ -1,4 +1,4 @@
-package com.gildedgames.util.worldhook;
+package com.gildedgames.util.worldhook.common;
 
 import net.minecraft.world.World;
 

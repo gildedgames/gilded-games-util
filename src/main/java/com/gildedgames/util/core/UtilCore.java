@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.PlayerHookServices;
+import com.gildedgames.util.worldhook.WorldHookCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION)
 public class UtilCore extends PlayerHookServices implements ICore
@@ -45,6 +46,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 	public UtilCore()
 	{
 		this.cores.add(PlayerHookCore.INSTANCE);
+		this.cores.add(WorldHookCore.INSTANCE);
 	}
 	
 	@Override
@@ -54,7 +56,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 		UtilCore.NETWORK.init();
 		
 		this.proxy.init();
-		
+
 		for (ICore core : this.cores)
 		{
 			core.preInit(event);

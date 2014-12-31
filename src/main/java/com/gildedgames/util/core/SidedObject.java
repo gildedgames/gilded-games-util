@@ -1,5 +1,6 @@
 package com.gildedgames.util.core;
 
+
 public class SidedObject<T>
 {
 
@@ -21,6 +22,16 @@ public class SidedObject<T>
 		{
 			return this.server;
 		}
+	}
+	
+	public T client()
+	{
+		return this.client;
+	}
+	
+	public T server()
+	{
+		return this.server;
 	}
 	
 }

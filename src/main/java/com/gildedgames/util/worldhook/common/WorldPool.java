@@ -1,6 +1,5 @@
-package com.gildedgames.util.worldhook;
+package com.gildedgames.util.worldhook.common;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,9 +13,9 @@ import net.minecraft.world.WorldServer;
 public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 {
 
-	final IWorldFactory<W> factory;
+	private final IWorldFactory<W> factory;
 
-	final List<W> hooks = new ArrayList<W>();
+	private List<W> hooks = new ArrayList<W>();
 
 	public WorldPool(IWorldFactory<W> factory)
 	{
@@ -66,10 +65,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			}
 		}
 
-		final W hook = this.factory.create(world);
-		this.hooks.add(hook);
-
-		return hook;
+		return this.createHook(world);
 	}
 
 	@Override
@@ -79,8 +75,18 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	}
 
 	@Override
-	public void addHook(World world)
+	public void clear()
 	{
-		this.hooks.add(this.factory.create(world));
+		this.hooks = new ArrayList<W>();
 	}
+	
+	private W createHook(World world)
+	{
+		W hook = this.factory.create(world);
+		this.hooks.add(hook);
+		
+		return hook;
+	}
+
+
 }

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gildedgames.util.io_manager.io.INBT;
+import com.gildedgames.util.io_manager.io.NBT;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,11 +31,11 @@ public class NBTDataHandler
 		}
 	}
 
-	public void save(String fileName, Collection<? extends INBT> objects)
+	public void save(String fileName, Collection<? extends NBT> objects)
 	{
 		NBTTagList tagList = new NBTTagList();
 
-		for (INBT object : objects)
+		for (NBT object : objects)
 		{
 			NBTTagCompound tag = new NBTTagCompound();
 			object.write(tag);
@@ -64,7 +64,7 @@ public class NBTDataHandler
 		}
 	}
 
-	public ArrayList load(Class<? extends INBT> clazz, String fileName)
+	public ArrayList load(Class<? extends NBT> clazz, String fileName)
 	{
 		File file = new File(this.path, fileName);
 
@@ -83,7 +83,7 @@ public class NBTDataHandler
 
 				try
 				{
-					INBT object = clazz.newInstance();
+					NBT object = clazz.newInstance();
 					object.read(objectTag);
 					list.add(object);
 				}
@@ -109,7 +109,7 @@ public class NBTDataHandler
 		return new ArrayList();
 	}
 
-	public void saveMap(String fileName, Map<? extends INBT, ? extends INBT> objects)
+	public void saveMap(String fileName, Map<? extends NBT, ? extends NBT> objects)
 	{
 		NBTTagList tagList = new NBTTagList();
 
@@ -118,11 +118,11 @@ public class NBTDataHandler
 			NBTTagCompound tag = new NBTTagCompound();
 
 			NBTTagCompound tag1 = new NBTTagCompound();
-			((INBT) entry.getKey()).write(tag1);
+			((NBT) entry.getKey()).write(tag1);
 			tag.setTag("key", tag1);
 
 			NBTTagCompound tag2 = new NBTTagCompound();
-			((INBT) entry.getValue()).write(tag2);
+			((NBT) entry.getValue()).write(tag2);
 			tag.setTag("value", tag2);
 
 			tagList.appendTag(tag);
@@ -150,7 +150,7 @@ public class NBTDataHandler
 		}
 	}
 
-	public HashMap loadMap(Class<? extends INBT> keyClass, Class<? extends INBT> valueClass, String fileName)
+	public HashMap loadMap(Class<? extends NBT> keyClass, Class<? extends NBT> valueClass, String fileName)
 	{
 		File file = new File(this.path, fileName);
 
@@ -169,10 +169,10 @@ public class NBTDataHandler
 
 				try
 				{
-					INBT key = keyClass.newInstance();
+					NBT key = keyClass.newInstance();
 					key.read(objectTag.getCompoundTag("key"));
 
-					INBT value = valueClass.newInstance();
+					NBT value = valueClass.newInstance();
 					value.read(objectTag.getCompoundTag("value"));
 
 					map.put(key, value);

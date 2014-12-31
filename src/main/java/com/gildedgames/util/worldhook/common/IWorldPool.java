@@ -1,4 +1,4 @@
-package com.gildedgames.util.worldhook;
+package com.gildedgames.util.worldhook.common;
 
 import java.util.Collection;
 
@@ -10,10 +10,10 @@ import com.gildedgames.util.io_manager.io.IO;
 public interface IWorldPool<W extends IWorldHook> extends IO<NBTTagCompound, NBTTagCompound>
 {
 	
-	public W get(World world);
+	W get(World world);
+	
+	void clear();
 
-	public Collection<W> getWorlds();
-
-	public void addHook(World world);
+	Collection<W> getWorlds();
 
 }
