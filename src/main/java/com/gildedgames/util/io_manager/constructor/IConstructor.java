@@ -10,9 +10,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface IConstructor
 {
-	
-	public boolean isApplicable(Class clazz);
 
-	public Object construct(Class clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
+	boolean isApplicable(Class clazz);
+
+	Object construct(Class clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException;
 
 }

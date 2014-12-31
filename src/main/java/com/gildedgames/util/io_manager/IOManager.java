@@ -19,32 +19,29 @@ import java.util.Map;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
-import com.gildedgames.util.io_manager.factory.FactoryBehaviour;
-import com.gildedgames.util.io_manager.factory.IObjectFactory;
+import com.gildedgames.util.io_manager.factory.IFactoryBehaviour;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOFile;
 
-public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> implements IObjectFactory<Object>
+public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 {
 	private final Map<Integer, Class> IDtoClassMapping = new HashMap<Integer, Class>();
 
 	private final Map<Class, Integer> classToIDMapping = new HashMap<Class, Integer>();
 
-	private final Map<Class, FactoryBehaviour> classFactoryBehaviours = new HashMap<Class, FactoryBehaviour>();
+	private final Map<Class, IFactoryBehaviour> classFactoryBehaviours = new HashMap<Class, IFactoryBehaviour>();
 
 	private final static int bufferSize = 8192;
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	@Override
 	public void register(Class obj, int id)
 	{
 		this.IDtoClassMapping.put(id, obj);
 		this.classToIDMapping.put(obj, id);
 	}
 
-	@Override
-	public void register(Class obj, FactoryBehaviour behaviour)
+	public void register(Class obj, IFactoryBehaviour behaviour)
 	{
 		this.classFactoryBehaviours.put(obj, behaviour);
 	}
@@ -64,7 +61,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> impl
 		final FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReading(ioFile, file, reader);
-		
+
 		ioFile.readFileData(this, reader);
 		ioFile.readFileData(this, reader);
 
@@ -108,7 +105,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> impl
 		{
 			file.getParentFile().mkdirs();
 		}
-		
+
 		if (!file.exists())
 		{
 			file.createNewFile();
@@ -205,7 +202,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> impl
 	public <I> IO read(I input, Class<? extends IO> clazz, IConstructor constructor) throws IOException
 	{
 		final IO io = (IO) this.create(clazz, constructor);
-		
+
 		//TODO missing project
 		io.read(input);
 
@@ -252,7 +249,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>> impl
 			{
 				if (factoryClazz.isInstance(instance))
 				{
-					final FactoryBehaviour behaviour = this.classFactoryBehaviours.get(factoryClazz);
+					final IFactoryBehaviour behaviour = this.classFactoryBehaviours.get(factoryClazz);
 					behaviour.postCreate(instance);
 				}
 			}

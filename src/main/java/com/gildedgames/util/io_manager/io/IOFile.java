@@ -7,12 +7,12 @@ import com.gildedgames.util.io_manager.IOManager;
 public interface IOFile<I, O>
 {
 
-	public void readFileData(IOManager manager, I reader) throws IOException;
+	void readFileData(IOManager manager, I reader) throws IOException;
 
-	public void writeFileData(IOManager manager, O writer) throws IOException;
+	void writeFileData(IOManager manager, O writer) throws IOException;
 
-	public String getFileExtension();
+	String getFileExtension();
 
-	public String getDirectoryName();
+	String getDirectoryName();
 
 }
