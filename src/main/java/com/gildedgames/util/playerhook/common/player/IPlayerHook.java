@@ -1,5 +1,6 @@
 package com.gildedgames.util.playerhook.common.player;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
 import com.gildedgames.util.iomanager.INBT;
@@ -11,15 +12,13 @@ public interface IPlayerHook extends INBT, ISyncable
 	
 	IPlayerHookPool getParentPool();
 
-	void entityInit();
+	void entityInit(EntityPlayer player);
 	
 	IPlayerProfile getProfile();
 	
 	void setProfile(IPlayerProfile profile);
 	
 	void onUpdate();
-	
-	void onJoinWorld();
 	
 	boolean onLivingAttack(DamageSource source);
 	

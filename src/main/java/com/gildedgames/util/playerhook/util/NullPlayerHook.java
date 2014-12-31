@@ -1,6 +1,7 @@
 package com.gildedgames.util.playerhook.util;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
@@ -59,7 +60,7 @@ public class NullPlayerHook implements IPlayerHook
 	public IPlayerHookPool getParentPool() { return NullPlayerHookPool.instance(); }
 
 	@Override
-	public void entityInit() {}
+	public void entityInit(EntityPlayer player) {}
 
 	@Override
 	public IPlayerProfile getProfile() { return null; }
@@ -69,9 +70,6 @@ public class NullPlayerHook implements IPlayerHook
 
 	@Override
 	public void onUpdate() {}
-
-	@Override
-	public void onJoinWorld() {}
 
 	@Override
 	public boolean onLivingAttack(DamageSource source) { return false; }

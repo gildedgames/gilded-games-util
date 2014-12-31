@@ -32,7 +32,7 @@ public class PlayerEventHandler
 			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
-				manager.get(player).onJoinWorld();
+				manager.get(player).entityInit(player);
 			}
 		}
 	}
