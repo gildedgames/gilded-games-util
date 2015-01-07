@@ -1,18 +1,18 @@
 package com.gildedgames.util.worldhook.common.test;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 import com.gildedgames.util.worldhook.common.IWorldHook;
+import com.gildedgames.util.worldhook.common.world.IWorld;
 
 public class WorldTest implements IWorldHook
 {
 	
-	protected World world;
+	protected IWorld world;
 	
 	public boolean flag;
 	
-	public WorldTest(World world)
+	public WorldTest(IWorld world)
 	{
 		this.world = world;
 	}
@@ -53,12 +53,11 @@ public class WorldTest implements IWorldHook
 		if (this.flag == false)
 		{
 			this.flag = true;
-			System.out.println("YESSSS");
 		}
 	}
 
 	@Override
-	public World getWorld()
+	public IWorld getWorld()
 	{
 		return this.world;
 	}

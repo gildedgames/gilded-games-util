@@ -14,5 +14,7 @@ public interface IWorldPool<W extends IWorldHook> extends NBT
 	void clear();
 
 	Collection<W> getWorlds();
+	
+	String getPoolName();
 
 }

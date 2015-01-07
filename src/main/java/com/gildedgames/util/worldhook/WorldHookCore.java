@@ -29,7 +29,7 @@ public class WorldHookCore implements ICore
 	
 	private WorldEventHandler worldEventHandler = new WorldEventHandler();
 	
-	private WorldPool<WorldTest> worldPool = new WorldPool<WorldTest>(new WorldTestFactory());
+	private WorldPool<WorldTest> worldPool = new WorldPool<WorldTest>(new WorldTestFactory(), "test");
 	
 	public WorldHookCore()
 	{

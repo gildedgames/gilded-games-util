@@ -10,6 +10,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import com.gildedgames.util.worldhook.common.world.IWorld;
+import com.gildedgames.util.worldhook.common.world.WorldMinecraft;
+
 public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 {
 
@@ -17,9 +20,12 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 
 	private List<W> hooks = new ArrayList<W>();
 
-	public WorldPool(IWorldFactory<W> factory)
+	private String poolName;
+	
+	public WorldPool(IWorldFactory<W> factory, String poolName)
 	{
 		this.factory = factory;
+		this.poolName = poolName;
 	}
 
 	@Override
@@ -30,8 +36,8 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 		for (final W entry : this.hooks)
 		{
 			final NBTTagCompound newTag = new NBTTagCompound();
-			final World world = entry.getWorld();
-			newTag.setInteger("dimId", world.provider.getDimensionId());
+			final IWorld world = entry.getWorld();
+			newTag.setInteger("dimId", world.getDimensionID());
 			entry.write(newTag);
 		}
 		
@@ -48,7 +54,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
 			final WorldServer server = MinecraftServer.getServer().worldServerForDimension(dimId);
-			final W hook = this.factory.create(server);
+			final W hook = this.factory.create(new WorldMinecraft(server));
 			hook.read(newTag);
 			this.hooks.add(hook);
 		}
@@ -65,7 +71,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			}
 		}
 
-		return this.createHook(world);
+		return this.createHook(new WorldMinecraft(world));
 	}
 
 	@Override
@@ -80,12 +86,18 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 		this.hooks = new ArrayList<W>();
 	}
 	
-	private W createHook(World world)
+	private W createHook(IWorld world)
 	{
 		W hook = this.factory.create(world);
 		this.hooks.add(hook);
 		
 		return hook;
+	}
+
+	@Override
+	public String getPoolName()
+	{
+		return this.poolName;
 	}
 
 

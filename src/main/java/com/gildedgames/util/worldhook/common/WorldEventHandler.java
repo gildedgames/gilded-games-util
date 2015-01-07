@@ -45,7 +45,7 @@ public class WorldEventHandler
 		{
 			try
 			{
-				location = new File(location, "DIM" + world.provider.getDimensionId() +".dat");
+				location = new File(location, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() +".dat");
 				
 				WorldHookCore.locate().getIO().readFile(location, new NBTFile(location, pool, IWorldPool.class), new NBTFactory());
 			}
@@ -76,7 +76,7 @@ public class WorldEventHandler
 			{
 				try
 				{
-					location = new File(location, "DIM" + world.provider.getDimensionId() + ".dat");
+					location = new File(location, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
 
 					WorldHookCore.locate().getIO().writeFile(location, new NBTFile(location, pool, IWorldPool.class), new NBTFactory());
 				}
