@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager;
+package com.gildedgames.util.io_manager.util.nbt;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,8 +7,9 @@ import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.io_manager.IOManager;
+import com.gildedgames.util.io_manager.factory.IReaderWriterFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.util.NBTHelper;
 
 public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
@@ -24,6 +25,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 		{
 			e.printStackTrace();
 		}
+		
 		return new NBTTagCompound();
 	}
 
@@ -36,13 +38,13 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 	@Override
 	public File getFileFromName(IOFile<NBTTagCompound, NBTTagCompound> data, String name)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void preReading(IOFile<NBTTagCompound, NBTTagCompound> data, File from, NBTTagCompound input)
 	{
+		
 	}
 
 	@Override

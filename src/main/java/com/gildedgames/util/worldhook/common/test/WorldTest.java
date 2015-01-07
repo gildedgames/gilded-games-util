@@ -10,6 +10,8 @@ public class WorldTest implements IWorldHook
 	
 	protected World world;
 	
+	public boolean flag;
+	
 	public WorldTest(World world)
 	{
 		this.world = world;
@@ -18,13 +20,13 @@ public class WorldTest implements IWorldHook
 	@Override
 	public void write(NBTTagCompound output)
 	{
-		
+		output.setBoolean("test", this.flag);
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		
+		this.flag = input.getBoolean("test");
 	}
 
 	@Override
@@ -48,7 +50,11 @@ public class WorldTest implements IWorldHook
 	@Override
 	public void onUpdate()
 	{
-		
+		if (this.flag == false)
+		{
+			this.flag = true;
+			System.out.println("YESSSS");
+		}
 	}
 
 	@Override

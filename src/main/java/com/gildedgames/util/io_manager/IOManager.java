@@ -20,6 +20,7 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.IFactoryBehaviour;
+import com.gildedgames.util.io_manager.factory.IReaderWriterFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOFile;
 
@@ -31,7 +32,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	private final Map<Class, IFactoryBehaviour> classFactoryBehaviours = new HashMap<Class, IFactoryBehaviour>();
 
-	private final static int bufferSize = 8192;
+	public final static int BUFFER_SIZE = 8192;
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
@@ -53,8 +54,13 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac, IConstructor constructor) throws IOException
 	{
+		if (!file.exists())
+		{
+			return null;
+		}
+
 		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, bufferSize);
+		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
 
 		final DataInputStream dataInput = new DataInputStream(bufferedInputStream);
 
@@ -62,9 +68,8 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReading(ioFile, file, reader);
 
-		ioFile.readFileData(this, reader);
-		ioFile.readFileData(this, reader);
-
+		ioFile.readFromFile(this, reader);
+		
 		dataInput.close();
 		return ioFile;
 	}
@@ -83,28 +88,25 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 	{
 		if (!file.exists())
 		{
-			file.createNewFile();
+			return;
 		}
 
 		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, bufferSize);
+		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
 
 		final DataInputStream dataInput = new DataInputStream(bufferedInputStream);
 
 		dataInput.readInt();
 		final READER reader = rwFac.getReader(dataInput, this);
 
-		ioFile.readFileData(this, reader);
+		ioFile.readFromFile(this, reader);
 
 		dataInput.close();
 	}
 
 	public void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
-		if (!file.getParentFile().isDirectory())
-		{
-			file.getParentFile().mkdirs();
-		}
+		file.getParentFile().mkdirs();
 
 		if (!file.exists())
 		{
@@ -112,14 +114,14 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
-		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, bufferSize);
+		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
-		dataOutput.writeInt(this.getID(ioFile));
+		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
-		ioFile.writeFileData(this, writer);
+		ioFile.writeToFile(this, writer);
 
 		rwFac.finishWriting(dataOutput, writer);
 
@@ -203,7 +205,6 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 	{
 		final IO io = (IO) this.create(clazz, constructor);
 
-		//TODO missing project
 		io.read(input);
 
 		return io;
@@ -211,7 +212,6 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public <T extends IO, O> void write(O output, T object) throws IOException
 	{
-		//TODO missing project
 		object.write(output);
 	}
 
@@ -222,7 +222,6 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public <T extends IO, O, I> Object clone(O output, I input, T object) throws IOException
 	{
-		//TODO missing project
 		final IO clone = (IO) this.create(object.getClass(), defaultConstructor);
 
 		object.write(output);

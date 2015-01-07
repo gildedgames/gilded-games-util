@@ -7,9 +7,11 @@ import com.gildedgames.util.io_manager.IOManager;
 public interface IOFile<I, O>
 {
 
-	void readFileData(IOManager manager, I reader) throws IOException;
+	void readFromFile(IOManager manager, I reader) throws IOException;
 
-	void writeFileData(IOManager manager, O writer) throws IOException;
+	void writeToFile(IOManager manager, O writer) throws IOException;
+	
+	Class getDataClass();
 
 	String getFileExtension();
 

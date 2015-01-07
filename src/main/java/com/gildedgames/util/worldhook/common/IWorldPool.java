@@ -2,12 +2,11 @@ package com.gildedgames.util.worldhook.common;
 
 import java.util.Collection;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.NBT;
 
-public interface IWorldPool<W extends IWorldHook> extends IO<NBTTagCompound, NBTTagCompound>
+public interface IWorldPool<W extends IWorldHook> extends NBT
 {
 	
 	W get(World world);

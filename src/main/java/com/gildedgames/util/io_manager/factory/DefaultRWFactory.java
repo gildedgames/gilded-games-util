@@ -1,8 +1,9 @@
-package com.gildedgames.util.io_manager;
+package com.gildedgames.util.io_manager.factory;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.Input;
 import com.gildedgames.util.io_manager.io.Output;

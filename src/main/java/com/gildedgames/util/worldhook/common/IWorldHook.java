@@ -1,11 +1,10 @@
 package com.gildedgames.util.worldhook.common;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.NBT;
 
-public interface IWorldHook extends IO<NBTTagCompound, NBTTagCompound>
+public interface IWorldHook extends NBT
 {
 	
 	void onLoad();

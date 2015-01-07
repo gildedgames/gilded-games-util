@@ -1,9 +1,10 @@
-package com.gildedgames.util.io_manager;
+package com.gildedgames.util.io_manager.factory;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
 
 public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>

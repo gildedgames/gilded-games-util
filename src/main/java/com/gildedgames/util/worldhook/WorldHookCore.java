@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.worldhook.common.IWorldPool;
 import com.gildedgames.util.worldhook.common.WorldEventHandler;
 import com.gildedgames.util.worldhook.common.WorldPool;
@@ -63,17 +64,7 @@ public class WorldHookCore implements ICore
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		for (IWorldPool worldPool : WorldHookCore.locate().getPools())
-		{
-			if (worldPool != null)
-			{
-				worldPool.clear();
-			}
-			else
-			{
-				/** TO-DO: error log here, manager should never be null **/
-			}
-		}
+		
 	}
 
 	@Override
