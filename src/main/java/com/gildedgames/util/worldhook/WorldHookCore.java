@@ -1,45 +1,39 @@
 package com.gildedgames.util.worldhook;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.worldhook.common.IWorldPool;
 import com.gildedgames.util.worldhook.common.WorldEventHandler;
-import com.gildedgames.util.worldhook.common.WorldPool;
-import com.gildedgames.util.worldhook.common.test.WorldTest;
-import com.gildedgames.util.worldhook.common.test.WorldTestFactory;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 public class WorldHookCore implements ICore
 {
-	
+
 	public static final WorldHookCore INSTANCE = new WorldHookCore();
-	
+
 	private SidedObject<WorldHookServices> serviceLocator = new SidedObject<WorldHookServices>(new WorldHookServices(), new WorldHookServices());
-	
+
 	private WorldEventHandler worldEventHandler = new WorldEventHandler();
-	
-	private WorldPool<WorldTest> worldPool = new WorldPool<WorldTest>(new WorldTestFactory(), "test");
-	
+
 	public WorldHookCore()
 	{
-		
+
 	}
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		registerWorldPool(this.worldPool);
 	}
 
 	@Override
@@ -52,44 +46,44 @@ public class WorldHookCore implements ICore
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		
+
 	}
-	
+
 	public static WorldHookServices locate()
 	{
 		return INSTANCE.serviceLocator.instance();
 	}
-	
+
 	public void registerWorldPool(IWorldPool worldPool)
 	{
 		INSTANCE.serviceLocator.client().registerWorldPool(worldPool);

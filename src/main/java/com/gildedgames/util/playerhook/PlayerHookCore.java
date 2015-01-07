@@ -1,16 +1,6 @@
 package com.gildedgames.util.playerhook;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
@@ -22,24 +12,35 @@ import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerH
 import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.playerhook.server.PlayerHookSaveHandler;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.relauncher.Side;
+
 public class PlayerHookCore implements ICore
 {
 
 	public static final PlayerHookCore INSTANCE = new PlayerHookCore();
-	
+
 	public PlayerHookSaveHandler playerHookSaveHandler = new PlayerHookSaveHandler();
-	
+
 	public PlayerEventHandler playerEventHandler = new PlayerEventHandler();
-	
+
 	private SidedObject<PlayerHookServices> serviceLocator = new SidedObject<PlayerHookServices>(new PlayerHookServices(), new PlayerHookServices());
-	
+
 	private PlayerHookCore()
 	{
-		
+
 	}
 
 	@Override
-    public void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.NETWORK.registerMessage(MessagePlayerHook.Handler.class, MessagePlayerHook.class, Side.CLIENT);
 		UtilCore.NETWORK.registerMessage(MessagePlayerHookClient.Handler.class, MessagePlayerHookClient.class, Side.SERVER);
@@ -55,29 +56,29 @@ public class PlayerHookCore implements ICore
 		MinecraftForge.EVENT_BUS.register(this.playerEventHandler);
 		FMLCommonHandler.instance().bus().register(this.playerEventHandler);
 	}
-	
+
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		
+
 	}
 
 	@Override
@@ -97,17 +98,16 @@ public class PlayerHookCore implements ICore
 			}
 		}
 	}
-	
+
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		
+
 	}
-	
+
 	public static PlayerHookServices locate()
 	{
 		return INSTANCE.serviceLocator.instance();
 	}
-	
-}
 
+}

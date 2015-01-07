@@ -1,29 +1,29 @@
 package com.gildedgames.util.core;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 
 public class NetworkWrapper
 {
 
 	private SimpleNetworkWrapper internal;
-	
+
 	private int discriminator;
-	
+
 	public void init()
 	{
 		this.internal = NetworkRegistry.INSTANCE.newSimpleChannel(UtilCore.MOD_ID);
 	}
-	
+
 	public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side)
-    {
+	{
 		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, side);
 	}
-	
+
 	public void sendToAll(IMessage message)
 	{
 		this.internal.sendToAll(message);
@@ -48,5 +48,5 @@ public class NetworkWrapper
 	{
 		this.internal.sendToServer(message);
 	}
-	
+
 }

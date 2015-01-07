@@ -6,19 +6,20 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+
 public class MessagePlayerHookRequest implements IMessage
 {
 
 	private UUID uuid;
-	
+
 	private IPlayerHookPool pool;
 
 	public MessagePlayerHookRequest()
@@ -43,29 +44,29 @@ public class MessagePlayerHookRequest implements IMessage
 	public void toBytes(ByteBuf buf)
 	{
 		int poolID = PlayerHookCore.locate().getPoolID(this.pool);
-		
+
 		buf.writeInt(poolID);
-		
+
 		buf.writeLong(this.uuid.getMostSignificantBits());
 		buf.writeLong(this.uuid.getLeastSignificantBits());
 	}
 
 	public static class Handler implements IMessageHandler<MessagePlayerHookRequest, IMessage>
 	{
-	        
-        @Override
-        public IMessage onMessage(MessagePlayerHookRequest message, MessageContext ctx)
-        {
-        	if (ctx.side.isServer())
-        	{
-        		EntityPlayer player = ctx.getServerHandler().playerEntity;
-        		
-        		UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
-        	}
 
-        	return null;
-        }
-        
+		@Override
+		public IMessage onMessage(MessagePlayerHookRequest message, MessageContext ctx)
+		{
+			if (ctx.side.isServer())
+			{
+				EntityPlayer player = ctx.getServerHandler().playerEntity;
+
+				UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
+			}
+
+			return null;
+		}
+
 	}
 
 }

@@ -5,11 +5,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
@@ -17,9 +12,15 @@ import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerH
 import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookClient;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
+
 public class PlayerEventHandler
 {
-	
+
 	private int tickCounter;
 
 	@SubscribeEvent
@@ -28,7 +29,7 @@ public class PlayerEventHandler
 		if (event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
-			
+
 			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
@@ -62,14 +63,14 @@ public class PlayerEventHandler
 			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 			{
 				IPlayerHook playerHook = manager.get(player);
-				
+
 				if (playerHook.getProfile().getEntity() == null)
 				{
 					playerHook.getProfile().setEntity(player);
 				}
 
 				playerHook.onUpdate();
-				
+
 				if (event.entity.worldObj.isRemote)
 				{
 					this.refreshServer(playerHook);
@@ -81,7 +82,7 @@ public class PlayerEventHandler
 			}
 		}
 	}
-	
+
 	public void refreshServer(IPlayerHook playerHook)
 	{
 		if (playerHook.isDirty())
@@ -90,7 +91,7 @@ public class PlayerEventHandler
 			playerHook.markClean();
 		}
 	}
-	
+
 	public void refreshClients(IPlayerHook playerHook)
 	{
 		if (playerHook.isDirty())
@@ -112,20 +113,20 @@ public class PlayerEventHandler
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
 		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-			
+
 			playerHook.getProfile().setLoggedIn(true);
-			
+
 			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
@@ -139,27 +140,27 @@ public class PlayerEventHandler
 			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onChangedDimension(PlayerChangedDimensionEvent event)
 	{
 		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-		
+
 			playerHook.onChangedDimension();
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onRespawn(PlayerRespawnEvent event)
 	{
 		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-		
+
 			playerHook.onRespawn();
 		}
 	}
-	
+
 }

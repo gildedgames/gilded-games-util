@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.common.player.PlayerProfile;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {
@@ -23,7 +24,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
 
 	private String name;
-	
+
 	private Class<T> type;
 
 	public PlayerHookPool(String name, Class<T> playerHookType)
@@ -31,7 +32,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 		this.name = name;
 		this.type = playerHookType;
 	}
-	
+
 	@Override
 	public void clear()
 	{
@@ -43,12 +44,12 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	public T get(EntityPlayer player)
 	{
 		boolean isRemote = player.worldObj.isRemote;
-		
+
 		Side side = isRemote ? Side.CLIENT : Side.SERVER;
-		
+
 		return this.get(player.getUniqueID());
 	}
-	
+
 	@Override
 	public Class<T> getPlayerHookType()
 	{
@@ -91,7 +92,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 
 				PlayerProfile profile = new PlayerProfile();
 				profile.setUUID(uuid);
-				
+
 				player.setProfile(profile);
 
 				this.add(player);
@@ -105,12 +106,12 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (player.getProfile() == null)
 		{
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);
-			
+
 			player.setProfile(profile);
 		}
 
@@ -137,5 +138,5 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	{
 		return true;
 	}
-	
+
 }
