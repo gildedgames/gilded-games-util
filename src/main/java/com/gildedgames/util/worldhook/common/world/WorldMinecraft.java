@@ -10,9 +10,9 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 public class WorldMinecraft implements IWorld
 {
-	
+
 	private World world;
-	
+
 	public WorldMinecraft(World world)
 	{
 		this.world = world;
@@ -100,6 +100,16 @@ public class WorldMinecraft implements IWorld
 	public int getDimensionID()
 	{
 		return this.world.provider.getDimensionId();
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (super.equals(obj))
+		{
+			return true;
+		}
+		return this.world.equals(obj);
 	}
 
 }

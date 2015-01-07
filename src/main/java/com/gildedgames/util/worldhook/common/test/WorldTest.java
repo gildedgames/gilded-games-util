@@ -7,11 +7,11 @@ import com.gildedgames.util.worldhook.common.world.IWorld;
 
 public class WorldTest implements IWorldHook
 {
-	
+
 	protected IWorld world;
-	
+
 	public boolean flag;
-	
+
 	public WorldTest(IWorld world)
 	{
 		this.world = world;
@@ -32,25 +32,25 @@ public class WorldTest implements IWorldHook
 	@Override
 	public void onLoad()
 	{
-		
+
 	}
 
 	@Override
 	public void onUnload()
 	{
-		
+
 	}
 
 	@Override
 	public void onSave()
 	{
-		
+
 	}
 
 	@Override
 	public void onUpdate()
 	{
-		if (this.flag == false)
+		if (!this.flag)
 		{
 			this.flag = true;
 		}
