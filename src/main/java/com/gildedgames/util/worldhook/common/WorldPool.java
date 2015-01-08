@@ -21,7 +21,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	private List<W> hooks = new ArrayList<W>();
 
 	private String poolName;
-	
+
 	public WorldPool(IWorldFactory<W> factory, String poolName)
 	{
 		this.factory = factory;
@@ -32,7 +32,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	public void write(NBTTagCompound output)
 	{
 		final NBTTagList tagList = new NBTTagList();
-		
+
 		for (final W entry : this.hooks)
 		{
 			final NBTTagCompound newTag = new NBTTagCompound();
@@ -40,7 +40,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			newTag.setInteger("dimId", world.getDimensionID());
 			entry.write(newTag);
 		}
-		
+
 		output.setTag("worlds", tagList);
 	}
 
@@ -48,7 +48,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	public void read(NBTTagCompound input)
 	{
 		final NBTTagList tagList = input.getTagList("worlds", 9);
-		
+
 		for (int i = 0; i < tagList.tagCount(); i++)
 		{
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
@@ -85,12 +85,12 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	{
 		this.hooks = new ArrayList<W>();
 	}
-	
+
 	private W createHook(IWorld world)
 	{
 		W hook = this.factory.create(world);
 		this.hooks.add(hook);
-		
+
 		return hook;
 	}
 
@@ -99,6 +99,5 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	{
 		return this.poolName;
 	}
-
 
 }

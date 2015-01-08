@@ -1,5 +1,7 @@
 package com.gildedgames.util.worldhook.common.world;
 
+import java.util.Random;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -110,6 +112,18 @@ public class WorldMinecraft implements IWorld
 			return true;
 		}
 		return this.world.equals(obj);
+	}
+
+	@Override
+	public Random getRandom()
+	{
+		return this.world.rand;
+	}
+
+	@Override
+	public void setTileEntity(BlockPos pos, TileEntity tileEntity)
+	{
+		this.world.setTileEntity(pos, tileEntity);
 	}
 
 }
