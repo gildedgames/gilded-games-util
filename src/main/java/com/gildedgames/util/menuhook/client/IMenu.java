@@ -7,6 +7,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public interface IMenu
 {
+	
+	/**
+	 * The ID that represents this IMenu. Used to save and retrieve which menu the player last used.
+	 * "minecraft" is reserved for the default Minecraft main menu.
+	 * @return
+	 */
+	String getID();
 
 	GuiScreen getNewInstance();
 	

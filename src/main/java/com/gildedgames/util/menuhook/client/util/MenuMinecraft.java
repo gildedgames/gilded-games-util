@@ -10,6 +10,12 @@ public class MenuMinecraft implements IMenu
 {
 
 	@Override
+	public String getID()
+	{
+		return "minecraft";
+	}
+	
+	@Override
 	public GuiScreen getNewInstance()
 	{
 		return new GuiMainMenu();

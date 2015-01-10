@@ -17,33 +17,11 @@ public class WorldHookServices
 
 	private List<IWorldPool> worldPools;
 
-	private IOManager<NBTTagCompound, NBTTagCompound, IOFile<NBTTagCompound, NBTTagCompound>> io;
-
 	public WorldHookServices()
 	{
 
 	}
-
-	private void registerIOClasses()
-	{
-		this.io.register(NBTFile.class, 0);
-		this.io.register(IWorldPool.class, 1);
-		this.io.register(WorldPool.class, 2);
-		this.io.register(WorldTest.class, 3);
-	}
-
-	public IOManager<NBTTagCompound, NBTTagCompound, IOFile<NBTTagCompound, NBTTagCompound>> getIO()
-	{
-		if (this.io == null)
-		{
-			this.io = new IOManager<NBTTagCompound, NBTTagCompound, IOFile<NBTTagCompound, NBTTagCompound>>();
-
-			this.registerIOClasses();
-		}
-
-		return this.io;
-	}
-
+	
 	public List<IWorldPool> getPools()
 	{
 		if (this.worldPools == null)

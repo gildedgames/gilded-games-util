@@ -1,11 +1,14 @@
 package com.gildedgames.util.menuhook.client;
 
+import java.io.File;
 import java.io.IOException;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -15,6 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
+import com.gildedgames.util.io_manager.util.nbt.NBTFile;
 import com.gildedgames.util.menuhook.MenuCore;
 
 public class MenuClientEvents
@@ -29,17 +36,103 @@ public class MenuClientEvents
 	@SideOnly(Side.CLIENT)
 	private Minecraft mc = Minecraft.getMinecraft();
 	
+	private File configSaveLocation;
+	
+	public MenuClientEvents()
+	{
+		this.configSaveLocation = new File(Minecraft.getMinecraft().mcDataDir, "mod-config\\menu.dat");
+	}
+	
+	public static class MenuConfig implements NBT
+	{
+		
+		private String menuID;
+		
+		private MenuConfig()
+		{
+			
+		}
+
+		@Override
+		public void write(NBTTagCompound output)
+		{
+			output.setString("menuID", this.menuID);
+		}
+
+		@Override
+		public void read(NBTTagCompound input)
+		{
+			this.menuID = input.getString("menuID");
+		}
+		
+	}
+	
 	private void openMenu(IMenu menu)
 	{
+		this.openMenu(menu, true);
+	}
+
+	private void openMenu(IMenu menu, boolean shouldSaveToConfig)
+	{
+		if (menu == null)
+		{
+			return;
+		}
+		
 		MenuCore.locate().setCurrentMenu(menu);
+		
 		this.mc.displayGuiScreen(menu.getNewInstance());
+
 		menu.onOpen();
+
+		if (!shouldSaveToConfig)
+		{
+			return;
+		}
+		
+		try
+		{
+			MenuConfig config = new MenuConfig();
+			
+			config.menuID = menu.getID();
+			
+			UtilCore.locate().getIO().writeFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event)
 	{
 		GuiScreen gui = event.gui;
+		
+		if (gui instanceof GuiMainMenu && MenuCore.locate().getCurrentMenu() == null)
+		{
+			event.setCanceled(true);
+			
+			if (this.configSaveLocation.exists())
+			{
+				try
+				{
+					MenuConfig config = new MenuConfig();
+
+					UtilCore.locate().getIO().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+
+					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				this.openMenu(ClientProxy.MINECRAFT_MENU);
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -94,6 +187,21 @@ public class MenuClientEvents
 							}
 						}
 					}
+				}
+			}
+			else if (this.configSaveLocation.exists())
+			{
+				try
+				{
+					MenuConfig config = new MenuConfig();
+
+					UtilCore.locate().getIO().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+				
+					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
 				}
 			}
 			else

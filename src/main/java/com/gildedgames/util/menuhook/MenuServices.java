@@ -17,6 +17,19 @@ public class MenuServices
 		
 	}
 	
+	public IMenu getMenuFromID(String id)
+	{
+		for (IMenu menu : this.menus)
+		{
+			if (menu != null && menu.getID().equals(id))
+			{
+				return menu;
+			}
+		}
+		
+		return null;
+	}
+	
 	public IMenu getNextMenu()
 	{
 		int index = this.menus.indexOf(this.getCurrentMenu()) + 1;
