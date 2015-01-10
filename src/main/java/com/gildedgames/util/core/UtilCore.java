@@ -17,11 +17,12 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.menuhook.MenuCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.PlayerHookServices;
 import com.gildedgames.util.worldhook.WorldHookCore;
 
-@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION)
+@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies="before:*")
 public class UtilCore extends PlayerHookServices implements ICore
 {
 
@@ -47,6 +48,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 	{
 		this.cores.add(PlayerHookCore.INSTANCE);
 		this.cores.add(WorldHookCore.INSTANCE);
+		this.cores.add(MenuCore.INSTANCE);
 	}
 	
 	@Override
@@ -54,13 +56,13 @@ public class UtilCore extends PlayerHookServices implements ICore
     public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.NETWORK.init();
-		
-		this.proxy.init();
 
 		for (ICore core : this.cores)
 		{
 			core.preInit(event);
 		}
+		
+		this.proxy.preInit(event);
 	}
 	
 	@Override
@@ -71,6 +73,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.init(event);
 		}
+		
+		this.proxy.init(event);
 	}
 	
 	@Override
@@ -81,6 +85,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.postInit(event);
 		}
+		
+		this.proxy.postInit(event);
 	}
 	
 	@Override
@@ -91,6 +97,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverAboutToStart(event);
 		}
+		
+		this.proxy.serverAboutToStart(event);
 	}
 	
 	@Override
@@ -101,6 +109,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarting(event);
 		}
+		
+		this.proxy.serverStarting(event);
 	}
 	
 	@Override
@@ -111,6 +121,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarted(event);
 		}
+		
+		this.proxy.serverStarted(event);
 	}
 	
 	@Override
@@ -121,6 +133,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopping(event);
 		}
+		
+		this.proxy.serverStopping(event);
 	}
 	
 	@Override
@@ -131,6 +145,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopped(event);
 		}
+		
+		this.proxy.serverStopped(event);
 	}
 	
 	public static UtilServices locate()
