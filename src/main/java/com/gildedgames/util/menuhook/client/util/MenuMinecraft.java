@@ -10,18 +10,6 @@ public class MenuMinecraft implements IMenu
 {
 
 	@Override
-	public String getUnlocalizedName()
-	{
-		return "menu.minecraft.name";
-	}
-	
-	@Override
-	public String getUnlocalizedDescription()
-	{
-		return "menu.minecraft.description";
-	}
-
-	@Override
 	public GuiScreen getNewInstance()
 	{
 		return new GuiMainMenu();

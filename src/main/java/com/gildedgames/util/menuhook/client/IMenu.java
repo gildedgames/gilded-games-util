@@ -7,11 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public interface IMenu
 {
-	
-	String getUnlocalizedName();
-	
-	String getUnlocalizedDescription();
-	
+
 	GuiScreen getNewInstance();
 	
 	Class<? extends GuiScreen> getMenuClass();
