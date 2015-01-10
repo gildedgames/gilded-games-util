@@ -1,10 +1,10 @@
 package com.gildedgames.util.worldhook.common;
 
-import net.minecraft.world.World;
+import com.gildedgames.util.worldhook.common.world.IWorld;
 
 public interface IWorldFactory<W extends IWorldHook>
 {
 
-	public W create(World w);
+	public W create(IWorld w);
 
 }

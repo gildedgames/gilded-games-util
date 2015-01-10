@@ -1,4 +1,4 @@
-Universe API
+Player Hook Util
 =======
 
 A module for Minecraft mod development. Incorporates an automated system for hooking into EntityPlayer functionality and saving new player-specific data.

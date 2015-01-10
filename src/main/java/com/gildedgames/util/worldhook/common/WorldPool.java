@@ -10,6 +10,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import com.gildedgames.util.worldhook.common.world.IWorld;
+import com.gildedgames.util.worldhook.common.world.WorldMinecraft;
+
 public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 {
 
@@ -51,7 +54,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
 			final WorldServer server = MinecraftServer.getServer().worldServerForDimension(dimId);
-			final W hook = this.factory.create(server);
+			final W hook = this.factory.create(new WorldMinecraft(server));
 			hook.read(newTag);
 			this.hooks.add(hook);
 		}
@@ -68,7 +71,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			}
 		}
 
-		return this.createHook(world);
+		return this.createHook(new WorldMinecraft(world));
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 		this.hooks = new ArrayList<W>();
 	}
 
-	private W createHook(World world)
+	private W createHook(IWorld world)
 	{
 		W hook = this.factory.create(world);
 		this.hooks.add(hook);

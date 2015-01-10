@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTFile;
 import com.gildedgames.util.worldhook.WorldHookCore;
@@ -57,12 +58,13 @@ public class WorldEventHandler
 			{
 				File finalLocation = new File(saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.dimensionId + ".dat");
 
-				WorldHookCore.locate().getIO().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
+				UtilCore.locate().getIO().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
 			}
 			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
+			
 			worldHook.onLoad();
 		}
 	}
@@ -81,7 +83,7 @@ public class WorldEventHandler
 				{
 					final File location = new File(saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.dimensionId + ".dat");
 
-					WorldHookCore.locate().getIO().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
+					UtilCore.locate().getIO().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
 				}
 				catch (IOException e)
 				{
