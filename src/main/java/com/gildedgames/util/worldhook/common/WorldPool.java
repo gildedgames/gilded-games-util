@@ -65,13 +65,27 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	{
 		for (final W w : this.hooks)
 		{
-			if (w.getWorld().equals(world))
+			if (w.getWorld().hasSameWorld(world))
 			{
 				return w;
 			}
 		}
 
 		return this.createHook(new WorldMinecraft(world));
+	}
+
+	@Override
+	public W get(IWorld world)
+	{
+		for (final W w : this.hooks)
+		{
+			if (w.getWorld().equals(world))
+			{
+				return w;
+			}
+		}
+
+		return this.createHook(world);
 	}
 
 	@Override

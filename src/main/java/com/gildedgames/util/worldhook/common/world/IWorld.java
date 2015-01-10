@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public interface IWorld extends IBlockAccess
 {
@@ -22,6 +23,8 @@ public interface IWorld extends IBlockAccess
 
 	Random getRandom();
 
-	public void setTileEntity(BlockPos pos, TileEntity tileEntity);
+	void setTileEntity(BlockPos pos, TileEntity tileEntity);
+
+	boolean hasSameWorld(World world);
 
 }

@@ -126,4 +126,10 @@ public class WorldMinecraft implements IWorld
 		this.world.setTileEntity(pos, tileEntity);
 	}
 
+	@Override
+	public boolean hasSameWorld(World world)
+	{
+		return this.world.equals(world);
+	}
+
 }
