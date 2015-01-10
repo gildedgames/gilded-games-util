@@ -1,12 +1,11 @@
 package com.gildedgames.util.io_manager.io;
 
-import java.io.IOException;
 
 public interface IO<I, O>
 {
 
-	public void write(I output);
+	public void write(O output);
 
-	public void read(O input);
+	public void read(I input);
 
 }

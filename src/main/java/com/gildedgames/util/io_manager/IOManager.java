@@ -152,7 +152,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReadingMetadata(ioFile, file, reader);
 
-		ioFile.readFromFile(this, reader);
+		ioFile.read(reader);
 		ioFile.setFileLocation(file);
 	}
 
@@ -175,28 +175,29 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
-		Optional<FILE> metadata = (Optional<FILE>) ioFile.getMetadata();//TODO: Check it this cast is always legit.
+		Optional<IOFileMetadata<READER, WRITER>> metadata = ioFile.getMetadata();
 		while (metadata != null && metadata.isPresent())
 		{
-			FILE metadataFile = metadata.get();
+			IOFileMetadata<READER, WRITER> metadataFile = metadata.get();
+
 			dataOutput.writeBoolean(true);
-			dataOutput.writeInt(this.getID(metadataFile.getDataClass()));
-			this.writeNextData(metadataFile, dataOutput, rwFac);
+			dataOutput.writeInt(this.getID(metadataFile.getClass()));
+
+			final WRITER writer = rwFac.getWriter(dataOutput, this);
+			metadataFile.write(writer);
+			rwFac.finishWriting(dataOutput, writer);
+
+			metadata = metadataFile.getMetadata();
 		}
 		dataOutput.writeBoolean(false);//Not metadata
 		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
-		this.writeNextData(ioFile, dataOutput, rwFac);
-
-		dataOutput.close();
-	}
-
-	private void writeNextData(FILE file, DataOutputStream dataOutput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
-	{
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
-		file.writeToFile(this, writer);
+		ioFile.writeToFile(this, writer);
 
 		rwFac.finishWriting(dataOutput, writer);
+
+		dataOutput.close();
 	}
 
 	public boolean checkFileExists(FILE ioFile, File baseDirectory, String fileName)
