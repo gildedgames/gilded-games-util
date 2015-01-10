@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -23,6 +24,8 @@ import com.gildedgames.util.io_manager.factory.IFactoryBehaviour;
 import com.gildedgames.util.io_manager.factory.IReaderWriterFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.google.common.base.Optional;
 
 public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 {
@@ -54,22 +57,16 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac, IConstructor constructor) throws IOException
 	{
-		if (!file.exists())
+		final DataInputStream dataInput = this.createDataInput(file);
+		if (dataInput == null)
 		{
 			return null;
 		}
 
-		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
-
-		final DataInputStream dataInput = new DataInputStream(bufferedInputStream);
-
-		final FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
-		final READER reader = rwFac.getReader(dataInput, this);
-		rwFac.preReading(ioFile, file, reader);
-
-		ioFile.readFromFile(this, reader);
-		
+		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
+		FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
+		ioFile.setMetadata(metadata);
+		readData(file, ioFile, dataInput, rwFac);//Read final data
 		dataInput.close();
 		return ioFile;
 	}
@@ -79,29 +76,89 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		this.readFile(rwFac.getFileFromName(ioFile, fileName), ioFile, rwFac);
 	}
 
-	public void writeFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public void readFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
-		this.writeFile(rwFac.getFileFromName(ioFile, fileName), ioFile, rwFac);
+		final DataInputStream dataInput = this.createDataInput(file);
+		if (dataInput == null)
+		{
+			return;
+		}
+
+		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
+		dataInput.readInt();//We're reading it into an already existing FILE object, meaning we don't need to construct it and can disregard the written int
+		this.readData(file, ioFile, dataInput, rwFac);
+
+		dataInput.close();
 	}
 
-	public void readFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	/**
+	 * Reads just the metadata from a file.
+	 */
+	public IOFileMetadata<READER, WRITER> readFileMetadata(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
+		DataInputStream dataInput = this.createDataInput(file);
+		if (dataInput == null)
+		{
+			return null;
+		}
+
+		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
+		dataInput.close();
+		return metadata;
+	}
+
+	private DataInputStream createDataInput(File file) throws FileNotFoundException
 	{
 		if (!file.exists())
 		{
-			return;
+			return null;
 		}
 
 		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
 		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
 
-		final DataInputStream dataInput = new DataInputStream(bufferedInputStream);
+		return new DataInputStream(bufferedInputStream);
+	}
 
-		dataInput.readInt();
+	private IOFileMetadata<READER, WRITER> readMetadata(File file, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
+		boolean isMetadata = dataInput.readBoolean();
+		IOFileMetadata<READER, WRITER> readMetadata = null;
+		while (isMetadata)//Keep reading metadata
+		{
+			int classID = dataInput.readInt();
+			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(classID, defaultConstructor);
+			if (readMetadata != null)
+			{
+				ioFile.setMetadata(readMetadata);
+			}
+			this.readMetadata(file, ioFile, dataInput, rwFac);
+			readMetadata = ioFile;
+			isMetadata = dataInput.readBoolean();
+		}
+		return readMetadata;
+	}
+
+	private void readData(File file, FILE ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
 		final READER reader = rwFac.getReader(dataInput, this);
+		rwFac.preReading(ioFile, file, reader);
 
 		ioFile.readFromFile(this, reader);
+	}
 
-		dataInput.close();
+	private void readMetadata(File file, IOFileMetadata<READER, WRITER> ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
+		final READER reader = rwFac.getReader(dataInput, this);
+		rwFac.preReadingMetadata(ioFile, file, reader);
+
+		ioFile.readFromFile(this, reader);
+		ioFile.setFileLocation(file);
+	}
+
+	public void writeFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
+		this.writeFile(rwFac.getFileFromName(ioFile, fileName), ioFile, rwFac);
 	}
 
 	public void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
@@ -118,14 +175,28 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
+		Optional<FILE> metadata = (Optional<FILE>) ioFile.getMetadata();//TODO: Check it this cast is always legit.
+		while (metadata != null && metadata.isPresent())
+		{
+			FILE metadataFile = metadata.get();
+			dataOutput.writeBoolean(true);
+			dataOutput.writeInt(this.getID(metadataFile.getDataClass()));
+			this.writeNextData(metadataFile, dataOutput, rwFac);
+		}
+		dataOutput.writeBoolean(false);//Not metadata
 		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
-		final WRITER writer = rwFac.getWriter(dataOutput, this);
-
-		ioFile.writeToFile(this, writer);
-
-		rwFac.finishWriting(dataOutput, writer);
+		this.writeNextData(ioFile, dataOutput, rwFac);
 
 		dataOutput.close();
+	}
+
+	private void writeNextData(FILE file, DataOutputStream dataOutput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	{
+		final WRITER writer = rwFac.getWriter(dataOutput, this);
+
+		file.writeToFile(this, writer);
+
+		rwFac.finishWriting(dataOutput, writer);
 	}
 
 	public boolean checkFileExists(FILE ioFile, File baseDirectory, String fileName)

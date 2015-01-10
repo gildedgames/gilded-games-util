@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.factory.IReaderWriterFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.io.IOFileMetadata;
 
 public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
@@ -25,7 +26,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 		{
 			e.printStackTrace();
 		}
-		
+
 		return new NBTTagCompound();
 	}
 
@@ -44,7 +45,13 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 	@Override
 	public void preReading(IOFile<NBTTagCompound, NBTTagCompound> data, File from, NBTTagCompound input)
 	{
-		
+
+	}
+
+	@Override
+	public void preReadingMetadata(IOFileMetadata<NBTTagCompound, NBTTagCompound> metadata, File from, NBTTagCompound reader)
+	{
+
 	}
 
 	@Override

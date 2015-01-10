@@ -6,6 +6,7 @@ import java.io.File;
 
 import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.io.IOFileMetadata;
 
 public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>
 {
@@ -17,6 +18,8 @@ public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>
 	File getFileFromName(FILE data, String name);
 
 	void preReading(FILE data, File from, I reader);
+
+	void preReadingMetadata(IOFileMetadata<I, O> metadata, File from, I reader);
 
 	void finishWriting(DataOutputStream output, O writer);
 

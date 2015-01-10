@@ -1,10 +1,12 @@
 package com.gildedgames.util.io_manager.factory;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 
 import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.io.Input;
 import com.gildedgames.util.io_manager.io.Output;
 
@@ -37,12 +39,17 @@ public class DefaultRWFactory<FILE extends IOFile<Input, Output>> implements IRe
 	}
 
 	@Override
-	public void preReading(FILE data, File from, Input input) 
+	public void preReading(FILE data, File from, Input input)
 	{
 	}
 
 	@Override
-	public void finishWriting(DataOutputStream input, Output output) 
+	public void preReadingMetadata(IOFileMetadata<Input, Output> metadata, File from, Input reader)
+	{
+	}
+
+	@Override
+	public void finishWriting(DataOutputStream input, Output output)
 	{
 	}
 
