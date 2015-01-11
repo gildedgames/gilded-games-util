@@ -26,20 +26,20 @@ public class PlayerHookCore implements ICore
 {
 
 	public static final PlayerHookCore INSTANCE = new PlayerHookCore();
-	
+
 	public PlayerHookSaveHandler playerHookSaveHandler = new PlayerHookSaveHandler();
-	
+
 	public PlayerEventHandler playerEventHandler = new PlayerEventHandler();
-	
+
 	private SidedObject<PlayerHookServices> serviceLocator = new SidedObject<PlayerHookServices>(new PlayerHookServices(), new PlayerHookServices());
-	
+
 	private PlayerHookCore()
 	{
-		
+
 	}
 
 	@Override
-    public void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.NETWORK.registerMessage(MessagePlayerHook.Handler.class, MessagePlayerHook.class, Side.CLIENT);
 		UtilCore.NETWORK.registerMessage(MessagePlayerHookClient.Handler.class, MessagePlayerHookClient.class, Side.SERVER);
@@ -55,29 +55,29 @@ public class PlayerHookCore implements ICore
 		MinecraftForge.EVENT_BUS.register(this.playerEventHandler);
 		FMLCommonHandler.instance().bus().register(this.playerEventHandler);
 	}
-	
+
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		
+
 	}
 
 	@Override
@@ -97,17 +97,22 @@ public class PlayerHookCore implements ICore
 			}
 		}
 	}
-	
+
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		
+
 	}
-	
+
 	public static PlayerHookServices locate()
 	{
 		return INSTANCE.serviceLocator.instance();
 	}
-	
-}
 
+	public void registerPlayerPool(IPlayerHookPool client, IPlayerHookPool server)
+	{
+		INSTANCE.serviceLocator.client().registerPlayerHookPool(client);
+		INSTANCE.serviceLocator.server().registerPlayerHookPool(server);
+	}
+
+}
