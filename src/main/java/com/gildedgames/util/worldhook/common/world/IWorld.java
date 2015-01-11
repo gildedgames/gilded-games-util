@@ -6,8 +6,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
+/**
+ * Wrapper around an implementation of Minecraft worlds.
+ * Recommended access is through WorldHookCore.getWrapper().
+ * @author Emile
+ *
+ */
 public interface IWorld extends IBlockAccess
 {
 
@@ -25,6 +30,8 @@ public interface IWorld extends IBlockAccess
 
 	void setTileEntity(BlockPos pos, TileEntity tileEntity);
 
-	boolean hasSameWorld(World world);
+	boolean isWrapperFor(int dimId, boolean isRemote);
+
+	boolean isRemote();
 
 }

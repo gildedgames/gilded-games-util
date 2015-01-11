@@ -6,12 +6,10 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
+import com.gildedgames.util.worldhook.WorldHookCore;
 import com.gildedgames.util.worldhook.common.world.IWorld;
-import com.gildedgames.util.worldhook.common.world.WorldMinecraft;
 
 public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 {
@@ -53,8 +51,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 		{
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
-			final WorldServer server = MinecraftServer.getServer().worldServerForDimension(dimId);
-			final W hook = this.factory.create(new WorldMinecraft(server));
+			final W hook = this.factory.create(WorldHookCore.getWrapper(dimId));
 			hook.read(newTag);
 			this.hooks.add(hook);
 		}
@@ -65,13 +62,13 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 	{
 		for (final W w : this.hooks)
 		{
-			if (w.getWorld().hasSameWorld(world))
+			if (w.getWorld().isWrapperFor(world.provider.getDimensionId(), world.isRemote))
 			{
 				return w;
 			}
 		}
 
-		return this.createHook(new WorldMinecraft(world));
+		return this.createHook(WorldHookCore.getWrapper(world));
 	}
 
 	@Override

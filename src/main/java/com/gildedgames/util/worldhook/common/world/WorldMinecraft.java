@@ -127,9 +127,15 @@ public class WorldMinecraft implements IWorld
 	}
 
 	@Override
-	public boolean hasSameWorld(World world)
+	public boolean isWrapperFor(int dimId, boolean isRemote)
 	{
-		return this.world.equals(world);
+		return this.world.provider.getDimensionId() == dimId && this.world.isRemote == isRemote;
+	}
+
+	@Override
+	public boolean isRemote()
+	{
+		return this.world.isRemote;
 	}
 
 }
