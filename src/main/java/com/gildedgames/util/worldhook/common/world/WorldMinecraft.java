@@ -27,12 +27,6 @@ public class WorldMinecraft implements IWorld
 	}
 
 	@Override
-	public int getCombinedLight(BlockPos pos, int lightValue)
-	{
-		return this.world.getCombinedLight(pos, lightValue);
-	}
-
-	@Override
 	public IBlockState getBlockState(BlockPos pos)
 	{
 		return this.world.getBlockState(pos);
@@ -42,30 +36,6 @@ public class WorldMinecraft implements IWorld
 	public boolean isAirBlock(BlockPos pos)
 	{
 		return this.world.isAirBlock(pos);
-	}
-
-	@Override
-	public BiomeGenBase getBiomeGenForCoords(BlockPos pos)
-	{
-		return this.world.getBiomeGenForCoords(pos);
-	}
-
-	@Override
-	public boolean extendedLevelsInChunkCache()
-	{
-		return this.world.extendedLevelsInChunkCache();
-	}
-
-	@Override
-	public int getStrongPower(BlockPos pos, EnumFacing direction)
-	{
-		return this.world.getStrongPower(pos, direction);
-	}
-
-	@Override
-	public WorldType getWorldType()
-	{
-		return this.world.getWorldType();
 	}
 
 	@Override

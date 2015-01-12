@@ -8,19 +8,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.worldhook.WorldHookCore;
+import com.gildedgames.util.worldhook.WorldCore;
 import com.gildedgames.util.worldhook.common.world.IWorld;
 
-public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
+public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 {
 
-	private final IWorldFactory<W> factory;
+	private final IWorldHookFactory<W> factory;
 
 	private List<W> hooks = new ArrayList<W>();
 
 	private String poolName;
 
-	public WorldPool(IWorldFactory<W> factory, String poolName)
+	public WorldHookPool(IWorldHookFactory<W> factory, String poolName)
 	{
 		this.factory = factory;
 		this.poolName = poolName;
@@ -51,7 +51,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 		{
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
-			final W hook = this.factory.create(WorldHookCore.getWrapper(dimId));
+			final W hook = this.factory.create(WorldCore.get(dimId));
 			hook.read(newTag);
 			this.hooks.add(hook);
 		}
@@ -68,7 +68,7 @@ public class WorldPool<W extends IWorldHook> implements IWorldPool<W>
 			}
 		}
 
-		return this.createHook(WorldHookCore.getWrapper(world));
+		return this.createHook(WorldCore.get(world));
 	}
 
 	@Override

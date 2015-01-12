@@ -3,38 +3,38 @@ package com.gildedgames.util.worldhook;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.worldhook.common.IWorldPool;
+import com.gildedgames.util.worldhook.common.IWorldHookPool;
 import com.gildedgames.util.worldhook.common.world.IWorld;
-import com.gildedgames.util.worldhook.common.world.IWorldWrapperFactory;
+import com.gildedgames.util.worldhook.common.world.IWorldFactory;
 import com.gildedgames.util.worldhook.common.world.WorldMinecraftFactory;
 
-public class WorldHookServices
+public class WorldServices
 {
 
-	private List<IWorldPool> worldPools;
+	private List<IWorldHookPool> worldPools;
 
 	private List<IWorld> worldWrappers = new ArrayList<IWorld>();
 
-	private final IWorldWrapperFactory wrapperFactory = new WorldMinecraftFactory();//Change to use different IWorld wrappers
+	private final IWorldFactory wrapperFactory = new WorldMinecraftFactory();//Change to use different IWorld wrappers
 
 	private final boolean isRemote;
 
-	public WorldHookServices(boolean isRemote)
+	public WorldServices(boolean isRemote)
 	{
 		this.isRemote = isRemote;
 	}
 
-	public List<IWorldPool> getPools()
+	public List<IWorldHookPool> getPools()
 	{
 		if (this.worldPools == null)
 		{
-			this.worldPools = new ArrayList<IWorldPool>();
+			this.worldPools = new ArrayList<IWorldHookPool>();
 		}
 
 		return this.worldPools;
 	}
 
-	public void registerWorldPool(IWorldPool worldPool)
+	public void registerWorldPool(IWorldHookPool worldPool)
 	{
 		this.getPools().add(worldPool);
 	}

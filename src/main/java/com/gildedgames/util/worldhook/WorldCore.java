@@ -14,25 +14,20 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.worldhook.common.IWorldPool;
+import com.gildedgames.util.worldhook.common.IWorldHookPool;
 import com.gildedgames.util.worldhook.common.WorldEventHandler;
-import com.gildedgames.util.worldhook.common.WorldPool;
-import com.gildedgames.util.worldhook.common.test.WorldTest;
-import com.gildedgames.util.worldhook.common.test.WorldTestFactory;
 import com.gildedgames.util.worldhook.common.world.IWorld;
 
-public class WorldHookCore implements ICore
+public class WorldCore implements ICore
 {
 
-	public static final WorldHookCore INSTANCE = new WorldHookCore();
+	public static final WorldCore INSTANCE = new WorldCore();
 
-	private SidedObject<WorldHookServices> serviceLocator = new SidedObject<WorldHookServices>(new WorldHookServices(true), new WorldHookServices(false));
+	private SidedObject<WorldServices> serviceLocator = new SidedObject<WorldServices>(new WorldServices(true), new WorldServices(false));
 
 	private WorldEventHandler worldEventHandler = new WorldEventHandler();
 
-	private WorldPool<WorldTest> worldPool = new WorldPool<WorldTest>(new WorldTestFactory(), "test");
-
-	public WorldHookCore()
+	public WorldCore()
 	{
 
 	}
@@ -40,7 +35,7 @@ public class WorldHookCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		//this.registerWorldPool(this.worldPool);
+
 	}
 
 	@Override
@@ -90,22 +85,22 @@ public class WorldHookCore implements ICore
 	 * Util method for accessing IWorlds through the Minecraft World instance.
 	 * Only use where you are sure you can use World instances.
 	 */
-	public static IWorld getWrapper(World world)
+	public static IWorld get(World world)
 	{
 		return locate().getWrapper(world.provider.getDimensionId());
 	}
 
-	public static IWorld getWrapper(int dimId)
+	public static IWorld get(int dimId)
 	{
 		return locate().getWrapper(dimId);
 	}
 
-	public static WorldHookServices locate()
+	public static WorldServices locate()
 	{
 		return INSTANCE.serviceLocator.instance();
 	}
 
-	public void registerWorldPool(IWorldPool client, IWorldPool server)
+	public void registerWorldPool(IWorldHookPool client, IWorldHookPool server)
 	{
 		INSTANCE.serviceLocator.client().registerWorldPool(client);
 		INSTANCE.serviceLocator.server().registerWorldPool(server);

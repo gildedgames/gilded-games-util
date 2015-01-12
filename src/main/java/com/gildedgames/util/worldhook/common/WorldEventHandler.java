@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTFile;
-import com.gildedgames.util.worldhook.WorldHookCore;
+import com.gildedgames.util.worldhook.WorldCore;
 
 public class WorldEventHandler
 {
@@ -26,7 +26,7 @@ public class WorldEventHandler
 	{
 		if (event.phase == Phase.END)
 		{
-			for (IWorldPool pool : WorldHookCore.locate().getPools())
+			for (IWorldHookPool pool : WorldCore.locate().getPools())
 			{
 				IWorldHook world = pool.get(event.world);
 
@@ -49,7 +49,7 @@ public class WorldEventHandler
 
 		this.saveLocation = new File(worldFile, "hook\\world\\");
 
-		for (IWorldPool pool : WorldHookCore.locate().getPools())
+		for (IWorldHookPool pool : WorldCore.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(event.world);
 
@@ -73,7 +73,7 @@ public class WorldEventHandler
 	{
 		World world = event.world;
 
-		for (IWorldPool pool : WorldHookCore.locate().getPools())
+		for (IWorldHookPool pool : WorldCore.locate().getPools())
 		{
 			if (pool != null)
 			{
@@ -108,7 +108,7 @@ public class WorldEventHandler
 		ISaveHandler saveHandler = world.getSaveHandler();
 		File worldFile = saveHandler.getWorldDirectory();
 
-		for (IWorldPool pool : WorldHookCore.locate().getPools())
+		for (IWorldHookPool pool : WorldCore.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(world);
 

@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 import com.gildedgames.util.core.UtilCore;
 
-public class WorldMinecraftFactory implements IWorldWrapperFactory<WorldMinecraft>
+public class WorldMinecraftFactory implements IWorldFactory<WorldMinecraft>
 {
 
 	@Override

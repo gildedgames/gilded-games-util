@@ -1,6 +1,6 @@
 package com.gildedgames.util.worldhook.common.world;
 
-public interface IWorldWrapperFactory<W extends IWorld>
+public interface IWorldFactory<W extends IWorld>
 {
 	/**
 	 * Factory that creates IWorld wrappers. 

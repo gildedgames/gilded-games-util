@@ -7,8 +7,9 @@ import net.minecraft.world.World;
 import com.gildedgames.util.io_manager.io.NBT;
 import com.gildedgames.util.worldhook.common.world.IWorld;
 
-public interface IWorldPool<W extends IWorldHook> extends NBT
+public interface IWorldHookPool<W extends IWorldHook> extends NBT
 {
+	
 	W get(IWorld world);
 
 	W get(World world);

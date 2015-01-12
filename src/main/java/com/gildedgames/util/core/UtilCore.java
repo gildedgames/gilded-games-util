@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import com.gildedgames.util.menuhook.MenuCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.PlayerHookServices;
-import com.gildedgames.util.worldhook.WorldHookCore;
+import com.gildedgames.util.worldhook.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies="before:*")
 public class UtilCore extends PlayerHookServices implements ICore
@@ -47,7 +47,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 	public UtilCore()
 	{
 		this.cores.add(PlayerHookCore.INSTANCE);
-		this.cores.add(WorldHookCore.INSTANCE);
+		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 	}
 	
