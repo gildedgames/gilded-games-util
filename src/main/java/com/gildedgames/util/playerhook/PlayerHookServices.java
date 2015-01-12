@@ -84,7 +84,7 @@ public class PlayerHookServices
 
 	public void registerPlayerHookPool(IPlayerHookPool playerPool)
 	{
-		this.playerHookPools.add(playerPool);
+		this.getPools().add(playerPool);
 	}
 
 }

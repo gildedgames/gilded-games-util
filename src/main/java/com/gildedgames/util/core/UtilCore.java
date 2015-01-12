@@ -22,38 +22,44 @@ import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.PlayerHookServices;
 import com.gildedgames.util.worldhook.WorldCore;
 
-@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies="before:*")
+@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
 public class UtilCore extends PlayerHookServices implements ICore
 {
 
 	public static final String MOD_ID = "gilded-games-util";
-	
+
 	public static final String VERSION = "1.8-1.0";
-	
+
 	private static final boolean DEBUG_MODE = true;
-	
+
 	@Instance(UtilCore.MOD_ID)
 	public static UtilCore instance;
-	
+
 	@SidedProxy(clientSide = "com.gildedgames.util.core.ClientProxy", serverSide = "com.gildedgames.util.core.ServerProxy")
 	public static ServerProxy proxy;
-	
+
 	public static NetworkWrapper NETWORK = new NetworkWrapper();
-	
+
 	public List<ICore> cores = new ArrayList<ICore>();
-	
+
 	private SidedObject<UtilServices> serviceLocator = new SidedObject<UtilServices>(new UtilServices(), new UtilServices());
-	
+
 	public UtilCore()
 	{
 		this.cores.add(PlayerHookCore.INSTANCE);
 		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 	}
-	
+
+	public static void registerIO(Class clazz, int id)
+	{
+		instance.serviceLocator.client().getIO().register(clazz, id);
+		instance.serviceLocator.server().getIO().register(clazz, id);
+	}
+
 	@Override
 	@EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.NETWORK.init();
 
@@ -61,34 +67,34 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.preInit(event);
 		}
-		
+
 		this.proxy.preInit(event);
 	}
-	
+
 	@Override
 	@EventHandler
-    public void init(FMLInitializationEvent event)
+	public void init(FMLInitializationEvent event)
 	{
 		for (ICore core : this.cores)
 		{
 			core.init(event);
 		}
-		
+
 		this.proxy.init(event);
 	}
-	
+
 	@Override
 	@EventHandler
-    public void postInit(FMLPostInitializationEvent event)
+	public void postInit(FMLPostInitializationEvent event)
 	{
 		for (ICore core : this.cores)
 		{
 			core.postInit(event);
 		}
-		
+
 		this.proxy.postInit(event);
 	}
-	
+
 	@Override
 	@EventHandler
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
@@ -97,10 +103,10 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverAboutToStart(event);
 		}
-		
+
 		this.proxy.serverAboutToStart(event);
 	}
-	
+
 	@Override
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
@@ -109,10 +115,10 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarting(event);
 		}
-		
+
 		this.proxy.serverStarting(event);
 	}
-	
+
 	@Override
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
@@ -121,10 +127,10 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarted(event);
 		}
-		
+
 		this.proxy.serverStarted(event);
 	}
-	
+
 	@Override
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
@@ -133,10 +139,10 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopping(event);
 		}
-		
+
 		this.proxy.serverStopping(event);
 	}
-	
+
 	@Override
 	@EventHandler
 	public void serverStopped(FMLServerStoppedEvent event)
@@ -145,10 +151,10 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopped(event);
 		}
-		
+
 		this.proxy.serverStopped(event);
 	}
-	
+
 	public static UtilServices locate()
 	{
 		return instance.serviceLocator.instance();
@@ -158,29 +164,29 @@ public class UtilCore extends PlayerHookServices implements ICore
 	{
 		return UtilCore.MOD_ID + ":";
 	}
-	
+
 	public static boolean isClient()
 	{
 		return getSide().isClient();
 	}
-	
+
 	public static boolean isServer()
 	{
 		return getSide().isServer();
 	}
-	
-    public static Side getSide()
-    {
-        Thread thr = Thread.currentThread();
-        
-        if (thr.getName().equals("Server thread") || thr.getName().startsWith("Netty Server IO"))
-        {
-            return Side.SERVER;
-        }
 
-        return Side.CLIENT;
-    }
-    
+	public static Side getSide()
+	{
+		Thread thr = Thread.currentThread();
+
+		if (thr.getName().equals("Server thread") || thr.getName().startsWith("Netty Server IO"))
+		{
+			return Side.SERVER;
+		}
+
+		return Side.CLIENT;
+	}
+
 	public static void debugPrint(Object line)
 	{
 		if (DEBUG_MODE && line != null)
@@ -196,5 +202,5 @@ public class UtilCore extends PlayerHookServices implements ICore
 			System.out.println("[ORBIS_CORE]: " + line.toString());
 		}
 	}
-	
+
 }
