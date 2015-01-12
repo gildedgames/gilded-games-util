@@ -15,28 +15,28 @@ import com.gildedgames.util.playerhook.common.player.PlayerProfile;
 public class PlayerHookServices
 {
 
-	private List<IPlayerHookPool> playerHookPools;
+	private List<IPlayerHookPool<?>> playerHookPools;
 
 	public PlayerHookServices()
 	{
 
 	}
 
-	public List<IPlayerHookPool> getPools()
+	public List<IPlayerHookPool<?>> getPools()
 	{
 		if (this.playerHookPools == null)
 		{
-			this.playerHookPools = new ArrayList<IPlayerHookPool>();
+			this.playerHookPools = new ArrayList<IPlayerHookPool<?>>();
 		}
 
 		return this.playerHookPools;
 	}
 
-	public int getPoolID(IPlayerHookPool playerHookPool)
+	public int getPoolID(IPlayerHookPool<?> playerHookPool)
 	{
 		for (int id = 0; id < this.getPools().size(); id++)
 		{
-			IPlayerHookPool pool = this.getPools().get(id);
+			IPlayerHookPool<?> pool = this.getPools().get(id);
 
 			if (pool == playerHookPool)
 			{
@@ -58,7 +58,7 @@ public class PlayerHookServices
 
 	public IPlayerHook readHookReference(EntityPlayer player, ByteBuf buf)
 	{
-		IPlayerHookPool manager = PlayerHookCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 
@@ -71,7 +71,7 @@ public class PlayerHookServices
 
 	public IPlayerHook readHookReference(Side side, ByteBuf buf)
 	{
-		IPlayerHookPool manager = PlayerHookCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 
@@ -82,7 +82,7 @@ public class PlayerHookServices
 		return playerHook;
 	}
 
-	public void registerPlayerHookPool(IPlayerHookPool playerPool)
+	public void registerPlayerHookPool(IPlayerHookPool<?> playerPool)
 	{
 		this.getPools().add(playerPool);
 	}

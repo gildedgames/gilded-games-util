@@ -7,21 +7,21 @@ public class DefaultConstructor implements IConstructor
 {
 
 	@Override
-	public boolean isApplicable(Class clazz)
+	public boolean isApplicable(Class<?> clazz)
 	{
 		return true;
 	}
 
 	@Override
-	public Object construct(Class clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	public <T> T construct(Class<T> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
 	{
-		final Constructor<?> constructor = clazz.getDeclaredConstructor();
+		final Constructor<T> constructor = clazz.getDeclaredConstructor();
 		constructor.setAccessible(true);
 
-		final Object instance = constructor.newInstance();
+		final T instance = constructor.newInstance();
 
 		constructor.setAccessible(false);
-		
+
 		return instance;
 	}
 

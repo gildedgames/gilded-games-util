@@ -16,7 +16,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 {
 
 	@Override
-	public NBTTagCompound getReader(DataInputStream input, IOManager manager)
+	public NBTTagCompound getReader(DataInputStream input, IOManager<NBTTagCompound, NBTTagCompound, IOFile<NBTTagCompound, NBTTagCompound>> manager)
 	{
 		try
 		{
@@ -31,7 +31,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 	}
 
 	@Override
-	public NBTTagCompound getWriter(DataOutputStream output, IOManager manager)
+	public NBTTagCompound getWriter(DataOutputStream output, IOManager<NBTTagCompound, NBTTagCompound, IOFile<NBTTagCompound, NBTTagCompound>> manager)
 	{
 		return new NBTTagCompound();
 	}

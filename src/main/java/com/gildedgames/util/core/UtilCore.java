@@ -51,7 +51,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 		this.cores.add(MenuCore.INSTANCE);
 	}
 
-	public static void registerIO(Class clazz, int id)
+	public static void registerIO(Class<?> clazz, int id)
 	{
 		instance.serviceLocator.client().getIO().register(clazz, id);
 		instance.serviceLocator.server().getIO().register(clazz, id);
@@ -68,7 +68,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.preInit(event);
 		}
 
-		this.proxy.preInit(event);
+		proxy.preInit(event);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.init(event);
 		}
 
-		this.proxy.init(event);
+		proxy.init(event);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.postInit(event);
 		}
 
-		this.proxy.postInit(event);
+		proxy.postInit(event);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.serverAboutToStart(event);
 		}
 
-		this.proxy.serverAboutToStart(event);
+		proxy.serverAboutToStart(event);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.serverStarting(event);
 		}
 
-		this.proxy.serverStarting(event);
+		proxy.serverStarting(event);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.serverStarted(event);
 		}
 
-		this.proxy.serverStarted(event);
+		proxy.serverStarted(event);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.serverStopping(event);
 		}
 
-		this.proxy.serverStopping(event);
+		proxy.serverStopping(event);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 			core.serverStopped(event);
 		}
 
-		this.proxy.serverStopped(event);
+		proxy.serverStopped(event);
 	}
 
 	public static UtilServices locate()

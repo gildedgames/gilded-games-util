@@ -2,89 +2,126 @@ package com.gildedgames.util.playerhook.util;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.playerhook.common.player.IPlayerProfile;
 
 public class NullPlayerProfile implements IPlayerProfile
 {
-	
+
 	private static NullPlayerProfile INSTANCE;
-	
-	private EntityPlayer player;
-	
+
 	private NullPlayerProfile()
 	{
-		
+
 	}
-	
+
 	public static NullPlayerProfile instance()
 	{
 		if (INSTANCE == null)
 		{
 			INSTANCE = new NullPlayerProfile();
 		}
-		
+
 		return INSTANCE;
 	}
 
 	@Override
-	public void write(NBTTagCompound tag) {}
+	public void write(NBTTagCompound tag)
+	{
+	}
 
 	@Override
-	public void read(NBTTagCompound tag) {}
+	public void read(NBTTagCompound tag)
+	{
+	}
 
 	@Override
-	public void writeToClient(ByteBuf buf) {}
+	public void writeToClient(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void readFromServer(ByteBuf buf) {}
+	public void readFromServer(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void writeToServer(ByteBuf buf) {}
+	public void writeToServer(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void readFromClient(ByteBuf buf) {}
+	public void readFromClient(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void markDirty() {}
+	public void markDirty()
+	{
+	}
 
 	@Override
-	public void markClean() {}
+	public void markClean()
+	{
+	}
 
 	@Override
-	public boolean isDirty() { return false; }
+	public boolean isDirty()
+	{
+		return false;
+	}
 
 	@Override
-	public void entityInit(EntityPlayer player) {}
+	public void entityInit(EntityPlayer player)
+	{
+	}
 
 	@Override
-	public void onUpdate() {}
+	public void onUpdate()
+	{
+	}
 
 	@Override
-	public boolean isLoggedIn() { return false; }
+	public boolean isLoggedIn()
+	{
+		return false;
+	}
 
 	@Override
-	public void setLoggedIn(boolean isLoggedIn) {}
+	public void setLoggedIn(boolean isLoggedIn)
+	{
+	}
 
 	@Override
-	public String getUsername() { return "NULL"; }
+	public String getUsername()
+	{
+		return "NULL";
+	}
 
 	@Override
-	public UUID getUUID() { return null; }
+	public UUID getUUID()
+	{
+		return null;
+	}
 
 	@Override
-	public void setUUID(UUID uuid) {}
+	public void setUUID(UUID uuid)
+	{
+	}
 
 	@Override
-	public EntityPlayer getEntity() { return null; }
+	public EntityPlayer getEntity()
+	{
+		return null;
+	}
 
 	@Override
-	public void setEntity(EntityPlayer player) {}
+	public void setEntity(EntityPlayer player)
+	{
+	}
 
 }

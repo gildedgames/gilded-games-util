@@ -10,14 +10,14 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.IOManager;
 
-public class Output<FILE extends IOFile> implements DataOutput
+public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataOutput
 {
 
-	protected final IOManager manager;
+	protected final IOManager<Input<FILE>, Output<FILE>, FILE> manager;
 
 	protected final DataOutputStream dataOutput;
 
-	public Output(IOManager ioSharp, DataOutputStream dataOutput)
+	public Output(IOManager<Input<FILE>, Output<FILE>, FILE> ioSharp, DataOutputStream dataOutput)
 	{
 		super();
 		this.manager = ioSharp;
@@ -143,7 +143,7 @@ public class Output<FILE extends IOFile> implements DataOutput
 		}
 	}
 
-	public void writeEnum(Enum enumerator) throws IOException
+	public void writeEnum(Enum<?> enumerator) throws IOException
 	{
 		this.writeBoolean(enumerator != null);
 
@@ -171,7 +171,7 @@ public class Output<FILE extends IOFile> implements DataOutput
 		return this.dataOutput;
 	}
 
-	public IOManager getIOManager()
+	public IOManager<Input<FILE>, Output<FILE>, FILE> getIOManager()
 	{
 		return this.manager;
 	}

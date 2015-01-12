@@ -8,11 +8,11 @@ import com.google.common.base.Optional;
 public interface IOFile<I, O>
 {
 
-	void readFromFile(IOManager manager, I reader) throws IOException;
+	void readFromFile(IOManager<I, O, ?> manager, I reader) throws IOException;
 
-	void writeToFile(IOManager manager, O writer) throws IOException;
+	void writeToFile(IOManager<I, O, ?> manager, O writer) throws IOException;
 
-	Class getDataClass();
+	Class<?> getDataClass();
 
 	String getFileExtension();
 

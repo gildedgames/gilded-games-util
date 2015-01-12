@@ -1,90 +1,126 @@
 package com.gildedgames.util.playerhook.util;
 
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.common.player.IPlayerProfile;
 
 public class NullPlayerHook implements IPlayerHook
 {
-	
+
 	private static NullPlayerHook INSTANCE;
 
 	private NullPlayerHook()
 	{
-		
+
 	}
-	
+
 	public static NullPlayerHook instance()
 	{
 		if (INSTANCE == null)
 		{
 			INSTANCE = new NullPlayerHook();
 		}
-		
+
 		return INSTANCE;
 	}
-	
-	@Override
-	public void write(NBTTagCompound tag) {}
 
 	@Override
-	public void read(NBTTagCompound tag) {}
+	public void write(NBTTagCompound tag)
+	{
+	}
 
 	@Override
-	public void writeToClient(ByteBuf buf) {}
+	public void read(NBTTagCompound tag)
+	{
+	}
 
 	@Override
-	public void readFromServer(ByteBuf buf) {}
+	public void writeToClient(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void writeToServer(ByteBuf buf) {}
+	public void readFromServer(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void readFromClient(ByteBuf buf) {}
+	public void writeToServer(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void markDirty() {}
+	public void readFromClient(ByteBuf buf)
+	{
+	}
 
 	@Override
-	public void markClean() {}
+	public void markDirty()
+	{
+	}
 
 	@Override
-	public boolean isDirty() { return false; }
+	public void markClean()
+	{
+	}
 
 	@Override
-	public IPlayerHookPool getParentPool() { return NullPlayerHookPool.instance(); }
+	public boolean isDirty()
+	{
+		return false;
+	}
 
 	@Override
-	public void entityInit(EntityPlayer player) {}
+	public IPlayerHookPool<NullPlayerHook> getParentPool()
+	{
+		return NullPlayerHookPool.instance();
+	}
 
 	@Override
-	public IPlayerProfile getProfile() { return null; }
+	public void entityInit(EntityPlayer player)
+	{
+	}
 
 	@Override
-	public void setProfile(IPlayerProfile profile) {}
+	public IPlayerProfile getProfile()
+	{
+		return null;
+	}
 
 	@Override
-	public void onUpdate() {}
+	public void setProfile(IPlayerProfile profile)
+	{
+	}
 
 	@Override
-	public boolean onLivingAttack(DamageSource source) { return false; }
+	public void onUpdate()
+	{
+	}
 
 	@Override
-	public void onDeath() {}
+	public boolean onLivingAttack(DamageSource source)
+	{
+		return false;
+	}
 
 	@Override
-	public void onChangedDimension() {}
+	public void onDeath()
+	{
+	}
 
 	@Override
-	public void onRespawn() {}
+	public void onChangedDimension()
+	{
+	}
+
+	@Override
+	public void onRespawn()
+	{
+	}
 
 }

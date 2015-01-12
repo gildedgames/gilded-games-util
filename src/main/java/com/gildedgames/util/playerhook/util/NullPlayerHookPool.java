@@ -8,55 +8,79 @@ import net.minecraft.entity.player.EntityPlayer;
 import scala.actors.threadpool.Arrays;
 
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
-import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 
 public class NullPlayerHookPool implements IPlayerHookPool<NullPlayerHook>
 {
-	
-	private static NullPlayerHookPool INSTANCE;
-	
-	private List list;
 
+	private static NullPlayerHookPool INSTANCE;
+
+	private List<NullPlayerHook> list;
+
+	@SuppressWarnings("unchecked")
 	private NullPlayerHookPool()
 	{
-		this.list = Arrays.asList(new IPlayerHook[]{ NullPlayerHook.instance() });
+		this.list = Arrays.asList(new NullPlayerHook[] { NullPlayerHook.instance() });
 	}
-	
+
 	public static NullPlayerHookPool instance()
 	{
 		if (INSTANCE == null)
 		{
 			INSTANCE = new NullPlayerHookPool();
 		}
-		
+
 		return INSTANCE;
 	}
 
 	@Override
-	public String getName() { return "NULL"; }
+	public String getName()
+	{
+		return "NULL";
+	}
 
 	@Override
-	public Class getPlayerHookType() { return NullPlayerHook.class; }
+	public Class<NullPlayerHook> getPlayerHookType()
+	{
+		return NullPlayerHook.class;
+	}
 
 	@Override
-	public NullPlayerHook get(EntityPlayer player) { return NullPlayerHook.instance(); }
+	public NullPlayerHook get(EntityPlayer player)
+	{
+		return NullPlayerHook.instance();
+	}
 
 	@Override
-	public NullPlayerHook get(UUID playerUuid) { return NullPlayerHook.instance(); }
+	public NullPlayerHook get(UUID playerUuid)
+	{
+		return NullPlayerHook.instance();
+	}
 
 	@Override
-	public void add(NullPlayerHook playerHook) {}
+	public void add(NullPlayerHook playerHook)
+	{
+	}
 
 	@Override
-	public void setPlayerHooks(List players) {}
+	public void setPlayerHooks(List<NullPlayerHook> players)
+	{
+	}
 
 	@Override
-	public Collection getPlayerHooks() { return this.list; }
+	public Collection<NullPlayerHook> getPlayerHooks()
+	{
+		return this.list;
+	}
 
 	@Override
-	public void clear() {}
+	public void clear()
+	{
+	}
 
 	@Override
-	public boolean shouldSave() { return false; }
+	public boolean shouldSave()
+	{
+		return false;
+	}
 
 }

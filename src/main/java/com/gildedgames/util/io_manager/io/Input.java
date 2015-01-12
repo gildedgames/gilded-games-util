@@ -2,23 +2,22 @@ package com.gildedgames.util.io_manager.io;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.gildedgames.util.io_manager.IOManager;
 
-public class Input<FILE extends IOFile> implements DataInput
+public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataInput
 {
 
-	protected final IOManager manager;
+	protected final IOManager<Input<FILE>, Output<FILE>, FILE> manager;
 
 	protected final DataInputStream dataInput;
 
-	public Input(IOManager ioSharp, DataInputStream dataInput)
+	public Input(IOManager<Input<FILE>, Output<FILE>, FILE> ioSharp, DataInputStream dataInput)
 	{
 		super();
-		
+
 		this.manager = ioSharp;
 		this.dataInput = dataInput;
 	}
@@ -56,7 +55,7 @@ public class Input<FILE extends IOFile> implements DataInput
 	@Override
 	public String readLine() throws IOException
 	{
-		return this.dataInput.readLine();
+		return this.dataInput.readUTF();
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class Input<FILE extends IOFile> implements DataInput
 	{
 		final int stringCount = this.dataInput.readInt();
 
-		final ArrayList list = new ArrayList(stringCount);
+		final ArrayList<String> list = new ArrayList<String>(stringCount);
 
 		for (int i = 0; i < stringCount; ++i)
 		{
@@ -145,6 +144,7 @@ public class Input<FILE extends IOFile> implements DataInput
 		return intArray;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Enum readEnum(Class<? extends Enum> enumClass) throws IOException
 	{
 		Enum enumerator = null;//TODO: Review code
@@ -166,7 +166,7 @@ public class Input<FILE extends IOFile> implements DataInput
 		return enumerator;
 	}
 
-	public IOManager getIOManager()
+	public IOManager<Input<FILE>, Output<FILE>, FILE> getIOManager()
 	{
 		return this.manager;
 	}

@@ -26,7 +26,7 @@ public class WorldEventHandler
 	{
 		if (event.phase == Phase.END)
 		{
-			for (IWorldHookPool pool : WorldCore.locate().getPools())
+			for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
 			{
 				IWorldHook world = pool.get(event.world);
 
@@ -49,13 +49,13 @@ public class WorldEventHandler
 
 		this.saveLocation = new File(worldFile, "hook\\world\\");
 
-		for (IWorldHookPool pool : WorldCore.locate().getPools())
+		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(event.world);
 
 			try
 			{
-				File finalLocation = new File(saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
 
 				UtilCore.locate().getIO().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
 			}
@@ -63,7 +63,7 @@ public class WorldEventHandler
 			{
 				e.printStackTrace();
 			}
-			
+
 			worldHook.onLoad();
 		}
 	}
@@ -73,14 +73,14 @@ public class WorldEventHandler
 	{
 		World world = event.world;
 
-		for (IWorldHookPool pool : WorldCore.locate().getPools())
+		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
 		{
 			if (pool != null)
 			{
 				IWorldHook worldHook = pool.get(event.world);
 				try
 				{
-					final File location = new File(saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
 
 					UtilCore.locate().getIO().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
 				}
@@ -108,7 +108,9 @@ public class WorldEventHandler
 		ISaveHandler saveHandler = world.getSaveHandler();
 		File worldFile = saveHandler.getWorldDirectory();
 
-		for (IWorldHookPool pool : WorldCore.locate().getPools())
+		//TODO: Shouldn't it save here lol?
+
+		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(world);
 

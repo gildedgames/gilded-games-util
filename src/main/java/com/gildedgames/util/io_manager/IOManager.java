@@ -29,23 +29,23 @@ import com.google.common.base.Optional;
 
 public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 {
-	private final Map<Integer, Class> IDtoClassMapping = new HashMap<Integer, Class>();
+	private final Map<Integer, Class<?>> IDtoClassMapping = new HashMap<Integer, Class<?>>();
 
-	private final Map<Class, Integer> classToIDMapping = new HashMap<Class, Integer>();
+	private final Map<Class<?>, Integer> classToIDMapping = new HashMap<Class<?>, Integer>();
 
-	private final Map<Class, IFactoryBehaviour> classFactoryBehaviours = new HashMap<Class, IFactoryBehaviour>();
+	private final Map<Class<?>, IFactoryBehaviour<?>> classFactoryBehaviours = new HashMap<Class<?>, IFactoryBehaviour<?>>();
 
 	public final static int BUFFER_SIZE = 8192;
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	public void register(Class obj, int id)
+	public void register(Class<?> obj, int id)
 	{
 		this.IDtoClassMapping.put(id, obj);
 		this.classToIDMapping.put(obj, id);
 	}
 
-	public void register(Class obj, IFactoryBehaviour behaviour)
+	public void register(Class<?> obj, IFactoryBehaviour<?> behaviour)
 	{
 		this.classFactoryBehaviours.put(obj, behaviour);
 	}
@@ -64,9 +64,10 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
+		@SuppressWarnings("unchecked")
 		FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
 		ioFile.setMetadata(metadata);
-		readData(file, ioFile, dataInput, rwFac);//Read final data
+		this.readData(file, ioFile, dataInput, rwFac);//Read final data
 		dataInput.close();
 		return ioFile;
 	}
@@ -85,6 +86,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
+		ioFile.setMetadata(metadata);
 		dataInput.readInt();//We're reading it into an already existing FILE object, meaning we don't need to construct it and can disregard the written int
 		this.readData(file, ioFile, dataInput, rwFac);
 
@@ -127,6 +129,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		while (isMetadata)//Keep reading metadata
 		{
 			int classID = dataInput.readInt();
+			@SuppressWarnings("unchecked")
 			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(classID, defaultConstructor);
 			if (readMetadata != null)
 			{
@@ -141,6 +144,8 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	private void readData(File file, FILE ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
+		//If ever at all there's a problem over here with casting, it's because you're using an IOManager with 
+		//the READER and WRITER right, but a different FILE parameter than the ioFile instance uses. Weird stuff! 
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReading(ioFile, file, reader);
 
@@ -268,33 +273,42 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return directory.listFiles(new FilenameFilterExtension(extension));
 	}
 
-	public <I> IO read(I input, Class<? extends IO> clazz) throws IOException
+	@SuppressWarnings("unchecked")
+	private <T> T cast(Object object)
+	{
+		return (T) object;
+	}
+
+	public <I> IO<I, ?> read(I input, Class<? extends IO<I, ?>> clazz) throws IOException
 	{
 		return this.read(input, clazz, defaultConstructor);
 	}
 
-	public <I> IO read(I input, Class<? extends IO> clazz, IConstructor constructor) throws IOException
+	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> clazz, IConstructor constructor) throws IOException
 	{
-		final IO io = (IO) this.create(clazz, constructor);
+		final T io = this.cast(this.create(clazz, constructor));
 
 		io.read(input);
 
 		return io;
 	}
 
-	public <T extends IO, O> void write(O output, T object) throws IOException
+	public <T extends IO<?, O>, O> void write(O output, T object) throws IOException
 	{
 		object.write(output);
 	}
 
-	public <T extends IO, O> Object clone(O io, T object) throws IOException
+	/**
+	 * Utility clone method for cloning an IOFile with identical types for reader/writer
+	 */
+	public <T extends IO<O, O>, O> T clone(O io, T object) throws IOException
 	{
 		return this.clone(io, io, object);
 	}
 
-	public <T extends IO, O, I> Object clone(O output, I input, T object) throws IOException
+	public <T extends IO<I, O>, I, O> T clone(I input, O output, T object) throws IOException
 	{
-		final IO clone = (IO) this.create(object.getClass(), defaultConstructor);
+		final T clone = this.cast(this.create(object.getClass(), defaultConstructor));
 
 		object.write(output);
 
@@ -303,14 +317,15 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return clone;
 	}
 
-	public Object create(Class clazz, IConstructor constructor)
+	@SuppressWarnings("rawtypes")
+	public <T> T create(Class<T> clazz, IConstructor constructor)
 	{
 		if (clazz == null)
 		{
 			return null;
 		}
 
-		Object instance = null;
+		T instance = null;
 
 		try
 		{
@@ -363,14 +378,14 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public Object createFromID(int id, IConstructor constructor)
 	{
-		final Class clazz = this.getClassFromID(id);
+		final Class<?> clazz = this.getClassFromID(id);
 
 		return this.create(clazz, constructor);
 	}
 
 	public int getID(Object obj)
 	{
-		final Class clazz = obj.getClass();
+		final Class<?> clazz = obj.getClass();
 
 		if (!this.classToIDMapping.containsKey(clazz))
 		{
@@ -380,12 +395,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return this.classToIDMapping.get(clazz);
 	}
 
-	public Class getClassFromID(int id)
+	public Class<?> getClassFromID(int id)
 	{
 		return this.IDtoClassMapping.get(id);
 	}
 
-	public int getID(Class clazz)
+	public int getID(Class<?> clazz)
 	{
 		if (!this.classToIDMapping.containsKey(clazz))
 		{

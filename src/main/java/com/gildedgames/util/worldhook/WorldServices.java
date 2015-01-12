@@ -11,11 +11,11 @@ import com.gildedgames.util.worldhook.common.world.WorldMinecraftFactory;
 public class WorldServices
 {
 
-	private List<IWorldHookPool> worldPools;
+	private List<IWorldHookPool<?>> worldPools;
 
 	private List<IWorld> worldWrappers = new ArrayList<IWorld>();
 
-	private final IWorldFactory wrapperFactory = new WorldMinecraftFactory();//Change to use different IWorld wrappers
+	private final IWorldFactory<?> wrapperFactory = new WorldMinecraftFactory();//Change to use different IWorld wrappers
 
 	private final boolean isRemote;
 
@@ -24,17 +24,17 @@ public class WorldServices
 		this.isRemote = isRemote;
 	}
 
-	public List<IWorldHookPool> getPools()
+	public List<IWorldHookPool<?>> getPools()
 	{
 		if (this.worldPools == null)
 		{
-			this.worldPools = new ArrayList<IWorldHookPool>();
+			this.worldPools = new ArrayList<IWorldHookPool<?>>();
 		}
 
 		return this.worldPools;
 	}
 
-	public void registerWorldPool(IWorldHookPool worldPool)
+	public void registerWorldPool(IWorldHookPool<?> worldPool)
 	{
 		this.getPools().add(worldPool);
 	}

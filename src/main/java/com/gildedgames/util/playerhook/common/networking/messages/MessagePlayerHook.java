@@ -54,7 +54,7 @@ public class MessagePlayerHook implements IMessage
 			if (ctx.side.isClient())
 			{
 				//TODO: Doesn't this override the data in the playerHook of the original player?
-				IPlayerHookPool manager = PlayerHookCore.locate().getPools().get(message.buf.readInt());
+				IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(message.buf.readInt());
 
 				IPlayerHook playerHook = manager.get(UtilCore.proxy.getPlayer());//You take the current player (what if server?)
 

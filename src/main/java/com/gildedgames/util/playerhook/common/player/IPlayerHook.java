@@ -9,23 +9,24 @@ import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
 public interface IPlayerHook extends NBT, ISyncable
 {
-	
-	IPlayerHookPool getParentPool();
+
+	@SuppressWarnings("rawtypes")
+	IPlayerHookPool getParentPool();//Why are self referential type parameters not possible ;__;
 
 	void entityInit(EntityPlayer player);
-	
+
 	IPlayerProfile getProfile();
-	
+
 	void setProfile(IPlayerProfile profile);
-	
+
 	void onUpdate();
-	
+
 	boolean onLivingAttack(DamageSource source);
-	
+
 	void onDeath();
 
 	void onChangedDimension();
 
 	void onRespawn();
-	
+
 }

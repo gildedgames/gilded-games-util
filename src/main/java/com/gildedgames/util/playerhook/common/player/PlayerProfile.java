@@ -2,7 +2,6 @@ package com.gildedgames.util.playerhook.common.player;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,23 +11,25 @@ public class PlayerProfile implements IPlayerProfile
 {
 
 	protected EntityPlayer player;
-	
+
 	protected UUID uuid;
-	
+
 	protected boolean isLoggedIn, isDirty;
-	
+
 	public PlayerProfile()
 	{
-		
+
 	}
-	
+
+	@Override
 	public void entityInit(EntityPlayer player)
 	{
 		this.setEntity(player);
-		
+
 		this.setUUID(player.getUniqueID());
 	}
-	
+
+	@Override
 	public void onUpdate()
 	{
 		if (this.getUUID() == null)
@@ -37,38 +38,45 @@ public class PlayerProfile implements IPlayerProfile
 		}
 	}
 
+	@Override
 	public boolean isLoggedIn()
 	{
 		return this.isLoggedIn;
 	}
-	
+
+	@Override
 	public void setLoggedIn(boolean isLoggedIn)
 	{
 		this.isLoggedIn = isLoggedIn;
 	}
-	
+
+	@Override
 	public String getUsername()
 	{
 		return this.player.getCommandSenderEntity().getName();
 	}
 
+	@Override
 	public UUID getUUID()
 	{
 		return this.uuid;
 	}
-	
+
+	@Override
 	public void setUUID(UUID uuid)
 	{
 		this.uuid = uuid;
-		
+
 		this.markDirty();
 	}
-	
+
+	@Override
 	public EntityPlayer getEntity()
 	{
 		return this.player;
 	}
-	
+
+	@Override
 	public void setEntity(EntityPlayer player)
 	{
 		this.player = player;
@@ -78,20 +86,20 @@ public class PlayerProfile implements IPlayerProfile
 	public void write(NBTTagCompound tag)
 	{
 		tag.setLong("UUIDMost", this.uuid.getMostSignificantBits());
-        tag.setLong("UUIDLeast", this.uuid.getLeastSignificantBits());
+		tag.setLong("UUIDLeast", this.uuid.getLeastSignificantBits());
 	}
 
 	@Override
 	public void read(NBTTagCompound tag)
 	{
 		if (tag.hasKey("UUIDMost", 4) && tag.hasKey("UUIDLeast", 4))
-        {
-            this.uuid = new UUID(tag.getLong("UUIDMost"), tag.getLong("UUIDLeast"));
-        }
-        else if (tag.hasKey("UUID", 8))
-        {
-            this.uuid = UUID.fromString(tag.getString("UUID"));
-        }
+		{
+			this.uuid = new UUID(tag.getLong("UUIDMost"), tag.getLong("UUIDLeast"));
+		}
+		else if (tag.hasKey("UUID", 8))
+		{
+			this.uuid = UUID.fromString(tag.getString("UUID"));
+		}
 	}
 
 	@Override
@@ -99,27 +107,27 @@ public class PlayerProfile implements IPlayerProfile
 	{
 		buf.writeLong(this.uuid.getMostSignificantBits());
 		buf.writeLong(this.uuid.getLeastSignificantBits());
-		
+
 		buf.writeBoolean(this.isLoggedIn);
 	}
-	
+
 	@Override
 	public void readFromServer(ByteBuf buf)
 	{
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 		this.isLoggedIn = buf.readBoolean();
 	}
-	
+
 	@Override
 	public void writeToServer(ByteBuf buf)
 	{
-		
+
 	}
 
 	@Override
 	public void readFromClient(ByteBuf buf)
 	{
-		
+
 	}
 
 	@Override

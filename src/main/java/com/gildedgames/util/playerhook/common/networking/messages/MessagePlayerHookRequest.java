@@ -18,15 +18,15 @@ public class MessagePlayerHookRequest implements IMessage
 {
 
 	private UUID uuid;
-	
-	private IPlayerHookPool pool;
+
+	private IPlayerHookPool<?> pool;
 
 	public MessagePlayerHookRequest()
 	{
 
 	}
 
-	public MessagePlayerHookRequest(IPlayerHookPool pool, UUID uuid)
+	public MessagePlayerHookRequest(IPlayerHookPool<?> pool, UUID uuid)
 	{
 		this.pool = pool;
 		this.uuid = uuid;
@@ -43,29 +43,29 @@ public class MessagePlayerHookRequest implements IMessage
 	public void toBytes(ByteBuf buf)
 	{
 		int poolID = PlayerHookCore.locate().getPoolID(this.pool);
-		
+
 		buf.writeInt(poolID);
-		
+
 		buf.writeLong(this.uuid.getMostSignificantBits());
 		buf.writeLong(this.uuid.getLeastSignificantBits());
 	}
 
 	public static class Handler implements IMessageHandler<MessagePlayerHookRequest, IMessage>
 	{
-	        
-        @Override
-        public IMessage onMessage(MessagePlayerHookRequest message, MessageContext ctx)
-        {
-        	if (ctx.side.isServer())
-        	{
-        		EntityPlayer player = ctx.getServerHandler().playerEntity;
-        		
-        		UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
-        	}
 
-        	return null;
-        }
-        
+		@Override
+		public IMessage onMessage(MessagePlayerHookRequest message, MessageContext ctx)
+		{
+			if (ctx.side.isServer())
+			{
+				EntityPlayer player = ctx.getServerHandler().playerEntity;
+
+				UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
+			}
+
+			return null;
+		}
+
 	}
 
 }

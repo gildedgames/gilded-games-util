@@ -19,8 +19,6 @@ import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 
 public class PlayerEventHandler
 {
-	
-	private int tickCounter;
 
 	@SubscribeEvent
 	public void onJoinWorld(EntityJoinWorldEvent event)
@@ -28,8 +26,8 @@ public class PlayerEventHandler
 		if (event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
-			
-			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+
+			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
 				manager.get(player).entityInit(player);
@@ -42,7 +40,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 			{
 				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
 				{
@@ -59,17 +57,17 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 			{
 				IPlayerHook playerHook = manager.get(player);
-				
+
 				if (playerHook.getProfile().getEntity() == null)
 				{
 					playerHook.getProfile().setEntity(player);
 				}
 
 				playerHook.onUpdate();
-				
+
 				if (event.entity.worldObj.isRemote)
 				{
 					this.refreshServer(playerHook);
@@ -81,7 +79,7 @@ public class PlayerEventHandler
 			}
 		}
 	}
-	
+
 	public void refreshServer(IPlayerHook playerHook)
 	{
 		if (playerHook.isDirty())
@@ -90,7 +88,7 @@ public class PlayerEventHandler
 			playerHook.markClean();
 		}
 	}
-	
+
 	public void refreshClients(IPlayerHook playerHook)
 	{
 		if (playerHook.isDirty())
@@ -105,31 +103,31 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 			{
 				EntityPlayer player = (EntityPlayer) event.entity;
 				manager.get(player).onDeath();
 			}
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
-		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-			
+
 			playerHook.getProfile().setLoggedIn(true);
-			
+
 			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
-		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
@@ -139,27 +137,27 @@ public class PlayerEventHandler
 			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onChangedDimension(PlayerChangedDimensionEvent event)
 	{
-		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-		
+
 			playerHook.onChangedDimension();
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onRespawn(PlayerRespawnEvent event)
 	{
-		for (IPlayerHookPool manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
-		
+
 			playerHook.onRespawn();
 		}
 	}
-	
+
 }

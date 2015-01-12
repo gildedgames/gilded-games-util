@@ -14,6 +14,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.worldhook.common.IWorldHook;
 import com.gildedgames.util.worldhook.common.IWorldHookPool;
 import com.gildedgames.util.worldhook.common.WorldEventHandler;
 import com.gildedgames.util.worldhook.common.world.IWorld;
@@ -100,7 +101,7 @@ public class WorldCore implements ICore
 		return INSTANCE.serviceLocator.instance();
 	}
 
-	public void registerWorldPool(IWorldHookPool client, IWorldHookPool server)
+	public <T extends IWorldHook> void registerWorldPool(IWorldHookPool<T> client, IWorldHookPool<T> server)
 	{
 		INSTANCE.serviceLocator.client().registerWorldPool(client);
 		INSTANCE.serviceLocator.server().registerWorldPool(server);
