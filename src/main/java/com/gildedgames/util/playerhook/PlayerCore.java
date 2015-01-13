@@ -23,18 +23,18 @@ import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerH
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.server.PlayerHookSaveHandler;
 
-public class PlayerHookCore implements ICore
+public class PlayerCore implements ICore
 {
 
-	public static final PlayerHookCore INSTANCE = new PlayerHookCore();
+	public static final PlayerCore INSTANCE = new PlayerCore();
 
 	public PlayerHookSaveHandler playerHookSaveHandler = new PlayerHookSaveHandler();
 
 	public PlayerEventHandler playerEventHandler = new PlayerEventHandler();
 
-	private SidedObject<PlayerHookServices> serviceLocator = new SidedObject<PlayerHookServices>(new PlayerHookServices(), new PlayerHookServices());
+	private SidedObject<PlayerServices> serviceLocator = new SidedObject<PlayerServices>(new PlayerServices(), new PlayerServices());
 
-	private PlayerHookCore()
+	private PlayerCore()
 	{
 
 	}
@@ -86,7 +86,7 @@ public class PlayerHookCore implements ICore
 	{
 		this.playerHookSaveHandler.flushData();
 
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			if (manager != null)
 			{
@@ -105,7 +105,7 @@ public class PlayerHookCore implements ICore
 
 	}
 
-	public static PlayerHookServices locate()
+	public static PlayerServices locate()
 	{
 		return INSTANCE.serviceLocator.instance();
 	}

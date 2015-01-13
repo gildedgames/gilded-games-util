@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.PlayerCore;
 import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHook;
 import com.gildedgames.util.playerhook.common.networking.messages.MessagePlayerHookClient;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
@@ -27,7 +27,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
 				manager.get(player).entityInit(player);
@@ -40,7 +40,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 			{
 				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
 				{
@@ -57,7 +57,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 			{
 				IPlayerHook playerHook = manager.get(player);
 
@@ -103,7 +103,7 @@ public class PlayerEventHandler
 	{
 		if (event.entity instanceof EntityPlayer)
 		{
-			for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 			{
 				EntityPlayer player = (EntityPlayer) event.entity;
 				manager.get(player).onDeath();
@@ -114,7 +114,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
@@ -127,7 +127,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
@@ -141,7 +141,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onChangedDimension(PlayerChangedDimensionEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
@@ -152,7 +152,7 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onRespawn(PlayerRespawnEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 

@@ -18,12 +18,12 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.menuhook.MenuCore;
-import com.gildedgames.util.playerhook.PlayerHookCore;
-import com.gildedgames.util.playerhook.PlayerHookServices;
+import com.gildedgames.util.playerhook.PlayerCore;
+import com.gildedgames.util.playerhook.PlayerServices;
 import com.gildedgames.util.worldhook.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
-public class UtilCore extends PlayerHookServices implements ICore
+public class UtilCore extends PlayerServices implements ICore
 {
 
 	public static final String MOD_ID = "gilded-games-util";
@@ -46,7 +46,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 
 	public UtilCore()
 	{
-		this.cores.add(PlayerHookCore.INSTANCE);
+		this.cores.add(PlayerCore.INSTANCE);
 		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 	}

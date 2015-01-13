@@ -16,7 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.PlayerCore;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.common.player.PlayerProfile;
@@ -49,7 +49,7 @@ public class PlayerHookSaveHandler
 
 	public void writePlayerData(UUID uuid, EntityPlayer entityplayer)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			if (!manager.shouldSave())
 			{
@@ -130,7 +130,7 @@ public class PlayerHookSaveHandler
 
 	public NBTTagCompound readPlayerData(UUID uuid, EntityPlayer entityplayer)
 	{
-		for (IPlayerHookPool<?> manager : PlayerHookCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			if (!manager.shouldSave())
 			{
