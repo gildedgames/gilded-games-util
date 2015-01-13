@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class WorldMinecraft implements IWorld
@@ -79,6 +80,7 @@ public class WorldMinecraft implements IWorld
 		{
 			return true;
 		}
+		
 		return this.world.equals(obj);
 	}
 
@@ -104,6 +106,12 @@ public class WorldMinecraft implements IWorld
 	public boolean isRemote()
 	{
 		return this.world.isRemote;
+	}
+
+	@Override
+	public IBlockAccess getBlockAccess()
+	{
+		return this.world;
 	}
 
 }
