@@ -38,7 +38,7 @@ public class WorldEventHandler
 
 	private File getWorldFolderPath(World world)
 	{
-		return new File(world.getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", ""));
+		return new File(world.getSaveHandler().getWorldDirectory() + ".dat")
 	}
 
 	@SubscribeEvent
