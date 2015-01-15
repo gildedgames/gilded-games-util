@@ -6,15 +6,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 
 /**
  * Wrapper around an implementation of Minecraft worlds.
- * Recommended access is through WorldHookCore.getWrapper().
+ * Recommended access is through WorldCore.get().
  * @author Emile
  *
  */
 public interface IWorld
 {
+	
+	IBlockAccess getBlockAccess();
 
 	IBlockState getBlockState(BlockPos pos);
 

@@ -88,7 +88,7 @@ public class WorldCore implements ICore
 	 */
 	public static IWorld get(World world)
 	{
-		return locate().getWrapper(world.provider.getDimensionId());
+		return get(world.provider.getDimensionId());
 	}
 
 	public static IWorld get(int dimId)

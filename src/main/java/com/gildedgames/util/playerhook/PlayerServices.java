@@ -12,12 +12,12 @@ import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.common.player.PlayerProfile;
 
-public class PlayerHookServices
+public class PlayerServices
 {
 
 	private List<IPlayerHookPool<?>> playerHookPools;
 
-	public PlayerHookServices()
+	public PlayerServices()
 	{
 
 	}
@@ -49,7 +49,7 @@ public class PlayerHookServices
 
 	public void writeHookReference(IPlayerHook playerHook, ByteBuf buf)
 	{
-		int poolID = PlayerHookCore.locate().getPoolID(playerHook.getParentPool());
+		int poolID = PlayerCore.locate().getPoolID(playerHook.getParentPool());
 
 		buf.writeInt(poolID);
 
@@ -58,7 +58,7 @@ public class PlayerHookServices
 
 	public IPlayerHook readHookReference(EntityPlayer player, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 
@@ -71,7 +71,7 @@ public class PlayerHookServices
 
 	public IPlayerHook readHookReference(Side side, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 

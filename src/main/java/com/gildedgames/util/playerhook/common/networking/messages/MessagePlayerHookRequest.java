@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.PlayerCore;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 
 public class MessagePlayerHookRequest implements IMessage
@@ -35,14 +35,14 @@ public class MessagePlayerHookRequest implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = PlayerHookCore.locate().getPools().get(buf.readInt());
+		this.pool = PlayerCore.locate().getPools().get(buf.readInt());
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		int poolID = PlayerHookCore.locate().getPoolID(this.pool);
+		int poolID = PlayerCore.locate().getPoolID(this.pool);
 
 		buf.writeInt(poolID);
 
