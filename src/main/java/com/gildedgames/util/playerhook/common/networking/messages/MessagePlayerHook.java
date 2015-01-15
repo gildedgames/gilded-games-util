@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
@@ -53,12 +52,10 @@ public class MessagePlayerHook implements IMessage
 		{
 			if (ctx.side.isClient())
 			{
-				//TODO: Doesn't this override the data in the playerHook of the original player?
 				IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(message.buf.readInt());
 
-				IPlayerHook playerHook = manager.get(UtilCore.proxy.getPlayer());//You take the current player (what if server?)
-
-				playerHook.getProfile().readFromServer(message.buf);//Then override it with the data given
+				IPlayerHook playerHook = manager.createEmpty();
+				playerHook.getProfile().readFromServer(message.buf);
 				playerHook.readFromServer(message.buf);
 			}
 

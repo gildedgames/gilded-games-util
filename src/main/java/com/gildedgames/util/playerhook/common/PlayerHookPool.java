@@ -85,25 +85,14 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 				}
 			}
 
-			try
-			{
-				player = this.type.newInstance();
+			player = this.createEmpty();
 
-				PlayerProfile profile = new PlayerProfile();
-				profile.setUUID(uuid);
+			PlayerProfile profile = new PlayerProfile();
+			profile.setUUID(uuid);
 
-				player.setProfile(profile);
+			player.setProfile(profile);
 
-				this.add(player);
-			}
-			catch (InstantiationException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
+			this.add(player);
 		}
 
 		if (player.getProfile() == null)
@@ -136,6 +125,29 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	public boolean shouldSave()
 	{
 		return true;
+	}
+
+	@Override
+	public T createEmpty()
+	{
+		try
+		{
+			T player = this.type.newInstance();
+
+			PlayerProfile profile = new PlayerProfile();
+			player.setProfile(profile);
+
+			return player;
+		}
+		catch (InstantiationException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

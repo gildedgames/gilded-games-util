@@ -83,4 +83,10 @@ public class NullPlayerHookPool implements IPlayerHookPool<NullPlayerHook>
 		return false;
 	}
 
+	@Override
+	public NullPlayerHook createEmpty()
+	{
+		return NullPlayerHook.instance();
+	}
+
 }
