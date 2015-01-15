@@ -48,7 +48,9 @@ public class WorldServices
 				return wrapper;
 			}
 		}
-		return this.wrapperFactory.create(dimId, this.isRemote);
+		IWorld world = this.wrapperFactory.create(dimId, this.isRemote);
+		this.worldWrappers.add(world);
+		return world;
 	}
 
 }
