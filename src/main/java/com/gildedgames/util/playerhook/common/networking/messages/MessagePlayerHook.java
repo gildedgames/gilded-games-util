@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import com.gildedgames.util.playerhook.PlayerHookCore;
+import com.gildedgames.util.playerhook.PlayerCore;
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 
@@ -36,7 +36,7 @@ public class MessagePlayerHook implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		int poolID = PlayerHookCore.locate().getPoolID(this.playerHook.getParentPool());
+		int poolID = PlayerCore.locate().getPoolID(this.playerHook.getParentPool());
 
 		buf.writeInt(poolID);
 
@@ -52,7 +52,7 @@ public class MessagePlayerHook implements IMessage
 		{
 			if (ctx.side.isClient())
 			{
-				IPlayerHookPool<?> manager = PlayerHookCore.locate().getPools().get(message.buf.readInt());
+				IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(message.buf.readInt());
 
 				IPlayerHook playerHook = manager.createEmpty();
 				playerHook.getProfile().readFromServer(message.buf);
