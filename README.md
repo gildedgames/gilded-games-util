@@ -1,7 +1,7 @@
-Player Hook Util
+Gilded Games Util 
 =======
 
-A module for Minecraft mod development. Incorporates an automated system for hooking into EntityPlayer functionality and saving new player-specific data.
+A module which supports several major systems that are used between different Gilded Games projects. 
 
 Setup Process:
 
