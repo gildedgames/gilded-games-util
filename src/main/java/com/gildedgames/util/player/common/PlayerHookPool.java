@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.UtilCore;
@@ -42,10 +41,6 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	@Override
 	public T get(EntityPlayer player)
 	{
-		//boolean isRemote = player.worldObj.isRemote;
-
-		//Side side = isRemote ? Side.CLIENT : Side.SERVER;
-
 		return this.get(player.getUniqueID());
 	}
 
@@ -74,7 +69,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 
 		if (player == null)
 		{
-			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			Side side = UtilCore.getSide();
 
 			if (side.isClient())
 			{
