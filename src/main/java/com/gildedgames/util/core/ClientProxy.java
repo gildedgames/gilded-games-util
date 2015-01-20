@@ -5,11 +5,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
 import com.gildedgames.util.menu.client.util.MenuMinecraft;
+import com.gildedgames.util.tab.client.TabClientEvents;
+import com.gildedgames.util.tab.common.TabAPI;
+import com.gildedgames.util.tab.common.tab.TabBackpack;
 
 public class ClientProxy extends ServerProxy
 {
@@ -33,6 +37,17 @@ public class ClientProxy extends ServerProxy
 		FMLCommonHandler.instance().bus().register(menuClientEvents);
 
 		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
+		
+		TabClientEvents clientEvents = new TabClientEvents();
+		
+		MinecraftForge.EVENT_BUS.register(clientEvents);
+		FMLCommonHandler.instance().bus().register(clientEvents);
+		
+		TabAPI.INSTANCE.setBackpackTab(new TabBackpack());
+		
+		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(TabAPI.INSTANCE.getBackpackTab());
+		
+		TabAPI.INSTANCE.register(TabAPI.INSTANCE.getInventoryGroup());
 	}
 
 }

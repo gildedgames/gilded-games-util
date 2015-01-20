@@ -20,7 +20,7 @@ import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
 
-public class ClientEvents
+public class TabClientEvents
 {
 
 	@SideOnly(Side.CLIENT)
