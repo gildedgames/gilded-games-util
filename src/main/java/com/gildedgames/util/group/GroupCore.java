@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.player.PlayerCore;
 
 public class GroupCore implements ICore
 {
@@ -34,7 +35,7 @@ public class GroupCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 	}
 
 	@Override
