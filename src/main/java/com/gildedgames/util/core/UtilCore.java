@@ -21,6 +21,7 @@ import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.PlayerServices;
 import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
@@ -51,6 +52,7 @@ public class UtilCore extends PlayerServices implements ICore
 		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 		this.cores.add(TabCore.INSTANCE);
+		this.cores.add(UniverseCore.INSTANCE);
 	}
 
 	public static void registerIO(Class<?> clazz, int id)
