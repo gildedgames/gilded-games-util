@@ -8,9 +8,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
 
 public class TabCore implements ICore
 {
@@ -27,7 +30,8 @@ public class TabCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+		UtilCore.NETWORK.registerMessage(PacketOpenTab.class, PacketOpenTab.class, Side.CLIENT);
+		UtilCore.NETWORK.registerMessage(PacketOpenTab.class, PacketOpenTab.class, Side.SERVER);
 	}
 
 	@Override
