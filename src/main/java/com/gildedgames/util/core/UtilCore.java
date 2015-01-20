@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.PlayerServices;
@@ -53,6 +54,7 @@ public class UtilCore extends PlayerServices implements ICore
 		this.cores.add(MenuCore.INSTANCE);
 		this.cores.add(TabCore.INSTANCE);
 		this.cores.add(UniverseCore.INSTANCE);
+		this.cores.add(GroupCore.INSTANCE);
 	}
 
 	public static void registerIO(Class<?> clazz, int id)
