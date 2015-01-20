@@ -2,9 +2,9 @@ package com.gildedgames.util.core;
 
 import com.gildedgames.util.io_manager.util.nbt.NBTFile;
 import com.gildedgames.util.io_manager.util.nbt.NBTManager;
-import com.gildedgames.util.menuhook.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.worldhook.common.IWorldHookPool;
-import com.gildedgames.util.worldhook.common.WorldHookPool;
+import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
+import com.gildedgames.util.world.common.IWorldHookPool;
+import com.gildedgames.util.world.common.WorldHookPool;
 
 public class UtilServices
 {
