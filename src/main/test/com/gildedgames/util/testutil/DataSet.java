@@ -46,11 +46,6 @@ public class DataSet
 		{
 			players.add(parentPool.get(uuid));
 		}
-
-		for (int i = 0; i < players.size(); i++)
-		{
-			players.get(i).idForCompare = i;
-		}
 		return new ArrayList<IPlayerHook>(players);
 	}
 

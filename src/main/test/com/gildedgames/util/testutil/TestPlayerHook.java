@@ -16,10 +16,11 @@ public class TestPlayerHook implements IPlayerHook
 
 	IPlayerHookPool<TestPlayerHook> pool;
 
-	public int idForCompare;
+	private int idForCompare;
 
-	public TestPlayerHook(IPlayerProfile profile, IPlayerHookPool<TestPlayerHook> pool)
+	public TestPlayerHook(IPlayerProfile profile, IPlayerHookPool<TestPlayerHook> pool, int idForCompare)
 	{
+		this.idForCompare = idForCompare;
 		this.profile = profile;
 		this.pool = pool;
 	}

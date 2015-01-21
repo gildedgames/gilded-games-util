@@ -16,6 +16,10 @@ import com.gildedgames.util.testutil.DataSet;
 public class PlayerHookSaveHandlerTest
 {
 
+	/**
+	 * This test writes several playerhooks to files, reads it back and calls .equals on the original data set
+	 * and the read back one
+	 */
 	@Test
 	public void testWriteAndRead()
 	{
