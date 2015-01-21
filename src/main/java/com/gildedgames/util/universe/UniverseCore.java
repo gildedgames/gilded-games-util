@@ -19,7 +19,6 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
-import com.gildedgames.util.universe.common.universe.UniverseFog;
 import com.gildedgames.util.universe.common.util.TeleporterGeneric;
 
 public class UniverseCore implements ICore
@@ -42,8 +41,7 @@ public class UniverseCore implements ICore
 		UtilCore.NETWORK.registerMessage(MessageTravelUniverse.Handler.class, MessageTravelUniverse.class, Side.SERVER);
 	
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
-		UniverseAPI.instance().register("thefog:thefog", new UniverseFog());
-		
+
 		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 	}
 	
