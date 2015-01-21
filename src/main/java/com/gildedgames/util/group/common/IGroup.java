@@ -15,9 +15,9 @@ public interface IGroup extends NBT, IRawData
 	
 	void setName(String name);
 	
-	GroupPermissions getPermissions();
+	IGroupPerms getPermissions();
 	
-	void setPermissions(GroupPermissions permissions);
+	void setPermissions(IGroupPerms permissions);
 	
 	boolean join(EntityPlayer player);
 	

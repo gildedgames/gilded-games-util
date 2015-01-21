@@ -50,13 +50,13 @@ public class GroupBasic implements IGroup
 	}
 
 	@Override
-	public GroupPermissions getPermissions()
+	public IGroupPerms getPermissions()
 	{
 		return null;
 	}
 
 	@Override
-	public void setPermissions(GroupPermissions permissions)
+	public void setPermissions(IGroupPerms permissions)
 	{
 		
 	}
