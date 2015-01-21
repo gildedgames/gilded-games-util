@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
@@ -19,8 +20,8 @@ public class GroupCore implements ICore
 {
 
 	public static GroupCore INSTANCE = new GroupCore();
-	
-	private SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(), new GroupServices());
+
+	private SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
 
 	public static GroupServices locate()
 	{
@@ -41,43 +42,43 @@ public class GroupCore implements ICore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		
+
 	}
-	
+
 }

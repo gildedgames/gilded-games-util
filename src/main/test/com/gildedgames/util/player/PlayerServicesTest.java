@@ -23,7 +23,7 @@ public class PlayerServicesTest
 	public void testRegisterAndGetPools()
 	{
 		PlayerServices playerServices = new PlayerServices();
-		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class);
+		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class, Side.SERVER);
 		playerServices.registerPlayerHookPool(playerHookPool);
 		Assert.assertTrue(playerServices.getPools().contains(playerHookPool));
 	}
@@ -32,7 +32,7 @@ public class PlayerServicesTest
 	public void testReadWriteHookReference()
 	{
 		PlayerServices playerServices = new PlayerServices();
-		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class);
+		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class, Side.SERVER);
 		playerServices.registerPlayerHookPool(playerHookPool);
 		List<IPlayerHook> playerHooks = DataSet.iPlayerHooks(playerHookPool);
 		for (IPlayerHook playerHook : playerHooks)

@@ -27,30 +27,30 @@ public class UniverseCore implements ICore
 	public static UniverseCore INSTANCE = new UniverseCore();
 
 	public static TeleporterGeneric GENERIC_TELEPORTER;
-	
-	private SidedObject<UniverseServices> serviceLocator = new SidedObject<UniverseServices>(new UniverseServices(), new UniverseServices());
-	
+
+	private SidedObject<UniverseServices> serviceLocator = new SidedObject<UniverseServices>(new UniverseServices(Side.CLIENT), new UniverseServices(Side.SERVER));
+
 	public static UniverseServices locate()
 	{
 		return UniverseCore.INSTANCE.serviceLocator.instance();
 	}
 
 	@Override
-    public void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.NETWORK.registerMessage(MessageTravelUniverse.Handler.class, MessageTravelUniverse.class, Side.SERVER);
-	
+
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
 
 		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 	}
-	
+
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		
+
 	}
-	
+
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
@@ -60,37 +60,37 @@ public class UniverseCore implements ICore
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		
+
 	}
-	
+
 	public static void teleportToDimension(EntityPlayerMP player, int dimension)
 	{
 		ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
-		scm.transferPlayerToDimension((EntityPlayerMP) player, dimension, UniverseCore.GENERIC_TELEPORTER);
+		scm.transferPlayerToDimension(player, dimension, UniverseCore.GENERIC_TELEPORTER);
 	}
-	
+
 }

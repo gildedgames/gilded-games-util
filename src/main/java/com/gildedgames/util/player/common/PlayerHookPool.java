@@ -25,10 +25,13 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 
 	private Class<T> type;
 
-	public PlayerHookPool(String name, Class<T> playerHookType)
+	private Side side;
+
+	public PlayerHookPool(String name, Class<T> playerHookType, Side side)
 	{
 		this.name = name;
 		this.type = playerHookType;
+		this.side = side;
 	}
 
 	@Override
@@ -69,9 +72,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 
 		if (player == null)
 		{
-			Side side = UtilCore.getSide();
-
-			if (side.isClient())
+			if (this.side.isClient())
 			{
 				if (!this.sentRequests.contains(uuid))
 				{
