@@ -104,6 +104,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	@Override
 	public void setPlayerHooks(List<T> players)
 	{
+		this.clear();
 		for (T player : players)
 		{
 			this.add(player);
