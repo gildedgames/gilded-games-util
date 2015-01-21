@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gildedgames.util.worldhook.common;
+package com.gildedgames.util.world.common;
 
 import static org.junit.Assert.fail;
 import net.minecraft.nbt.NBTTagCompound;

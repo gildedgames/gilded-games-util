@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +37,7 @@ public class PlayerHookSaveHandler
 	{
 		this.playerDirectory = event.playerDirectory;
 
-		this.writePlayerData(UUID.fromString(event.playerUUID), event.entityPlayer);
+		this.writePlayerData(UUID.fromString(event.playerUUID), PlayerCore.locate().getPools());
 	}
 
 	@SubscribeEvent
@@ -44,19 +45,19 @@ public class PlayerHookSaveHandler
 	{
 		this.playerDirectory = event.playerDirectory;
 
-		this.readPlayerData(UUID.fromString(event.playerUUID), event.entityPlayer);
+		this.readPlayerData(UUID.fromString(event.playerUUID), event.entityPlayer, PlayerCore.locate().getPools());
 	}
 
-	public void writePlayerData(UUID uuid, EntityPlayer entityplayer)
+	public void writePlayerData(UUID uuid, List<IPlayerHookPool<?>> pools)
 	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : pools)
 		{
 			if (!manager.shouldSave())
 			{
 				continue;
 			}
 
-			IPlayerHook playerHook = manager.get(entityplayer);
+			IPlayerHook playerHook = manager.get(uuid);
 
 			NBTTagCompound tag = new NBTTagCompound();
 
@@ -115,9 +116,9 @@ public class PlayerHookSaveHandler
 		return null;
 	}
 
-	public NBTTagCompound readPlayerData(UUID uuid, EntityPlayer entityplayer)
+	public void readPlayerData(UUID uuid, EntityPlayer entityplayer, List<IPlayerHookPool<?>> pools)
 	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : pools)
 		{
 			if (!manager.shouldSave())
 			{
@@ -132,11 +133,9 @@ public class PlayerHookSaveHandler
 
 			if (playerFile.exists() && playerFile.isFile())
 			{
-				return this.readPlayerHook(playerFile, manager, entityplayer);
+				this.readPlayerHook(playerFile, manager, entityplayer);
 			}
 		}
-
-		return new NBTTagCompound();
 	}
 
 	public void flushData()
@@ -148,7 +147,7 @@ public class PlayerHookSaveHandler
 		{
 			EntityPlayerMP player = (EntityPlayerMP) configManager.playerEntityList.get(i);
 
-			this.writePlayerData(player.getUniqueID(), player);
+			this.writePlayerData(player.getUniqueID(), PlayerCore.locate().getPools());
 		}
 	}
 

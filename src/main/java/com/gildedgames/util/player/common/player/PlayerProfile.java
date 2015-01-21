@@ -148,4 +148,18 @@ public class PlayerProfile implements IPlayerProfile
 		return this.isDirty;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (super.equals(obj))
+		{
+			return true;
+		}
+		if (obj instanceof PlayerProfile && this.getUUID().equals(((PlayerProfile) obj).getUUID()))
+		{
+			return true;
+		}
+		return false;
+	}
+
 }

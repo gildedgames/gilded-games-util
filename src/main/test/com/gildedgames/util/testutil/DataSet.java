@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.world.common.world.IWorld;
@@ -13,6 +16,18 @@ public class DataSet
 {
 
 	private static Random random = new Random();
+
+	public static List<IPlayerHookPool<?>> playerHookPools(List<UUID> uuids)
+	{
+		List<IPlayerHookPool<?>> pools = new ArrayList<IPlayerHookPool<?>>();
+		for (int i = 0; i < 3; i++)
+		{
+			PlayerHookPool<TestPlayerHook> pool = new PlayerHookPool<TestPlayerHook>(Integer.toString(i), new TestPlayerHookFactory(), Side.SERVER);
+			iPlayerHooks(pool, uuids);
+			pools.add(pool);
+		}
+		return pools;
+	}
 
 	public static List<IWorld> iworlds()
 	{
@@ -24,10 +39,9 @@ public class DataSet
 		return worlds;
 	}
 
-	public static List<IPlayerHook> iPlayerHooks(PlayerHookPool<TestPlayerHook> parentPool)
+	public static List<IPlayerHook> iPlayerHooks(PlayerHookPool<TestPlayerHook> parentPool, List<UUID> uuids)
 	{
 		List<TestPlayerHook> players = new ArrayList<TestPlayerHook>();
-		List<UUID> uuids = getUUIDs();
 		for (UUID uuid : uuids)
 		{
 			players.add(parentPool.get(uuid));
@@ -40,7 +54,12 @@ public class DataSet
 		return new ArrayList<IPlayerHook>(players);
 	}
 
-	private static List<UUID> getUUIDs()
+	public static List<IPlayerHook> iPlayerHooks(PlayerHookPool<TestPlayerHook> parentPool)
+	{
+		return iPlayerHooks(parentPool, uuids());
+	}
+
+	public static List<UUID> uuids()
 	{
 		List<UUID> list = new ArrayList<UUID>();
 		for (int i = 0; i < 5; i++)

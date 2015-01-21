@@ -138,4 +138,10 @@ public class TestPlayerHook implements IPlayerHook
 		return false;
 	}
 
+	@Override
+	public int hashCode()
+	{
+		return this.idForCompare;
+	}
+
 }
