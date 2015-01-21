@@ -7,4 +7,6 @@ public interface IWorldHookFactory<W extends IWorldHook>
 
 	public W create(IWorld w);
 
+	public IWorld getWorldFor(int dimId);
+
 }

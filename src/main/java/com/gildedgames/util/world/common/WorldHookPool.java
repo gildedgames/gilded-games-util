@@ -53,7 +53,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 		{
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
-			final W hook = this.factory.create(WorldCore.get(dimId));
+			final W hook = this.factory.create(this.factory.getWorldFor(dimId));
 			hook.read(newTag);
 			this.hooks.add(hook);
 		}

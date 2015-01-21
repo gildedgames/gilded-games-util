@@ -17,11 +17,6 @@ public class PlayerServices
 
 	private List<IPlayerHookPool<?>> playerHookPools;
 
-	public PlayerServices()
-	{
-
-	}
-
 	public List<IPlayerHookPool<?>> getPools()
 	{
 		if (this.playerHookPools == null)
@@ -34,6 +29,10 @@ public class PlayerServices
 
 	public int getPoolID(IPlayerHookPool<?> playerHookPool)
 	{
+		//I'm doubting the validity of this method. Consider the case where the client has a mod
+		//that uses PlayerHooks that the server doesn't have. It is possible that the server will 
+		//choose the wrong id then, breaking syncing.
+		//Using the name for syncing sounds more reliable
 		for (int id = 0; id < this.getPools().size(); id++)
 		{
 			IPlayerHookPool<?> pool = this.getPools().get(id);
@@ -49,7 +48,7 @@ public class PlayerServices
 
 	public void writeHookReference(IPlayerHook playerHook, ByteBuf buf)
 	{
-		int poolID = PlayerCore.locate().getPoolID(playerHook.getParentPool());
+		int poolID = this.getPoolID(playerHook.getParentPool());//PlayerCore.locate().getPoolID(playerHook.getParentPool());
 
 		buf.writeInt(poolID);
 
@@ -58,11 +57,11 @@ public class PlayerServices
 
 	public IPlayerHook readHookReference(EntityPlayer player, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = this.getPools().get(buf.readInt());//PlayerCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 
-		profile.readFromServer(buf);
+		profile.readFromServer(buf);//Assuming disregard cuz player is known
 
 		IPlayerHook playerHook = manager.get(player);
 
@@ -71,7 +70,7 @@ public class PlayerServices
 
 	public IPlayerHook readHookReference(Side side, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = this.getPools().get(buf.readInt());//PlayerCore.locate().getPools().get(buf.readInt());
 
 		PlayerProfile profile = new PlayerProfile();
 

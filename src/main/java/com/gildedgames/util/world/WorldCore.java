@@ -18,13 +18,15 @@ import com.gildedgames.util.world.common.IWorldHook;
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.WorldEventHandler;
 import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.world.common.world.WorldMinecraftFactory;
 
 public class WorldCore implements ICore
 {
 
 	public static final WorldCore INSTANCE = new WorldCore();
 
-	private SidedObject<WorldServices> serviceLocator = new SidedObject<WorldServices>(new WorldServices(true), new WorldServices(false));
+	//Change the factories here to use different IWorlds throughout the workspace
+	private SidedObject<WorldServices> serviceLocator = new SidedObject<WorldServices>(new WorldServices(true, new WorldMinecraftFactory()), new WorldServices(false, new WorldMinecraftFactory()));
 
 	private WorldEventHandler worldEventHandler = new WorldEventHandler();
 

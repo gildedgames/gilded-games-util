@@ -6,7 +6,6 @@ import java.util.List;
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.IWorldFactory;
-import com.gildedgames.util.world.common.world.WorldMinecraftFactory;
 
 public class WorldServices
 {
@@ -15,13 +14,14 @@ public class WorldServices
 
 	private List<IWorld> worldWrappers = new ArrayList<IWorld>();
 
-	private final IWorldFactory<?> wrapperFactory = new WorldMinecraftFactory();//Change to use different IWorld wrappers
+	private final IWorldFactory<?> wrapperFactory;//Change to use different IWorld wrappers
 
 	private final boolean isRemote;
 
-	public WorldServices(boolean isRemote)
+	public WorldServices(boolean isRemote, IWorldFactory<?> wrapperFactory)
 	{
 		this.isRemote = isRemote;
+		this.wrapperFactory = wrapperFactory;
 	}
 
 	public List<IWorldHookPool<?>> getPools()
