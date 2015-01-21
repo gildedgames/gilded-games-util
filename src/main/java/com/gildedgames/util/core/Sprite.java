@@ -1,4 +1,4 @@
-package com.gildedgames.util.tab.client.util;
+package com.gildedgames.util.core;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 

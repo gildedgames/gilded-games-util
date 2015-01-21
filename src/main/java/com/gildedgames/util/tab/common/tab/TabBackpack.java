@@ -16,8 +16,8 @@ import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import com.gildedgames.util.core.Sprite;
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.tab.client.util.Sprite;
 import com.gildedgames.util.tab.common.util.ITab;
 
 /**
