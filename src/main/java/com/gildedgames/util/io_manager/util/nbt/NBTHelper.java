@@ -17,7 +17,12 @@ public class NBTHelper
 
 	public static NBTTagCompound readInputNBT(DataInputStream input) throws IOException
 	{
-		return input.readBoolean() ? CompressedStreamTools.readCompressed(input) : null;
+		if (input.readBoolean())
+		{
+			//DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(input)));
+			return CompressedStreamTools.readCompressed(input);
+		}
+		return null;
 	}
 
 	public static void writeOutputNBT(NBTTagCompound tag, DataOutputStream output) throws IOException
@@ -29,6 +34,7 @@ public class NBTHelper
 		else
 		{
 			output.writeBoolean(true);
+			//DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(output)));
 			CompressedStreamTools.writeCompressed(tag, output);
 		}
 	}

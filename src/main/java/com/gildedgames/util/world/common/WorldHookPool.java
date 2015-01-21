@@ -37,6 +37,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 			final IWorld world = entry.getWorld();
 			newTag.setInteger("dimId", world.getDimensionID());
 			entry.write(newTag);
+			tagList.appendTag(newTag);
 		}
 
 		output.setTag("worlds", tagList);
@@ -45,9 +46,10 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		final NBTTagList tagList = input.getTagList("worlds", 9);
+		final NBTTagList tagList = input.getTagList("worlds", 10);
 
-		for (int i = 0; i < tagList.tagCount(); i++)
+		int count = tagList.tagCount();
+		for (int i = 0; i < count; i++)
 		{
 			final NBTTagCompound newTag = tagList.getCompoundTagAt(i);
 			final int dimId = newTag.getInteger("dimId");
