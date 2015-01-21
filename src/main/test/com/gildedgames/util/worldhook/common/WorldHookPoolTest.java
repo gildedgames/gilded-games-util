@@ -19,7 +19,10 @@ import net.minecraft.world.IBlockAccess;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.worldhook.common.world.IWorld;
+import com.gildedgames.util.world.common.IWorldHook;
+import com.gildedgames.util.world.common.IWorldHookFactory;
+import com.gildedgames.util.world.common.WorldHookPool;
+import com.gildedgames.util.world.common.world.IWorld;
 
 /**
  * @author Emile
