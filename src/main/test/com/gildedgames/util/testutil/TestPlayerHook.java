@@ -14,10 +14,14 @@ public class TestPlayerHook implements IPlayerHook
 
 	IPlayerProfile profile;
 
+	IPlayerHookPool<TestPlayerHook> pool;
+
 	public int idForCompare;
 
-	public TestPlayerHook()
+	public TestPlayerHook(IPlayerProfile profile, IPlayerHookPool<TestPlayerHook> pool)
 	{
+		this.profile = profile;
+		this.pool = pool;
 	}
 
 	@Override
@@ -77,7 +81,7 @@ public class TestPlayerHook implements IPlayerHook
 	@Override
 	public IPlayerHookPool<TestPlayerHook> getParentPool()
 	{
-		return null;
+		return this.pool;
 	}
 
 	@Override
@@ -90,12 +94,6 @@ public class TestPlayerHook implements IPlayerHook
 	public IPlayerProfile getProfile()
 	{
 		return this.profile;
-	}
-
-	@Override
-	public void setProfile(IPlayerProfile profile)
-	{
-		this.profile = profile;
 	}
 
 	@Override

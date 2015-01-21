@@ -13,13 +13,11 @@ public interface IPlayerHookPool<T extends IPlayerHook>
 
 	String getName();
 
-	Class<T> getPlayerHookType();
+	IPlayerHookFactory<T> getFactory();
 
 	T get(EntityPlayer player);
 
 	T get(UUID playerUuid);
-
-	T createEmpty();
 
 	void add(T playerHook);
 

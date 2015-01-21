@@ -5,28 +5,35 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 public class GroupMember implements IPlayerHook
 {
-	
+
 	private IPlayerProfile profile;
-	
+
+	private IPlayerHookPool<GroupMember> pool;
+
 	private boolean isDirty;
+
+	public GroupMember(IPlayerProfile profile, IPlayerHookPool<GroupMember> pool)
+	{
+		this.profile = profile;
+		this.pool = pool;
+	}
 
 	@Override
 	public void read(NBTTagCompound arg0)
 	{
-		
+
 	}
 
 	@Override
 	public void write(NBTTagCompound arg0)
 	{
-		
+
 	}
 
 	@Override
@@ -50,37 +57,37 @@ public class GroupMember implements IPlayerHook
 	@Override
 	public void readFromClient(ByteBuf arg0)
 	{
-		
+
 	}
 
 	@Override
 	public void readFromServer(ByteBuf arg0)
 	{
-		
+
 	}
 
 	@Override
 	public void writeToClient(ByteBuf arg0)
 	{
-		
+
 	}
 
 	@Override
 	public void writeToServer(ByteBuf arg0)
 	{
-		
+
 	}
 
 	@Override
 	public void entityInit(EntityPlayer player)
 	{
-		
+
 	}
 
 	@Override
-	public IPlayerHookPool getParentPool()
+	public IPlayerHookPool<GroupMember> getParentPool()
 	{
-		return GroupCore.locate().getPlayers();
+		return this.pool;
 	}
 
 	@Override
@@ -88,23 +95,17 @@ public class GroupMember implements IPlayerHook
 	{
 		return this.profile;
 	}
-	
-	@Override
-	public void setProfile(IPlayerProfile profile)
-	{
-		this.profile = profile;
-	}
 
 	@Override
 	public void onChangedDimension()
 	{
-		
+
 	}
 
 	@Override
 	public void onDeath()
 	{
-		
+
 	}
 
 	@Override
@@ -116,13 +117,13 @@ public class GroupMember implements IPlayerHook
 	@Override
 	public void onRespawn()
 	{
-		
+
 	}
 
 	@Override
 	public void onUpdate()
 	{
-		
+
 	}
-	
+
 }

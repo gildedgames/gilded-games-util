@@ -17,7 +17,7 @@ public interface IPlayerHook extends NBT, ISyncable
 
 	IPlayerProfile getProfile();
 
-	void setProfile(IPlayerProfile profile);
+	//void setProfile(IPlayerProfile profile);
 
 	void onUpdate();
 

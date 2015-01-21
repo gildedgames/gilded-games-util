@@ -15,15 +15,21 @@ import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.testutil.DataSet;
 import com.gildedgames.util.testutil.TestPlayerHook;
+import com.gildedgames.util.testutil.TestPlayerHookFactory;
 
 public class PlayerServicesTest
 {
+
+	private PlayerHookPool<TestPlayerHook> createPool()
+	{
+		return new PlayerHookPool<TestPlayerHook>("test", new TestPlayerHookFactory(), Side.SERVER);
+	}
 
 	@Test
 	public void testRegisterAndGetPools()
 	{
 		PlayerServices playerServices = new PlayerServices();
-		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class, Side.SERVER);
+		PlayerHookPool<TestPlayerHook> playerHookPool = this.createPool();
 		playerServices.registerPlayerHookPool(playerHookPool);
 		Assert.assertTrue(playerServices.getPools().contains(playerHookPool));
 	}
@@ -32,15 +38,16 @@ public class PlayerServicesTest
 	public void testReadWriteHookReference()
 	{
 		PlayerServices playerServices = new PlayerServices();
-		PlayerHookPool<TestPlayerHook> playerHookPool = new PlayerHookPool<TestPlayerHook>("test", TestPlayerHook.class, Side.SERVER);
+		PlayerHookPool<TestPlayerHook> playerHookPool = this.createPool();
 		playerServices.registerPlayerHookPool(playerHookPool);
 		List<IPlayerHook> playerHooks = DataSet.iPlayerHooks(playerHookPool);
 		for (IPlayerHook playerHook : playerHooks)
 		{
 			ByteBuf buf = Unpooled.buffer();
 			playerServices.writeHookReference(playerHook, buf);
-			IPlayerHook playerHookRead = playerServices.readHookReference(Side.SERVER, buf);
-			Assert.assertEquals(playerHook, playerHookRead);
+			ByteBuf readBuf = Unpooled.copiedBuffer(buf);
+			IPlayerHook playerHookRead = playerServices.readHookReference(Side.SERVER, readBuf);
+			Assert.assertSame(playerHook, playerHookRead);
 		}
 	}
 

@@ -29,13 +29,21 @@ public class PlayerUniverse implements IPlayerHook
 
 	private EntityPlayer player;
 
-	private IPlayerProfile profile;
+	private final IPlayerProfile profile;
 
 	private boolean isDirty;
 
 	private String universeID = UniverseAPI.instance().getMinecraftUniverseID();
 
 	private Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
+
+	private IPlayerHookPool<PlayerUniverse> pool;
+
+	public PlayerUniverse(IPlayerHookPool<PlayerUniverse> pool, IPlayerProfile profile)
+	{
+		this.profile = profile;
+		this.pool = pool;
+	}
 
 	@Override
 	public void entityInit(EntityPlayer player)
@@ -269,19 +277,13 @@ public class PlayerUniverse implements IPlayerHook
 	@Override
 	public IPlayerHookPool<PlayerUniverse> getParentPool()
 	{
-		return UniverseCore.locate().getPlayers();
+		return this.pool;
 	}
 
 	@Override
 	public IPlayerProfile getProfile()
 	{
 		return this.profile;
-	}
-
-	@Override
-	public void setProfile(IPlayerProfile profile)
-	{
-		this.profile = profile;
 	}
 
 }

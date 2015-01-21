@@ -94,32 +94,19 @@ public class PlayerHookSaveHandler
 		try
 		{
 			FileInputStream inputStream = new FileInputStream(playerFile);
-
 			NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
 
-			T playerHook = pool.getPlayerHookType().newInstance();
-
 			PlayerProfile profile = new PlayerProfile();
-
 			profile.read(tag);
-
 			profile.setEntity(entityplayer);
 
-			playerHook.setProfile(profile);
+			T playerHook = pool.getFactory().create(profile, pool);
 
 			playerHook.read(tag);
 
 			pool.add(playerHook);
 
 			return tag;
-		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
-			e.printStackTrace();
 		}
 		catch (IOException e)
 		{

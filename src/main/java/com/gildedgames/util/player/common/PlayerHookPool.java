@@ -21,16 +21,16 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 
 	private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
 
-	private String name;
+	private final String name;
 
-	private Class<T> type;
+	private final IPlayerHookFactory<T> factory;
 
-	private Side side;
+	private final Side side;
 
-	public PlayerHookPool(String name, Class<T> playerHookType, Side side)
+	public PlayerHookPool(String name, IPlayerHookFactory<T> factory, Side side)
 	{
 		this.name = name;
-		this.type = playerHookType;
+		this.factory = factory;
 		this.side = side;
 	}
 
@@ -48,9 +48,9 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	}
 
 	@Override
-	public Class<T> getPlayerHookType()
+	public IPlayerHookFactory<T> getFactory()
 	{
-		return this.type;
+		return this.factory;
 	}
 
 	@Override
@@ -81,23 +81,22 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 				}
 			}
 
-			player = this.createEmpty();
-
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);
 
-			player.setProfile(profile);
+			player = this.factory.create(profile, this);
 
 			this.add(player);
 		}
 
-		if (player.getProfile() == null)
+		//Old code. PlayerHooks should never be instantiated without a profile
+		/*if (player.getProfile() == null)
 		{
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);
 
 			player.setProfile(profile);
-		}
+		}*/
 
 		return player;
 	}
@@ -121,29 +120,6 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	public boolean shouldSave()
 	{
 		return true;
-	}
-
-	@Override
-	public T createEmpty()
-	{
-		try
-		{
-			T player = this.type.newInstance();
-
-			PlayerProfile profile = new PlayerProfile();
-			player.setProfile(profile);
-
-			return player;
-		}
-		catch (InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 }

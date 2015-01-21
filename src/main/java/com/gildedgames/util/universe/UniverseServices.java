@@ -7,6 +7,7 @@ import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
+import com.gildedgames.util.universe.common.player.PlayerUniverseFactory;
 
 public class UniverseServices
 {
@@ -26,7 +27,7 @@ public class UniverseServices
 	{
 		if (this.players == null)
 		{
-			this.players = new PlayerHookPool<PlayerUniverse>(UtilCore.MOD_ID, PlayerUniverse.class, this.side);
+			this.players = new PlayerHookPool<PlayerUniverse>(UtilCore.MOD_ID, new PlayerUniverseFactory(), this.side);
 		}
 
 		return this.players;

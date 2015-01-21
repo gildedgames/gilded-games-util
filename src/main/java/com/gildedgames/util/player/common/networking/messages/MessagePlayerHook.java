@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.PlayerProfile;
 
 public class MessagePlayerHook implements IMessage
 {
@@ -52,9 +53,13 @@ public class MessagePlayerHook implements IMessage
 		{
 			if (ctx.side.isClient())
 			{
-				IPlayerHookPool<?> manager = PlayerCore.locate().getPools().get(message.buf.readInt());
+				IPlayerHookPool manager = PlayerCore.locate().getPools().get(message.buf.readInt());
 
-				IPlayerHook playerHook = manager.createEmpty();
+				PlayerProfile profile = new PlayerProfile();
+				profile.readFromServer(message.buf);
+
+				IPlayerHook playerHook = manager.getFactory().create(profile, manager);
+
 				playerHook.getProfile().readFromServer(message.buf);
 				playerHook.readFromServer(message.buf);
 			}
