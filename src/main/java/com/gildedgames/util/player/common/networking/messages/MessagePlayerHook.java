@@ -1,6 +1,7 @@
 package com.gildedgames.util.player.common.networking.messages;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -37,9 +38,7 @@ public class MessagePlayerHook implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		int poolID = PlayerCore.locate().getPoolID(this.playerHook.getParentPool());
-
-		buf.writeInt(poolID);
+		ByteBufUtils.writeUTF8String(buf, this.playerHook.getParentPool().getName());
 
 		this.playerHook.getProfile().writeToClient(buf);
 		this.playerHook.writeToClient(buf);
@@ -53,7 +52,7 @@ public class MessagePlayerHook implements IMessage
 		{
 			if (ctx.side.isClient())
 			{
-				IPlayerHookPool manager = PlayerCore.locate().getPools().get(message.buf.readInt());
+				IPlayerHookPool manager = PlayerCore.locate().getPool(ByteBufUtils.readUTF8String(message.buf));
 
 				PlayerProfile profile = new PlayerProfile();
 				profile.readFromServer(message.buf);

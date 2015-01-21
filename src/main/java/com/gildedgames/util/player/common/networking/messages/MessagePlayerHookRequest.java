@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -35,16 +36,14 @@ public class MessagePlayerHookRequest implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = PlayerCore.locate().getPools().get(buf.readInt());
+		this.pool = PlayerCore.locate().getPool(ByteBufUtils.readUTF8String(buf));
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		int poolID = PlayerCore.locate().getPoolID(this.pool);
-
-		buf.writeInt(poolID);
+		ByteBufUtils.writeUTF8String(buf, this.pool.getName());
 
 		buf.writeLong(this.uuid.getMostSignificantBits());
 		buf.writeLong(this.uuid.getLeastSignificantBits());

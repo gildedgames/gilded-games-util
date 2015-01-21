@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.player.common.IPlayerHookPool;
@@ -27,37 +28,35 @@ public class PlayerServices
 		return this.playerHookPools;
 	}
 
-	public int getPoolID(IPlayerHookPool<?> playerHookPool)
+	public String getPoolID(IPlayerHookPool<?> playerHookPool)
 	{
-		//I'm doubting the validity of this method. Consider the case where the client has a mod
-		//that uses PlayerHooks that the server doesn't have. It is possible that the server will 
-		//choose the wrong id then, breaking syncing.
-		//Using the name for syncing sounds more reliable
-		for (int id = 0; id < this.getPools().size(); id++)
-		{
-			IPlayerHookPool<?> pool = this.getPools().get(id);
+		return playerHookPool.getName();
+	}
 
-			if (pool == playerHookPool)
+	public IPlayerHookPool<?> getPool(String id)
+	{
+		for (IPlayerHookPool<?> pool : this.getPools())
+		{
+			if (pool.getName().equals(id))
 			{
-				return id;
+				return pool;
 			}
 		}
-
-		return -1;
+		return null;
 	}
 
 	public void writeHookReference(IPlayerHook playerHook, ByteBuf buf)
 	{
-		int poolID = this.getPoolID(playerHook.getParentPool());//PlayerCore.locate().getPoolID(playerHook.getParentPool());
+		String poolID = this.getPoolID(playerHook.getParentPool());//PlayerCore.locate().getPoolID(playerHook.getParentPool());
 
-		buf.writeInt(poolID);
+		ByteBufUtils.writeUTF8String(buf, poolID);
 
 		playerHook.getProfile().writeToClient(buf);
 	}
 
 	public IPlayerHook readHookReference(EntityPlayer player, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = this.getPools().get(buf.readInt());//PlayerCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = this.getPool(ByteBufUtils.readUTF8String(buf));
 
 		PlayerProfile profile = new PlayerProfile();
 
@@ -70,7 +69,7 @@ public class PlayerServices
 
 	public IPlayerHook readHookReference(Side side, ByteBuf buf)
 	{
-		IPlayerHookPool<?> manager = this.getPools().get(buf.readInt());//PlayerCore.locate().getPools().get(buf.readInt());
+		IPlayerHookPool<?> manager = this.getPool(ByteBufUtils.readUTF8String(buf));
 
 		PlayerProfile profile = new PlayerProfile();
 
