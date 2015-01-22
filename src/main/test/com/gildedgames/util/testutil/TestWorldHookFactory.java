@@ -10,6 +10,8 @@ public class TestWorldHookFactory implements IWorldHookFactory<TestWorldHook>
 
 	List<IWorld> worlds;
 
+	private static int id = 0;
+
 	public TestWorldHookFactory(List<IWorld> worlds)
 	{
 		this.worlds = worlds;
@@ -18,7 +20,7 @@ public class TestWorldHookFactory implements IWorldHookFactory<TestWorldHook>
 	@Override
 	public TestWorldHook create(IWorld w)
 	{
-		return new TestWorldHook(w);
+		return new TestWorldHook(w, id++);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.gildedgames.util.testutil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +28,22 @@ public class DataSet
 			pools.add(pool);
 		}
 		return pools;
+	}
+
+	public static PlayerHookPool<TestPlayerHook> playerHookPool()
+	{
+		return new PlayerHookPool<TestPlayerHook>("test", new TestPlayerHookFactory(), Side.SERVER);
+	}
+
+	public static List<TestWorldHook> worldHooks()
+	{
+		List<TestWorldHook> worldHooks = new ArrayList<TestWorldHook>();
+		int i = 0;
+		for (IWorld world : iworlds())
+		{
+			worldHooks.add(new TestWorldHook(world, i++));
+		}
+		return worldHooks;
 	}
 
 	public static List<IWorld> iworlds()
@@ -59,8 +76,23 @@ public class DataSet
 		List<UUID> list = new ArrayList<UUID>();
 		for (int i = 0; i < 5; i++)
 		{
-			list.add(new UUID(random.nextLong(), random.nextLong()));
+			list.add(uuid());
 		}
 		return list;
+	}
+
+	public static UUID uuid()
+	{
+		return new UUID(random.nextLong(), random.nextLong());
+	}
+
+	public static IPlayerHook playerHook(PlayerHookPool<TestPlayerHook> parentPool)
+	{
+		return parentPool.get(uuid());
+	}
+
+	public static File fileForName(String name)
+	{
+
 	}
 }

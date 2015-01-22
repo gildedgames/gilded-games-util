@@ -32,7 +32,7 @@ public class PlayerProfile implements IPlayerProfile
 	@Override
 	public void onUpdate()
 	{
-		if (this.getUUID() == null)
+		if (this.getUUID() == null && this.player != null)
 		{
 			this.setUUID(this.player.getUniqueID());
 		}

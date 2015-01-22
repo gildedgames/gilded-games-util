@@ -3,7 +3,6 @@
  */
 package com.gildedgames.util.world.common;
 
-import static org.junit.Assert.fail;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
@@ -13,7 +12,6 @@ import com.gildedgames.util.testutil.DataSet;
 import com.gildedgames.util.testutil.TestWorld;
 import com.gildedgames.util.testutil.TestWorldHook;
 import com.gildedgames.util.testutil.TestWorldHookFactory;
-import com.gildedgames.util.world.common.WorldHookPool;
 import com.gildedgames.util.world.common.world.IWorld;
 
 /**
@@ -49,15 +47,6 @@ public class WorldHookPoolTest
 		read.read(tag);
 		Assert.assertEquals("WorldHooks aren't written or read correctly", write.getWorlds(), read.getWorlds());
 
-	}
-
-	/**
-	 * Test method for {@link com.gildedgames.util.worldhook.common.WorldHookPool#get(net.minecraft.world.World)}.
-	 */
-	@Test
-	public void testGetWorld()
-	{
-		fail("Not yet implemented");
 	}
 
 	/**

@@ -10,19 +10,29 @@ public class TestWorldHook implements IWorldHook
 
 	IWorld w;
 
-	public TestWorldHook(IWorld w)
+	int id;
+
+	private TestWorldHook()
+	{
+
+	}
+
+	public TestWorldHook(IWorld w, int id)
 	{
 		this.w = w;
+		this.id = id;
 	}
 
 	@Override
 	public void write(NBTTagCompound output)
 	{
+		output.setInteger("id", this.id);
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
+		this.id = input.getInteger("id");
 	}
 
 	@Override
@@ -54,7 +64,6 @@ public class TestWorldHook implements IWorldHook
 	@Override
 	public boolean equals(Object obj)
 	{
-		// TODO Auto-generated method stub
 		if (super.equals(obj))
 		{
 			return true;
