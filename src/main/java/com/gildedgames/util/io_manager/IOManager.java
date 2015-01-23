@@ -283,12 +283,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return (T) object;
 	}
 
-	public <I> IO<I, ?> read(I input, Class<? extends IO<I, ?>> clazz) throws IOException
+	public <I> IO<I, ?> read(I input, Class<? extends IO<I, ?>> clazz)
 	{
 		return this.read(input, clazz, defaultConstructor);
 	}
 
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> clazz, IConstructor constructor) throws IOException
+	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> clazz, IConstructor constructor)
 	{
 		final T io = this.cast(this.create(clazz, constructor));
 
@@ -297,7 +297,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return io;
 	}
 
-	public <T extends IO<?, O>, O> void write(O output, T object) throws IOException
+	public <T extends IO<?, O>, O> void write(O output, T object)
 	{
 		object.write(output);
 	}

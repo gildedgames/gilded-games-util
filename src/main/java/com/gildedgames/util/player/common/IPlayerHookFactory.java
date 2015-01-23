@@ -5,6 +5,7 @@ import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 public interface IPlayerHookFactory<P extends IPlayerHook>
 {
+	
 	P create(IPlayerProfile profile, IPlayerHookPool<P> pool);
 
 }
