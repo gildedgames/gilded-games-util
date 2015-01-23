@@ -1,6 +1,5 @@
 package com.gildedgames.util.testutil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -91,8 +90,4 @@ public class DataSet
 		return parentPool.get(uuid());
 	}
 
-	public static File fileForName(String name)
-	{
-
-	}
 }
