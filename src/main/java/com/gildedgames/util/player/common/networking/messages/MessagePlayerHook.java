@@ -1,6 +1,9 @@
 package com.gildedgames.util.player.common.networking.messages;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.UUID;
+
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -9,7 +12,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.PlayerProfile;
 
 public class MessagePlayerHook implements IMessage
 {
@@ -39,7 +41,9 @@ public class MessagePlayerHook implements IMessage
 	public void toBytes(ByteBuf buf)
 	{
 		ByteBufUtils.writeUTF8String(buf, this.playerHook.getParentPool().getName());
-
+		UUID uuid = this.playerHook.getProfile().getUUID();
+		buf.writeLong(uuid.getMostSignificantBits());
+		buf.writeLong(uuid.getLeastSignificantBits());
 		this.playerHook.getProfile().writeToClient(buf);
 		this.playerHook.writeToClient(buf);
 	}
@@ -54,10 +58,7 @@ public class MessagePlayerHook implements IMessage
 			{
 				IPlayerHookPool manager = PlayerCore.locate().getPool(ByteBufUtils.readUTF8String(message.buf));
 
-				PlayerProfile profile = new PlayerProfile();
-				profile.readFromServer(message.buf);
-
-				IPlayerHook playerHook = manager.getFactory().create(profile, manager);
+				IPlayerHook playerHook = manager.get(new UUID(message.buf.readLong(), message.buf.readLong()));//manager.getFactory().create(profile, manager);
 
 				playerHook.getProfile().readFromServer(message.buf);
 				playerHook.readFromServer(message.buf);
@@ -65,7 +66,6 @@ public class MessagePlayerHook implements IMessage
 
 			return null;
 		}
-
 	}
 
 }
