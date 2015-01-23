@@ -2,7 +2,6 @@ package com.gildedgames.util.universe;
 
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.universe.common.UniverseAPI;
@@ -27,7 +26,7 @@ public class UniverseServices
 	{
 		if (this.players == null)
 		{
-			this.players = new PlayerHookPool<PlayerUniverse>(UtilCore.MOD_ID, new PlayerUniverseFactory(), this.side);
+			this.players = new PlayerHookPool<PlayerUniverse>("universe", new PlayerUniverseFactory(), this.side);
 		}
 
 		return this.players;

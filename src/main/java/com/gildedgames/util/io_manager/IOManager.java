@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -16,6 +15,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
@@ -109,7 +110,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return metadata;
 	}
 
-	private DataInputStream createDataInput(File file) throws FileNotFoundException
+	private DataInputStream createDataInput(File file) throws IOException
 	{
 		if (!file.exists())
 		{
@@ -117,7 +118,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
+		final BufferedInputStream bufferedInputStream = new BufferedInputStream(new GZIPInputStream(fileInputStream), BUFFER_SIZE);
 
 		return new DataInputStream(bufferedInputStream);
 	}
@@ -168,7 +169,10 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
-		file.getParentFile().mkdirs();
+		if (file.getParentFile() != null)
+		{
+			file.getParentFile().mkdirs();
+		}
 
 		if (!file.exists())
 		{
@@ -176,7 +180,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
-		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
+		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new GZIPOutputStream(fileOutputStream), BUFFER_SIZE);
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 

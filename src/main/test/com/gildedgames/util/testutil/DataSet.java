@@ -1,5 +1,6 @@
 package com.gildedgames.util.testutil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -88,6 +89,21 @@ public class DataSet
 	public static IPlayerHook playerHook(PlayerHookPool<TestPlayerHook> parentPool)
 	{
 		return parentPool.get(uuid());
+	}
+
+	public static List<TestNBTFile> nbtFiles()
+	{
+		List<TestNBTFile> list = new ArrayList<TestNBTFile>();
+		for (int i = 0; i < 5; i++)
+		{
+			list.add(new TestNBTFile(i, i + 100));
+		}
+		return list;
+	}
+
+	public static File fileFor(String path)
+	{
+		return new File(System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test" + File.separator + path);
 	}
 
 }

@@ -19,8 +19,7 @@ public class NBTHelper
 	{
 		if (input.readBoolean())
 		{
-			//DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(input)));
-			return CompressedStreamTools.readCompressed(input);
+			return CompressedStreamTools.read(input);
 		}
 		return null;
 	}
@@ -34,8 +33,17 @@ public class NBTHelper
 		else
 		{
 			output.writeBoolean(true);
-			//DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(output)));
-			CompressedStreamTools.writeCompressed(tag, output);
+			CompressedStreamTools.write(tag, output);
+			/*NBTTagList tagList = new NBTTagList();
+			tagList.appendTag(tag);
+			dataoutputstream.writeByte(tagList.getId());
+
+			if (tagList.getId() != 0)
+			{
+				dataoutputstream.writeUTF("");
+			    tagList.write(dataoutputstream);
+			}*/
+			//CompressedStreamTools.writeCompressed(tag, output);
 		}
 	}
 

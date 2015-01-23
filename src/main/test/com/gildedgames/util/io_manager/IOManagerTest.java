@@ -2,13 +2,18 @@ package com.gildedgames.util.io_manager;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTManager;
 import com.gildedgames.util.testutil.DataSet;
+import com.gildedgames.util.testutil.TestMetadata;
+import com.gildedgames.util.testutil.TestNBTFile;
 import com.gildedgames.util.testutil.TestPlayerHook;
 import com.gildedgames.util.testutil.TestPlayerHookFactory;
 import com.gildedgames.util.testutil.TestWorldHook;
@@ -27,6 +32,8 @@ public class IOManagerTest
 		manager.register(TestWorldHook.class, 0);
 		manager.register(TestPlayerHook.class, 1);
 		manager.register(TestPlayerHookFactory.class, 2);
+		manager.register(TestMetadata.class, 3);
+		manager.register(TestNBTFile.class, 4);
 		return manager;
 	}
 
@@ -43,8 +50,23 @@ public class IOManagerTest
 	@Test
 	public void testReadWriteOne()
 	{
-		List<TestWorldHook> hooks = DataSet.worldHooks();
-
+		List<TestNBTFile> files = DataSet.nbtFiles();
+		NBTManager manager = this.dataSet();
+		for (TestNBTFile object : files)
+		{
+			File file = DataSet.fileFor(object.toString() + ".test");
+			try
+			{
+				manager.writeFile(file, object, new NBTFactory());
+				TestNBTFile readBack = (TestNBTFile) manager.readFile(file, new NBTFactory());
+				Assert.assertEquals(object, readBack);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				Assert.fail(e.getMessage());
+			}
+		}
 	}
 
 	@Test
