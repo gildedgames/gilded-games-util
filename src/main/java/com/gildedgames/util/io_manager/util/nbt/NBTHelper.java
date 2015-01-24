@@ -17,7 +17,11 @@ public class NBTHelper
 
 	public static NBTTagCompound readInputNBT(DataInputStream input) throws IOException
 	{
-		return input.readBoolean() ? CompressedStreamTools.readCompressed(input) : null;
+		if (input.readBoolean())
+		{
+			return CompressedStreamTools.read(input);
+		}
+		return null;
 	}
 
 	public static void writeOutputNBT(NBTTagCompound tag, DataOutputStream output) throws IOException
@@ -29,31 +33,14 @@ public class NBTHelper
 		else
 		{
 			output.writeBoolean(true);
-			CompressedStreamTools.writeCompressed(tag, output);
+			CompressedStreamTools.write(tag, output);
 		}
 	}
 
 	public static void save(String fileName, NBTTagCompound tag)
 	{
-		try
-		{
-			final File file = new File(getWorldFolderPath(), fileName);
-
-			file.createNewFile();
-			final FileOutputStream outputStream = new FileOutputStream(file);
-
-			CompressedStreamTools.writeCompressed(tag, outputStream);
-
-			outputStream.close();
-		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
+		final File file = new File(getWorldFolderPath(), fileName);
+		save(file, tag);
 	}
 
 	public static NBTTagCompound load(String fileName)
@@ -63,26 +50,7 @@ public class NBTHelper
 		{
 			return new NBTTagCompound();
 		}
-
-		try
-		{
-			final FileInputStream inputStream = new FileInputStream(file);
-
-			final NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
-
-			inputStream.close();
-
-			return tag;
-		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		return load(file);
 	}
 
 	private static String getWorldFolderPath()

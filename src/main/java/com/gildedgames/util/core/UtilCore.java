@@ -3,11 +3,14 @@ package com.gildedgames.util.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.menuhook.MenuCore;
-import com.gildedgames.util.playerhook.PlayerHookCore;
-import com.gildedgames.util.playerhook.PlayerHookServices;
-import com.gildedgames.util.worldhook.WorldCore;
+import com.gildedgames.util.menu.MenuCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.PlayerServices;
+import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.world.WorldCore;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -23,7 +26,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
-public class UtilCore extends PlayerHookServices implements ICore
+public class UtilCore extends PlayerServices implements ICore
 {
 
 	public static final String MOD_ID = "gilded-games-util";
@@ -46,9 +49,11 @@ public class UtilCore extends PlayerHookServices implements ICore
 
 	public UtilCore()
 	{
-		this.cores.add(PlayerHookCore.INSTANCE);
+		this.cores.add(PlayerCore.INSTANCE);
 		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
+		this.cores.add(TabCore.INSTANCE);
+		this.cores.add(UniverseCore.INSTANCE);
 	}
 
 	public static void registerIO(Class<?> clazz, int id)
@@ -177,14 +182,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 
 	public static Side getSide()
 	{
-		Thread thr = Thread.currentThread();
-
-		if (thr.getName().equals("Server thread") || thr.getName().startsWith("Netty Server IO"))
-		{
-			return Side.SERVER;
-		}
-
-		return Side.CLIENT;
+		return FMLCommonHandler.instance().getEffectiveSide();
 	}
 
 	public static void debugPrint(Object line)

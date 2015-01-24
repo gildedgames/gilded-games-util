@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -16,6 +15,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
@@ -109,7 +110,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return metadata;
 	}
 
-	private DataInputStream createDataInput(File file) throws FileNotFoundException
+	private DataInputStream createDataInput(File file) throws IOException
 	{
 		if (!file.exists())
 		{
@@ -117,7 +118,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER_SIZE);
+		final BufferedInputStream bufferedInputStream = new BufferedInputStream(new GZIPInputStream(fileInputStream), BUFFER_SIZE);
 
 		return new DataInputStream(bufferedInputStream);
 	}
@@ -149,7 +150,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReading(ioFile, file, reader);
 
-		ioFile.readFromFile(this, reader);
+		ioFile.read(reader);
 	}
 
 	private void readMetadata(File file, IOFileMetadata<READER, WRITER> ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
@@ -168,7 +169,10 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	public void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
-		file.getParentFile().mkdirs();
+		if (file.getParentFile() != null)
+		{
+			file.getParentFile().mkdirs();
+		}
 
 		if (!file.exists())
 		{
@@ -176,7 +180,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 
 		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
-		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream, BUFFER_SIZE);
+		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new GZIPOutputStream(fileOutputStream), BUFFER_SIZE);
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
@@ -198,7 +202,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
-		ioFile.writeToFile(this, writer);
+		ioFile.write(writer);
 
 		rwFac.finishWriting(dataOutput, writer);
 
@@ -279,12 +283,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return (T) object;
 	}
 
-	public <I> IO<I, ?> read(I input, Class<? extends IO<I, ?>> clazz) throws IOException
+	public <I> IO<I, ?> read(I input, Class<? extends IO<I, ?>> clazz)
 	{
 		return this.read(input, clazz, defaultConstructor);
 	}
 
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> clazz, IConstructor constructor) throws IOException
+	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> clazz, IConstructor constructor)
 	{
 		final T io = this.cast(this.create(clazz, constructor));
 
@@ -293,7 +297,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return io;
 	}
 
-	public <T extends IO<?, O>, O> void write(O output, T object) throws IOException
+	public <T extends IO<?, O>, O> void write(O output, T object)
 	{
 		object.write(output);
 	}
@@ -303,16 +307,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 	 */
 	public <T extends IO<O, O>, O> T clone(O io, T object) throws IOException
 	{
-		return this.clone(io, io, object);
-	}
-
-	public <T extends IO<I, O>, I, O> T clone(I input, O output, T object) throws IOException
-	{
+		//Doesn't use IOFile's metadata structure
 		final T clone = this.cast(this.create(object.getClass(), defaultConstructor));
 
-		object.write(output);
+		object.write(io);
 
-		clone.read(input);
+		clone.read(io);
 
 		return clone;
 	}

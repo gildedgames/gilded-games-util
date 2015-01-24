@@ -39,7 +39,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 	@Override
 	public File getFileFromName(IOFile<NBTTagCompound, NBTTagCompound> data, String name)
 	{
-		return null;
+		return new File(name);
 	}
 
 	@Override
