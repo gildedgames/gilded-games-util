@@ -3,10 +3,12 @@ package com.gildedgames.util.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.menuhook.MenuCore;
-import com.gildedgames.util.playerhook.PlayerHookCore;
-import com.gildedgames.util.playerhook.PlayerHookServices;
-import com.gildedgames.util.worldhook.WorldHookCore;
+import com.gildedgames.util.menu.MenuCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.PlayerServices;
+import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.world.WorldCore;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -22,13 +24,13 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies="before:*")
-public class UtilCore extends PlayerHookServices implements ICore
+@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
+public class UtilCore extends PlayerServices implements ICore
 {
 
 	public static final String MOD_ID = "gilded-games-util";
 
-	public static final String VERSION = "1.8-1.0";
+	public static final String VERSION = "1.7.10-1.0";
 
 	private static final boolean DEBUG_MODE = true;
 
@@ -46,9 +48,17 @@ public class UtilCore extends PlayerHookServices implements ICore
 
 	public UtilCore()
 	{
-		this.cores.add(PlayerHookCore.INSTANCE);
-		this.cores.add(WorldHookCore.INSTANCE);
+		this.cores.add(PlayerCore.INSTANCE);
+		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
+		this.cores.add(TabCore.INSTANCE);
+		this.cores.add(UniverseCore.INSTANCE);
+	}
+
+	public static void registerIO(Class<?> clazz, int id)
+	{
+		instance.serviceLocator.client().getIO().register(clazz, id);
+		instance.serviceLocator.server().getIO().register(clazz, id);
 	}
 
 	@Override
@@ -61,8 +71,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.preInit(event);
 		}
-		
-		this.proxy.preInit(event);
+
+		proxy.preInit(event);
 	}
 
 	@Override
@@ -73,8 +83,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.init(event);
 		}
-		
-		this.proxy.init(event);
+
+		proxy.init(event);
 	}
 
 	@Override
@@ -85,8 +95,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.postInit(event);
 		}
-		
-		this.proxy.postInit(event);
+
+		proxy.postInit(event);
 	}
 
 	@Override
@@ -97,8 +107,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverAboutToStart(event);
 		}
-		
-		this.proxy.serverAboutToStart(event);
+
+		proxy.serverAboutToStart(event);
 	}
 
 	@Override
@@ -109,8 +119,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarting(event);
 		}
-		
-		this.proxy.serverStarting(event);
+
+		proxy.serverStarting(event);
 	}
 
 	@Override
@@ -121,8 +131,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStarted(event);
 		}
-		
-		this.proxy.serverStarted(event);
+
+		proxy.serverStarted(event);
 	}
 
 	@Override
@@ -133,8 +143,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopping(event);
 		}
-		
-		this.proxy.serverStopping(event);
+
+		proxy.serverStopping(event);
 	}
 
 	@Override
@@ -145,8 +155,8 @@ public class UtilCore extends PlayerHookServices implements ICore
 		{
 			core.serverStopped(event);
 		}
-		
-		this.proxy.serverStopped(event);
+
+		proxy.serverStopped(event);
 	}
 
 	public static UtilServices locate()

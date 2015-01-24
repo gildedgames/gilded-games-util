@@ -1,20 +1,22 @@
 package com.gildedgames.util.io_manager.io;
 
-import java.io.IOException;
+import com.google.common.base.Optional;
 
-import com.gildedgames.util.io_manager.IOManager;
-
-public interface IOFile<I, O>
+public interface IOFile<I, O> extends IO<I, O>
 {
 
-	void readFromFile(IOManager manager, I reader) throws IOException;
-
-	void writeToFile(IOManager manager, O writer) throws IOException;
-	
-	Class getDataClass();
+	Class<?> getDataClass();
 
 	String getFileExtension();
 
 	String getDirectoryName();
+
+	/**
+	 * Returns the data describing this file. Can be used to optimize reading essential data.
+	 * Make sure Metadata have default constructors!
+	 */
+	Optional<IOFileMetadata<I, O>> getMetadata();
+
+	void setMetadata(IOFileMetadata<I, O> metadata);
 
 }

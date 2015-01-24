@@ -11,23 +11,24 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.gildedgames.util.io_manager.io.NBT;
-
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+
+import com.gildedgames.util.io_manager.io.NBT;
 
 public class NBTDataHandler
 {
 
 	private String path;
 
-	public NBTDataHandler()
+	public NBTDataHandler(String mainDirectory)
 	{
+		this.path = mainDirectory;
 		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
 		{
-			this.path = (MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName())).getAbsolutePath().replace((MinecraftServer.getServer().getFolderName() + ".dat"), "");
+			this.path = MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 		}
 	}
 
@@ -64,7 +65,7 @@ public class NBTDataHandler
 		}
 	}
 
-	public ArrayList load(Class<? extends NBT> clazz, String fileName)
+	public <T extends NBT> ArrayList<T> load(Class<T> clazz, String fileName)
 	{
 		File file = new File(this.path, fileName);
 
@@ -75,15 +76,15 @@ public class NBTDataHandler
 			NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
 			NBTTagList tagList = tag.getTagList("tagList", 10);
 
-			ArrayList list = new ArrayList();
+			ArrayList<T> list = new ArrayList<T>();
 
 			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
-				NBTTagCompound objectTag = (NBTTagCompound) tagList.getCompoundTagAt(i);
+				NBTTagCompound objectTag = tagList.getCompoundTagAt(i);
 
 				try
 				{
-					NBT object = clazz.newInstance();
+					T object = clazz.newInstance();
 					object.read(objectTag);
 					list.add(object);
 				}
@@ -106,23 +107,23 @@ public class NBTDataHandler
 		{
 		}
 
-		return new ArrayList();
+		return new ArrayList<T>();
 	}
 
 	public void saveMap(String fileName, Map<? extends NBT, ? extends NBT> objects)
 	{
 		NBTTagList tagList = new NBTTagList();
 
-		for (Entry entry : objects.entrySet())
+		for (Entry<? extends NBT, ? extends NBT> entry : objects.entrySet())
 		{
 			NBTTagCompound tag = new NBTTagCompound();
 
 			NBTTagCompound tag1 = new NBTTagCompound();
-			((NBT) entry.getKey()).write(tag1);
+			entry.getKey().write(tag1);
 			tag.setTag("key", tag1);
 
 			NBTTagCompound tag2 = new NBTTagCompound();
-			((NBT) entry.getValue()).write(tag2);
+			entry.getValue().write(tag2);
 			tag.setTag("value", tag2);
 
 			tagList.appendTag(tag);
@@ -150,7 +151,7 @@ public class NBTDataHandler
 		}
 	}
 
-	public HashMap loadMap(Class<? extends NBT> keyClass, Class<? extends NBT> valueClass, String fileName)
+	public HashMap<NBT, NBT> loadMap(Class<? extends NBT> keyClass, Class<? extends NBT> valueClass, String fileName)
 	{
 		File file = new File(this.path, fileName);
 
@@ -161,11 +162,11 @@ public class NBTDataHandler
 			NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
 			NBTTagList tagList = tag.getTagList("tagList", 10);
 
-			HashMap map = new HashMap();
+			HashMap<NBT, NBT> map = new HashMap<NBT, NBT>();
 
 			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
-				NBTTagCompound objectTag = (NBTTagCompound) tagList.getCompoundTagAt(i);
+				NBTTagCompound objectTag = tagList.getCompoundTagAt(i);
 
 				try
 				{
@@ -197,7 +198,7 @@ public class NBTDataHandler
 		{
 		}
 
-		return new HashMap();
+		return new HashMap<NBT, NBT>();
 	}
 
 }
