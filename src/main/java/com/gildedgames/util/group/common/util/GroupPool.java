@@ -43,4 +43,18 @@ public class GroupPool<G extends IGroup> implements IGroupPool<G>
 		this.groups.remove(group);
 	}
 
+	@Override
+	public G get(String name)
+	{
+		for (G group : this.groups)
+		{
+			if (group.getName().equalsIgnoreCase(name))
+			{
+				return group;
+			}
+		}
+		
+		return null;
+	}
+
 }

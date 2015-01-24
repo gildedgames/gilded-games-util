@@ -13,6 +13,10 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.group.common.IGroup;
+import com.gildedgames.util.group.common.IGroupPool;
+import com.gildedgames.util.group.common.network.IGroupController;
+import com.gildedgames.util.group.common.network.IGroupPoolController;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.player.PlayerCore;
 
@@ -31,6 +35,16 @@ public class GroupCore implements ICore
 	public static GroupMember getGroupMember(EntityPlayer player)
 	{
 		return GroupCore.locate().getPlayers().get(player);
+	}
+	
+	public static IGroupPoolController talkTo(IGroupPool groupPool)
+	{
+		return GroupCore.locate().talkTo(groupPool);
+	}
+	
+	public static IGroupController talkTo(IGroup group)
+	{
+		return GroupCore.locate().talkTo(group);
 	}
 
 	@Override

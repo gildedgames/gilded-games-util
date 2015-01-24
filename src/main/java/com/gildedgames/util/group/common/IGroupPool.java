@@ -13,4 +13,6 @@ public interface IGroupPool<T extends IGroup>
 	
 	void remove(T group);
 	
+	T get(String name);
+	
 }
