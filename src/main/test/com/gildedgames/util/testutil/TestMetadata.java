@@ -7,12 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.Assert;
 
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.io.NBT;
 import com.google.common.base.Optional;
 
-public class TestMetadata implements IOFileMetadata<NBTTagCompound, NBTTagCompound>
+public class TestMetadata implements IOFileMetadata<NBTTagCompound, NBTTagCompound>, NBT
 {
 
-	int id;
+	public int id;
 
 	File file;
 

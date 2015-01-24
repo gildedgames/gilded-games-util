@@ -101,6 +101,16 @@ public class DataSet
 		return list;
 	}
 
+	public static List<TestMetadata> metadata()
+	{
+		List<TestMetadata> list = new ArrayList<TestMetadata>();
+		for (int i = 0; i < 5; i++)
+		{
+			list.add(new TestMetadata(i));
+		}
+		return list;
+	}
+
 	public static File fileFor(String path)
 	{
 		return new File(System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test" + File.separator + path);

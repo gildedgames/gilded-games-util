@@ -23,8 +23,9 @@ public class NBTDataHandler
 
 	private String path;
 
-	public NBTDataHandler()
+	public NBTDataHandler(String mainDirectory)
 	{
+		this.path = mainDirectory;
 		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
 		{
 			this.path = MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
@@ -64,7 +65,7 @@ public class NBTDataHandler
 		}
 	}
 
-	public ArrayList<NBT> load(Class<? extends NBT> clazz, String fileName)
+	public <T extends NBT> ArrayList<T> load(Class<T> clazz, String fileName)
 	{
 		File file = new File(this.path, fileName);
 
@@ -75,7 +76,7 @@ public class NBTDataHandler
 			NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
 			NBTTagList tagList = tag.getTagList("tagList", 10);
 
-			ArrayList<NBT> list = new ArrayList<NBT>();
+			ArrayList<T> list = new ArrayList<T>();
 
 			for (int i = 0; i < tagList.tagCount(); ++i)
 			{
@@ -83,7 +84,7 @@ public class NBTDataHandler
 
 				try
 				{
-					NBT object = clazz.newInstance();
+					T object = clazz.newInstance();
 					object.read(objectTag);
 					list.add(object);
 				}
@@ -106,7 +107,7 @@ public class NBTDataHandler
 		{
 		}
 
-		return new ArrayList<NBT>();
+		return new ArrayList<T>();
 	}
 
 	public void saveMap(String fileName, Map<? extends NBT, ? extends NBT> objects)

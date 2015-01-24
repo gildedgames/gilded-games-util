@@ -1,10 +1,10 @@
 package com.gildedgames.util.io_manager;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTManager;
 import com.gildedgames.util.testutil.DataSet;
+import com.gildedgames.util.testutil.TestConstructor;
 import com.gildedgames.util.testutil.TestMetadata;
 import com.gildedgames.util.testutil.TestNBTFile;
 import com.gildedgames.util.testutil.TestPlayerHook;
@@ -41,10 +42,10 @@ public class IOManagerTest
 	public void testRegisterAndGetClass()
 	{
 		NBTManager manager = this.create();
-		manager.register(TestPlayerHookFactory.class, 0);
-		Assert.assertEquals(manager.getID(TestPlayerHookFactory.class), 0);
-		Assert.assertEquals(manager.getID(new TestPlayerHookFactory()), 0);
-		Assert.assertEquals(manager.getClassFromID(0), TestPlayerHookFactory.class);
+		manager.register(TestPlayerHookFactory.class, 1);
+		Assert.assertEquals(manager.getID(TestPlayerHookFactory.class), 1);
+		Assert.assertEquals(manager.getID(new TestPlayerHookFactory()), 1);
+		Assert.assertEquals(manager.getClassFromID(1), TestPlayerHookFactory.class);
 	}
 
 	@Test
@@ -70,99 +71,67 @@ public class IOManagerTest
 	}
 
 	@Test
-	public void testReadFileFileIReaderWriterFactoryOfFILEREADERWRITER()
+	public void testReadWriteTwo()
 	{
-		fail("Not yet implemented");
+		List<TestNBTFile> files = DataSet.nbtFiles();
+		NBTManager manager = this.dataSet();
+		for (TestNBTFile object : files)
+		{
+			File file = DataSet.fileFor(object.toString() + ".test");
+			try
+			{
+				manager.writeFile(file, object, new NBTFactory());
+				TestNBTFile toReadIn = new TestNBTFile(-1, -1);
+				manager.readFile(file, toReadIn, new NBTFactory());
+				Assert.assertEquals(object, toReadIn);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				Assert.fail(e.getMessage());
+			}
+		}
 	}
 
 	@Test
-	public void testReadFileStringFILEIReaderWriterFactoryOfFILEREADERWRITER()
+	public void testReadWriteMetadata()
 	{
-		fail("Not yet implemented");
+		List<TestNBTFile> files = DataSet.nbtFiles();
+		NBTManager manager = this.dataSet();
+		for (TestNBTFile object : files)
+		{
+			File file = DataSet.fileFor(object.toString() + ".test");
+			try
+			{
+				manager.writeFile(file, object, new NBTFactory());
+				TestMetadata readBack = (TestMetadata) manager.readFileMetadata(file, new NBTFactory());
+				Assert.assertEquals(object.getMetadata().get(), readBack);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				Assert.fail(e.getMessage());
+			}
+		}
 	}
 
 	@Test
-	public void testReadFileMetadata()
+	public void testClone() throws IOException
 	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testWriteFileStringFILEIReaderWriterFactoryOfFILEREADERWRITER()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCheckFileExists()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetExtensionFiles()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetFileFromName()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetFoldersInDirectory()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetFilesWithExtensionFileListOfString()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testReadIClassOfQextendsIOOfIQ()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testWrite()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCloneOT()
-	{
-		fail("Not yet implemented");
+		TestMetadata files = new TestMetadata(1);
+		NBTManager manager = this.dataSet();
+		TestMetadata clone = manager.clone(new NBTTagCompound(), files);
+		Assert.assertEquals(files, clone);
 	}
 
 	@Test
 	public void testCreate()
 	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreateFromIDInt()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetIDObject()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetClassFromID()
-	{
-		fail("Not yet implemented");
+		NBTManager dataset = this.dataSet();
+		Object o = dataset.createFromID(1);
+		Assert.assertTrue(o instanceof TestPlayerHook);
+		o = dataset.createFromID(3, new TestConstructor());
+		Assert.assertTrue(o instanceof TestMetadata && ((TestMetadata) o).id == 1);
 	}
 
 }

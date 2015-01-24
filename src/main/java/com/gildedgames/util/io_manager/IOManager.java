@@ -150,7 +150,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReading(ioFile, file, reader);
 
-		ioFile.readFromFile(this, reader);
+		ioFile.read(reader);
 	}
 
 	private void readMetadata(File file, IOFileMetadata<READER, WRITER> ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
@@ -202,7 +202,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
-		ioFile.writeToFile(this, writer);
+		ioFile.write(writer);
 
 		rwFac.finishWriting(dataOutput, writer);
 
@@ -307,16 +307,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 	 */
 	public <T extends IO<O, O>, O> T clone(O io, T object) throws IOException
 	{
-		return this.clone(io, io, object);
-	}
-
-	public <T extends IO<I, O>, I, O> T clone(I input, O output, T object) throws IOException
-	{
+		//Doesn't use IOFile's metadata structure
 		final T clone = this.cast(this.create(object.getClass(), defaultConstructor));
 
-		object.write(output);
+		object.write(io);
 
-		clone.read(input);
+		clone.read(io);
 
 		return clone;
 	}

@@ -2,6 +2,10 @@ package com.gildedgames.util.testutil;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
@@ -84,5 +88,10 @@ public class TestIOUtil
 		Assert.assertTrue(syncable.isDirty());
 		syncable.markClean();
 		Assert.assertFalse(syncable.isDirty());
+	}
+
+	public static DataOutputStream dataOutputStream()
+	{
+		return new DataOutputStream(new ByteArrayOutputStream());
 	}
 }

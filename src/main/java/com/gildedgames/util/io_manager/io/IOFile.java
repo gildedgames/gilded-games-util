@@ -1,16 +1,9 @@
 package com.gildedgames.util.io_manager.io;
 
-import java.io.IOException;
-
-import com.gildedgames.util.io_manager.IOManager;
 import com.google.common.base.Optional;
 
-public interface IOFile<I, O>
+public interface IOFile<I, O> extends IO<I, O>
 {
-
-	void readFromFile(IOManager<I, O, ?> manager, I reader) throws IOException;
-
-	void writeToFile(IOManager<I, O, ?> manager, O writer) throws IOException;
 
 	Class<?> getDataClass();
 

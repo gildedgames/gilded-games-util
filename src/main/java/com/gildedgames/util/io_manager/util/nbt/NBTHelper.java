@@ -34,40 +34,13 @@ public class NBTHelper
 		{
 			output.writeBoolean(true);
 			CompressedStreamTools.write(tag, output);
-			/*NBTTagList tagList = new NBTTagList();
-			tagList.appendTag(tag);
-			dataoutputstream.writeByte(tagList.getId());
-
-			if (tagList.getId() != 0)
-			{
-				dataoutputstream.writeUTF("");
-			    tagList.write(dataoutputstream);
-			}*/
-			//CompressedStreamTools.writeCompressed(tag, output);
 		}
 	}
 
 	public static void save(String fileName, NBTTagCompound tag)
 	{
-		try
-		{
-			final File file = new File(getWorldFolderPath(), fileName);
-
-			file.createNewFile();
-			final FileOutputStream outputStream = new FileOutputStream(file);
-
-			CompressedStreamTools.writeCompressed(tag, outputStream);
-
-			outputStream.close();
-		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
+		final File file = new File(getWorldFolderPath(), fileName);
+		save(file, tag);
 	}
 
 	public static NBTTagCompound load(String fileName)
@@ -77,26 +50,7 @@ public class NBTHelper
 		{
 			return new NBTTagCompound();
 		}
-
-		try
-		{
-			final FileInputStream inputStream = new FileInputStream(file);
-
-			final NBTTagCompound tag = CompressedStreamTools.readCompressed(inputStream);
-
-			inputStream.close();
-
-			return tag;
-		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IOException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		return load(file);
 	}
 
 	private static String getWorldFolderPath()

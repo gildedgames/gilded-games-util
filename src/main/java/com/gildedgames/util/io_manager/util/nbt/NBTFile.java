@@ -1,11 +1,9 @@
 package com.gildedgames.util.io_manager.util.nbt;
 
 import java.io.File;
-import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.io.NBT;
@@ -28,13 +26,13 @@ public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 	}
 
 	@Override
-	public void readFromFile(IOManager manager, NBTTagCompound reader) throws IOException
+	public void read(NBTTagCompound reader)
 	{
 		this.nbt.read(reader);
 	}
 
 	@Override
-	public void writeToFile(IOManager manager, NBTTagCompound writer) throws IOException
+	public void write(NBTTagCompound writer)
 	{
 		this.nbt.write(writer);
 	}
