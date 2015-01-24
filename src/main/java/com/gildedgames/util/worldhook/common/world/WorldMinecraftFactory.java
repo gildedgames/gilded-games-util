@@ -15,7 +15,7 @@ public class WorldMinecraftFactory implements IWorldFactory<WorldMinecraft>
 		if (isRemote)
 		{
 			World world = Minecraft.getMinecraft().theWorld;
-			if (world.provider.getDimensionId() == dimId)
+			if (world.provider.dimensionId == dimId)
 			{
 				return new WorldMinecraft(world);
 			}

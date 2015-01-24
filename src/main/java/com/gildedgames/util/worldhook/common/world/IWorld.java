@@ -2,10 +2,9 @@ package com.gildedgames.util.worldhook.common.world;
 
 import java.util.Random;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Wrapper around an implementation of Minecraft worlds.
@@ -16,30 +15,30 @@ import net.minecraft.util.EnumFacing;
 public interface IWorld
 {
 
-	IBlockState getBlockState(BlockPos pos);
+	Block getBlockPos(int x, int y, int z);
 
-	boolean setBlockState(BlockPos pos, IBlockState state);
+	boolean setBlock(int x, int y, int z, Block block, int meta);
 
-	boolean setBlockState(BlockPos pos, IBlockState newState, int flags);
+	boolean setBlock(int x, int y, int z, Block block, int meta, int flags);
 
-	boolean isAirBlock(BlockPos pos);
+	boolean isAirBlock(int x, int y, int z);
 
-	boolean setBlockToAir(BlockPos pos);
+	boolean setBlockToAir(int x, int y, int z);
 
-	boolean destroyBlock(BlockPos pos, boolean dropBlock);
+	boolean destroyBlock(int x, int y, int z, boolean dropBlock);
 
 	int getDimensionID();
 
 	Random getRandom();
 
-	TileEntity getTileEntity(BlockPos pos);
+	TileEntity getTileEntity(int x, int y, int z);
 
-	void setTileEntity(BlockPos pos, TileEntity tileEntity);
+	void setTileEntity(int x, int y, int z, TileEntity tileEntity);
 
 	boolean isWrapperFor(int dimId, boolean isRemote);
 
 	boolean isRemote();
 
-	boolean isSideSolid(BlockPos pos, EnumFacing side, boolean _default);
+	boolean isSideSolid(int x, int y , int z, ForgeDirection side, boolean _default);
 
 }

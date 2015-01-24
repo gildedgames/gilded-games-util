@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.playerhook.common.IPlayerHookPool;
 import com.gildedgames.util.playerhook.common.player.IPlayerHook;
 import com.gildedgames.util.playerhook.common.player.PlayerProfile;
+
+import cpw.mods.fml.relauncher.Side;
 
 public class PlayerHookServices
 {

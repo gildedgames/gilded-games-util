@@ -3,24 +3,24 @@ package com.gildedgames.util.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.menuhook.MenuCore;
 import com.gildedgames.util.playerhook.PlayerHookCore;
 import com.gildedgames.util.playerhook.PlayerHookServices;
 import com.gildedgames.util.worldhook.WorldCore;
+
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
 public class UtilCore extends PlayerHookServices implements ICore
@@ -28,7 +28,7 @@ public class UtilCore extends PlayerHookServices implements ICore
 
 	public static final String MOD_ID = "gilded-games-util";
 
-	public static final String VERSION = "1.8-1.0";
+	public static final String VERSION = "1.7.10-1.0";
 
 	private static final boolean DEBUG_MODE = true;
 

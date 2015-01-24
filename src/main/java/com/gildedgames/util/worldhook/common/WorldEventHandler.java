@@ -7,14 +7,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTFile;
 import com.gildedgames.util.worldhook.WorldCore;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 public class WorldEventHandler
 {
@@ -55,7 +56,7 @@ public class WorldEventHandler
 
 			try
 			{
-				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.dimensionId + ".dat");
 
 				UtilCore.locate().getIO().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
 			}
@@ -80,7 +81,7 @@ public class WorldEventHandler
 				IWorldHook worldHook = pool.get(event.world);
 				try
 				{
-					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.dimensionId + ".dat");
 
 					UtilCore.locate().getIO().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
 				}

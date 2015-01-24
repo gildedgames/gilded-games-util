@@ -2,15 +2,6 @@ package com.gildedgames.util.worldhook;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
@@ -18,6 +9,16 @@ import com.gildedgames.util.worldhook.common.IWorldHook;
 import com.gildedgames.util.worldhook.common.IWorldHookPool;
 import com.gildedgames.util.worldhook.common.WorldEventHandler;
 import com.gildedgames.util.worldhook.common.world.IWorld;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 public class WorldCore implements ICore
 {
@@ -88,7 +89,7 @@ public class WorldCore implements ICore
 	 */
 	public static IWorld get(World world)
 	{
-		return locate().getWrapper(world.provider.getDimensionId());
+		return locate().getWrapper(world.provider.dimensionId);
 	}
 
 	public static IWorld get(int dimId)
