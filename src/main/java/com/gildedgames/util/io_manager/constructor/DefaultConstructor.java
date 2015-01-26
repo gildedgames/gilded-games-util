@@ -2,6 +2,10 @@ package com.gildedgames.util.io_manager.constructor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.ClassUtils;
 
 public class DefaultConstructor implements IConstructor
 {
@@ -18,9 +22,29 @@ public class DefaultConstructor implements IConstructor
 		final Constructor<T> constructor = clazz.getDeclaredConstructor();
 		constructor.setAccessible(true);
 
-		final T instance = constructor.newInstance();
+		if (constructor != null)
+		{
+			final T instance = constructor.newInstance();
 
-		constructor.setAccessible(false);
+			constructor.setAccessible(false);
+			
+			if (instance != null)
+			{
+				return instance;
+			}
+		}
+
+		final Constructor<T> constr = (Constructor<T>) clazz.getDeclaredConstructors()[0];
+	    final List<Object> params = new ArrayList<Object>();
+	    
+	    constr.setAccessible(false);
+	    
+	    for (Class<?> pType : constr.getParameterTypes())
+	    {
+	        params.add((pType.isPrimitive()) ? ClassUtils.primitiveToWrapper(pType).newInstance() : null);
+	    }
+	    
+	    final T instance = constr.newInstance(params.toArray());
 
 		return instance;
 	}
