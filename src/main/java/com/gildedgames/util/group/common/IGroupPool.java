@@ -5,6 +5,8 @@ import java.util.List;
 public interface IGroupPool<T extends IGroup>
 {
 	
+	String getID();
+	
 	List<T> getGroups();
 	
 	void setGroups(List<T> groups);

@@ -1,5 +1,8 @@
 package com.gildedgames.util.group;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.group.common.IGroup;
@@ -23,10 +26,40 @@ public class GroupServices
 	private IGroupController groupController;
 	
 	private IGroupPoolController groupPoolController;
+	
+	private List<IGroupPool> pools;
 
 	public GroupServices(Side side)
 	{
 		this.side = side;
+	}
+	
+	public List<IGroupPool> getPools()
+	{
+		if (this.pools == null)
+		{
+			this.pools = new ArrayList<IGroupPool>();
+		}
+		
+		return this.pools;
+	}
+
+	public IGroupPool getFromID(String id)
+	{
+		for (IGroupPool pool : this.getPools())
+		{
+			if (pool != null && pool.getID().equals(id))
+			{
+				return pool;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void registerPool(IGroupPool pool)
+	{
+		this.getPools().add(pool);
 	}
 	
 	public IGroupPoolController talkTo(IGroupPool groupPool)

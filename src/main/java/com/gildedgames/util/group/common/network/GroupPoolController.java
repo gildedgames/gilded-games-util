@@ -18,6 +18,12 @@ public class GroupPoolController implements IGroupPoolController
 	{
 		this.side = side;
 	}
+	
+	@Override
+	public String getID()
+	{
+		return this.targetPool.getID();
+	}
 
 	@Override
 	public List getGroups()

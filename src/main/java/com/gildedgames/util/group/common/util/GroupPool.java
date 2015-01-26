@@ -10,13 +10,22 @@ import com.gildedgames.util.group.common.IGroupPool;
 public class GroupPool<G extends IGroup> implements IGroupPool<G>
 {
 	
+	protected String id;
+	
 	protected IGroupFactory<G> factory;
 	
 	protected List<G> groups = new ArrayList<G>();
 
-	public GroupPool(IGroupFactory<G> factory)
+	public GroupPool(String id, IGroupFactory<G> factory)
 	{
+		this.id = id;
 		this.factory = factory;
+	}
+	
+	@Override
+	public String getID()
+	{
+		return this.id;
 	}
 	
 	@Override
