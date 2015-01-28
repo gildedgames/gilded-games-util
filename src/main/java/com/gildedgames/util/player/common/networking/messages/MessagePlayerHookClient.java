@@ -42,14 +42,13 @@ public class MessagePlayerHookClient implements IMessage
 		this.playerHook.writeToServer(buf);
 	}
 	
-	
 	public static class Handler implements IMessageHandler<MessagePlayerHookClient, IMessage>
 	{
 	        
         @Override
         public IMessage onMessage(MessagePlayerHookClient message, MessageContext ctx)
         {
-        	if (ctx.side.isClient())
+        	if (ctx.side.isServer())
         	{
         		EntityPlayer player = ctx.getServerHandler().playerEntity;
         		

@@ -54,7 +54,7 @@ public class MessagePlayerHook implements IMessage
 		@Override
 		public IMessage onMessage(MessagePlayerHook message, MessageContext ctx)
 		{
-			if (ctx.side.isServer())
+			if (ctx.side.isClient())
 			{
 				IPlayerHookPool manager = PlayerCore.locate().getPool(ByteBufUtils.readUTF8String(message.buf));
 
