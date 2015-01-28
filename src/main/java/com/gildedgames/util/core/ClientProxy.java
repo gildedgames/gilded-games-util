@@ -12,7 +12,6 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -24,8 +23,6 @@ public class ClientProxy extends ServerProxy
 	private Minecraft mc = Minecraft.getMinecraft();
 
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
-	
-	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
 
 	@Override
 	public EntityPlayer getPlayer()
@@ -53,8 +50,6 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(TabAPI.INSTANCE.getBackpackTab());
 		
 		TabAPI.INSTANCE.register(TabAPI.INSTANCE.getInventoryGroup());
-		
-		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
 	}
 
 }
