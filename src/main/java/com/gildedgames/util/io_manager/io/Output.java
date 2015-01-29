@@ -13,14 +13,15 @@ import com.gildedgames.util.io_manager.IOManager;
 public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataOutput
 {
 
-	protected final IOManager<Input<FILE>, Output<FILE>, FILE> manager;
+	protected final IOManager manager;
 
 	protected final DataOutputStream dataOutput;
 
-	public Output(IOManager<Input<FILE>, Output<FILE>, FILE> ioSharp, DataOutputStream dataOutput)
+	public Output(IOManager manager, DataOutputStream dataOutput)
 	{
 		super();
-		this.manager = ioSharp;
+		
+		this.manager = manager;
 		this.dataOutput = dataOutput;
 	}
 
@@ -171,7 +172,7 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 		return this.dataOutput;
 	}
 
-	public IOManager<Input<FILE>, Output<FILE>, FILE> getIOManager()
+	public IOManager getIOManager()
 	{
 		return this.manager;
 	}

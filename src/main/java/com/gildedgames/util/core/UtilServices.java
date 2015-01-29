@@ -1,7 +1,7 @@
 package com.gildedgames.util.core;
 
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.util.nbt.NBTFile;
-import com.gildedgames.util.io_manager.util.nbt.NBTManager;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.WorldHookPool;
@@ -9,28 +9,23 @@ import com.gildedgames.util.world.common.WorldHookPool;
 public class UtilServices
 {
 	
-	private NBTManager io;
+	private IOManager io;
 
 	public UtilServices()
 	{
 		
 	}
-	
-	private void registerIOClasses()
-	{
-		this.io.register(NBTFile.class, 0);
-		this.io.register(IWorldHookPool.class, 1);
-		this.io.register(WorldHookPool.class, 2);
-		this.io.register(MenuConfig.class, 3);
-	}
 
-	public NBTManager getIO()
+	public IOManager getIO()
 	{
 		if (this.io == null)
 		{
-			this.io = new NBTManager();
-
-			this.registerIOClasses();
+			this.io = new IOManager();
+			
+			this.io.register(NBTFile.class, "NBTFile");
+			this.io.register(IWorldHookPool.class, "IWorldHookPool");
+			this.io.register(WorldHookPool.class, "WorldHookPool");
+			this.io.register(MenuConfig.class, "MenuConfig");
 		}
 
 		return this.io;

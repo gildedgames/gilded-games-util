@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;

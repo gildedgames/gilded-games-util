@@ -16,6 +16,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;

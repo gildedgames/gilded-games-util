@@ -16,7 +16,7 @@ public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 
 	protected NBT nbt;
 
-	protected Class dataClass;
+	protected Class<?> dataClass;
 
 	public NBTFile(File directory, NBT nbt, Class dataClass)
 	{
@@ -50,7 +50,7 @@ public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 	}
 
 	@Override
-	public Class getDataClass()
+	public Class<?> getDataClass()
 	{
 		return this.dataClass;
 	}

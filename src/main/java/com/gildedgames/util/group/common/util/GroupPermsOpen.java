@@ -6,8 +6,10 @@ import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.IOManager;
 
 public class GroupPermsOpen implements IGroupPerms
 {

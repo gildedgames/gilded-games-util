@@ -24,7 +24,7 @@ import com.gildedgames.util.universe.common.util.TeleporterGeneric;
 public class UniverseCore implements ICore
 {
 
-	public static UniverseCore INSTANCE = new UniverseCore();
+	public final static UniverseCore INSTANCE = new UniverseCore();
 
 	public static TeleporterGeneric GENERIC_TELEPORTER;
 

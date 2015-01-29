@@ -28,11 +28,11 @@ import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.google.common.base.Optional;
 
-public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
+public class IOManager
 {
-	private final Map<Integer, Class<?>> IDtoClassMapping = new HashMap<Integer, Class<?>>();
+	private final Map<String, Class<?>> IOKeyToClassMapping = new HashMap<String, Class<?>>();
 
-	private final Map<Class<?>, Integer> classToIDMapping = new HashMap<Class<?>, Integer>();
+	private final Map<Class<?>, String> classToIOKeyMapping = new HashMap<Class<?>, String>();
 
 	private final Map<Class<?>, IFactoryBehaviour<?>> classFactoryBehaviours = new HashMap<Class<?>, IFactoryBehaviour<?>>();
 
@@ -40,23 +40,23 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	public void register(Class<?> obj, int id)
+	public void register(Class<?> clazz, String id)
 	{
-		this.IDtoClassMapping.put(id, obj);
-		this.classToIDMapping.put(obj, id);
+		this.IOKeyToClassMapping.put(id, clazz);
+		this.classToIOKeyMapping.put(clazz, id);
 	}
 
-	public void register(Class<?> obj, IFactoryBehaviour<?> behaviour)
+	public void register(Class<?> clazz, IFactoryBehaviour<?> behaviour)
 	{
-		this.classFactoryBehaviours.put(obj, behaviour);
+		this.classFactoryBehaviours.put(clazz, behaviour);
 	}
 
-	public FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		return this.readFile(file, rwFac, defaultConstructor);
 	}
 
-	public FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac, IConstructor constructor) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> FILE readFile(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac, IConstructor constructor) throws IOException
 	{
 		final DataInputStream dataInput = this.createDataInput(file);
 		if (dataInput == null)
@@ -66,19 +66,19 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
 		@SuppressWarnings("unchecked")
-		FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
+		FILE ioFile = (FILE) this.createFromID(dataInput.readUTF(), constructor);
 		ioFile.setMetadata(metadata);
 		this.readData(file, ioFile, dataInput, rwFac);//Read final data
 		dataInput.close();
 		return ioFile;
 	}
 
-	public void readFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> void readFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		this.readFile(rwFac.getFileFromName(ioFile, fileName), ioFile, rwFac);
 	}
 
-	public void readFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> void readFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		final DataInputStream dataInput = this.createDataInput(file);
 		if (dataInput == null)
@@ -97,7 +97,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 	/**
 	 * Reads just the metadata from a file.
 	 */
-	public IOFileMetadata<READER, WRITER> readFileMetadata(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> IOFileMetadata<READER, WRITER> readFileMetadata(File file, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		DataInputStream dataInput = this.createDataInput(file);
 		if (dataInput == null)
@@ -123,15 +123,16 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return new DataInputStream(bufferedInputStream);
 	}
 
-	private IOFileMetadata<READER, WRITER> readMetadata(File file, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	private <READER, WRITER, FILE extends IOFile<READER, WRITER>> IOFileMetadata<READER, WRITER> readMetadata(File file, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		boolean isMetadata = dataInput.readBoolean();
 		IOFileMetadata<READER, WRITER> readMetadata = null;
+		
 		while (isMetadata)//Keep reading metadata
 		{
-			int classID = dataInput.readInt();
+			String ioKey = dataInput.readUTF();
 			@SuppressWarnings("unchecked")
-			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(classID, defaultConstructor);
+			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(ioKey, defaultConstructor);
 			if (readMetadata != null)
 			{
 				ioFile.setMetadata(readMetadata);
@@ -140,10 +141,11 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 			readMetadata = ioFile;
 			isMetadata = dataInput.readBoolean();
 		}
+		
 		return readMetadata;
 	}
 
-	private void readData(File file, FILE ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	private <READER, WRITER, FILE extends IOFile<READER, WRITER>> void readData(File file, FILE ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		//If ever at all there's a problem over here with casting, it's because you're using an IOManager with 
 		//the READER and WRITER right, but a different FILE parameter than the ioFile instance uses. Weird stuff! 
@@ -153,7 +155,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		ioFile.read(reader);
 	}
 
-	private void readMetadata(File file, IOFileMetadata<READER, WRITER> ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	private <READER, WRITER, FILE extends IOFile<READER, WRITER>> void readMetadata(File file, IOFileMetadata<READER, WRITER> ioFile, DataInputStream dataInput, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		final READER reader = rwFac.getReader(dataInput, this);
 		rwFac.preReadingMetadata(ioFile, file, reader);
@@ -162,12 +164,12 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		ioFile.setFileLocation(file);
 	}
 
-	public void writeFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> void writeFile(String fileName, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		this.writeFile(rwFac.getFileFromName(ioFile, fileName), ioFile, rwFac);
 	}
 
-	public void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> void writeFile(File file, FILE ioFile, IReaderWriterFactory<FILE, READER, WRITER> rwFac) throws IOException
 	{
 		if (file.getParentFile() != null)
 		{
@@ -190,7 +192,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 			IOFileMetadata<READER, WRITER> metadataFile = metadata.get();
 
 			dataOutput.writeBoolean(true);
-			dataOutput.writeInt(this.getID(metadataFile.getClass()));
+			dataOutput.writeUTF(this.getIDFromClass(metadataFile.getClass()));
 
 			final WRITER writer = rwFac.getWriter(dataOutput, this);
 			metadataFile.write(writer);
@@ -198,8 +200,10 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 
 			metadata = metadataFile.getMetadata();
 		}
+		
 		dataOutput.writeBoolean(false);//Not metadata
-		dataOutput.writeInt(this.getID(ioFile.getDataClass()));
+		dataOutput.writeUTF(this.getIDFromClass(ioFile.getDataClass()));
+		
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
 		ioFile.write(writer);
@@ -209,17 +213,17 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		dataOutput.close();
 	}
 
-	public boolean checkFileExists(FILE ioFile, File baseDirectory, String fileName)
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> boolean checkFileExists(FILE ioFile, File baseDirectory, String fileName)
 	{
 		return this.getFileFromName(ioFile, baseDirectory, fileName).exists();
 	}
 
-	public File[] getExtensionFiles(FILE ioFile, File baseDirectory)
+	public <READER, WRITER, FILE extends IOFile<READER, WRITER>> File[] getExtensionFiles(FILE ioFile, File baseDirectory)
 	{
 		return this.getFilesWithExtension(new File(baseDirectory.getAbsolutePath() + File.separator + ioFile.getDirectoryName()), ioFile.getFileExtension());
 	}
 
-	public final File getFileFromName(FILE ioFile, File baseDirectory, String fileName)
+	public final <READER, WRITER, FILE extends IOFile<READER, WRITER>> File getFileFromName(FILE ioFile, File baseDirectory, String fileName)
 	{
 		final File directory = new File(baseDirectory.getAbsolutePath() + File.separator + ioFile.getDirectoryName());
 
@@ -360,7 +364,7 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		}
 		catch (final NoSuchMethodException e)
 		{
-			UtilCore.debugPrint(clazz.getCanonicalName() + " is missing the empty constructor! Contact code monkeys immediately!");
+			UtilCore.debugPrint(clazz.getCanonicalName() + ".class is missing the empty constructor! Contact code monkeys immediately!");
 			e.printStackTrace();
 		}
 		catch (final SecurityException e)
@@ -371,44 +375,33 @@ public class IOManager<READER, WRITER, FILE extends IOFile<READER, WRITER>>
 		return instance;
 	}
 
-	public Object createFromID(int id)
+	public Object createFromID(String id)
 	{
 		return this.createFromID(id, defaultConstructor);
 	}
 
-	public Object createFromID(int id, IConstructor constructor)
+	public Object createFromID(String id, IConstructor constructor)
 	{
 		final Class<?> clazz = this.getClassFromID(id);
 
 		return this.create(clazz, constructor);
 	}
 
-	public int getID(Object obj)
+	public Class<?> getClassFromID(String id)
 	{
-		final Class<?> clazz = obj.getClass();
-
-		if (!this.classToIDMapping.containsKey(clazz))
-		{
-			throw new IllegalArgumentException("Object's class isn't registered! Class: " + obj.getClass().getCanonicalName());
-		}
-
-		return this.classToIDMapping.get(clazz);
+		return this.IOKeyToClassMapping.get(id);
 	}
-
-	public Class<?> getClassFromID(int id)
+	
+	public String getIDFromClass(Class<?> clazz)
 	{
-		return this.IDtoClassMapping.get(id);
-	}
-
-	public int getID(Class<?> clazz)
-	{
-		if (!this.classToIDMapping.containsKey(clazz))
+		if (!this.classToIOKeyMapping.containsKey(clazz))
 		{
 			throw new IllegalArgumentException("Object's class isn't registered! Class: " + clazz.getCanonicalName());
 		}
-		return this.classToIDMapping.get(clazz);
+		
+		return this.classToIOKeyMapping.get(clazz);
 	}
-
+	
 	private static class FilenameFilterExtension implements FilenameFilter
 	{
 

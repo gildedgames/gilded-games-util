@@ -20,13 +20,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.player.PlayerServices;
 import com.gildedgames.util.tab.TabCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
-public class UtilCore extends PlayerServices implements ICore
+public class UtilCore implements ICore
 {
 
 	public static final String MOD_ID = "gilded-games-util";
@@ -55,12 +54,6 @@ public class UtilCore extends PlayerServices implements ICore
 		this.cores.add(TabCore.INSTANCE);
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
-	}
-
-	public static void registerIO(Class<?> clazz, int id)
-	{
-		instance.serviceLocator.client().getIO().register(clazz, id);
-		instance.serviceLocator.server().getIO().register(clazz, id);
 	}
 
 	@Override

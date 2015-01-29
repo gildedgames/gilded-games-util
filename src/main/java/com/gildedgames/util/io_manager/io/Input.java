@@ -10,15 +10,15 @@ import com.gildedgames.util.io_manager.IOManager;
 public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataInput
 {
 
-	protected final IOManager<Input<FILE>, Output<FILE>, FILE> manager;
+	protected final IOManager manager;
 
 	protected final DataInputStream dataInput;
 
-	public Input(IOManager<Input<FILE>, Output<FILE>, FILE> ioSharp, DataInputStream dataInput)
+	public Input(IOManager manager, DataInputStream dataInput)
 	{
 		super();
 
-		this.manager = ioSharp;
+		this.manager = manager;
 		this.dataInput = dataInput;
 	}
 
@@ -166,7 +166,7 @@ public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements Da
 		return enumerator;
 	}
 
-	public IOManager<Input<FILE>, Output<FILE>, FILE> getIOManager()
+	public IOManager getIOManager()
 	{
 		return this.manager;
 	}

@@ -23,7 +23,7 @@ import com.gildedgames.util.player.PlayerCore;
 public class GroupCore implements ICore
 {
 
-	public static GroupCore INSTANCE = new GroupCore();
+	public final static GroupCore INSTANCE = new GroupCore();
 
 	private SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
 

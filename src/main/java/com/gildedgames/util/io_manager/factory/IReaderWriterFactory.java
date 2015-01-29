@@ -11,9 +11,9 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>
 {
 
-	I getReader(DataInputStream input, IOManager<I, O, FILE> manager);
+	I getReader(DataInputStream input, IOManager manager);
 
-	O getWriter(DataOutputStream output, IOManager<I, O, FILE> manager);
+	O getWriter(DataOutputStream output, IOManager manager);
 
 	File getFileFromName(FILE data, String name);
 

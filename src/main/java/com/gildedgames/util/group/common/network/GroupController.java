@@ -14,6 +14,7 @@ import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.IGroupPool;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.IOManager;
 
 public class GroupController implements IGroupController
 {

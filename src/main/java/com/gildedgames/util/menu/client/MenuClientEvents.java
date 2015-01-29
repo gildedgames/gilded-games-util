@@ -38,11 +38,6 @@ public class MenuClientEvents
 	
 	private File configSaveLocation;
 	
-	public MenuClientEvents()
-	{
-		this.configSaveLocation = new File(Minecraft.getMinecraft().mcDataDir, "mod-config\\menu.dat");
-	}
-	
 	public static class MenuConfig implements NBT
 	{
 		
@@ -65,6 +60,11 @@ public class MenuClientEvents
 			this.menuID = input.getString("menuID");
 		}
 		
+	}
+	
+	public MenuClientEvents()
+	{
+		this.configSaveLocation = new File(Minecraft.getMinecraft().mcDataDir, "mod-config\\menu.dat");
 	}
 	
 	private void openMenu(IMenu menu)
