@@ -135,7 +135,7 @@ public class IOManager
 			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(ioKey, defaultConstructor);
 			if (readMetadata != null)
 			{
-				ioFile.setMetadata(readMetadata);
+				readMetadata.setMetadata(ioFile);
 			}
 			this.readMetadata(file, ioFile, dataInput, rwFac);
 			readMetadata = ioFile;
