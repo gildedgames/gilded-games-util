@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
@@ -50,6 +51,11 @@ public class GGUtilDataSet
 			worldHooks.add(new TestWorldHook(world, i++));
 		}
 		return worldHooks;
+	}
+
+	public static IWorld iworld()
+	{
+		return new TestWorld(0);
 	}
 
 	public static List<IWorld> iworlds()
@@ -119,7 +125,22 @@ public class GGUtilDataSet
 
 	public static File fileFor(String path)
 	{
-		return new File(System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test" + File.separator + path);
+		return new File(System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test", path);
 	}
 
+	public static String testPath()
+	{
+		return System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test";
+	}
+
+	public static IOManager iomanager()
+	{
+		IOManager manager = new IOManager();
+		manager.register(TestWorldHook.class, 0);
+		manager.register(TestPlayerHook.class, 1);
+		manager.register(TestPlayerHookFactory.class, 2);
+		manager.register(TestMetadata.class, 3);
+		manager.register(TestNBTFile.class, 4);
+		return manager;
+	}
 }
