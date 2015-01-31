@@ -42,7 +42,7 @@ public class IOManagerTest
 	{
 		IOManager manager = this.create();
 		manager.register(TestPlayerHookFactory.class, 1);
-		Assert.assertEquals(manager.getID(TestPlayerHookFactory.class), 1);
+		Assert.assertEquals(manager.getIDFromClass(TestPlayerHookFactory.class), 1);
 		Assert.assertEquals(manager.getID(new TestPlayerHookFactory()), 1);
 		Assert.assertEquals(manager.getClassFromID(1), TestPlayerHookFactory.class);
 	}
