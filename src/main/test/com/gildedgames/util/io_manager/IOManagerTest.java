@@ -10,7 +10,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
-import com.gildedgames.util.io_manager.util.nbt.NBTManager;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.io.TestConstructor;
 import com.gildedgames.util.testutil.io.TestMetadata;
@@ -22,14 +21,14 @@ import com.gildedgames.util.testutil.world.TestWorldHook;
 public class IOManagerTest
 {
 
-	private NBTManager create()
+	private IOManager create()
 	{
-		return new NBTManager();
+		return new IOManager();
 	}
 
-	private NBTManager dataSet()
+	private IOManager dataSet()
 	{
-		NBTManager manager = this.create();
+		IOManager manager = this.create();
 		manager.register(TestWorldHook.class, 0);
 		manager.register(TestPlayerHook.class, 1);
 		manager.register(TestPlayerHookFactory.class, 2);
@@ -41,7 +40,7 @@ public class IOManagerTest
 	@Test
 	public void testRegisterAndGetClass()
 	{
-		NBTManager manager = this.create();
+		IOManager manager = this.create();
 		manager.register(TestPlayerHookFactory.class, 1);
 		Assert.assertEquals(manager.getID(TestPlayerHookFactory.class), 1);
 		Assert.assertEquals(manager.getID(new TestPlayerHookFactory()), 1);
@@ -52,7 +51,7 @@ public class IOManagerTest
 	public void testReadWriteOne()
 	{
 		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
-		NBTManager manager = this.dataSet();
+		IOManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
@@ -74,7 +73,7 @@ public class IOManagerTest
 	public void testReadWriteTwo()
 	{
 		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
-		NBTManager manager = this.dataSet();
+		IOManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
@@ -97,7 +96,7 @@ public class IOManagerTest
 	public void testReadWriteMetadata()
 	{
 		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
-		NBTManager manager = this.dataSet();
+		IOManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
@@ -119,7 +118,7 @@ public class IOManagerTest
 	public void testClone() throws IOException
 	{
 		TestMetadata files = new TestMetadata(1);
-		NBTManager manager = this.dataSet();
+		IOManager manager = this.dataSet();
 		TestMetadata clone = manager.clone(new NBTTagCompound(), files);
 		Assert.assertEquals(files, clone);
 	}
@@ -127,7 +126,7 @@ public class IOManagerTest
 	@Test
 	public void testCreate()
 	{
-		NBTManager dataset = this.dataSet();
+		IOManager dataset = this.dataSet();
 		Object o = dataset.createFromID(1);
 		Assert.assertTrue(o instanceof TestPlayerHook);
 		o = dataset.createFromID(3, new TestConstructor());

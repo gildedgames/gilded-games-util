@@ -30,9 +30,9 @@ import com.google.common.base.Optional;
 
 public class IOManager
 {
-	private final Map<String, Class<?>> IOKeyToClassMapping = new HashMap<String, Class<?>>();
+	private final Map<Integer, Class<?>> IOKeyToClassMapping = new HashMap<Integer, Class<?>>();
 
-	private final Map<Class<?>, String> classToIOKeyMapping = new HashMap<Class<?>, String>();
+	private final Map<Class<?>, Integer> classToIOKeyMapping = new HashMap<Class<?>, Integer>();
 
 	private final Map<Class<?>, IFactoryBehaviour<?>> classFactoryBehaviours = new HashMap<Class<?>, IFactoryBehaviour<?>>();
 
@@ -40,7 +40,7 @@ public class IOManager
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	public void register(Class<?> clazz, String id)
+	public void register(Class<?> clazz, int id)
 	{
 		this.IOKeyToClassMapping.put(id, clazz);
 		this.classToIOKeyMapping.put(clazz, id);
@@ -66,7 +66,7 @@ public class IOManager
 
 		IOFileMetadata<READER, WRITER> metadata = this.readMetadata(file, dataInput, rwFac);
 		@SuppressWarnings("unchecked")
-		FILE ioFile = (FILE) this.createFromID(dataInput.readUTF(), constructor);
+		FILE ioFile = (FILE) this.createFromID(dataInput.readInt(), constructor);
 		ioFile.setMetadata(metadata);
 		this.readData(file, ioFile, dataInput, rwFac);//Read final data
 		dataInput.close();
@@ -127,10 +127,10 @@ public class IOManager
 	{
 		boolean isMetadata = dataInput.readBoolean();
 		IOFileMetadata<READER, WRITER> readMetadata = null;
-		
+
 		while (isMetadata)//Keep reading metadata
 		{
-			String ioKey = dataInput.readUTF();
+			int ioKey = dataInput.readInt();
 			@SuppressWarnings("unchecked")
 			IOFileMetadata<READER, WRITER> ioFile = (IOFileMetadata<READER, WRITER>) this.createFromID(ioKey, defaultConstructor);
 			if (readMetadata != null)
@@ -141,7 +141,7 @@ public class IOManager
 			readMetadata = ioFile;
 			isMetadata = dataInput.readBoolean();
 		}
-		
+
 		return readMetadata;
 	}
 
@@ -192,7 +192,7 @@ public class IOManager
 			IOFileMetadata<READER, WRITER> metadataFile = metadata.get();
 
 			dataOutput.writeBoolean(true);
-			dataOutput.writeUTF(this.getIDFromClass(metadataFile.getClass()));
+			dataOutput.writeInt(this.getIDFromClass(metadataFile.getClass()));
 
 			final WRITER writer = rwFac.getWriter(dataOutput, this);
 			metadataFile.write(writer);
@@ -200,10 +200,10 @@ public class IOManager
 
 			metadata = metadataFile.getMetadata();
 		}
-		
+
 		dataOutput.writeBoolean(false);//Not metadata
-		dataOutput.writeUTF(this.getIDFromClass(ioFile.getDataClass()));
-		
+		dataOutput.writeInt(this.getIDFromClass(ioFile.getDataClass()));
+
 		final WRITER writer = rwFac.getWriter(dataOutput, this);
 
 		ioFile.write(writer);
@@ -375,33 +375,38 @@ public class IOManager
 		return instance;
 	}
 
-	public Object createFromID(String id)
+	public Object createFromID(int id)
 	{
 		return this.createFromID(id, defaultConstructor);
 	}
 
-	public Object createFromID(String id, IConstructor constructor)
+	public Object createFromID(int id, IConstructor constructor)
 	{
 		final Class<?> clazz = this.getClassFromID(id);
 
 		return this.create(clazz, constructor);
 	}
 
-	public Class<?> getClassFromID(String id)
+	public Class<?> getClassFromID(int id)
 	{
 		return this.IOKeyToClassMapping.get(id);
 	}
-	
-	public String getIDFromClass(Class<?> clazz)
+
+	public int getIDFromClass(Class<?> clazz)
 	{
 		if (!this.classToIOKeyMapping.containsKey(clazz))
 		{
 			throw new IllegalArgumentException("Object's class isn't registered! Class: " + clazz.getCanonicalName());
 		}
-		
+
 		return this.classToIOKeyMapping.get(clazz);
 	}
-	
+
+	public int getID(Object o)
+	{
+		return this.getIDFromClass(o.getClass());
+	}
+
 	private static class FilenameFilterExtension implements FilenameFilter
 	{
 
