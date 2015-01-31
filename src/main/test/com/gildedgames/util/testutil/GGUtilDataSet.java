@@ -11,9 +11,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.testutil.io.TestMetadata;
+import com.gildedgames.util.testutil.io.TestNBTFile;
+import com.gildedgames.util.testutil.player.TestPlayerHook;
+import com.gildedgames.util.testutil.player.TestPlayerHookFactory;
+import com.gildedgames.util.testutil.world.TestWorld;
+import com.gildedgames.util.testutil.world.TestWorldHook;
 import com.gildedgames.util.world.common.world.IWorld;
 
-public class DataSet
+public class GGUtilDataSet
 {
 
 	private static Random random = new Random();

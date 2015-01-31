@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.testutil.DataSet;
+import com.gildedgames.util.testutil.GGUtilDataSet;
 
 public class NBTHelperTest
 {
@@ -42,7 +42,7 @@ public class NBTHelperTest
 	@Test
 	public void testSaveLoad() throws IOException
 	{
-		File file = DataSet.fileFor("nbtHelperTest");
+		File file = GGUtilDataSet.fileFor("nbtHelperTest");
 		NBTTagCompound tag = this.tag();
 		NBTHelper.save(file, tag);
 		NBTTagCompound tag2 = NBTHelper.load(file);

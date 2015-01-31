@@ -10,9 +10,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.gildedgames.util.player.common.player.PlayerProfile;
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestPlayerHook;
-import com.gildedgames.util.testutil.TestPlayerHookFactory;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.player.TestPlayerHook;
+import com.gildedgames.util.testutil.player.TestPlayerHookFactory;
 
 public class PlayerHookPoolTest
 {
@@ -24,7 +24,7 @@ public class PlayerHookPoolTest
 	private PlayerHookPool<TestPlayerHook> dataSet()
 	{
 		PlayerHookPool<TestPlayerHook> hook = this.create();
-		DataSet.iPlayerHooks(hook);
+		GGUtilDataSet.iPlayerHooks(hook);
 		return hook;
 	}
 
@@ -55,7 +55,7 @@ public class PlayerHookPoolTest
 	public void testAdd()
 	{
 		PlayerHookPool<TestPlayerHook> pool = this.create();
-		for (UUID uuid : DataSet.uuids())
+		for (UUID uuid : GGUtilDataSet.uuids())
 		{
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);
@@ -69,7 +69,7 @@ public class PlayerHookPoolTest
 	public void testGetUUID()
 	{
 		PlayerHookPool<TestPlayerHook> pool = this.create();
-		for (UUID uuid : DataSet.uuids())
+		for (UUID uuid : GGUtilDataSet.uuids())
 		{
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);

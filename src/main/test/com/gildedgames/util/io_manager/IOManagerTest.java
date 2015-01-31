@@ -11,13 +11,13 @@ import org.junit.Test;
 
 import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.util.nbt.NBTManager;
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestConstructor;
-import com.gildedgames.util.testutil.TestMetadata;
-import com.gildedgames.util.testutil.TestNBTFile;
-import com.gildedgames.util.testutil.TestPlayerHook;
-import com.gildedgames.util.testutil.TestPlayerHookFactory;
-import com.gildedgames.util.testutil.TestWorldHook;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.io.TestConstructor;
+import com.gildedgames.util.testutil.io.TestMetadata;
+import com.gildedgames.util.testutil.io.TestNBTFile;
+import com.gildedgames.util.testutil.player.TestPlayerHook;
+import com.gildedgames.util.testutil.player.TestPlayerHookFactory;
+import com.gildedgames.util.testutil.world.TestWorldHook;
 
 public class IOManagerTest
 {
@@ -51,11 +51,11 @@ public class IOManagerTest
 	@Test
 	public void testReadWriteOne()
 	{
-		List<TestNBTFile> files = DataSet.nbtFiles();
+		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
 		NBTManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
-			File file = DataSet.fileFor(object.toString() + ".test");
+			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
 				manager.writeFile(file, object, new NBTFactory());
@@ -73,11 +73,11 @@ public class IOManagerTest
 	@Test
 	public void testReadWriteTwo()
 	{
-		List<TestNBTFile> files = DataSet.nbtFiles();
+		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
 		NBTManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
-			File file = DataSet.fileFor(object.toString() + ".test");
+			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
 				manager.writeFile(file, object, new NBTFactory());
@@ -96,11 +96,11 @@ public class IOManagerTest
 	@Test
 	public void testReadWriteMetadata()
 	{
-		List<TestNBTFile> files = DataSet.nbtFiles();
+		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
 		NBTManager manager = this.dataSet();
 		for (TestNBTFile object : files)
 		{
-			File file = DataSet.fileFor(object.toString() + ".test");
+			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
 				manager.writeFile(file, object, new NBTFactory());

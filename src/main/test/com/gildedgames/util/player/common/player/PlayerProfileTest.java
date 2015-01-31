@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestIOUtil;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.io.TestIOUtil;
 
 public class PlayerProfileTest
 {
@@ -19,7 +19,7 @@ public class PlayerProfileTest
 	private PlayerProfile dataSet()
 	{
 		PlayerProfile profile = this.create();
-		profile.setUUID(DataSet.uuid());
+		profile.setUUID(GGUtilDataSet.uuid());
 		profile.setLoggedIn(true);
 		return profile;
 	}
@@ -39,7 +39,7 @@ public class PlayerProfileTest
 	public void testGetUUID()
 	{
 		PlayerProfile profile = this.create();
-		UUID uuid = DataSet.uuid();
+		UUID uuid = GGUtilDataSet.uuid();
 		profile.setUUID(uuid);
 		Assert.assertEquals(profile.getUUID(), uuid);
 	}
@@ -48,7 +48,7 @@ public class PlayerProfileTest
 	public void testReadWrite()
 	{
 		PlayerProfile profile = this.create();
-		profile.setUUID(DataSet.uuid());
+		profile.setUUID(GGUtilDataSet.uuid());
 		TestIOUtil.testNBTWrite(profile, this.create());
 	}
 

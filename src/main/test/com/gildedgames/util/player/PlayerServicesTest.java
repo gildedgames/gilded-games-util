@@ -13,9 +13,9 @@ import org.junit.Test;
 
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestPlayerHook;
-import com.gildedgames.util.testutil.TestPlayerHookFactory;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.player.TestPlayerHook;
+import com.gildedgames.util.testutil.player.TestPlayerHookFactory;
 
 public class PlayerServicesTest
 {
@@ -40,7 +40,7 @@ public class PlayerServicesTest
 		PlayerServices playerServices = new PlayerServices();
 		PlayerHookPool<TestPlayerHook> playerHookPool = this.createPool();
 		playerServices.registerPlayerHookPool(playerHookPool);
-		List<IPlayerHook> playerHooks = DataSet.iPlayerHooks(playerHookPool);
+		List<IPlayerHook> playerHooks = GGUtilDataSet.iPlayerHooks(playerHookPool);
 		for (IPlayerHook playerHook : playerHooks)
 		{
 			ByteBuf buf = Unpooled.buffer();

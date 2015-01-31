@@ -8,10 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestWorld;
-import com.gildedgames.util.testutil.TestWorldHook;
-import com.gildedgames.util.testutil.TestWorldHookFactory;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.world.TestWorld;
+import com.gildedgames.util.testutil.world.TestWorldHook;
+import com.gildedgames.util.testutil.world.TestWorldHookFactory;
 import com.gildedgames.util.world.common.world.IWorld;
 
 /**
@@ -25,12 +25,12 @@ public class WorldHookPoolTest
 
 	private WorldHookPool<TestWorldHook> createPool()
 	{
-		return new WorldHookPool<TestWorldHook>(new TestWorldHookFactory(DataSet.iworlds()), poolName);
+		return new WorldHookPool<TestWorldHook>(new TestWorldHookFactory(GGUtilDataSet.iworlds()), poolName);
 	}
 
 	private void fillWithData(WorldHookPool<?> pool)
 	{
-		for (IWorld world : DataSet.iworlds())
+		for (IWorld world : GGUtilDataSet.iworlds())
 		{
 			pool.get(world);
 		}

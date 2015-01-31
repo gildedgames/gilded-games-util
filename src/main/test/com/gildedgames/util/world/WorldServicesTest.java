@@ -3,10 +3,10 @@ package com.gildedgames.util.world;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.testutil.DataSet;
-import com.gildedgames.util.testutil.TestWorldFactory;
-import com.gildedgames.util.testutil.TestWorldHook;
-import com.gildedgames.util.testutil.TestWorldHookFactory;
+import com.gildedgames.util.testutil.GGUtilDataSet;
+import com.gildedgames.util.testutil.world.TestWorldFactory;
+import com.gildedgames.util.testutil.world.TestWorldHook;
+import com.gildedgames.util.testutil.world.TestWorldHookFactory;
 import com.gildedgames.util.world.common.WorldHookPool;
 
 public class WorldServicesTest
@@ -21,7 +21,7 @@ public class WorldServicesTest
 	public void testPools()
 	{
 		WorldServices worldServices = this.create();
-		TestWorldHookFactory factory = new TestWorldHookFactory(DataSet.iworlds());
+		TestWorldHookFactory factory = new TestWorldHookFactory(GGUtilDataSet.iworlds());
 		WorldHookPool<TestWorldHook> pool = new WorldHookPool<TestWorldHook>(factory, "test");
 		worldServices.registerWorldPool(pool);
 		Assert.assertTrue("Adding or getting worldhookpools is broken", worldServices.getPools().contains(pool));

@@ -1,4 +1,4 @@
-package com.gildedgames.util.testutil;
+package com.gildedgames.util.testutil.player;
 
 import com.gildedgames.util.player.common.IPlayerHookFactory;
 import com.gildedgames.util.player.common.IPlayerHookPool;

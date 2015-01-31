@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.testutil.DataSet;
+import com.gildedgames.util.testutil.GGUtilDataSet;
 
 public class PlayerHookSaveHandlerTest
 {
@@ -23,8 +23,8 @@ public class PlayerHookSaveHandlerTest
 	@Test
 	public void testWriteAndRead()
 	{
-		List<UUID> uuids = DataSet.uuids();
-		List<IPlayerHookPool<?>> pools = DataSet.playerHookPools(uuids);
+		List<UUID> uuids = GGUtilDataSet.uuids();
+		List<IPlayerHookPool<?>> pools = GGUtilDataSet.playerHookPools(uuids);
 		PlayerHookSaveHandler saveHandler = new PlayerHookSaveHandler();
 		Map<IPlayerHookPool<?>, List<IPlayerHook>> map = new HashMap<IPlayerHookPool<?>, List<IPlayerHook>>();
 		for (IPlayerHookPool<?> pool : pools)

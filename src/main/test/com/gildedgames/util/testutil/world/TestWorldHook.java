@@ -1,4 +1,4 @@
-package com.gildedgames.util.testutil;
+package com.gildedgames.util.testutil.world;
 
 import net.minecraft.nbt.NBTTagCompound;
 

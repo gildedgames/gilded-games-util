@@ -1,4 +1,4 @@
-package com.gildedgames.util.testutil;
+package com.gildedgames.util.testutil.world;
 
 import com.gildedgames.util.world.common.world.IWorldFactory;
 
