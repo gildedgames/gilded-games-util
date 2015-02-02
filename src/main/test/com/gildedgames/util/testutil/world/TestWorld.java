@@ -1,5 +1,7 @@
 package com.gildedgames.util.testutil.world;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.state.IBlockState;
@@ -13,6 +15,12 @@ import com.gildedgames.util.world.common.world.IWorld;
 public class TestWorld implements IWorld
 {
 	int dimId;
+
+	Map<BlockPos, IBlockState> blocks = new HashMap<BlockPos, IBlockState>();
+
+	Map<BlockPos, TileEntity> tileEntities = new HashMap<BlockPos, TileEntity>();
+
+	Random random = new Random();
 
 	public TestWorld(int dimId)
 	{
@@ -28,37 +36,39 @@ public class TestWorld implements IWorld
 	@Override
 	public IBlockState getBlockState(BlockPos pos)
 	{
-		return null;
+		return this.blocks.get(pos);
 	}
 
 	@Override
 	public boolean setBlockState(BlockPos pos, IBlockState state)
 	{
-		return false;
+		return this.setBlockState(pos, state, 1);
 	}
 
 	@Override
 	public boolean setBlockState(BlockPos pos, IBlockState newState, int flags)
 	{
-		return false;
+		this.blocks.put(pos, newState);
+		return true;
 	}
 
 	@Override
 	public boolean isAirBlock(BlockPos pos)
 	{
-		return false;
+		return !this.blocks.containsKey(pos);
 	}
 
 	@Override
 	public boolean setBlockToAir(BlockPos pos)
 	{
-		return false;
+		this.blocks.remove(pos);
+		return true;
 	}
 
 	@Override
 	public boolean destroyBlock(BlockPos pos, boolean dropBlock)
 	{
-		return false;
+		return this.setBlockToAir(pos);
 	}
 
 	@Override
@@ -70,7 +80,7 @@ public class TestWorld implements IWorld
 	@Override
 	public Random getRandom()
 	{
-		return null;
+		return this.random;
 	}
 
 	@Override
