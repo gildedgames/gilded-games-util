@@ -4,16 +4,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
 
-public interface IReaderWriterFactory<FILE extends IOFile<I, O>, I, O>
+public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 {
 
-	I getReader(DataInputStream input, IOManager manager);
+	I getInput(DataInputStream input, IORegistry registry);
 
-	O getWriter(DataOutputStream output, IOManager manager);
+	O getOutput(DataOutputStream output, IORegistry registry);
 
 	File getFileFromName(FILE data, String name);
 

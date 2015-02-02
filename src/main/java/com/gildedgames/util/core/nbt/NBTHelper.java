@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

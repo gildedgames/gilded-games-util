@@ -159,12 +159,6 @@ public class UtilCore implements ICore
 		return instance.serviceLocator.instance();
 	}
 
-	public static void registerIO(Class<?> clazz, int id)
-	{
-		instance.serviceLocator.client().getIO().register(clazz, id);
-		instance.serviceLocator.server().getIO().register(clazz, id);
-	}
-
 	public static String modAddress()
 	{
 		return UtilCore.MOD_ID + ":";

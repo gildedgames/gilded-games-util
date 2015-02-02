@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,8 +15,6 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-
-import com.gildedgames.util.io_manager.io.NBT;
 
 public class NBTDataHandler
 {

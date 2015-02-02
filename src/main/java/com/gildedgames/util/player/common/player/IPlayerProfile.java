@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.io_manager.networking.ISyncable;
 
 public interface IPlayerProfile extends NBT, ISyncable

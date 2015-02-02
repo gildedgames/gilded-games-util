@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.io;
+package com.gildedgames.util.io_manager.util.raw;
 
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -8,20 +8,21 @@ import java.util.List;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.io_manager.IOManager;
+import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataOutput
 {
 
-	protected final IOManager manager;
+	protected final IORegistry registry;
 
 	protected final DataOutputStream dataOutput;
 
-	public Output(IOManager manager, DataOutputStream dataOutput)
+	public Output(IORegistry registry, DataOutputStream dataOutput)
 	{
 		super();
 		
-		this.manager = manager;
+		this.registry = registry;
 		this.dataOutput = dataOutput;
 	}
 
@@ -172,9 +173,9 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 		return this.dataOutput;
 	}
 
-	public IOManager getIOManager()
-	{
-		return this.manager;
+	public IORegistry getIORegistry()
+	{	
+		return this.registry;
 	}
 
 }

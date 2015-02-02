@@ -4,9 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.io_manager.IOManager;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 

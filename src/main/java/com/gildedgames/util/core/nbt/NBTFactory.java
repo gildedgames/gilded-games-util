@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -7,16 +7,16 @@ import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.io_manager.IOManager;
-import com.gildedgames.util.io_manager.factory.IReaderWriterFactory;
+import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
 
-public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
+public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
 
 	@Override
-	public NBTTagCompound getReader(DataInputStream input, IOManager manager)
+	public NBTTagCompound getInput(DataInputStream input, IORegistry registry)
 	{
 		try
 		{
@@ -31,7 +31,7 @@ public class NBTFactory implements IReaderWriterFactory<IOFile<NBTTagCompound, N
 	}
 
 	@Override
-	public NBTTagCompound getWriter(DataOutputStream output, IOManager manager)
+	public NBTTagCompound getOutput(DataOutputStream output, IORegistry registry)
 	{
 		return new NBTTagCompound();
 	}

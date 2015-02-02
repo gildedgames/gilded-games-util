@@ -1,30 +1,48 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.io_manager.IOManager;
-import com.gildedgames.util.io_manager.util.nbt.NBTFile;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IORegistryTakenException;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.util.IORegistryDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
 import com.gildedgames.util.world.common.WorldHookPool;
 
 public class UtilServices
 {
 
-	private IOManager io;
+	private IORegistry io;
 
+	private static final String REGISTRY_NAME = "GildedGamesUtil";
+	
 	public UtilServices()
 	{
 
 	}
+	
+	private void startIORegistry()
+	{
+		this.io = new IORegistryDefault(REGISTRY_NAME);
 
-	public IOManager getIO()
+		this.io.registerClass(NBTFile.class, 0);
+		this.io.registerClass(WorldHookPool.class, 1);
+		this.io.registerClass(MenuConfig.class, 2);
+		
+		try
+		{
+			IOCore.io().addRegistry(this.io);
+		}
+		catch (IORegistryTakenException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public IORegistry getIO()
 	{
 		if (this.io == null)
 		{
-			this.io = new IOManager();
-
-			this.io.register(NBTFile.class, 0);//"NBTFile");
-			//this.io.register(IWorldHookPool.class, 1); "IWorldHookPool"); Dunno who added this but you cannot instantiate Interfaces so this is useless :p
-			this.io.register(WorldHookPool.class, 1);// "WorldHookPool");
-			this.io.register(MenuConfig.class, 2);// "MenuConfig");
+			this.startIORegistry();
 		}
 
 		return this.io;

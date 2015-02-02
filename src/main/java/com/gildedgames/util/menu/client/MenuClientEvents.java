@@ -19,9 +19,10 @@ import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.core.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.io_manager.io.NBT;
-import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
-import com.gildedgames.util.io_manager.util.nbt.NBTFile;
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.menu.MenuCore;
 
 public class MenuClientEvents
@@ -96,7 +97,7 @@ public class MenuClientEvents
 			
 			config.menuID = menu.getID();
 			
-			UtilCore.locate().getIO().writeFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+			IOCore.io().writeFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
 		}
 		catch (IOException e)
 		{
@@ -119,7 +120,7 @@ public class MenuClientEvents
 				{
 					MenuConfig config = new MenuConfig();
 
-					UtilCore.locate().getIO().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+					IOCore.io().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
 
 					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
 				}
@@ -195,7 +196,7 @@ public class MenuClientEvents
 				{
 					MenuConfig config = new MenuConfig();
 
-					UtilCore.locate().getIO().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
+					IOCore.io().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
 				
 					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
 				}

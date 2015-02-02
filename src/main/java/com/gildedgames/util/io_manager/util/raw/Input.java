@@ -1,24 +1,25 @@
-package com.gildedgames.util.io_manager.io;
+package com.gildedgames.util.io_manager.util.raw;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.gildedgames.util.io_manager.IOManager;
+import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataInput
 {
 
-	protected final IOManager manager;
+	protected final IORegistry registry;
 
 	protected final DataInputStream dataInput;
 
-	public Input(IOManager manager, DataInputStream dataInput)
+	public Input(IORegistry registry, DataInputStream dataInput)
 	{
 		super();
 
-		this.manager = manager;
+		this.registry = registry;
 		this.dataInput = dataInput;
 	}
 
@@ -166,9 +167,9 @@ public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements Da
 		return enumerator;
 	}
 
-	public IOManager getIOManager()
+	public IORegistry getIORegistry()
 	{
-		return this.manager;
+		return this.registry;
 	}
 
 	public DataInputStream getStream()

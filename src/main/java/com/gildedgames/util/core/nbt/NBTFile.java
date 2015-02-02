@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt;
 
 import java.io.File;
 
@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
-import com.gildedgames.util.io_manager.io.NBT;
 import com.google.common.base.Optional;
 
 public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>

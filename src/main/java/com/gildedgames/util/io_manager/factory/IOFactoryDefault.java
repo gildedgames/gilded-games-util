@@ -4,18 +4,18 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
-import com.gildedgames.util.io_manager.io.Input;
-import com.gildedgames.util.io_manager.io.Output;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.util.raw.Input;
+import com.gildedgames.util.io_manager.util.raw.Output;
 
-public class DefaultRWFactory<FILE extends IOFile<Input, Output>> implements IReaderWriterFactory<FILE, Input, Output>
+public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOFactory<FILE, Input, Output>
 {
 
 	private final File baseDirectory;
 
-	public DefaultRWFactory(File baseDirectory)
+	public IOFactoryDefault(File baseDirectory)
 	{
 		this.baseDirectory = baseDirectory;
 	}
@@ -27,15 +27,15 @@ public class DefaultRWFactory<FILE extends IOFile<Input, Output>> implements IRe
 	}
 
 	@Override
-	public Input getReader(DataInputStream input, IOManager manager)
+	public Input getInput(DataInputStream input, IORegistry registry)
 	{
-		return new Input(manager, input);
+		return new Input(registry, input);
 	}
 
 	@Override
-	public Output getWriter(DataOutputStream output, IOManager manager)
+	public Output getOutput(DataOutputStream output, IORegistry registry)
 	{
-		return new Output(manager, output);
+		return new Output(registry, output);
 	}
 
 	@Override
