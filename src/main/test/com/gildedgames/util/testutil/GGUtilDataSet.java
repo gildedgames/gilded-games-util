@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.testutil.block.TestBlockState;
 import com.gildedgames.util.testutil.io.TestMetadata;
 import com.gildedgames.util.testutil.io.TestNBTFile;
 import com.gildedgames.util.testutil.player.TestPlayerHook;
@@ -142,5 +144,10 @@ public class GGUtilDataSet
 		manager.register(TestMetadata.class, 3);
 		manager.register(TestNBTFile.class, 4);
 		return manager;
+	}
+
+	public static IBlockState blockState()
+	{
+		return TestBlockState.getRandomState();
 	}
 }
