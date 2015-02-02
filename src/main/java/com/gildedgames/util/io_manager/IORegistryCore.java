@@ -25,18 +25,6 @@ public class IORegistryCore implements IORegistry
 	}
 
 	@Override
-	public IOSerializer getSerializer()
-	{
-		return IOCore.io();
-	}
-
-	@Override
-	public IOSerializerVolatile getVolatileSerializer()
-	{
-		return IOCore.io();
-	}
-
-	@Override
 	public void registerClass(Class<?> classToSerialize, int classID)
 	{
 		

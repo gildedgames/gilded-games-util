@@ -25,42 +25,15 @@ public class IORegistryDefault implements IORegistry
 	
 	private final String registryID;
 	
-	private final IOSerializer serializer;
-	
-	private final IOSerializerVolatile serializerVolatile;
-	
-	public IORegistryDefault(String registryID, IOSerializer serializer, IOSerializerVolatile serializerVolatile)
-	{
-		this.registryID = registryID;
-		
-		this.serializer = serializer;
-		this.serializerVolatile = serializerVolatile;
-	}
-	
 	public IORegistryDefault(String registryID)
 	{
 		this.registryID = registryID;
-		
-		this.serializer = new IOSerializerDefault(this);
-		this.serializerVolatile = new IOSerializerVolatileDefault(this);
 	}
 	
 	@Override
 	public String getRegistryID()
 	{
 		return this.registryID;
-	}
-	
-	@Override
-	public IOSerializer getSerializer()
-	{
-		return this.serializer;
-	}
-	
-	@Override
-	public IOSerializerVolatile getVolatileSerializer()
-	{
-		return this.serializerVolatile;
 	}
 
 	@Override

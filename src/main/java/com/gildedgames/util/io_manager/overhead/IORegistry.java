@@ -7,10 +7,6 @@ public interface IORegistry
 {
 	
 	String getRegistryID();
-	
-	IOSerializer getSerializer();
-	
-	IOSerializerVolatile getVolatileSerializer();
 
 	void registerClass(Class<?> classToSerialize, int classID);
 	 

@@ -86,18 +86,6 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	{
 		return this;
 	}
-	
-	@Override
-	public IOSerializer getSerializer()
-	{
-		return this;
-	}
-
-	@Override
-	public IOSerializerVolatile getVolatileSerializer()
-	{
-		return this;
-	}
 
 	@Override
 	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom)
