@@ -1,5 +1,8 @@
 package com.gildedgames.util.io_manager.util.raw;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,15 +10,16 @@ import java.util.List;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import com.gildedgames.util.io_manager.io.IOFile;
 
 public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataOutput
 {
 
-	protected final DataOutputStream dataOutput;
+	protected final ByteBuf dataOutput;
 
-	public Output(DataOutputStream dataOutput)
+	public Output(ByteBuf dataOutput)
 	{
 		super();
 
@@ -25,19 +29,19 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 	@Override
 	public void write(int b) throws IOException
 	{
-		this.dataOutput.write(b);
+		this.dataOutput.writeByte(b);
 	}
 
 	@Override
 	public void write(byte[] b) throws IOException
 	{
-		this.dataOutput.write(b);
+		this.dataOutput.writeBytes(b);
 	}
 
 	@Override
 	public void write(byte[] b, int off, int len) throws IOException
 	{
-		this.dataOutput.write(b, off, len);
+		this.dataOutput.writeBytes(b, off, len);
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 
 		if (s != null)
 		{
-			this.dataOutput.writeBytes(s);
+			this.dataOutput.writeBytes(s.getBytes());
 		}
 	}
 
@@ -106,7 +110,7 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 
 		if (s != null)
 		{
-			this.dataOutput.writeChars(s);
+			ByteBufUtils.writeUTF8String(this.dataOutput, s);
 		}
 	}
 
@@ -117,7 +121,7 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 
 		if (s != null)
 		{
-			this.dataOutput.writeUTF(s);
+			ByteBufUtils.writeUTF8String(this.dataOutput, s);
 		}
 	}
 
@@ -160,11 +164,15 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 		else
 		{
 			this.writeBoolean(true);
-			CompressedStreamTools.writeCompressed(tag, this.dataOutput);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			DataOutputStream outputStream = new DataOutputStream(stream);
+			CompressedStreamTools.write(tag, outputStream);
+			this.dataOutput.writeBytes(stream.toByteArray());
+			outputStream.close();
 		}
 	}
 
-	public DataOutputStream getStream()
+	public ByteBuf getStream()
 	{
 		return this.dataOutput;
 	}

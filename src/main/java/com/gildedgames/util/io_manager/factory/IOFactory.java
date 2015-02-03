@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager.factory;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 
 import com.gildedgames.util.io_manager.io.IOFile;
@@ -10,9 +8,9 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 {
 
-	I getInput(DataInputStream input);
+	I getInput(byte[] reading);
 
-	O getOutput(DataOutputStream output);
+	O getOutput();
 
 	Class<?> readSerializedClass(I input);
 
@@ -28,7 +26,7 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 
 	void preReadingMetadata(IOFileMetadata<I, O> metadata, File from, I reader);
 
-	void finishWriting(DataOutputStream output, O writer);
+	byte[] finishWriting(O writer);
 
 	I convertToInput(O input);
 

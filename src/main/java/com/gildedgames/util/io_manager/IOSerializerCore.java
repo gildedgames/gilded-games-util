@@ -36,6 +36,15 @@ public class IOSerializerCore implements IOSerializer
 		return IOCore.io();
 	}
 
+	//Note: Can only read up to 2 gigs a time... Dunno how big of an issue that would be
+	private byte[] readBytes(DataInputStream input) throws IOException
+	{
+		int arraySize = input.readInt();
+		byte[] readBack = new byte[arraySize];
+		input.read(readBack);
+		return readBack;
+	}
+
 	@Override
 	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory) throws IOException
 	{
@@ -46,7 +55,7 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(dataInput);
+		I input = ioFactory.getInput(this.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
 
@@ -66,7 +75,7 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(dataInput);
+		I input = ioFactory.getInput(this.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
 
@@ -86,7 +95,7 @@ public class IOSerializerCore implements IOSerializer
 			return;
 		}
 
-		I input = ioFactory.getInput(dataInput);
+		I input = ioFactory.getInput(this.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
 
@@ -114,7 +123,7 @@ public class IOSerializerCore implements IOSerializer
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
-		O output = ioFactory.getOutput(dataOutput);
+		O output = ioFactory.getOutput();
 
 		ioFactory.setSerializedClass("IOClassID", output, ioFile.getClass());
 

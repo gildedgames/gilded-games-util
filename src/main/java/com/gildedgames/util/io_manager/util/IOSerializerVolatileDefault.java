@@ -1,6 +1,5 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
@@ -9,7 +8,6 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 
 public class IOSerializerVolatileDefault implements IOSerializerVolatile
 {
@@ -86,7 +84,7 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	{
 		final T clone = this.cast(this.getManager().getRegistry().create(objectToClone.getClass(), defaultConstructor));
 
-		O output = factory.getOutput(new DataOutputStream(new ByteOutputStream()));
+		O output = factory.getOutput();
 		objectToClone.write(output);
 		I input = factory.convertToInput(output);
 

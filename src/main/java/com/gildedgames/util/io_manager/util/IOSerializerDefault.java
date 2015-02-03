@@ -48,6 +48,15 @@ public class IOSerializerDefault implements IOSerializer
 		return this.readFile(file, ioFactory, defaultConstructor);
 	}
 
+	//Note: Can only read up to 2 gigs a time... Dunno how big of an issue that would be
+	private byte[] readBytes(DataInputStream input) throws IOException
+	{
+		int arraySize = input.readInt();
+		byte[] readBack = new byte[arraySize];
+		input.read(readBack);
+		return readBack;
+	}
+
 	@Override
 	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
@@ -60,7 +69,7 @@ public class IOSerializerDefault implements IOSerializer
 
 		IOFileMetadata<I, O> metadata = this.readMetadata(file, dataInput, ioFactory);
 
-		I input = ioFactory.getInput(dataInput);
+		I input = ioFactory.getInput(this.readBytes(dataInput));
 		Class<?> clazz = ioFactory.getSerializedClass(dataKey, input);
 		@SuppressWarnings("unchecked")
 		FILE ioFile = (FILE) this.getManager().getRegistry().create(clazz, constructors);
@@ -102,10 +111,10 @@ public class IOSerializerDefault implements IOSerializer
 
 			dataOutput.writeBoolean(true);
 
-			final O output = ioFactory.getOutput(dataOutput);
+			final O output = ioFactory.getOutput();
 			ioFactory.setSerializedClass(metadataKey + i, output, metadataFile.getClass());
 			metadataFile.write(output);
-			ioFactory.finishWriting(dataOutput, output);
+			this.finishWriting(output, dataOutput, ioFactory);
 			i++;
 
 			metadata = metadataFile.getMetadata();
@@ -113,14 +122,21 @@ public class IOSerializerDefault implements IOSerializer
 
 		dataOutput.writeBoolean(false);//Not metadata
 
-		final O output = ioFactory.getOutput(dataOutput);
+		final O output = ioFactory.getOutput();
 		ioFactory.setSerializedClass(dataKey, output, ioFile.getDataClass());
 
 		ioFile.write(output);
 
-		ioFactory.finishWriting(dataOutput, output);
+		this.finishWriting(output, dataOutput, ioFactory);
 
 		dataOutput.close();
+	}
+
+	private <O> void finishWriting(O output, DataOutputStream stream, IOFactory<?, ?, O> factory) throws IOException
+	{
+		byte[] written = factory.finishWriting(output);
+		stream.writeInt(written.length);
+		stream.write(written);
 	}
 
 	@Override
@@ -149,7 +165,7 @@ public class IOSerializerDefault implements IOSerializer
 		IOFileMetadata<I, O> metadata = this.readMetadata(file, dataInput, ioFactory);
 		ioFile.setMetadata(metadata);
 
-		I input = ioFactory.getInput(dataInput);
+		I input = ioFactory.getInput(this.readBytes(dataInput));
 		ioFactory.getSerializedClass(dataKey, input);
 
 		ioFactory.preReading(ioFile, file, input);
@@ -179,7 +195,7 @@ public class IOSerializerDefault implements IOSerializer
 		int i = 0;
 		while (isMetadata)//Keep reading metadata
 		{
-			final I input = ioFactory.getInput(dataInput);
+			final I input = ioFactory.getInput(this.readBytes(dataInput));
 
 			Class<?> clazz = ioFactory.getSerializedClass(metadataKey + i, input);
 			@SuppressWarnings("unchecked")

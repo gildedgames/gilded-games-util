@@ -1,5 +1,7 @@
 package com.gildedgames.util.core.nbt;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -19,11 +21,14 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	private int writeIndex, readIndex;
 
 	@Override
-	public NBTTagCompound getInput(DataInputStream input)
+	public NBTTagCompound getInput(byte[] input)
 	{
 		try
 		{
-			return NBTHelper.readInputNBT(input);
+			DataInputStream stream = new DataInputStream(new ByteArrayInputStream(input));
+			NBTTagCompound tag = NBTHelper.readInputNBT(stream);
+			stream.close();
+			return tag;
 		}
 		catch (IOException e)
 		{
@@ -34,7 +39,7 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public NBTTagCompound getOutput(DataOutputStream output)
+	public NBTTagCompound getOutput()
 	{
 		return new NBTTagCompound();
 	}
@@ -107,16 +112,22 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public void finishWriting(DataOutputStream input, NBTTagCompound output)
+	public byte[] finishWriting(NBTTagCompound writer)
 	{
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		DataOutputStream stream = new DataOutputStream(byteStream);
 		try
 		{
-			NBTHelper.writeOutputNBT(output, input);
+			NBTHelper.writeOutputNBT(writer, stream);
+			byte[] bytez = byteStream.toByteArray();
+			stream.close();
+			return bytez;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Override
