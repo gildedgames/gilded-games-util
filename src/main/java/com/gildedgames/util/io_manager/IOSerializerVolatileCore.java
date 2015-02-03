@@ -25,7 +25,7 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	{
 		return IOCore.io();
 	}
-
+	
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
@@ -51,6 +51,33 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		serializer.write(output, ioFactory, objectToWrite);
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory)
+	{
+		IOManager manager = this.managers.get(0);
+		IOSerializerVolatile serializer = manager.getVolatileSerializer();
+		
+		return serializer.get(key, input, ioFactory);
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
+	{
+		IOManager manager = this.managers.get(0);
+		IOSerializerVolatile serializer = manager.getVolatileSerializer();
+		
+		return serializer.get(key, input, ioFactory, objectConstructor);
+	}
+
+	@Override
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void set(String key, O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
+	{
+		IOManager manager = this.managers.get(0);
+		IOSerializerVolatile serializer = manager.getVolatileSerializer();
+		
+		serializer.set(key, output, ioFactory, objectToWrite);
 	}
 
 	@Override

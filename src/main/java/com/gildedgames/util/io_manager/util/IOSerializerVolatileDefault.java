@@ -37,7 +37,7 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
-		Class<?> classToReadFrom = ioFactory.readClass(input, this.getParentRegistry());
+		Class<?> classToReadFrom = ioFactory.getSerializedClass("", input, this.getParentRegistry());
 		
 		final T io = this.cast(this.getParentRegistry().create(classToReadFrom, objectConstructor));
 
@@ -49,7 +49,33 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	@Override
 	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
-		ioFactory.writeClass(output, objectToWrite.getClass(), this.getParentRegistry());
+		ioFactory.setSerializedClass("", output, objectToWrite.getClass(), this.getParentRegistry());
+		
+		objectToWrite.write(output);
+	}
+	
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory)
+	{
+		return this.get(key, input, ioFactory, defaultConstructor);
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
+	{
+		Class<?> classToReadFrom = ioFactory.getSerializedClass(key, input, this.getParentRegistry());
+		
+		final T io = this.cast(this.getParentRegistry().create(classToReadFrom, objectConstructor));
+
+		io.read(input);
+
+		return io;
+	}
+
+	@Override
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void set(String key, O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
+	{
+		ioFactory.setSerializedClass(key, output, objectToWrite.getClass(), this.getParentRegistry());
 		
 		objectToWrite.write(output);
 	}

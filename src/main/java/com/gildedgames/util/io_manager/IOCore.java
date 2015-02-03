@@ -93,7 +93,7 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	{
 		return this;
 	}
-
+	
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
@@ -110,6 +110,24 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
 		this.volatileComponent.write(output, ioFactory, objectToWrite);
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory)
+	{
+		return this.volatileComponent.get(key, input, ioFactory);
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
+	{
+		return this.volatileComponent.get(key, input, ioFactory, objectConstructor);
+	}
+
+	@Override
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void set(String key, O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
+	{
+		this.volatileComponent.set(key, output, ioFactory, objectToWrite);
 	}
 	
 	@Override

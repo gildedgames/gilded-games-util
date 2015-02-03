@@ -15,9 +15,13 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 
 	O getOutput(DataOutputStream output, IORegistry registry);
 	
-	Class<?> readClass(I input, IORegistry registry);
+	Class<?> readSerializedClass(I input, IORegistry registry);
 	
-	void writeClass(O output, Class<?> classToWrite, IORegistry registry);
+	void writeSerializedClass(O output, Class<?> classToWrite, IORegistry registry);
+	
+	Class<?> getSerializedClass(String key, I input, IORegistry registry);
+	
+	void setSerializedClass(String key, O output, Class<?> classToWrite, IORegistry registry);
 
 	File getFileFromName(FILE data, String name);
 

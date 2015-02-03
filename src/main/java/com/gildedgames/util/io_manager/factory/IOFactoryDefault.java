@@ -40,7 +40,19 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	}
 	
 	@Override
-	public Class<?> readClass(Input input, IORegistry registry)
+	public Class<?> getSerializedClass(String key, Input input, IORegistry registry)
+	{
+		return this.readSerializedClass(input, registry);
+	}
+
+	@Override
+	public void setSerializedClass(String key, Output output, Class<?> classToWrite, IORegistry registry)
+	{
+		this.writeSerializedClass(output, classToWrite, registry);
+	}
+	
+	@Override
+	public Class<?> readSerializedClass(Input input, IORegistry registry)
 	{
 		try
 		{
@@ -57,7 +69,7 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	}
 
 	@Override
-	public void writeClass(Output output, Class<?> classToWrite, IORegistry registry)
+	public void writeSerializedClass(Output output, Class<?> classToWrite, IORegistry registry)
 	{
 		int classID = registry.getID(classToWrite);
 		

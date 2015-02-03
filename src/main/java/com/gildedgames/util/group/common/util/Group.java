@@ -43,7 +43,7 @@ public class Group implements IGroup
 	{
 		NBTFactory factory = new NBTFactory();
 		
-		IOCore.io().write(output, factory, this.permissions);
+		IOCore.io().set("permissions", output, factory, this.permissions);
 		output.setString("name", this.name);
 	}
 
@@ -52,7 +52,7 @@ public class Group implements IGroup
 	{
 		NBTFactory factory = new NBTFactory();
 		
-		this.permissions = (IGroupPerms) IOCore.io().read(input, factory);
+		this.permissions = (IGroupPerms) IOCore.io().get("permissions", input, factory);
 		this.name = input.getString("name");
 	}
 
