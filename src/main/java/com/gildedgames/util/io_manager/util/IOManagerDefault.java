@@ -21,7 +21,7 @@ public class IOManagerDefault implements IOManager
 		this.volatileComponent = volatileSerializer;
 	}
 	
-	public IOManagerDefault(IORegistryDefault registry)
+	public IOManagerDefault(IORegistry registry)
 	{
 		this(registry, new IOSerializerDefault(registry), new IOSerializerVolatileDefault(registry));
 	}
