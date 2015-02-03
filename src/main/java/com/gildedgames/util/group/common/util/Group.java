@@ -41,14 +41,18 @@ public class Group implements IGroup
 	@Override
 	public void write(NBTTagCompound output)
 	{
-		IOCore.io().write(output, new NBTFactory(), this.permissions);
+		NBTFactory factory = new NBTFactory();
+		
+		IOCore.io().write(output, factory, this.permissions);
 		output.setString("name", this.name);
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		this.permissions = (IGroupPerms) IOCore.io().read(input, new NBTFactory());
+		NBTFactory factory = new NBTFactory();
+		
+		this.permissions = (IGroupPerms) IOCore.io().read(input, factory);
 		this.name = input.getString("name");
 	}
 

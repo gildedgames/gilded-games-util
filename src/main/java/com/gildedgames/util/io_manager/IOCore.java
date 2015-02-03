@@ -11,6 +11,7 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
@@ -20,7 +21,7 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 
 	private static final IOCore INSTANCE = new IOCore();
 	
-	private List<IORegistry> externalRegistries = new ArrayList<IORegistry>();
+	private List<IOManager> externalManagers = new ArrayList<IOManager>();
 	
 	protected IOSerializer fileComponent;
 	
@@ -30,9 +31,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	
 	private IOCore()
 	{
-		this.registryComponent = new IORegistryCore(this.externalRegistries);
-		this.fileComponent = new IOSerializerCore();
-		this.volatileComponent = new IOSerializerVolatileCore();
+		this.registryComponent = new IORegistryCore(this.externalManagers);
+		this.fileComponent = new IOSerializerCore(this.externalManagers);
+		this.volatileComponent = new IOSerializerVolatileCore(this.externalManagers);
 	}
 	
 	public static IOCore io()
@@ -42,24 +43,28 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	
 	/** Recommended to pass along an instance of the default implementation, IORegistryDefault.
 	 * You MUST have a unique registryID, otherwise it will throw an IORegistryTakenException **/
-	public void addRegistry(IORegistry registry) throws IORegistryTakenException
+	public void addManager(IOManager manager) throws IORegistryTakenException
 	{
-		for (IORegistry external : this.externalRegistries)
+		for (IOManager external : this.externalManagers)
 		{
-			if (external.getRegistryID().equals(registry.getRegistryID()))
+			IORegistry registry = external.getRegistry();
+			
+			if (registry.getRegistryID().equals(manager.getRegistry().getRegistryID()))
 			{
-				throw new IORegistryTakenException(registry);
+				throw new IORegistryTakenException(manager.getRegistry());
 			}
 		}
 		
-		this.externalRegistries.add(registry);
+		this.externalManagers.add(manager);
 	}
 	
-	public IORegistry getRegistry(String registryID)
+	public IOManager getManager(String registryID)
 	{
-		for (IORegistry external : this.externalRegistries)
+		for (IOManager external : this.externalManagers)
 		{
-			if (external.getRegistryID().equals(registryID))
+			IORegistry registry = external.getRegistry();
+			
+			if (registry.getRegistryID().equals(registryID))
 			{
 				return external;
 			}
@@ -68,11 +73,13 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 		return null;
 	}
 	
-	public IORegistry getRegistry(Class<?> clazz)
+	public IOManager getManager(Class<?> clazz)
 	{
-		for (IORegistry external : this.externalRegistries)
+		for (IOManager external : this.externalManagers)
 		{
-			if (external.isClassRegistered(clazz))
+			IORegistry registry = external.getRegistry();
+			
+			if (registry.isClassRegistered(clazz))
 			{
 				return external;
 			}

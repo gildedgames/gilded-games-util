@@ -3,7 +3,8 @@ package com.gildedgames.util.core;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IORegistryTakenException;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.overhead.IOManager;
+import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.io_manager.util.IORegistryDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
 import com.gildedgames.util.world.common.WorldHookPool;
@@ -11,7 +12,7 @@ import com.gildedgames.util.world.common.WorldHookPool;
 public class UtilServices
 {
 
-	private IORegistry io;
+	private IOManager io;
 
 	private static final String REGISTRY_NAME = "GildedGamesUtil";
 	
@@ -20,29 +21,20 @@ public class UtilServices
 
 	}
 	
-	private void startIORegistry()
+	private void startIOManager()
 	{
-		this.io = new IORegistryDefault(REGISTRY_NAME);
+		this.io = new IOManagerDefault(new IORegistryDefault(REGISTRY_NAME));
 
-		this.io.registerClass(NBTFile.class, 0);
-		this.io.registerClass(WorldHookPool.class, 1);
-		this.io.registerClass(MenuConfig.class, 2);
-		
-		try
-		{
-			IOCore.io().addRegistry(this.io);
-		}
-		catch (IORegistryTakenException e)
-		{
-			e.printStackTrace();
-		}
+		this.io.getRegistry().registerClass(NBTFile.class, 0);
+		this.io.getRegistry().registerClass(WorldHookPool.class, 1);
+		this.io.getRegistry().registerClass(MenuConfig.class, 2);
 	}
 
-	public IORegistry getIO()
+	public IOManager getIOManager()
 	{
 		if (this.io == null)
 		{
-			this.startIORegistry();
+			this.startIOManager();
 		}
 
 		return this.io;

@@ -14,6 +14,8 @@ import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
+	
+	private int classIndex;
 
 	@Override
 	public NBTTagCompound getInput(DataInputStream input, IORegistry registry)
@@ -39,7 +41,7 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	@Override
 	public Class<?> readClass(NBTTagCompound input, IORegistry registry)
 	{
-		int classID = input.getInteger("c");
+		int classID = input.getInteger("factoryClass" + this.classIndex);
 		
 		return registry.getClass(registry.getRegistryID(), classID);
 	}
@@ -49,7 +51,7 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	{
 		int classID = registry.getID(classToWrite);
 		
-		output.setInteger("c", classID);
+		output.setInteger("factoryClass" + this.classIndex++, classID);
 	}
 
 	@Override
