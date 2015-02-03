@@ -10,7 +10,6 @@ public class UtilServicesTest
 	public void test()
 	{
 		UtilServices services = new UtilServices();
-		Assert.assertSame(services.getIO(), services.getIO());
 	}
 
 }

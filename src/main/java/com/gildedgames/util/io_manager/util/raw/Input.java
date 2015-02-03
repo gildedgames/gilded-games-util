@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataInput
 {
