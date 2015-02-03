@@ -30,13 +30,13 @@ public class IORegistryCore implements IORegistry
 	}
 
 	@Override
-	public <T> T create(Class<T> registeredClass, IConstructor classConstructor)
+	public <T> T create(Class<T> registeredClass, IConstructor... classConstructors)
 	{
 		IORegistry registry = IOCore.io().getManager(registeredClass).getRegistry();
 
 		if (registry != null)
 		{
-			return registry.create(registeredClass, classConstructor);
+			return registry.create(registeredClass, classConstructors);
 		}
 
 		return null;
@@ -56,13 +56,13 @@ public class IORegistryCore implements IORegistry
 	}
 
 	@Override
-	public Object create(String registryID, int registeredClassID, IConstructor classConstructor)
+	public Object create(String registryID, int registeredClassID, IConstructor... classConstructors)
 	{
 		IORegistry registry = IOCore.io().getManager(registryID).getRegistry();
 
 		if (registry != null)
 		{
-			return registry.create(registryID, registeredClassID, classConstructor);
+			return registry.create(registryID, registeredClassID, classConstructors);
 		}
 
 		return null;

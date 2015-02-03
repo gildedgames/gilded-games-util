@@ -49,7 +49,7 @@ public class IOSerializerDefault implements IOSerializer
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor constructor) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
 		final DataInputStream dataInput = this.createDataInput(file);
 
@@ -63,7 +63,7 @@ public class IOSerializerDefault implements IOSerializer
 		I input = ioFactory.getInput(dataInput);
 		Class<?> clazz = ioFactory.getSerializedClass(dataKey, input);
 		@SuppressWarnings("unchecked")
-		FILE ioFile = (FILE) this.getManager().getRegistry().create(clazz, constructor);
+		FILE ioFile = (FILE) this.getManager().getRegistry().create(clazz, constructors);
 
 		ioFactory.preReading(ioFile, file, input);
 		ioFile.read(input);

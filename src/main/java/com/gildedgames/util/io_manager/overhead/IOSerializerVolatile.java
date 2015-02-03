@@ -13,13 +13,13 @@ public interface IOSerializerVolatile
 
 	<T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory);
 
-	<T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor);
+	<T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructor);
 
 	<T extends IO<?, O>, O> void write(O output, IOFactory<?, ?, O> ioFactory, T objectToWrite);
 
 	<T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory);
 
-	<T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor);
+	<T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructor);
 
 	<T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, ?, O> ioFactory, T objectToWrite);
 

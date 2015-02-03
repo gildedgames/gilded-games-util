@@ -39,7 +39,7 @@ public class IORegistryDefault implements IORegistry
 	}
 
 	@Override
-	public <T> T create(Class<T> registeredClass, IConstructor classConstructor)
+	public <T> T create(Class<T> registeredClass, IConstructor... classConstructors)
 	{
 		if (registeredClass == null)
 		{
@@ -47,10 +47,19 @@ public class IORegistryDefault implements IORegistry
 		}
 
 		T instance = null;
-
+		IConstructor constructor = defaultConstructor;
+		for (IConstructor specialConstructor : classConstructors)
+		{
+			if (specialConstructor.isApplicable(registeredClass))
+			{
+				constructor = specialConstructor;
+				break;
+			}
+		}
 		try
 		{
-			instance = classConstructor.construct(registeredClass);
+
+			instance = constructor.construct(registeredClass);
 
 			for (final Class<?> factoryClazz : this.serializeBehaviors.keySet())
 			{
@@ -100,11 +109,11 @@ public class IORegistryDefault implements IORegistry
 	}
 
 	@Override
-	public Object create(String registryID, int registeredClassID, IConstructor classConstructor)
+	public Object create(String registryID, int registeredClassID, IConstructor... classConstructors)
 	{
 		final Class<?> clazz = this.getClass(registryID, registeredClassID);
 
-		return this.create(clazz, classConstructor);
+		return this.create(clazz, classConstructors);
 	}
 
 	@Override

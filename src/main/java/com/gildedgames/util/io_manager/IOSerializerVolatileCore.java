@@ -34,7 +34,7 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructor)
 	{
 		Class<?> classToRead = ioFactory.readSerializedClass(input);
 
@@ -67,7 +67,7 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructor)
 	{
 		Class<?> classToRead = ioFactory.readSerializedClass(input);
 

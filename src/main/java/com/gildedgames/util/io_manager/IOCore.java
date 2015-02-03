@@ -98,9 +98,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
 	{
-		return this.volatileComponent.read(input, ioFactory, objectConstructor);
+		return this.volatileComponent.read(input, ioFactory, objectConstructors);
 	}
 
 	@Override
@@ -116,9 +116,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
 	{
-		return this.volatileComponent.get(key, input, ioFactory, objectConstructor);
+		return this.volatileComponent.get(key, input, ioFactory, objectConstructors);
 	}
 
 	@Override
@@ -140,9 +140,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor constructor) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
-		return this.fileComponent.readFile(file, ioFactory, constructor);
+		return this.fileComponent.readFile(file, ioFactory, constructors);
 	}
 
 	@Override
@@ -170,9 +170,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public <T> T create(Class<T> registeredClass, IConstructor classConstructor)
+	public <T> T create(Class<T> registeredClass, IConstructor... classConstructors)
 	{
-		return this.registryComponent.create(registeredClass, classConstructor);
+		return this.registryComponent.create(registeredClass, classConstructors);
 	}
 
 	@Override
@@ -182,9 +182,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public Object create(String registryID, int registeredClassID, IConstructor classConstructor)
+	public Object create(String registryID, int registeredClassID, IConstructor... classConstructors)
 	{
-		return this.registryComponent.create(registryID, registeredClassID, classConstructor);
+		return this.registryComponent.create(registryID, registeredClassID, classConstructors);
 	}
 
 	@Override

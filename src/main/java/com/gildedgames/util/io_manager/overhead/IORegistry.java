@@ -10,11 +10,11 @@ public interface IORegistry
 
 	void registerBehavior(Class<?> classToSerialize, ISerializeBehaviour<?> serializeBehaviour);
 
-	<T> T create(Class<T> registeredClass, IConstructor classConstructor);
+	<T> T create(Class<T> registeredClass, IConstructor... classConstructor);
 
 	Object create(String registryID, int registeredClassID);
 
-	Object create(String registryID, int registeredClassID, IConstructor classConstructor);
+	Object create(String registryID, int registeredClassID, IConstructor... classConstructors);
 
 	Class<?> getClass(String registryID, int registeredClassID);
 

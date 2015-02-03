@@ -57,7 +57,7 @@ public class IOSerializerCore implements IOSerializer
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor constructor) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructor) throws IOException
 	{
 		final DataInputStream dataInput = this.createDataInput(file);
 
@@ -141,14 +141,6 @@ public class IOSerializerCore implements IOSerializer
 	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
 	{
 		throw new NotImplementedException("adsf");
-		/*DataInputStream dataInput = this.createDataInput(file);
-		if (dataInput == null)
-		{
-			return null;
-		}
-		IOFileMetadata<I, O> metadata = this.readMetadata(file, dataInput, ioFactory);
-		dataInput.close();
-		return metadata;*/
 	}
 
 }

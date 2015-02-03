@@ -36,11 +36,11 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
 	{
 		Class<?> classToReadFrom = ioFactory.readSerializedClass(input);
 
-		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructor));
+		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
 		io.read(input);
 
@@ -62,11 +62,11 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
 	{
 		Class<?> classToReadFrom = ioFactory.getSerializedClass(key, input);
 
-		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructor));
+		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
 		io.read(input);
 
