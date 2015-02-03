@@ -86,7 +86,7 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 
 		O output = factory.getOutput();
 		objectToClone.write(output);
-		I input = factory.convertToInput(output);
+		I input = factory.getInput(factory.getBytesFrom(output));
 
 		clone.read(input);
 

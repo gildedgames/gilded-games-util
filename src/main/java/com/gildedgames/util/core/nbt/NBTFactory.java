@@ -112,7 +112,7 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public byte[] finishWriting(NBTTagCompound writer)
+	public byte[] getBytesFrom(NBTTagCompound writer)
 	{
 		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 		DataOutputStream stream = new DataOutputStream(byteStream);
@@ -128,12 +128,6 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@Override
-	public NBTTagCompound convertToInput(NBTTagCompound input)
-	{
-		return input;
 	}
 
 }

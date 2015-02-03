@@ -134,7 +134,7 @@ public class IOSerializerDefault implements IOSerializer
 
 	private <O> void finishWriting(O output, DataOutputStream stream, IOFactory<?, ?, O> factory) throws IOException
 	{
-		byte[] written = factory.finishWriting(output);
+		byte[] written = factory.getBytesFrom(output);
 		stream.writeInt(written.length);
 		stream.write(written);
 	}

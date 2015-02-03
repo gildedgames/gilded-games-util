@@ -1,6 +1,5 @@
 package com.gildedgames.util.io_manager.factory;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayInputStream;
@@ -104,17 +103,9 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	}
 
 	@Override
-	public byte[] finishWriting(Output writer)
+	public byte[] getBytesFrom(Output writer)
 	{
 		return writer.getStream().array();
-	}
-
-	@Override
-	public Input convertToInput(Output output)
-	{
-		ByteBuf stream = output.getStream();
-		DataInputStream input = new DataInputStream(new ByteArrayInputStream(stream.array()));
-		return new Input(input);
 	}
 
 }
