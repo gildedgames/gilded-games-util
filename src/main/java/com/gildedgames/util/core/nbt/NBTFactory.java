@@ -7,10 +7,11 @@ import java.io.IOException;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.overhead.IOManager;
 
 public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
@@ -18,7 +19,7 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	private int classIndex;
 
 	@Override
-	public NBTTagCompound getInput(DataInputStream input, IORegistry registry)
+	public NBTTagCompound getInput(DataInputStream input)
 	{
 		try
 		{
@@ -33,40 +34,55 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public NBTTagCompound getOutput(DataOutputStream output, IORegistry registry)
+	public NBTTagCompound getOutput(DataOutputStream output)
 	{
 		return new NBTTagCompound();
 	}
 	
 	@Override
-	public Class<?> getSerializedClass(String key, NBTTagCompound input, IORegistry registry)
+	public Class<?> getSerializedClass(String key, NBTTagCompound input)
 	{
+		System.out.println(input);
+		System.out.println(key);
+		
+		String registryID = input.getString("IORegistry" + key);
 		int classID = input.getInteger(key);
 		
-		return registry.getClass(registry.getRegistryID(), classID);
+		IOManager manager = IOCore.io().getManager(registryID);
+		
+		return manager.getRegistry().getClass(registryID, classID);
 	}
 
 	@Override
-	public void setSerializedClass(String key, NBTTagCompound output, Class<?> classToWrite, IORegistry registry)
+	public void setSerializedClass(String key, NBTTagCompound output, Class<?> classToWrite)
 	{
-		int classID = registry.getID(classToWrite);
+		IOManager manager = IOCore.io().getManager(classToWrite);
 		
+		int classID = manager.getRegistry().getID(classToWrite);
+		
+		output.setString("IORegistry" + key, manager.getRegistry().getRegistryID());
 		output.setInteger(key, classID);
 	}
 	
 	@Override
-	public Class<?> readSerializedClass(NBTTagCompound input, IORegistry registry)
+	public Class<?> readSerializedClass(NBTTagCompound input)
 	{
+		String registryID = input.getString("IORegistryID" + this.classIndex);
 		int classID = input.getInteger("IOFactoryClass" + this.classIndex);
 		
-		return registry.getClass(registry.getRegistryID(), classID);
+		IOManager manager = IOCore.io().getManager(registryID);
+		
+		return manager.getRegistry().getClass(registryID, classID);
 	}
 
 	@Override
-	public void writeSerializedClass(NBTTagCompound output, Class<?> classToWrite, IORegistry registry)
+	public void writeSerializedClass(NBTTagCompound output, Class<?> classToWrite)
 	{
-		int classID = registry.getID(classToWrite);
+		IOManager manager = IOCore.io().getManager(classToWrite);
 		
+		int classID = manager.getRegistry().getID(classToWrite);
+		
+		output.setString("IORegistryID" + this.classIndex++, manager.getRegistry().getRegistryID());
 		output.setInteger("IOFactoryClass" + this.classIndex++, classID);
 	}
 

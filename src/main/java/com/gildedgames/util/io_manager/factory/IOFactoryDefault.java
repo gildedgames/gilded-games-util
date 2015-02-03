@@ -5,8 +5,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
+import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.raw.Input;
 import com.gildedgames.util.io_manager.util.raw.Output;
@@ -28,37 +30,40 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	}
 
 	@Override
-	public Input getInput(DataInputStream input, IORegistry registry)
+	public Input getInput(DataInputStream input)
 	{
-		return new Input(registry, input);
+		return new Input(input);
 	}
 
 	@Override
-	public Output getOutput(DataOutputStream output, IORegistry registry)
+	public Output getOutput(DataOutputStream output)
 	{
-		return new Output(registry, output);
+		return new Output(output);
 	}
 	
 	@Override
-	public Class<?> getSerializedClass(String key, Input input, IORegistry registry)
+	public Class<?> getSerializedClass(String key, Input input)
 	{
-		return this.readSerializedClass(input, registry);
+		return this.readSerializedClass(input);
 	}
 
 	@Override
-	public void setSerializedClass(String key, Output output, Class<?> classToWrite, IORegistry registry)
+	public void setSerializedClass(String key, Output output, Class<?> classToWrite)
 	{
-		this.writeSerializedClass(output, classToWrite, registry);
+		this.writeSerializedClass(output, classToWrite);
 	}
 	
 	@Override
-	public Class<?> readSerializedClass(Input input, IORegistry registry)
+	public Class<?> readSerializedClass(Input input)
 	{
 		try
 		{
+			String registryID = input.readUTF();
 			int classID = input.readInt();
 			
-			return registry.getClass(registry.getRegistryID(), classID);
+			IOManager manager = IOCore.io().getManager(registryID);
+			
+			return manager.getRegistry().getClass(registryID, classID);
 		}
 		catch (IOException e)
 		{
@@ -69,12 +74,15 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	}
 
 	@Override
-	public void writeSerializedClass(Output output, Class<?> classToWrite, IORegistry registry)
+	public void writeSerializedClass(Output output, Class<?> classToWrite)
 	{
-		int classID = registry.getID(classToWrite);
+		IOManager manager = IOCore.io().getManager(classToWrite);
+		
+		int classID = manager.getRegistry().getID(classToWrite);
 		
 		try
 		{
+			output.writeUTF(manager.getRegistry().getRegistryID());
 			output.writeInt(classID);
 		}
 		catch (IOException e)

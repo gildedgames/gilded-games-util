@@ -11,15 +11,12 @@ import com.gildedgames.util.io_manager.overhead.IORegistry;
 public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataInput
 {
 
-	protected final IORegistry registry;
-
 	protected final DataInputStream dataInput;
 
-	public Input(IORegistry registry, DataInputStream dataInput)
+	public Input(DataInputStream dataInput)
 	{
 		super();
 
-		this.registry = registry;
 		this.dataInput = dataInput;
 	}
 
@@ -165,11 +162,6 @@ public class Input<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements Da
 		}
 
 		return enumerator;
-	}
-
-	public IORegistry getIORegistry()
-	{
-		return this.registry;
 	}
 
 	public DataInputStream getStream()

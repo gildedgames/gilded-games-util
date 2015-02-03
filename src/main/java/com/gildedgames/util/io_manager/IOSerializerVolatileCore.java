@@ -1,5 +1,6 @@
 package com.gildedgames.util.io_manager;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,11 +14,10 @@ import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IOSerializerVolatileCore implements IOSerializerVolatile
 {
-	private List<IOManager> managers;
 
-	protected IOSerializerVolatileCore(List<IOManager> managers)
+	protected IOSerializerVolatileCore()
 	{
-		this.managers = managers;
+		
 	}
 
 	@Override
@@ -29,7 +29,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
-		IOManager manager = this.managers.get(0);
+		Class<?> classToRead = ioFactory.readSerializedClass(input);
+		
+		IOManager manager = IOCore.io().getManager(classToRead);
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		return serializer.read(input, ioFactory);
@@ -38,7 +40,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
-		IOManager manager = this.managers.get(0);
+		Class<?> classToRead = ioFactory.readSerializedClass(input);
+		
+		IOManager manager = IOCore.io().getManager(classToRead);
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		return serializer.read(input, ioFactory, objectConstructor);
@@ -47,7 +51,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
-		IOManager manager = this.managers.get(0);
+		ioFactory.writeSerializedClass(output, objectToWrite.getClass());
+		
+		IOManager manager = IOCore.io().getManager(objectToWrite.getClass());
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		serializer.write(output, ioFactory, objectToWrite);
@@ -56,7 +62,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory)
 	{
-		IOManager manager = this.managers.get(0);
+		Class<?> classToRead = ioFactory.readSerializedClass(input);
+		
+		IOManager manager = IOCore.io().getManager(classToRead);
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		return serializer.get(key, input, ioFactory);
@@ -65,7 +73,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T get(String key, I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
-		IOManager manager = this.managers.get(0);
+		Class<?> classToRead = ioFactory.readSerializedClass(input);
+		
+		IOManager manager = IOCore.io().getManager(classToRead);
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		return serializer.get(key, input, ioFactory, objectConstructor);
@@ -74,7 +84,9 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void set(String key, O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
-		IOManager manager = this.managers.get(0);
+		ioFactory.writeSerializedClass(output, objectToWrite.getClass());
+		
+		IOManager manager = IOCore.io().getManager(objectToWrite.getClass());
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		serializer.set(key, output, ioFactory, objectToWrite);
@@ -83,7 +95,7 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	@Override
 	public <T extends IO<I, O>, I, O> T clone(I input, O output, T objectToClone) throws IOException
 	{
-		IOManager manager = this.managers.get(0);
+		IOManager manager = IOCore.io().getManager(objectToClone.getClass());
 		IOSerializerVolatile serializer = manager.getVolatileSerializer();
 		
 		return serializer.clone(input, output, objectToClone);

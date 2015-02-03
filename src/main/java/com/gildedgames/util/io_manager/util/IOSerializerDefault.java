@@ -117,7 +117,7 @@ public class IOSerializerDefault implements IOSerializer
 			dataOutput.writeBoolean(true);
 			dataOutput.writeInt(this.getParentRegistry().getID(metadataFile.getClass()));
 
-			final O output = ioFactory.getOutput(dataOutput, this.getParentRegistry());
+			final O output = ioFactory.getOutput(dataOutput);
 			metadataFile.write(output);
 			ioFactory.finishWriting(dataOutput, output);
 
@@ -127,7 +127,7 @@ public class IOSerializerDefault implements IOSerializer
 		dataOutput.writeBoolean(false);//Not metadata
 		dataOutput.writeInt(this.getParentRegistry().getID(ioFile.getDataClass()));
 
-		final O output = ioFactory.getOutput(dataOutput, this.getParentRegistry());
+		final O output = ioFactory.getOutput(dataOutput);
 
 		ioFile.write(output);
 
@@ -177,7 +177,7 @@ public class IOSerializerDefault implements IOSerializer
 	
 	private <I, O, FILE extends IOFile<I, O>> void readData(File file, FILE ioFile, DataInputStream dataInput, IOFactory<FILE, I, O> ioFactory) throws IOException
 	{
-		final I input = ioFactory.getInput(dataInput, this.getParentRegistry());
+		final I input = ioFactory.getInput(dataInput);
 		ioFactory.preReading(ioFile, file, input);
 
 		ioFile.read(input);
@@ -185,7 +185,7 @@ public class IOSerializerDefault implements IOSerializer
 
 	private <I, O, FILE extends IOFile<I, O>> void readMetadata(File file, IOFileMetadata<I, O> ioFile, DataInputStream dataInput, IOFactory<FILE, I, O> rwFac) throws IOException
 	{
-		final I input = rwFac.getInput(dataInput, this.getParentRegistry());
+		final I input = rwFac.getInput(dataInput);
 		rwFac.preReadingMetadata(ioFile, file, input);
 
 		ioFile.read(input);

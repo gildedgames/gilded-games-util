@@ -9,20 +9,16 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements DataOutput
 {
 
-	protected final IORegistry registry;
-
 	protected final DataOutputStream dataOutput;
 
-	public Output(IORegistry registry, DataOutputStream dataOutput)
+	public Output(DataOutputStream dataOutput)
 	{
 		super();
-		
-		this.registry = registry;
+
 		this.dataOutput = dataOutput;
 	}
 
@@ -171,11 +167,6 @@ public class Output<FILE extends IOFile<Input<FILE>, Output<FILE>>> implements D
 	public DataOutputStream getStream()
 	{
 		return this.dataOutput;
-	}
-
-	public IORegistry getIORegistry()
-	{	
-		return this.registry;
 	}
 
 }

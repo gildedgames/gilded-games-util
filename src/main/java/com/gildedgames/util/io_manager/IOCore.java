@@ -32,8 +32,8 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	private IOCore()
 	{
 		this.registryComponent = new IORegistryCore(this.externalManagers);
-		this.fileComponent = new IOSerializerCore(this.externalManagers);
-		this.volatileComponent = new IOSerializerVolatileCore(this.externalManagers);
+		this.fileComponent = new IOSerializerCore();
+		this.volatileComponent = new IOSerializerVolatileCore();
 	}
 	
 	public static IOCore io()

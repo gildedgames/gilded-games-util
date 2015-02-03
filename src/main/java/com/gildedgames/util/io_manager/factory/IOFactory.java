@@ -11,17 +11,17 @@ import com.gildedgames.util.io_manager.overhead.IORegistry;
 public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 {
 
-	I getInput(DataInputStream input, IORegistry registry);
+	I getInput(DataInputStream input);
 
-	O getOutput(DataOutputStream output, IORegistry registry);
+	O getOutput(DataOutputStream output);
 	
-	Class<?> readSerializedClass(I input, IORegistry registry);
+	Class<?> readSerializedClass(I input);
 	
-	void writeSerializedClass(O output, Class<?> classToWrite, IORegistry registry);
+	void writeSerializedClass(O output, Class<?> classToWrite);
 	
-	Class<?> getSerializedClass(String key, I input, IORegistry registry);
+	Class<?> getSerializedClass(String key, I input);
 	
-	void setSerializedClass(String key, O output, Class<?> classToWrite, IORegistry registry);
+	void setSerializedClass(String key, O output, Class<?> classToWrite);
 
 	File getFileFromName(FILE data, String name);
 
