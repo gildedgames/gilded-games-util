@@ -9,12 +9,10 @@ import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IORegistryDefault implements IORegistry
 {
-	
+
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
 	private final Map<Integer, Class<?>> IDToClassMapping = new HashMap<Integer, Class<?>>();
@@ -22,18 +20,9 @@ public class IORegistryDefault implements IORegistry
 	private final Map<Class<?>, Integer> classToIDMapping = new HashMap<Class<?>, Integer>();
 
 	private final Map<Class<?>, ISerializeBehaviour<?>> serializeBehaviors = new HashMap<Class<?>, ISerializeBehaviour<?>>();
-	
-	private final String registryID;
-	
-	public IORegistryDefault(String registryID)
+
+	public IORegistryDefault()
 	{
-		this.registryID = registryID;
-	}
-	
-	@Override
-	public String getRegistryID()
-	{
-		return this.registryID;
 	}
 
 	@Override
@@ -63,10 +52,11 @@ public class IORegistryDefault implements IORegistry
 		{
 			instance = classConstructor.construct(registeredClass);
 
-			for (final Class factoryClazz : this.serializeBehaviors.keySet())
+			for (final Class<?> factoryClazz : this.serializeBehaviors.keySet())
 			{
 				if (factoryClazz.isInstance(instance))
 				{
+					@SuppressWarnings("rawtypes")
 					final ISerializeBehaviour behaviour = this.serializeBehaviors.get(factoryClazz);
 					behaviour.postCreate(instance);
 				}
@@ -145,5 +135,5 @@ public class IORegistryDefault implements IORegistry
 	{
 		return this.classToIDMapping.containsKey(clazz);
 	}
-	
+
 }

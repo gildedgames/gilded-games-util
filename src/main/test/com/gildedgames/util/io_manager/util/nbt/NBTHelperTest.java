@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 
 public class NBTHelperTest

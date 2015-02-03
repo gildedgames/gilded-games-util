@@ -1,5 +1,6 @@
 package com.gildedgames.util.io_manager.factory;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -9,7 +10,6 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.raw.Input;
 import com.gildedgames.util.io_manager.util.raw.Output;
 
@@ -40,7 +40,7 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	{
 		return new Output(output);
 	}
-	
+
 	@Override
 	public Class<?> getSerializedClass(String key, Input input)
 	{
@@ -52,7 +52,7 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	{
 		this.writeSerializedClass(output, classToWrite);
 	}
-	
+
 	@Override
 	public Class<?> readSerializedClass(Input input)
 	{
@@ -60,16 +60,16 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 		{
 			String registryID = input.readUTF();
 			int classID = input.readInt();
-			
+
 			IOManager manager = IOCore.io().getManager(registryID);
-			
+
 			return manager.getRegistry().getClass(registryID, classID);
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -77,12 +77,12 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	public void writeSerializedClass(Output output, Class<?> classToWrite)
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
-		
+
 		int classID = manager.getRegistry().getID(classToWrite);
-		
+
 		try
 		{
-			output.writeUTF(manager.getRegistry().getRegistryID());
+			output.writeUTF(manager.getID());
 			output.writeInt(classID);
 		}
 		catch (IOException e)
@@ -104,6 +104,14 @@ public class IOFactoryDefault<FILE extends IOFile<Input, Output>> implements IOF
 	@Override
 	public void finishWriting(DataOutputStream input, Output output)
 	{
+	}
+
+	@Override
+	public Input convertToInput(Output output)
+	{
+		DataOutputStream stream = output.getStream();
+		DataInputStream input = new DataInputStream(new ByteArrayInputStream(stream.toString().getBytes()));
+		return new Input(input);
 	}
 
 }

@@ -2,7 +2,7 @@ package com.gildedgames.util.testutil.io;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.core.nbt.NBT;
 
 public class NBTTest
 {

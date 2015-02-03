@@ -7,23 +7,29 @@ import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IOManagerDefault implements IOManager
 {
-	
+
 	protected IORegistry registryComponent;
-	
+
 	protected IOSerializer serializerComponent;
-	
+
 	protected IOSerializerVolatile volatileComponent;
-	
-	public IOManagerDefault(IORegistry registry, IOSerializer serializer, IOSerializerVolatile volatileSerializer)
+
+	protected String name;
+
+	public IOManagerDefault(IORegistry registry, IOSerializer serializer, IOSerializerVolatile volatileSerializer, String id)
 	{
 		this.registryComponent = registry;
 		this.serializerComponent = serializer;
 		this.volatileComponent = volatileSerializer;
+		this.name = id;
 	}
-	
-	public IOManagerDefault(IORegistry registry)
+
+	public IOManagerDefault(String id)
 	{
-		this(registry, new IOSerializerDefault(registry), new IOSerializerVolatileDefault(registry));
+		this.registryComponent = new IORegistryDefault();
+		this.serializerComponent = new IOSerializerDefault(this);
+		this.volatileComponent = new IOSerializerVolatileDefault(this);
+		this.name = id;
 	}
 
 	@Override
@@ -42,6 +48,12 @@ public class IOManagerDefault implements IOManager
 	public IOSerializerVolatile getVolatileSerializer()
 	{
 		return this.volatileComponent;
+	}
+
+	@Override
+	public String getID()
+	{
+		return this.name;
 	}
 
 }

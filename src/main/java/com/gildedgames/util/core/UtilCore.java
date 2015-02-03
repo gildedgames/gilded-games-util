@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IORegistryTakenException;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.tab.TabCore;
@@ -64,9 +64,9 @@ public class UtilCore implements ICore
 	{
 		try
 		{
-			IOCore.io().addManager(UtilCore.locate().getIOManager());
+			IOCore.io().registerManager(UtilCore.locate().getIOManager());
 		}
-		catch (IORegistryTakenException e)
+		catch (IOManagerTakenException e)
 		{
 			e.printStackTrace();
 		}

@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.io_manager.overhead.IOManager;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
+import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.io.TestConstructor;
 import com.gildedgames.util.testutil.io.TestMetadata;
@@ -22,17 +25,18 @@ public class IOManagerTest
 
 	private IOManager create()
 	{
-		return new IOManager();
+		return new IOManagerDefault("test");
 	}
 
 	@Test
 	public void testRegisterAndGetClass()
 	{
 		IOManager manager = this.create();
-		manager.register(TestPlayerHookFactory.class, 1);
-		Assert.assertEquals(manager.getIDFromClass(TestPlayerHookFactory.class), 1);
-		Assert.assertEquals(manager.getID(new TestPlayerHookFactory()), 1);
-		Assert.assertEquals(manager.getClassFromID(1), TestPlayerHookFactory.class);
+		IORegistry registry = manager.getRegistry();
+		registry.registerClass(TestPlayerHookFactory.class, 1);
+		Assert.assertEquals(registry.getID(TestPlayerHookFactory.class), 1);
+		Assert.assertEquals(registry.getID(new TestPlayerHookFactory()), 1);
+		Assert.assertEquals(registry.getClass(manager.getID(), 1), TestPlayerHookFactory.class);
 	}
 
 	@Test
@@ -45,32 +49,10 @@ public class IOManagerTest
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
-				manager.writeFile(file, object, new NBTFactory());
-				TestNBTFile readBack = (TestNBTFile) manager.readFile(file, new NBTFactory());
+				IOSerializer serializer = manager.getSerializer();
+				serializer.writeFile(file, object, new NBTFactory());
+				TestNBTFile readBack = (TestNBTFile) serializer.readFile(file, new NBTFactory());
 				Assert.assertEquals(object, readBack);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				Assert.fail(e.getMessage());
-			}
-		}
-	}
-
-	@Test
-	public void testReadWriteTwo()
-	{
-		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
-		IOManager manager = GGUtilDataSet.iomanager();
-		for (TestNBTFile object : files)
-		{
-			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
-			try
-			{
-				manager.writeFile(file, object, new NBTFactory());
-				TestNBTFile toReadIn = new TestNBTFile(-1, -1);
-				manager.readFile(file, toReadIn, new NBTFactory());
-				Assert.assertEquals(object, toReadIn);
 			}
 			catch (IOException e)
 			{
@@ -90,8 +72,9 @@ public class IOManagerTest
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
-				manager.writeFile(file, object, new NBTFactory());
-				TestMetadata readBack = (TestMetadata) manager.readFileMetadata(file, new NBTFactory());
+				IOSerializer serializer = manager.getSerializer();
+				serializer.writeFile(file, object, new NBTFactory());
+				TestMetadata readBack = (TestMetadata) serializer.readFileMetadata(file, new NBTFactory());
 				Assert.assertEquals(object.getMetadata().get(), readBack);
 			}
 			catch (IOException e)
@@ -107,7 +90,8 @@ public class IOManagerTest
 	{
 		TestMetadata files = new TestMetadata(1);
 		IOManager manager = GGUtilDataSet.iomanager();
-		TestMetadata clone = manager.clone(new NBTTagCompound(), files);
+		IOSerializerVolatile serializer = manager.getVolatileSerializer();
+		TestMetadata clone = serializer.clone(new NBTFactory(), files);
 		Assert.assertEquals(files, clone);
 	}
 
@@ -115,9 +99,10 @@ public class IOManagerTest
 	public void testCreate()
 	{
 		IOManager dataset = GGUtilDataSet.iomanager();
-		Object o = dataset.createFromID(1);
+		IORegistry registry = dataset.getRegistry();
+		Object o = registry.create(dataset.getID(), 1);
 		Assert.assertTrue(o instanceof TestPlayerHook);
-		o = dataset.createFromID(3, new TestConstructor());
+		o = registry.create(dataset.getID(), 3, new TestConstructor());
 		Assert.assertTrue(o instanceof TestMetadata && ((TestMetadata) o).id == 1);
 	}
 

@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
 
-import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.io_manager.networking.ISyncable;
 
 public class TestIOUtil

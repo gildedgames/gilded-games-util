@@ -9,7 +9,7 @@ import com.gildedgames.util.io_manager.overhead.IORegistry;
 
 public class IORegistryCore implements IORegistry
 {
-	
+
 	private List<IOManager> managers;
 
 	protected IORegistryCore(List<IOManager> managers)
@@ -18,33 +18,27 @@ public class IORegistryCore implements IORegistry
 	}
 
 	@Override
-	public String getRegistryID()
-	{
-		return "";
-	}
-
-	@Override
 	public void registerClass(Class<?> classToSerialize, int classID)
 	{
-		
+
 	}
 
 	@Override
 	public void registerBehavior(Class<?> classToSerialize, ISerializeBehaviour<?> serializeBehaviour)
 	{
-		
+
 	}
 
 	@Override
 	public <T> T create(Class<T> registeredClass, IConstructor classConstructor)
 	{
 		IORegistry registry = IOCore.io().getManager(registeredClass).getRegistry();
-		
+
 		if (registry != null)
 		{
 			return registry.create(registeredClass, classConstructor);
 		}
-		
+
 		return null;
 	}
 
@@ -52,12 +46,12 @@ public class IORegistryCore implements IORegistry
 	public Object create(String registryID, int registeredClassID)
 	{
 		IORegistry registry = IOCore.io().getManager(registryID).getRegistry();
-		
+
 		if (registry != null)
 		{
 			return registry.create(registryID, registeredClassID);
 		}
-		
+
 		return null;
 	}
 
@@ -65,12 +59,12 @@ public class IORegistryCore implements IORegistry
 	public Object create(String registryID, int registeredClassID, IConstructor classConstructor)
 	{
 		IORegistry registry = IOCore.io().getManager(registryID).getRegistry();
-		
+
 		if (registry != null)
 		{
 			return registry.create(registryID, registeredClassID, classConstructor);
 		}
-		
+
 		return null;
 	}
 
@@ -78,12 +72,12 @@ public class IORegistryCore implements IORegistry
 	public Class<?> getClass(String registryID, int registeredClassID)
 	{
 		IORegistry registry = IOCore.io().getManager(registryID).getRegistry();
-		
+
 		if (registry != null)
 		{
 			return registry.getClass(registryID, registeredClassID);
 		}
-		
+
 		return null;
 	}
 
@@ -91,12 +85,12 @@ public class IORegistryCore implements IORegistry
 	public int getID(Class<?> registeredClass)
 	{
 		IORegistry registry = IOCore.io().getManager(registeredClass).getRegistry();
-		
+
 		if (registry != null)
 		{
 			return registry.getID(registeredClass);
 		}
-		
+
 		return -1;
 	}
 
@@ -112,13 +106,13 @@ public class IORegistryCore implements IORegistry
 		for (IOManager manager : this.managers)
 		{
 			IORegistry registry = manager.getRegistry();
-			
+
 			if (registry.isClassRegistered(clazz))
 			{
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 

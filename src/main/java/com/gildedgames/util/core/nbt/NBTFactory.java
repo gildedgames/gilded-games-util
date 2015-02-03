@@ -15,8 +15,8 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 
 public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompound>, NBTTagCompound, NBTTagCompound>
 {
-	
-	private int classIndex;
+
+	private int writeIndex, readIndex;
 
 	@Override
 	public NBTTagCompound getInput(DataInputStream input)
@@ -38,18 +38,18 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	{
 		return new NBTTagCompound();
 	}
-	
+
 	@Override
 	public Class<?> getSerializedClass(String key, NBTTagCompound input)
 	{
 		System.out.println(input);
 		System.out.println(key);
-		
-		String registryID = input.getString("IORegistry" + key);
+
+		String registryID = input.getString("IOManagerID" + key);
 		int classID = input.getInteger(key);
-		
+
 		IOManager manager = IOCore.io().getManager(registryID);
-		
+
 		return manager.getRegistry().getClass(registryID, classID);
 	}
 
@@ -57,21 +57,22 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	public void setSerializedClass(String key, NBTTagCompound output, Class<?> classToWrite)
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
-		
+
 		int classID = manager.getRegistry().getID(classToWrite);
-		
-		output.setString("IORegistry" + key, manager.getRegistry().getRegistryID());
+
+		output.setString("IOManagerID" + key, manager.getID());
 		output.setInteger(key, classID);
 	}
-	
+
 	@Override
 	public Class<?> readSerializedClass(NBTTagCompound input)
 	{
-		String registryID = input.getString("IORegistryID" + this.classIndex);
-		int classID = input.getInteger("IOFactoryClass" + this.classIndex);
-		
+		String registryID = input.getString("IOManagerID" + this.readIndex);
+		int classID = input.getInteger("IOFactoryClass" + this.readIndex);
+		this.readIndex++;
+
 		IOManager manager = IOCore.io().getManager(registryID);
-		
+
 		return manager.getRegistry().getClass(registryID, classID);
 	}
 
@@ -79,11 +80,12 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	public void writeSerializedClass(NBTTagCompound output, Class<?> classToWrite)
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
-		
+
 		int classID = manager.getRegistry().getID(classToWrite);
-		
-		output.setString("IORegistryID" + this.classIndex++, manager.getRegistry().getRegistryID());
-		output.setInteger("IOFactoryClass" + this.classIndex++, classID);
+
+		output.setString("IOManagerID" + this.writeIndex, manager.getID());
+		output.setInteger("IOFactoryClass" + this.writeIndex, classID);
+		this.writeIndex++;
 	}
 
 	@Override
@@ -115,6 +117,12 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public NBTTagCompound convertToInput(NBTTagCompound input)
+	{
+		return input;
 	}
 
 }

@@ -6,8 +6,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
 
+import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
-import com.gildedgames.util.io_manager.io.NBT;
 import com.google.common.base.Optional;
 
 public class TestMetadata implements IOFileMetadata<NBTTagCompound, NBTTagCompound>, NBT
