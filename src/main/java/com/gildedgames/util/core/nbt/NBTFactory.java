@@ -35,6 +35,22 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	{
 		return new NBTTagCompound();
 	}
+	
+	@Override
+	public Class<?> readClass(NBTTagCompound input, IORegistry registry)
+	{
+		int classID = input.getInteger("c");
+		
+		return registry.getClass(registry.getRegistryID(), classID);
+	}
+
+	@Override
+	public void writeClass(NBTTagCompound output, Class<?> classToWrite, IORegistry registry)
+	{
+		int classID = registry.getID(classToWrite);
+		
+		output.setInteger("c", classID);
+	}
 
 	@Override
 	public File getFileFromName(IOFile<NBTTagCompound, NBTTagCompound> data, String name)

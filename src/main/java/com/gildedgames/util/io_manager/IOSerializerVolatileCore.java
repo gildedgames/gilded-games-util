@@ -3,7 +3,9 @@ package com.gildedgames.util.io_manager;
 import java.io.IOException;
 
 import com.gildedgames.util.io_manager.constructor.IConstructor;
+import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
@@ -22,19 +24,19 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
 		return null;
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
 		return null;
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void write(O output, T objectToWrite)
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
 		
 	}
@@ -44,5 +46,5 @@ public class IOSerializerVolatileCore implements IOSerializerVolatile
 	{
 		return null;
 	}
-	
+
 }

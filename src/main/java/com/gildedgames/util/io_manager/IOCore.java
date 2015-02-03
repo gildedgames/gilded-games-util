@@ -88,23 +88,23 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
-		return this.volatileComponent.read(input, classToReadFrom);
+		return this.volatileComponent.read(input, ioFactory);
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
-		return this.volatileComponent.read(input, classToReadFrom, objectConstructor);
+		return this.volatileComponent.read(input, ioFactory, objectConstructor);
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void write(O output, T objectToWrite)
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
-		this.volatileComponent.write(output, objectToWrite);
+		this.volatileComponent.write(output, ioFactory, objectToWrite);
 	}
-
+	
 	@Override
 	public <T extends IO<I, O>, I, O> T clone(I input, O output, T objectToClone) throws IOException
 	{
@@ -194,5 +194,5 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile
 	{
 		return this.registryComponent.isClassRegistered(clazz);
 	}
-	
+
 }

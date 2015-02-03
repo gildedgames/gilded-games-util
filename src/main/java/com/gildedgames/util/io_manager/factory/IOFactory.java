@@ -14,6 +14,10 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 	I getInput(DataInputStream input, IORegistry registry);
 
 	O getOutput(DataOutputStream output, IORegistry registry);
+	
+	Class<?> readClass(I input, IORegistry registry);
+	
+	void writeClass(O output, Class<?> classToWrite, IORegistry registry);
 
 	File getFileFromName(FILE data, String name);
 

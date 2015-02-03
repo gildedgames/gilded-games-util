@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPerms;
@@ -40,14 +41,14 @@ public class Group implements IGroup
 	@Override
 	public void write(NBTTagCompound output)
 	{
-		IOCore.io().write(output, this.permissions);
+		IOCore.io().write(output, new NBTFactory(), this.permissions);
 		output.setString("name", this.name);
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		this.permissions = (IGroupPerms) IOCore.io().read(input, this.getPermissions().getClass());
+		this.permissions = (IGroupPerms) IOCore.io().read(input, new NBTFactory());
 		this.name = input.getString("name");
 	}
 

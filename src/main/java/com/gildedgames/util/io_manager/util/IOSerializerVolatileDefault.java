@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
+import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
@@ -27,14 +29,16 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	}
 	
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory)
 	{
-		return this.read(input, classToReadFrom, defaultConstructor);
+		return this.read(input, ioFactory, defaultConstructor);
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, Class<? extends T> classToReadFrom, IConstructor objectConstructor)
+	public <T extends IO<I, ?>, I, FILE extends IOFile<I, ?>> T read(I input, IOFactory<FILE, I, ?> ioFactory, IConstructor objectConstructor)
 	{
+		Class<?> classToReadFrom = ioFactory.readClass(input, this.getParentRegistry());
+		
 		final T io = this.cast(this.getParentRegistry().create(classToReadFrom, objectConstructor));
 
 		io.read(input);
@@ -43,8 +47,10 @@ public class IOSerializerVolatileDefault implements IOSerializerVolatile
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void write(O output, T objectToWrite)
+	public <T extends IO<?, O>, O, FILE extends IOFile<?, O>> void write(O output, IOFactory<FILE, ?, O> ioFactory, T objectToWrite)
 	{
+		ioFactory.writeClass(output, objectToWrite.getClass(), this.getParentRegistry());
+		
 		objectToWrite.write(output);
 	}
 
