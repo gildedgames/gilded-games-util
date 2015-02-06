@@ -142,7 +142,7 @@ public class GGUtilDataSet
 
 	static
 	{
-		manager = new IOManagerDefault("test");
+		manager = new IOManagerDefault("testgg");
 		IORegistry registry = manager.getRegistry();
 		registry.registerClass(TestWorldHook.class, 0);
 		registry.registerClass(TestPlayerHook.class, 1);
