@@ -15,6 +15,7 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, IOManager
@@ -218,9 +219,9 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public IOSerializer getSerializer()
+	public IOSerializerExternal getSerializer()
 	{
-		return this.fileComponent;
+		return null;
 	}
 
 	@Override

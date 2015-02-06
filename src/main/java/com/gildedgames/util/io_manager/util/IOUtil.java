@@ -1,18 +1,39 @@
 package com.gildedgames.util.io_manager.util;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
 
+import com.gildedgames.util.io_manager.factory.IOFactory;
+
 public class IOUtil
 {
 	public static String getMinecraftDirectory()
 	{
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
+	}
+	
+	public static <O> void writeBytes(O output, DataOutputStream outputStream, IOFactory<?, ?, O> factory) throws IOException
+	{
+		byte[] written = factory.getBytesFrom(output);
+		
+		outputStream.writeInt(written.length);
+		outputStream.write(written);
+	}
+	
+	public static byte[] readBytes(DataInputStream input) throws IOException
+	{
+		int arraySize = input.readInt();
+		byte[] readBack = new byte[arraySize];
+		input.read(readBack);
+		return readBack;
 	}
 
 	public static File[] getFoldersInDirectory(File directory)

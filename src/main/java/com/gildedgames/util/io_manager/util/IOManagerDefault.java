@@ -2,7 +2,7 @@ package com.gildedgames.util.io_manager.util;
 
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IOManagerDefault implements IOManager
@@ -10,13 +10,13 @@ public class IOManagerDefault implements IOManager
 
 	protected IORegistry registryComponent;
 
-	protected IOSerializer serializerComponent;
+	protected IOSerializerExternal serializerComponent;
 
 	protected IOSerializerVolatile volatileComponent;
 
 	protected String name;
 
-	public IOManagerDefault(IORegistry registry, IOSerializer serializer, IOSerializerVolatile volatileSerializer, String id)
+	public IOManagerDefault(IORegistry registry, IOSerializerExternal serializer, IOSerializerVolatile volatileSerializer, String id)
 	{
 		this.registryComponent = registry;
 		this.serializerComponent = serializer;
@@ -27,7 +27,7 @@ public class IOManagerDefault implements IOManager
 	public IOManagerDefault(String id)
 	{
 		this.registryComponent = new IORegistryDefault();
-		this.serializerComponent = new IOSerializerDefault(this);
+		this.serializerComponent = new IOSerializerExternalDefault(this);
 		this.volatileComponent = new IOSerializerVolatileDefault(this);
 		this.name = id;
 	}
@@ -39,7 +39,7 @@ public class IOManagerDefault implements IOManager
 	}
 
 	@Override
-	public IOSerializer getSerializer()
+	public IOSerializerExternal getSerializer()
 	{
 		return this.serializerComponent;
 	}

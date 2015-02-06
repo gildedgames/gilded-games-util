@@ -19,11 +19,15 @@ import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
+import com.gildedgames.util.io_manager.util.IOUtil;
 
 public class IOSerializerCore implements IOSerializer
 {
 
 	private final static int BUFFER_SIZE = 8192;
+	
+	private static final String DATA_KEY = "IOClassID";
 
 	protected IOSerializerCore()
 	{
@@ -36,15 +40,6 @@ public class IOSerializerCore implements IOSerializer
 		return IOCore.io();
 	}
 
-	//Note: Can only read up to 2 gigs a time... Dunno how big of an issue that would be
-	private byte[] readBytes(DataInputStream input) throws IOException
-	{
-		int arraySize = input.readInt();
-		byte[] readBack = new byte[arraySize];
-		input.read(readBack);
-		return readBack;
-	}
-
 	@Override
 	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory) throws IOException
 	{
@@ -55,18 +50,26 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(this.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
-		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
+		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
 
+		FILE ioFile = (FILE) IOCore.io().create(classToRead);
+		
 		IOManager manager = IOCore.io().getManager(classToRead);
-		IOSerializer serializer = manager.getSerializer();
+		IOSerializerExternal serializer = manager.getSerializer();
+		
+		ioFactory.preReading(ioFile, file, input);
 
-		return serializer.readFile(file, ioFactory);
+		FILE readFile = serializer.readFile(dataInput, ioFile, file, ioFactory);
+
+		dataInput.close();
+		
+		return readFile;
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructor) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
 		final DataInputStream dataInput = this.createDataInput(file);
 
@@ -75,14 +78,22 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(this.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
-		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
+		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
+		
+		FILE ioFile = (FILE) IOCore.io().create(classToRead, constructors);
 
 		IOManager manager = IOCore.io().getManager(classToRead);
-		IOSerializer serializer = manager.getSerializer();
+		IOSerializerExternal serializer = manager.getSerializer();
+		
+		ioFactory.preReading(ioFile, file, input);
+		
+		FILE readFile = serializer.readFile(dataInput, ioFile, file, ioFactory, constructors);
 
-		return serializer.readFile(file, ioFactory, constructor);
+		dataInput.close();
+		
+		return readFile;
 	}
 
 	@Override
@@ -95,14 +106,16 @@ public class IOSerializerCore implements IOSerializer
 			return;
 		}
 
-		I input = ioFactory.getInput(this.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
-		Class<?> classToRead = ioFactory.getSerializedClass("IOClassID", input);
+		IOManager manager = IOCore.io().getManager(ioFile.getClass());
+		IOSerializerExternal serializer = manager.getSerializer();
 
-		IOManager manager = IOCore.io().getManager(classToRead);
-		IOSerializer serializer = manager.getSerializer();
+		ioFactory.preReading(ioFile, file, input);
+		
+		serializer.readFile(dataInput, ioFile, file, ioFactory);
 
-		serializer.readFile(file, ioFile, ioFactory);
+		dataInput.close();
 	}
 
 	@Override
@@ -125,12 +138,22 @@ public class IOSerializerCore implements IOSerializer
 
 		O output = ioFactory.getOutput();
 
-		ioFactory.setSerializedClass("IOClassID", output, ioFile.getClass());
+		ioFactory.setSerializedClass(IOSerializerCore.DATA_KEY, output, ioFile.getClass());
+		
+		IOUtil.writeBytes(output, dataOutput, ioFactory);
 
 		IOManager manager = IOCore.io().getManager(ioFile.getClass());
-		IOSerializer serializer = manager.getSerializer();
+		IOSerializerExternal serializer = manager.getSerializer();
 
-		serializer.writeFile(file, ioFile, ioFactory);
+		serializer.writeFile(dataOutput, file, ioFile, ioFactory);
+		
+		dataOutput.close();
+	}
+	
+	@Override
+	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
+	{
+		throw new NotImplementedException("Contact the code monkeys !!!!!!!!!!! ?! !");
 	}
 
 	private DataInputStream createDataInput(File file) throws IOException
@@ -144,12 +167,6 @@ public class IOSerializerCore implements IOSerializer
 		final BufferedInputStream bufferedInputStream = new BufferedInputStream(new GZIPInputStream(fileInputStream), BUFFER_SIZE);
 
 		return new DataInputStream(bufferedInputStream);
-	}
-
-	@Override
-	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
-	{
-		throw new NotImplementedException("adsf");
 	}
 
 }

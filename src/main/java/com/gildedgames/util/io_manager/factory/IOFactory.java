@@ -22,7 +22,7 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 	 * Returns the underlying byte[] of the Output,
 	 * or converts the data structure in the Output to a byte[].
 	 */
-	byte[] getBytesFrom(O writer);
+	byte[] getBytesFrom(O output);
 
 	/**
 	 * Reads back a Class object from the Input 
@@ -40,8 +40,8 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 
 	File getFileFromName(FILE data, String name);
 
-	void preReading(FILE data, File from, I reader);
+	void preReading(FILE data, File from, I input);
 
-	void preReadingMetadata(IOFileMetadata<I, O> metadata, File from, I reader);
+	void preReadingMetadata(IOFileMetadata<I, O> metadata, File from, I input);
 
 }
