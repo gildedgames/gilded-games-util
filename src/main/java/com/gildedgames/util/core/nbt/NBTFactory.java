@@ -10,6 +10,7 @@ import java.io.IOException;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
@@ -47,13 +48,15 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	@Override
 	public Class<?> getSerializedClass(String key, NBTTagCompound input)
 	{
-		System.out.println(input);
-		System.out.println(key);
-
 		String registryID = input.getString("IOManagerID" + key);
 		int classID = input.getInteger(key);
 
 		IOManager manager = IOCore.io().getManager(registryID);
+
+		if (manager == null)
+		{
+			throw new IOManagerNotFoundException("Manager was not found:" + registryID);
+		}
 
 		return manager.getRegistry().getClass(registryID, classID);
 	}
