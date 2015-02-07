@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager;
+package com.gildedgames.util.io_manager.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,24 +18,24 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
-import com.gildedgames.util.io_manager.util.IOUtil;
 
-public class IOSerializerCore implements IOSerializer
+public class IOSerializerDefault implements IOSerializer
 {
-
-	private final static int BUFFER_SIZE = 8192;
+	private final IOManager manager;
 
 	private static final String DATA_KEY = "IOClassID";
 
-	protected IOSerializerCore()
-	{
+	private final static int BUFFER_SIZE = 8192;
 
+	public IOSerializerDefault(IOManager manager)
+	{
+		this.manager = manager;
 	}
 
 	@Override
 	public IOManager getManager()
 	{
-		return IOCore.io();
+		return this.manager;
 	}
 
 	@Override
@@ -50,11 +50,11 @@ public class IOSerializerCore implements IOSerializer
 
 		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
-		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
+		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerDefault.DATA_KEY, input);
 
-		FILE ioFile = (FILE) IOCore.io().create(classToRead);
+		FILE ioFile = (FILE) this.getManager().getRegistry().create(classToRead);
 
-		IOManager manager = IOCore.io().getManager(classToRead);
+		IOManager manager = this.getManager();
 		IOSerializerInternal serializer = manager.getInternalSerializer();
 
 		ioFactory.preReading(ioFile, file, input);
@@ -75,15 +75,12 @@ public class IOSerializerCore implements IOSerializer
 		{
 			return null;
 		}
-
 		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
+		Class<?> classToRead = ioFactory.getSerializedClass(DATA_KEY, input);
 
-		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
+		FILE ioFile = (FILE) this.getManager().getRegistry().create(classToRead, constructors);
 
-		FILE ioFile = (FILE) IOCore.io().create(classToRead, constructors);
-
-		IOManager manager = IOCore.io().getManager(classToRead);
-		IOSerializerInternal serializer = manager.getInternalSerializer();
+		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
 
 		ioFactory.preReading(ioFile, file, input);
 
@@ -106,14 +103,34 @@ public class IOSerializerCore implements IOSerializer
 
 		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
-		IOManager manager = IOCore.io().getManager(ioFile.getClass());
-		IOSerializerInternal serializer = manager.getInternalSerializer();
+		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
 
 		ioFactory.preReading(ioFile, file, input);
 
 		serializer.readFile(dataInput, ioFile, file, ioFactory);
 
 		dataInput.close();
+	}
+
+	@Override
+	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
+	{
+		final DataInputStream dataInput = this.createDataInput(file);
+
+		if (dataInput == null)
+		{
+			return null;
+		}
+
+		Class<?> classToRead = this.getClassToRead(dataInput, ioFactory);
+
+		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
+
+		IOFileMetadata<I, O> metadata = serializer.readFileMetadata(dataInput, file, ioFactory);
+
+		dataInput.close();
+
+		return metadata;
 	}
 
 	@Override
@@ -136,40 +153,16 @@ public class IOSerializerCore implements IOSerializer
 
 		O output = ioFactory.getOutput();
 
-		ioFactory.setSerializedClass(IOSerializerCore.DATA_KEY, output, ioFile.getClass());
+		ioFactory.setSerializedClass(DATA_KEY, output, ioFile.getClass());
 
 		IOUtil.writeBytes(output, dataOutput, ioFactory);
 
-		IOManager manager = IOCore.io().getManager(ioFile.getClass());
+		IOManager manager = this.getManager();
 		IOSerializerInternal serializer = manager.getInternalSerializer();
 
 		serializer.writeFile(dataOutput, file, ioFile, ioFactory);
 
 		dataOutput.close();
-	}
-
-	@Override
-	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
-	{
-		final DataInputStream dataInput = this.createDataInput(file);
-
-		if (dataInput == null)
-		{
-			return null;
-		}
-
-		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
-
-		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
-
-		IOManager manager = IOCore.io().getManager(classToRead);
-		IOSerializerInternal serializer = manager.getInternalSerializer();
-
-		IOFileMetadata<I, O> metadata = serializer.readFileMetadata(dataInput, file, ioFactory);
-
-		dataInput.close();
-
-		return metadata;
 	}
 
 	private DataInputStream createDataInput(File file) throws IOException
@@ -183,6 +176,13 @@ public class IOSerializerCore implements IOSerializer
 		final BufferedInputStream bufferedInputStream = new BufferedInputStream(new GZIPInputStream(fileInputStream), BUFFER_SIZE);
 
 		return new DataInputStream(bufferedInputStream);
+	}
+
+	private <I> Class<?> getClassToRead(DataInputStream stream, IOFactory<?, I, ?> ioFactory) throws IOException
+	{
+		I input = ioFactory.getInput(IOUtil.readBytes(stream));
+
+		return ioFactory.getSerializedClass(DATA_KEY, input);
 	}
 
 }

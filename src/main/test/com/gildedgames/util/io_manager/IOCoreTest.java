@@ -2,6 +2,8 @@ package com.gildedgames.util.io_manager;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,31 +60,37 @@ public class IOCoreTest
 	}
 
 	@Test
-	public void testReadIIOFactoryOfQIQIConstructor()
+	public void testReadWrite()
 	{
-		fail("Not yet implemented");
+		GGUtilDataSet.iomanager();
+		List<TestNBTFile> files = GGUtilDataSet.nbtFiles();
+		for (TestNBTFile file : files)
+		{
+			NBTFactory factory = new NBTFactory();
+			File f = GGUtilDataSet.fileFor("testIOCore");
+			try
+			{
+				IOCore.io().writeFile(f, file, factory);
+				TestNBTFile readBack = (TestNBTFile) IOCore.io().readFile(f, factory);
+				Assert.assertEquals(file, readBack);
+			}
+			catch (IOException e)
+			{
+				Assert.fail();
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Test
-	public void testWrite()
+	public void testRegistration()
 	{
-		fail("Not yet implemented");
+		IOCore.io().registerClass(IOCoreTest.class, 5);
+		Assert.assertNotNull(IOCore.io().getManager(IOCoreTest.class));
 	}
 
 	@Test
-	public void testGetStringIIOFactoryOfQIQ()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetStringIIOFactoryOfQIQIConstructor()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testSet()
+	public void testGetSetVolatile()
 	{
 		fail("Not yet implemented");
 	}

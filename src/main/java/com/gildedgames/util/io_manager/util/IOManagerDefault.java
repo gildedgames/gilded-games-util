@@ -2,21 +2,24 @@ package com.gildedgames.util.io_manager.util;
 
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
+import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
 
 public class IOManagerDefault implements IOManager
 {
 
-	protected IORegistry registryComponent;
+	protected final IORegistry registryComponent;
 
-	protected IOSerializerExternal serializerComponent;
+	protected final IOSerializerInternal serializerComponent;
 
-	protected IOSerializerVolatile volatileComponent;
+	protected final IOSerializerVolatile volatileComponent;
 
-	protected String name;
+	protected final String name;
 
-	public IOManagerDefault(IORegistry registry, IOSerializerExternal serializer, IOSerializerVolatile volatileSerializer, String id)
+	protected final IOSerializer serializer = new IOSerializerDefault(this);
+
+	public IOManagerDefault(IORegistry registry, IOSerializerInternal serializer, IOSerializerVolatile volatileSerializer, String id)
 	{
 		this.registryComponent = registry;
 		this.serializerComponent = serializer;
@@ -27,7 +30,7 @@ public class IOManagerDefault implements IOManager
 	public IOManagerDefault(String id)
 	{
 		this.registryComponent = new IORegistryDefault();
-		this.serializerComponent = new IOSerializerExternalDefault(this);
+		this.serializerComponent = new IOSerializerInternalDefault(this);
 		this.volatileComponent = new IOSerializerVolatileDefault(this);
 		this.name = id;
 	}
@@ -39,7 +42,7 @@ public class IOManagerDefault implements IOManager
 	}
 
 	@Override
-	public IOSerializerExternal getSerializer()
+	public IOSerializerInternal getInternalSerializer()
 	{
 		return this.serializerComponent;
 	}
@@ -54,6 +57,12 @@ public class IOManagerDefault implements IOManager
 	public String getID()
 	{
 		return this.name;
+	}
+
+	@Override
+	public IOSerializer getSerializer()
+	{
+		return this.serializer;
 	}
 
 }

@@ -5,7 +5,9 @@ public interface IOManager
 
 	IORegistry getRegistry();
 
-	IOSerializerExternal getSerializer();
+	IOSerializer getSerializer();
+
+	IOSerializerInternal getInternalSerializer();
 
 	IOSerializerVolatile getVolatileSerializer();
 

@@ -15,8 +15,9 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
+import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
 import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
+import com.gildedgames.util.io_manager.util.IOManagerDefault;
 
 public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, IOManager
 {
@@ -31,11 +32,16 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 
 	protected IORegistry registryComponent;
 
+	protected IOManager defaultManager;
+
 	private IOCore()
 	{
 		this.registryComponent = new IORegistryCore(this.externalManagers);
 		this.fileComponent = new IOSerializerCore();
 		this.volatileComponent = new IOSerializerVolatileCore();
+
+		this.defaultManager = new IOManagerDefault("IOCore");
+		this.externalManagers.add(this.defaultManager);
 	}
 
 	public static IOCore io()
@@ -158,6 +164,12 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 		return "";
 	}
 
+	/**
+	 * Registers a class to serialize in the default manager.
+	 * Registring through this method is highly discouraged, 
+	 * as there is no guarentee that other clients won't 
+	 * register under the same ID.
+	 */
 	@Override
 	public void registerClass(Class<?> classToSerialize, int classID)
 	{
@@ -219,7 +231,7 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public IOSerializerExternal getSerializer()
+	public IOSerializerInternal getInternalSerializer()
 	{
 		return null;
 	}
@@ -240,6 +252,17 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	public <I, O, FILE extends IOFile<I, O>> void readFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException
 	{
 		this.fileComponent.readFile(file, ioFile, ioFactory);
+	}
+
+	@Override
+	public IOSerializer getSerializer()
+	{
+		return this.fileComponent;
+	}
+
+	public IOManager getDefaultManager()
+	{
+		return this.defaultManager;
 	}
 
 }

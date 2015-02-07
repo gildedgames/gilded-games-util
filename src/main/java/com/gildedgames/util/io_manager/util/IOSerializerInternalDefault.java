@@ -1,15 +1,9 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
@@ -18,10 +12,10 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
-import com.gildedgames.util.io_manager.overhead.IOSerializerExternal;
+import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
 import com.google.common.base.Optional;
 
-public class IOSerializerExternalDefault implements IOSerializerExternal
+public class IOSerializerInternalDefault implements IOSerializerInternal
 {
 
 	private final static int BUFFER_SIZE = 8192;
@@ -32,7 +26,7 @@ public class IOSerializerExternalDefault implements IOSerializerExternal
 
 	private final static String METADATA_KEY = "metaClassq";
 
-	public IOSerializerExternalDefault(IOManager parentManager)
+	public IOSerializerInternalDefault(IOManager parentManager)
 	{
 		this.parentManager = parentManager;
 	}
@@ -53,13 +47,13 @@ public class IOSerializerExternalDefault implements IOSerializerExternal
 	public <I, O, FILE extends IOFile<I, O>> FILE readFile(DataInputStream inputStream, FILE ioFile, File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
 		IOFileMetadata<I, O> metadata = this.readMetadata(file, inputStream, ioFactory);
-		
+
 		ioFile.setMetadata(metadata);
 
 		I input = ioFactory.getInput(IOUtil.readBytes(inputStream));
 
 		ioFile.read(input);
-		
+
 		return ioFile;
 	}
 
@@ -94,10 +88,10 @@ public class IOSerializerExternalDefault implements IOSerializerExternal
 	}
 
 	@Override
-	public <I, O> IOFileMetadata<I, O> readFileMetadata(DataInputStream inputStream, Class<?> classToRead, File file, IOFactory<?, I, O> ioFactory) throws IOException
+	public <I, O> IOFileMetadata<I, O> readFileMetadata(DataInputStream inputStream, File file, IOFactory<?, I, O> ioFactory) throws IOException
 	{
 		IOFileMetadata<I, O> metadata = this.readMetadata(file, inputStream, ioFactory);
-		
+
 		return metadata;
 	}
 
@@ -107,7 +101,7 @@ public class IOSerializerExternalDefault implements IOSerializerExternal
 		IOFileMetadata<I, O> readMetadata = null;
 
 		int i = 0;
-		
+
 		while (isMetadata)//Keep reading metadata
 		{
 			final I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
@@ -131,5 +125,5 @@ public class IOSerializerExternalDefault implements IOSerializerExternal
 
 		return readMetadata;
 	}
-	
+
 }

@@ -10,7 +10,7 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 
-public interface IOSerializerExternal
+public interface IOSerializerInternal
 {
 
 	IOManager getManager();
@@ -21,6 +21,6 @@ public interface IOSerializerExternal
 
 	<I, O, FILE extends IOFile<I, O>> void writeFile(DataOutputStream output, File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException;
 
-	<I, O> IOFileMetadata<I, O> readFileMetadata(DataInputStream input, Class<?> classToRead, File file, IOFactory<?, I, O> ioFactory) throws IOException;
+	<I, O> IOFileMetadata<I, O> readFileMetadata(DataInputStream input, File file, IOFactory<?, I, O> ioFactory) throws IOException;
 
 }

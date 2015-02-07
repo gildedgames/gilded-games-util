@@ -20,13 +20,13 @@ public class IORegistryCore implements IORegistry
 	@Override
 	public void registerClass(Class<?> classToSerialize, int classID)
 	{
-
+		IOCore.io().defaultManager.getRegistry().registerClass(classToSerialize, classID);
 	}
 
 	@Override
 	public void registerBehavior(Class<?> classToSerialize, ISerializeBehaviour<?> serializeBehaviour)
 	{
-
+		IOCore.io().defaultManager.getRegistry().registerBehavior(classToSerialize, serializeBehaviour);
 	}
 
 	@Override
