@@ -1,4 +1,4 @@
-package com.gildedgames.util.io_manager.io;
+package com.gildedgames.util.io_manager.factory;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ReportedException;
 
-public interface KeyValueWrapper
+public interface IOBridge
 {
 
 	void setBoolean(String key, boolean value);
