@@ -97,12 +97,10 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 
 	private <I, O, FILE extends IOFile<I, O>> IOFileMetadata<I, O> readMetadata(File file, DataInputStream dataInput, IOFactory<FILE, I, O> ioFactory) throws IOException
 	{
-		boolean isMetadata = dataInput.readBoolean();
 		IOFileMetadata<I, O> readMetadata = null;
 
 		int i = 0;
-
-		while (isMetadata)//Keep reading metadata
+		while (dataInput.readBoolean())//Keep reading metadata
 		{
 			final I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
@@ -120,7 +118,7 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 			ioFile.setFileLocation(file);
 
 			readMetadata = ioFile;
-			isMetadata = dataInput.readBoolean();
+			i++;
 		}
 
 		return readMetadata;
