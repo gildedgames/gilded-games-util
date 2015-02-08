@@ -7,7 +7,6 @@ import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.PlayerServices;
 import com.gildedgames.util.tab.TabCore;
-import com.gildedgames.util.world.WorldCore;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -48,7 +47,6 @@ public class UtilCore extends PlayerServices implements ICore
 	public UtilCore()
 	{
 		this.cores.add(PlayerCore.INSTANCE);
-		this.cores.add(WorldCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 		this.cores.add(TabCore.INSTANCE);
 	}
