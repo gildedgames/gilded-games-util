@@ -48,7 +48,7 @@ public class IOSerializerDefault implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerDefault.DATA_KEY, input);
 
@@ -75,7 +75,7 @@ public class IOSerializerDefault implements IOSerializer
 		{
 			return null;
 		}
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 		Class<?> classToRead = ioFactory.getSerializedClass(DATA_KEY, input);
 
 		FILE ioFile = (FILE) this.getManager().getRegistry().create(classToRead, constructors);
@@ -101,7 +101,7 @@ public class IOSerializerDefault implements IOSerializer
 			return;
 		}
 
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
 		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
 
@@ -151,7 +151,7 @@ public class IOSerializerDefault implements IOSerializer
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
-		O output = ioFactory.createOutput();
+		O output = ioFactory.getOutput();
 
 		ioFactory.setSerializedClass(DATA_KEY, output, ioFile.getClass());
 
@@ -180,7 +180,7 @@ public class IOSerializerDefault implements IOSerializer
 
 	private <I> Class<?> getClassToRead(DataInputStream stream, IOFactory<?, I, ?> ioFactory) throws IOException
 	{
-		I input = ioFactory.createInput(IOUtil.readBytes(stream));
+		I input = ioFactory.getInput(IOUtil.readBytes(stream));
 
 		return ioFactory.getSerializedClass(DATA_KEY, input);
 	}

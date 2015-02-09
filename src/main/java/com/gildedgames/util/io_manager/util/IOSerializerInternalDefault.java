@@ -50,7 +50,7 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 
 		ioFile.setMetadata(metadata);
 
-		I input = ioFactory.createInput(IOUtil.readBytes(inputStream));
+		I input = ioFactory.getInput(IOUtil.readBytes(inputStream));
 
 		ioFile.read(input);
 
@@ -69,7 +69,7 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 
 			outputStream.writeBoolean(true);
 
-			final O output = ioFactory.createOutput();
+			final O output = ioFactory.getOutput();
 			ioFactory.setSerializedClass(METADATA_KEY + i, output, metadataFile.getClass());
 			metadataFile.write(output);
 			IOUtil.writeBytes(output, outputStream, ioFactory);
@@ -80,7 +80,7 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 
 		outputStream.writeBoolean(false);//Not metadata
 
-		final O output = ioFactory.createOutput();
+		final O output = ioFactory.getOutput();
 
 		ioFile.write(output);
 
@@ -102,7 +102,7 @@ public class IOSerializerInternalDefault implements IOSerializerInternal
 		int i = 0;
 		while (dataInput.readBoolean())//Keep reading metadata
 		{
-			final I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
+			final I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
 
 			Class<?> clazz = ioFactory.getSerializedClass(METADATA_KEY + i, input);
 			@SuppressWarnings("unchecked")

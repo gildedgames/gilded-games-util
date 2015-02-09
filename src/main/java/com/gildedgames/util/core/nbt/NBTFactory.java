@@ -11,10 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
-import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
-import com.gildedgames.util.io_manager.factory.InputRecorder;
-import com.gildedgames.util.io_manager.factory.OutputArranger;
 import com.gildedgames.util.io_manager.io.IOFile;
 import com.gildedgames.util.io_manager.io.IOFileMetadata;
 import com.gildedgames.util.io_manager.overhead.IOManager;
@@ -23,15 +20,9 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 {
 
 	private int writeIndex, readIndex;
-	
-	@Override
-	public boolean isKeyValueSystem()
-	{
-		return true;
-	}
 
 	@Override
-	public NBTTagCompound createInput(byte[] input)
+	public NBTTagCompound getInput(byte[] input)
 	{
 		try
 		{
@@ -49,45 +40,9 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public NBTTagCompound createOutput()
+	public NBTTagCompound getOutput()
 	{
 		return new NBTTagCompound();
-	}
-	
-	@Override
-	public NBTTagCompound createRawInput(NBTTagCompound input)
-	{
-		return null;
-	}
-
-	@Override
-	public NBTTagCompound createRawOutput(NBTTagCompound output)
-	{
-		return null;
-	}
-	
-	@Override
-	public IOBridge createInputBridge(NBTTagCompound input)
-	{
-		return new NBTBridge(input);
-	}
-
-	@Override
-	public IOBridge createOutputBridge(NBTTagCompound output)
-	{
-		return new NBTBridge(output);
-	}
-	
-	@Override
-	public InputRecorder<NBTTagCompound> createInputRecorder(byte[] reading)
-	{
-		return new NBTRecorder(this.createInput(reading));
-	}
-
-	@Override
-	public OutputArranger<NBTTagCompound> createOutputArranger()
-	{
-		return new NBTArranger();
 	}
 
 	@Override
@@ -177,5 +132,5 @@ public class NBTFactory implements IOFactory<IOFile<NBTTagCompound, NBTTagCompou
 		}
 		return null;
 	}
-	
+
 }

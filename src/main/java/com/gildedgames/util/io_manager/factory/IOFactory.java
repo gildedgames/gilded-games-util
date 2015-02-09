@@ -7,48 +7,16 @@ import com.gildedgames.util.io_manager.io.IOFileMetadata;
 
 public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 {
-	
-	boolean isKeyValueSystem();
 
 	/**
-	 * Creates a new Input object based on the given byte[]. 
+	 * Create a new Input object based on the given byte[]. 
 	 */
-	I createInput(byte[] reading);
+	I getInput(byte[] reading);
 
 	/**
-	 * Creates an empty Output object to write data into.
+	 * Create an empty Output object to read data in
 	 */
-	O createOutput();
-	
-	/**
-	 * Creates a new raw Input object wrapping around an existing Input. 
-	 */
-	I createRawInput(I input);
-	
-	/**
-	 * Creates an empty raw Output object wrapping around an existing Output.
-	 */
-	O createRawOutput(O output);
-	
-	/**
-	 * Creates a new IOBridge object (which wraps around I) based on the given byte[].
-	 */
-	IOBridge createInputBridge(I input);
-	
-	/**
-	 * Creates an empty IOBridge object (which wraps around O) to write data into.
-	 */
-	IOBridge createOutputBridge(O output);
-	
-	/**
-	 * Creates a new InputRecorder which records String keys in the order they were set.
-	 */
-	InputRecorder<I> createInputRecorder(byte[] reading);
-	
-	/**
-	 * Creates a new OutputArranger which rearranges data based on the given set of keys.
-	 */
-	OutputArranger<O> createOutputArranger();
+	O getOutput();
 
 	/**
 	 * Returns the underlying byte[] of the Output,
@@ -75,5 +43,5 @@ public interface IOFactory<FILE extends IOFile<I, O>, I, O>
 	void preReading(FILE data, File from, I input);
 
 	void preReadingMetadata(IOFileMetadata<I, O> metadata, File from, I input);
-	
+
 }
