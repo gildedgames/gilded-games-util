@@ -48,7 +48,7 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
 
@@ -76,7 +76,7 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
 
@@ -104,7 +104,7 @@ public class IOSerializerCore implements IOSerializer
 			return;
 		}
 
-		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
 
 		IOManager manager = IOCore.io().getManager(ioFile.getClass());
 		IOSerializerInternal serializer = manager.getInternalSerializer();
@@ -134,7 +134,7 @@ public class IOSerializerCore implements IOSerializer
 
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
-		O output = ioFactory.getOutput();
+		O output = ioFactory.createOutput();
 
 		ioFactory.setSerializedClass(IOSerializerCore.DATA_KEY, output, ioFile.getClass());
 
@@ -158,7 +158,7 @@ public class IOSerializerCore implements IOSerializer
 			return null;
 		}
 
-		I input = ioFactory.getInput(IOUtil.readBytes(dataInput));
+		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
 
 		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerCore.DATA_KEY, input);
 
