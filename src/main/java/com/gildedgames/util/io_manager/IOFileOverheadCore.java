@@ -51,11 +51,11 @@ public class IOFileOverheadCore implements IOFileController
 		}
 
 		ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
-		
+
 		chunkPool.readChunks();
-		
+
 		I input = factory.createInput(false, chunkPool.getChunk("class"));
-		
+
 		IOBridge inputBridge = factory.createInputBridge(input);
 
 		Class<?> classToRead = inputBridge.getSerializedClass(IOFileOverheadCore.DATA_KEY);
@@ -73,7 +73,7 @@ public class IOFileOverheadCore implements IOFileController
 			}
 		}
 
-		FILE readFile = serializer.readData(null, ioFile, factory, constructors);
+		FILE readFile = serializer.readData(chunkPool, ioFile, factory, constructors);
 
 		dataInput.close();
 
@@ -89,9 +89,9 @@ public class IOFileOverheadCore implements IOFileController
 		{
 			return;
 		}
-		
+
 		ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
-		
+
 		chunkPool.readChunks();
 
 		I input = ioFactory.createInput(false, chunkPool.getChunk("class"));
@@ -107,7 +107,7 @@ public class IOFileOverheadCore implements IOFileController
 			}
 		}
 
-		serializer.readData(null, ioFile, ioFactory);
+		serializer.readData(chunkPool, ioFile, ioFactory);
 
 		dataInput.close();
 	}
@@ -131,9 +131,9 @@ public class IOFileOverheadCore implements IOFileController
 		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
 
 		ByteChunkPool chunkPool = new ByteChunkPool(dataOutput);
-		
+
 		O output = factory.createOutput(false);
-		
+
 		IOBridge outputBridge = factory.createOutputBridge(output);
 
 		outputBridge.setSerializedClass(IOFileOverheadCore.DATA_KEY, ioFile.getClass());
@@ -143,8 +143,8 @@ public class IOFileOverheadCore implements IOFileController
 		IOManager manager = IOCore.io().getManager(ioFile.getClass());
 		IOSerializer serializer = manager.getSerializer();
 
-		serializer.writeData(null, ioFile, factory);
-		
+		serializer.writeData(chunkPool, ioFile, factory);
+
 		chunkPool.writeChunks();
 
 		dataOutput.close();
@@ -159,13 +159,13 @@ public class IOFileOverheadCore implements IOFileController
 		{
 			return null;
 		}
-		
+
 		ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
-		
+
 		chunkPool.readChunks();
 
 		I input = factory.createInput(false, chunkPool.getChunk("class"));
-		
+
 		IOBridge inputBridge = factory.createInputBridge(input);
 
 		Class<?> classToRead = inputBridge.getSerializedClass(IOFileOverheadCore.DATA_KEY);

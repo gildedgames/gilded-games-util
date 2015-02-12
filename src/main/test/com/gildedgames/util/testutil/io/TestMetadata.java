@@ -1,7 +1,5 @@
 package com.gildedgames.util.testutil.io;
 
-import java.io.File;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.junit.Assert;
@@ -14,8 +12,6 @@ public class TestMetadata implements IOData<NBTTagCompound, NBTTagCompound>, NBT
 {
 
 	public int id;
-
-	File file;
 
 	private TestMetadata()
 	{
@@ -37,12 +33,6 @@ public class TestMetadata implements IOData<NBTTagCompound, NBTTagCompound>, NBT
 	public void read(NBTTagCompound input)
 	{
 		this.id = input.getInteger("id");
-	}
-
-	@Override
-	public void setFileLocation(File file)
-	{
-		this.file = file;
 	}
 
 	@Override

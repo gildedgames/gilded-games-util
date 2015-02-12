@@ -11,7 +11,7 @@ public interface IOSerializer
 {
 
 	IOManager getManager();
-	
+
 	/**
 	 * Reads ALL data into the provided IOData instance, including sub data.
 	 * @param io
@@ -41,7 +41,7 @@ public interface IOSerializer
 	 * @throws IOException
 	 */
 	<I, O, DATA extends IOData<I, O>> DATA readSubData(ByteChunkPool chunkPool, IOFactory<I, O> ioFactory) throws IOException;
-	
+
 	/**
 	 * Writes ONLY sub data from the provided IOData instance. This does not include its main data.
 	 * @param io

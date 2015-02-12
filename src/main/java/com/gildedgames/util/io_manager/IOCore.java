@@ -99,13 +99,13 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<I, ?> ioFactory, IConstructor... objectConstructors)
+	public <T extends IO<I, O>, I, O> T get(String key, I input, IOFactory<I, O> ioFactory, IConstructor... objectConstructors)
 	{
 		return this.volatileComponent.get(key, input, ioFactory, objectConstructors);
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> ioFactory, T objectToWrite)
+	public <T extends IO<I, O>, I, O> void set(String key, O output, IOFactory<I, O> ioFactory, T objectToWrite)
 	{
 		this.volatileComponent.set(key, output, ioFactory, objectToWrite);
 	}

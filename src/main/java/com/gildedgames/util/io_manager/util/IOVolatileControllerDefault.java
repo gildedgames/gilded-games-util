@@ -36,30 +36,30 @@ public class IOVolatileControllerDefault implements IOVolatileController
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<I, ?> factory, IConstructor... objectConstructors)
+	public <T extends IO<I, O>, I, O> T get(String key, I input, IOFactory<I, O> factory, IConstructor... objectConstructors)
 	{
 		IOBridge inputBridge = factory.createInputBridge(input);
-		
+
 		Class<?> classToReadFrom = inputBridge.getSerializedClass(key);
 
 		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
 		if (io instanceof IOData)
 		{
-			IOData data = (IOData)io;
-			
+			IOData<I, O> data = (IOData<I, O>) io;
+
 			IOManager manager = IOCore.io().getManager(io.getClass());
 			IOSerializer serializer = manager.getSerializer();
 
 			ByteArrayInputStream inputStream = new ByteArrayInputStream(inputBridge.getBytes());
 			DataInputStream dataInput = new DataInputStream(inputStream);
-			
+
 			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
-			
+
 			try
 			{
 				chunkPool.readChunks();
-				
+
 				serializer.readData(chunkPool, data, factory, objectConstructors);
 			}
 			catch (IOException e)
@@ -76,28 +76,28 @@ public class IOVolatileControllerDefault implements IOVolatileController
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> factory, T objectToWrite)
+	public <T extends IO<I, O>, I, O> void set(String key, O output, IOFactory<I, O> factory, T objectToWrite)
 	{
 		IOBridge outputBridge = factory.createOutputBridge(output);
-		
+
 		outputBridge.setSerializedClass(key, objectToWrite.getClass());
-		
+
 		if (objectToWrite instanceof IOData)
 		{
-			IOData data = (IOData)objectToWrite;
-			
+			IOData data = (IOData) objectToWrite;
+
 			IOManager manager = IOCore.io().getManager(objectToWrite.getClass());
 			IOSerializer serializer = manager.getSerializer();
 
 			ByteArrayOutputStream inputStream = new ByteArrayOutputStream();
 			DataOutputStream dataInput = new DataOutputStream(inputStream);
-			
+
 			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
-			
+
 			try
 			{
 				serializer.writeData(chunkPool, data, factory);
-				
+
 				chunkPool.writeChunks();
 			}
 			catch (IOException e)
@@ -115,11 +115,11 @@ public class IOVolatileControllerDefault implements IOVolatileController
 	public <T extends IO<I, O>, I, O> T clone(IOFactory<I, O> factory, T objectToClone) throws IOException
 	{
 		O output = factory.createOutput(false);
-		
+
 		this.set("clonedObject", output, factory, objectToClone);
-		
+
 		IOBridge outputBridge = factory.createOutputBridge(output);
-		
+
 		I input = factory.createInput(false, outputBridge.getBytes());
 
 		T clone = this.get("clonedObject", input, factory);

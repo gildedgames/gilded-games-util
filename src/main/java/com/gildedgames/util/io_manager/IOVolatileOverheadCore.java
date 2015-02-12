@@ -24,10 +24,10 @@ public class IOVolatileOverheadCore implements IOVolatileController
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<I, ?> factory, IConstructor... objectConstructor)
+	public <T extends IO<I, O>, I, O> T get(String key, I input, IOFactory<I, O> factory, IConstructor... objectConstructor)
 	{
 		IOBridge inputBridge = factory.createInputBridge(input);
-		
+
 		Class<?> classToRead = inputBridge.getSerializedClass(key);
 
 		IOManager manager = IOCore.io().getManager(classToRead);
@@ -37,10 +37,10 @@ public class IOVolatileOverheadCore implements IOVolatileController
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> factory, T objectToWrite)
+	public <T extends IO<I, O>, I, O> void set(String key, O output, IOFactory<I, O> factory, T objectToWrite)
 	{
 		IOBridge outputBridge = factory.createOutputBridge(output);
-		
+
 		outputBridge.setSerializedClass(key, objectToWrite.getClass());
 
 		IOManager manager = IOCore.io().getManager(objectToWrite.getClass());

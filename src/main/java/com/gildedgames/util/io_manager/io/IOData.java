@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager.io;
 
-import java.io.File;
-
 import com.google.common.base.Optional;
 
 public interface IOData<I, O> extends IO<I, O>

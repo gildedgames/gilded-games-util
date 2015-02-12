@@ -10,10 +10,10 @@ public interface IOVolatileController
 {
 
 	IOManager getManager();
-	
-	<OBJ extends IO<I, ?>, I> OBJ get(String key, I input, IOFactory<I, ?> ioFactory, IConstructor... objectConstructor);
 
-	<OBJ extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> ioFactory, OBJ objectToWrite);
+	<OBJ extends IO<I, O>, I, O> OBJ get(String key, I input, IOFactory<I, O> ioFactory, IConstructor... objectConstructor);
+
+	<OBJ extends IO<I, O>, I, O> void set(String key, O output, IOFactory<I, O> ioFactory, OBJ objectToWrite);
 
 	<OBJ extends IO<I, O>, I, O> OBJ clone(IOFactory<I, O> factory, OBJ objectToClone) throws IOException;
 

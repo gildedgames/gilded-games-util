@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -53,8 +51,8 @@ public class IOCoreTest
 		{
 			NBTTagCompound tag = new NBTTagCompound();
 			NBTFactory factory = new NBTFactory();
-			IOCore.io().write(tag, factory, file);
-			TestNBTFile read = IOCore.io().read(tag, factory);
+			IOCore.io().set("yolo", tag, factory, file);
+			TestNBTFile read = IOCore.io().get("yolo", tag, factory);
 			Assert.assertEquals(file, read);
 		}
 	}
@@ -87,102 +85,6 @@ public class IOCoreTest
 	{
 		IOCore.io().registerClass(IOCoreTest.class, 5);
 		Assert.assertNotNull(IOCore.io().getManager(IOCoreTest.class));
-	}
-
-	@Test
-	public void testGetSetVolatile()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCloneIOFactoryOfQIOT()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testReadFileFileIOFactoryOfFILEIO()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testReadFileFileIOFactoryOfFILEIOIConstructor()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testReadFileFileFILEIOFactoryOfFILEIO()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testWriteFile()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetRegistryID()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRegisterClass()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testRegisterBehavior()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreateClassOfTIConstructor()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreateStringInt()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testCreateStringIntIConstructor()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetClassStringInt()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetIDClassOfQ()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetIDObject()
-	{
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testIsClassRegistered()
-	{
-		fail("Not yet implemented");
 	}
 
 }
