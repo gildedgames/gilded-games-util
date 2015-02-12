@@ -1,0 +1,136 @@
+package com.gildedgames.util.io_manager.util;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
+import com.gildedgames.util.io_manager.constructor.IConstructor;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.factory.IOFactory;
+import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.IOData;
+import com.gildedgames.util.io_manager.overhead.IOManager;
+import com.gildedgames.util.io_manager.overhead.IOSerializer;
+import com.gildedgames.util.io_manager.overhead.IOVolatileController;
+
+public class IOVolatileControllerDefault implements IOVolatileController
+{
+
+	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
+
+	private IOManager manager;
+
+	public IOVolatileControllerDefault(IOManager manager)
+	{
+		this.manager = manager;
+	}
+
+	@Override
+	public IOManager getManager()
+	{
+		return this.manager;
+	}
+
+	@Override
+	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<I, ?> factory, IConstructor... objectConstructors)
+	{
+		IOBridge inputBridge = factory.createInputBridge(input);
+		
+		Class<?> classToReadFrom = inputBridge.getSerializedClass(key);
+
+		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
+
+		if (io instanceof IOData)
+		{
+			IOData data = (IOData)io;
+			
+			IOManager manager = IOCore.io().getManager(io.getClass());
+			IOSerializer serializer = manager.getSerializer();
+
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(inputBridge.getBytes());
+			DataInputStream dataInput = new DataInputStream(inputStream);
+			
+			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
+			
+			try
+			{
+				chunkPool.readChunks();
+				
+				serializer.readData(chunkPool, data, factory, objectConstructors);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			io.read(input);
+		}
+
+		return io;
+	}
+
+	@Override
+	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> factory, T objectToWrite)
+	{
+		IOBridge outputBridge = factory.createOutputBridge(output);
+		
+		outputBridge.setSerializedClass(key, objectToWrite.getClass());
+		
+		if (objectToWrite instanceof IOData)
+		{
+			IOData data = (IOData)objectToWrite;
+			
+			IOManager manager = IOCore.io().getManager(objectToWrite.getClass());
+			IOSerializer serializer = manager.getSerializer();
+
+			ByteArrayOutputStream inputStream = new ByteArrayOutputStream();
+			DataOutputStream dataInput = new DataOutputStream(inputStream);
+			
+			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
+			
+			try
+			{
+				serializer.writeData(chunkPool, data, factory);
+				
+				chunkPool.writeChunks();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			objectToWrite.write(output);
+		}
+	}
+
+	@Override
+	public <T extends IO<I, O>, I, O> T clone(IOFactory<I, O> factory, T objectToClone) throws IOException
+	{
+		O output = factory.createOutput(false);
+		
+		this.set("clonedObject", output, factory, objectToClone);
+		
+		IOBridge outputBridge = factory.createOutputBridge(output);
+		
+		I input = factory.createInput(false, outputBridge.getBytes());
+
+		T clone = this.get("clonedObject", input, factory);
+
+		return clone;
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T cast(Object object)
+	{
+		return (T) object;
+	}
+
+}

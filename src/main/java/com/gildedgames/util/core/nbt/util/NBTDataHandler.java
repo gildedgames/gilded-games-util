@@ -1,4 +1,4 @@
-package com.gildedgames.util.core.nbt;
+package com.gildedgames.util.core.nbt.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.gildedgames.util.core.nbt.NBT;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;

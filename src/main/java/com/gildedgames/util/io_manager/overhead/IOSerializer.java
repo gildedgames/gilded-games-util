@@ -1,26 +1,54 @@
 package com.gildedgames.util.io_manager.overhead;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.IOFactory;
-import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.io.IOData;
+import com.gildedgames.util.io_manager.util.ByteChunkPool;
 
 public interface IOSerializer
 {
 
 	IOManager getManager();
+	
+	/**
+	 * Reads ALL data into the provided IOData instance, including sub data.
+	 * @param io
+	 * @param data
+	 * @param factory
+	 * @param constructors
+	 * @return
+	 * @throws IOException
+	 */
+	<I, O, DATA extends IOData<I, O>> DATA readData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException;
 
-	<I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory) throws IOException;
+	/**
+	 * Writes ALL data from the provided IOData instance, including sub data.
+	 * @param io
+	 * @param data
+	 * @param factory
+	 * @throws IOException
+	 */
+	<I, O, DATA extends IOData<I, O>> void writeData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException;
 
-	<I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException;
-
-	<I, O, FILE extends IOFile<I, O>> void readFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException;
-
-	<I, O, FILE extends IOFile<I, O>> void writeFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException;
-
-	<I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException;
+	/**
+	 * Reads ONLY sub data into the provided IOData instance. This does not include its main data.
+	 * @param io
+	 * @param data
+	 * @param ioFactory
+	 * @return
+	 * @throws IOException
+	 */
+	<I, O, DATA extends IOData<I, O>> DATA readSubData(ByteChunkPool chunkPool, IOFactory<I, O> ioFactory) throws IOException;
+	
+	/**
+	 * Writes ONLY sub data from the provided IOData instance. This does not include its main data.
+	 * @param io
+	 * @param data
+	 * @param ioFactory
+	 * @throws IOException
+	 */
+	<I, O, DATA extends IOData<I, O>> void writeSubData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> ioFactory) throws IOException;
 
 }

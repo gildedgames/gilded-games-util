@@ -2,24 +2,24 @@ package com.gildedgames.util.io_manager.util;
 
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
-import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
+import com.gildedgames.util.io_manager.overhead.IOVolatileController;
 
 public class IOManagerDefault implements IOManager
 {
 
 	protected final IORegistry registryComponent;
 
-	protected final IOSerializerInternal serializerComponent;
+	protected final IOSerializer serializerComponent;
 
-	protected final IOSerializerVolatile volatileComponent;
+	protected final IOVolatileController volatileComponent;
 
 	protected final String name;
 
-	protected final IOSerializer serializer = new IOSerializerDefault(this);
+	protected final IOFileController serializer = new IOFileControllerDefault(this);
 
-	public IOManagerDefault(IORegistry registry, IOSerializerInternal serializer, IOSerializerVolatile volatileSerializer, String id)
+	public IOManagerDefault(IORegistry registry, IOSerializer serializer, IOVolatileController volatileSerializer, String id)
 	{
 		this.registryComponent = registry;
 		this.serializerComponent = serializer;
@@ -30,8 +30,8 @@ public class IOManagerDefault implements IOManager
 	public IOManagerDefault(String id)
 	{
 		this.registryComponent = new IORegistryDefault();
-		this.serializerComponent = new IOSerializerInternalDefault(this);
-		this.volatileComponent = new IOSerializerVolatileDefault(this);
+		this.serializerComponent = new IOSerializerDefault(this);
+		this.volatileComponent = new IOVolatileControllerDefault(this);
 		this.name = id;
 	}
 
@@ -42,13 +42,13 @@ public class IOManagerDefault implements IOManager
 	}
 
 	@Override
-	public IOSerializerInternal getInternalSerializer()
+	public IOSerializer getSerializer()
 	{
 		return this.serializerComponent;
 	}
 
 	@Override
-	public IOSerializerVolatile getVolatileSerializer()
+	public IOVolatileController getVolatileController()
 	{
 		return this.volatileComponent;
 	}
@@ -60,7 +60,7 @@ public class IOManagerDefault implements IOManager
 	}
 
 	@Override
-	public IOSerializer getSerializer()
+	public IOFileController getFileController()
 	{
 		return this.serializer;
 	}

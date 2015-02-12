@@ -10,25 +10,25 @@ import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.io.IOData;
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
-import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
+import com.gildedgames.util.io_manager.overhead.IOVolatileController;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 
-public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, IOManager
+public class IOCore implements IORegistry, IOFileController, IOVolatileController, IOManager
 {
 
 	private static final IOCore INSTANCE = new IOCore();
 
-	private List<IOManager> externalManagers = new ArrayList<IOManager>();
+	private List<IOManager> internalManagers = new ArrayList<IOManager>();
 
-	protected IOSerializer fileComponent;
+	protected IOFileController fileComponent;
 
-	protected IOSerializerVolatile volatileComponent;
+	protected IOVolatileController volatileComponent;
 
 	protected IORegistry registryComponent;
 
@@ -36,12 +36,12 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 
 	private IOCore()
 	{
-		this.registryComponent = new IORegistryCore(this.externalManagers);
-		this.fileComponent = new IOSerializerCore();
-		this.volatileComponent = new IOSerializerVolatileCore();
+		this.registryComponent = new IORegistryCore(this.internalManagers);
+		this.fileComponent = new IOFileOverheadCore();
+		this.volatileComponent = new IOVolatileOverheadCore();
 
 		this.defaultManager = new IOManagerDefault("IOCore");
-		this.externalManagers.add(this.defaultManager);
+		this.internalManagers.add(this.defaultManager);
 	}
 
 	public static IOCore io()
@@ -53,7 +53,7 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	 * You MUST have a unique registryID, otherwise it will throw an IORegistryTakenException **/
 	public void registerManager(IOManager manager)
 	{
-		for (IOManager external : this.externalManagers)
+		for (IOManager external : this.internalManagers)
 		{
 			if (external.getID().equals(manager.getID()))
 			{
@@ -61,12 +61,12 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 			}
 		}
 
-		this.externalManagers.add(manager);
+		this.internalManagers.add(manager);
 	}
 
 	public IOManager getManager(String managerID)
 	{
-		for (IOManager external : this.externalManagers)
+		for (IOManager external : this.internalManagers)
 		{
 			if (external.getID().equals(managerID))
 			{
@@ -79,7 +79,7 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 
 	public IOManager getManager(Class<?> clazz)
 	{
-		for (IOManager external : this.externalManagers)
+		for (IOManager external : this.internalManagers)
 		{
 			IORegistry registry = external.getRegistry();
 
@@ -99,61 +99,31 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory)
-	{
-		return this.volatileComponent.read(input, ioFactory);
-	}
-
-	@Override
-	public <T extends IO<I, ?>, I> T read(I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
-	{
-		return this.volatileComponent.read(input, ioFactory, objectConstructors);
-	}
-
-	@Override
-	public <T extends IO<?, O>, O> void write(O output, IOFactory<?, ?, O> ioFactory, T objectToWrite)
-	{
-		this.volatileComponent.write(output, ioFactory, objectToWrite);
-	}
-
-	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory)
-	{
-		return this.volatileComponent.get(key, input, ioFactory);
-	}
-
-	@Override
-	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<?, I, ?> ioFactory, IConstructor... objectConstructors)
+	public <T extends IO<I, ?>, I> T get(String key, I input, IOFactory<I, ?> ioFactory, IConstructor... objectConstructors)
 	{
 		return this.volatileComponent.get(key, input, ioFactory, objectConstructors);
 	}
 
 	@Override
-	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, ?, O> ioFactory, T objectToWrite)
+	public <T extends IO<?, O>, O> void set(String key, O output, IOFactory<?, O> ioFactory, T objectToWrite)
 	{
 		this.volatileComponent.set(key, output, ioFactory, objectToWrite);
 	}
 
 	@Override
-	public <T extends IO<I, O>, I, O> T clone(IOFactory<?, I, O> factory, T objectToClone) throws IOException
+	public <T extends IO<I, O>, I, O> T clone(IOFactory<I, O> factory, T objectToClone) throws IOException
 	{
 		return this.volatileComponent.clone(factory, objectToClone);
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory) throws IOException
-	{
-		return this.fileComponent.readFile(file, ioFactory);
-	}
-
-	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<I, O> ioFactory, IConstructor... constructors) throws IOException
 	{
 		return this.fileComponent.readFile(file, ioFactory, constructors);
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> void writeFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> void writeFile(File file, FILE ioFile, IOFactory<I, O> ioFactory) throws IOException
 	{
 		this.fileComponent.writeFile(file, ioFile, ioFactory);
 	}
@@ -231,31 +201,31 @@ public class IOCore implements IORegistry, IOSerializer, IOSerializerVolatile, I
 	}
 
 	@Override
-	public IOSerializerInternal getInternalSerializer()
+	public IOSerializer getSerializer()
 	{
 		return null;
 	}
 
 	@Override
-	public IOSerializerVolatile getVolatileSerializer()
+	public IOVolatileController getVolatileController()
 	{
 		return this.volatileComponent;
 	}
 
 	@Override
-	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
+	public <I, O> IOData<I, O> readFileMetadata(File file, IOFactory<I, O> ioFactory) throws IOException
 	{
 		return this.fileComponent.readFileMetadata(file, ioFactory);
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> void readFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException
+	public <I, O, FILE extends IOFile<I, O>> void readFile(File file, FILE ioFile, IOFactory<I, O> ioFactory) throws IOException
 	{
 		this.fileComponent.readFile(file, ioFile, ioFactory);
 	}
 
 	@Override
-	public IOSerializer getSerializer()
+	public IOFileController getFileController()
 	{
 		return this.fileComponent;
 	}

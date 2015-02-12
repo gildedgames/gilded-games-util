@@ -7,10 +7,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.junit.Assert;
 
 import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.io.IOData;
 import com.google.common.base.Optional;
 
-public class TestMetadata implements IOFileMetadata<NBTTagCompound, NBTTagCompound>, NBT
+public class TestMetadata implements IOData<NBTTagCompound, NBTTagCompound>, NBT
 {
 
 	public int id;
@@ -46,13 +46,13 @@ public class TestMetadata implements IOFileMetadata<NBTTagCompound, NBTTagCompou
 	}
 
 	@Override
-	public Optional<IOFileMetadata<NBTTagCompound, NBTTagCompound>> getMetadata()
+	public Optional<IOData<NBTTagCompound, NBTTagCompound>> getSubData()
 	{
 		return Optional.absent();
 	}
 
 	@Override
-	public void setMetadata(IOFileMetadata<NBTTagCompound, NBTTagCompound> metadata)
+	public void setSubData(IOData<NBTTagCompound, NBTTagCompound> metadata)
 	{
 		Assert.fail("Trying to set metadata in an object that doesn't have any");
 	}

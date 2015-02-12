@@ -1,22 +1,15 @@
 package com.gildedgames.util.io_manager.factory;
 
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
-import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ReportedException;
 
 public interface IOBridge
 {
+	
+	byte[] getBytes();
 
+	Class<?> getSerializedClass(String key);
+
+	void setSerializedClass(String key, Class<?> classToWrite);
+	
 	void setBoolean(String key, boolean value);
 
     void setByte(String key, byte value);

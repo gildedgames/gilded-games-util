@@ -10,8 +10,8 @@ import org.junit.Test;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerVolatile;
+import com.gildedgames.util.io_manager.overhead.IOFileController;
+import com.gildedgames.util.io_manager.overhead.IOVolatileController;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.io.TestConstructor;
@@ -49,7 +49,7 @@ public class IOManagerTest
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
-				IOSerializer serializer = manager.getSerializer();
+				IOFileController serializer = manager.getFileController();
 				serializer.writeFile(file, object, new NBTFactory());
 				TestNBTFile readBack = (TestNBTFile) serializer.readFile(file, new NBTFactory());
 				Assert.assertEquals(object, readBack);
@@ -72,10 +72,10 @@ public class IOManagerTest
 			File file = GGUtilDataSet.fileFor(object.toString() + ".test");
 			try
 			{
-				IOSerializer serializer = manager.getSerializer();
+				IOFileController serializer = manager.getFileController();
 				serializer.writeFile(file, object, new NBTFactory());
 				TestMetadata readBack = (TestMetadata) serializer.readFileMetadata(file, new NBTFactory());
-				Assert.assertEquals(object.getMetadata().get(), readBack);
+				Assert.assertEquals(object.getSubData().get(), readBack);
 			}
 			catch (IOException e)
 			{
@@ -90,7 +90,7 @@ public class IOManagerTest
 	{
 		TestMetadata files = new TestMetadata(1);
 		IOManager manager = GGUtilDataSet.iomanager();
-		IOSerializerVolatile serializer = manager.getVolatileSerializer();
+		IOVolatileController serializer = manager.getVolatileController();
 		TestMetadata clone = serializer.clone(new NBTFactory(), files);
 		Assert.assertEquals(files, clone);
 	}

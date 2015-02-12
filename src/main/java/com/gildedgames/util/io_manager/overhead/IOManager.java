@@ -5,11 +5,11 @@ public interface IOManager
 
 	IORegistry getRegistry();
 
+	IOFileController getFileController();
+
 	IOSerializer getSerializer();
 
-	IOSerializerInternal getInternalSerializer();
-
-	IOSerializerVolatile getVolatileSerializer();
+	IOVolatileController getVolatileController();
 
 	String getID();
 

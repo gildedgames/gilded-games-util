@@ -1,16 +1,27 @@
 package com.gildedgames.util.core.nbt;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.core.nbt.util.NBTHelper;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.overhead.IOManager;
 
 public class NBTBridge implements IOBridge
 {
 	
+	private NBTFactory factory;
+	
 	private NBTTagCompound tag;
 	
-	public NBTBridge(NBTTagCompound tag)
+	public NBTBridge(NBTFactory factory, NBTTagCompound tag)
 	{
+		this.factory = factory;
 		this.tag = tag;
 	}
 	
@@ -132,6 +143,54 @@ public class NBTBridge implements IOBridge
 	public boolean getBoolean(String key)
 	{
 		return this.tag.getBoolean(key);
+	}
+
+	@Override
+	public byte[] getBytes()
+	{
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		DataOutputStream stream = new DataOutputStream(byteStream);
+		
+		try
+		{
+			NBTHelper.writeOutputNBT(this.tag, stream);
+			byte[] bytez = byteStream.toByteArray();
+			stream.close();
+			return bytez;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Class<?> getSerializedClass(String key)
+	{
+		String registryID = this.getString("IOManagerID" + key);
+		int classID = this.getInteger(key);
+
+		IOManager manager = IOCore.io().getManager(registryID);
+
+		if (manager == null)
+		{
+			throw new IOManagerNotFoundException("Manager was not found:" + registryID);
+		}
+
+		return manager.getRegistry().getClass(registryID, classID);
+	}
+
+	@Override
+	public void setSerializedClass(String key, Class<?> classToWrite)
+	{
+		IOManager manager = IOCore.io().getManager(classToWrite);
+
+		int classID = manager.getRegistry().getID(classToWrite);
+
+		this.setString("IOManagerID" + key, manager.getID());
+		this.setInteger(key, classID);
 	}
 
 }

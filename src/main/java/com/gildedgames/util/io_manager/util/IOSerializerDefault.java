@@ -1,188 +1,149 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
+import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
-import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.io.IOData;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOSerializerInternal;
+import com.google.common.base.Optional;
 
 public class IOSerializerDefault implements IOSerializer
 {
-	private final IOManager manager;
-
-	private static final String DATA_KEY = "IOClassID";
 
 	private final static int BUFFER_SIZE = 8192;
 
-	public IOSerializerDefault(IOManager manager)
+	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
+
+	private final IOManager parentManager;
+
+	private final static String METADATA_KEY = "metaClassq";
+
+	public IOSerializerDefault(IOManager parentManager)
 	{
-		this.manager = manager;
+		this.parentManager = parentManager;
 	}
 
 	@Override
 	public IOManager getManager()
 	{
-		return this.manager;
+		return this.parentManager;
+	}
+	
+	@Override
+	public <I, O, DATA extends IOData<I, O>> DATA readData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException
+	{
+		data.setSubData(this.readSubData(chunkPool, factory));
+
+		this.readMainData(chunkPool, data, factory, constructors);
+
+		return data;
 	}
 
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory) throws IOException
+	public <I, O, DATA extends IOData<I, O>> void writeData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
 	{
-		final DataInputStream dataInput = this.createDataInput(file);
+		this.writeSubData(chunkPool, data, factory);
 
-		if (dataInput == null)
-		{
-			return null;
-		}
-
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
-
-		Class<?> classToRead = ioFactory.getSerializedClass(IOSerializerDefault.DATA_KEY, input);
-
-		FILE ioFile = (FILE) this.getManager().getRegistry().create(classToRead);
-
-		IOManager manager = this.getManager();
-		IOSerializerInternal serializer = manager.getInternalSerializer();
-
-		ioFactory.preReading(ioFile, file, input);
-
-		FILE readFile = serializer.readFile(dataInput, ioFile, file, ioFactory);
-
-		dataInput.close();
-
-		return readFile;
+		this.writeMainData(chunkPool, data, factory);
 	}
-
+	
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> FILE readFile(File file, IOFactory<FILE, I, O> ioFactory, IConstructor... constructors) throws IOException
+	public <I, O, DATA extends IOData<I, O>> DATA readSubData(ByteChunkPool chunkPool, IOFactory<I, O> factory) throws IOException
 	{
-		final DataInputStream dataInput = this.createDataInput(file);
+		DATA readMetadata = null;
+		
+		IOBridge io = factory.createInputBridge(factory.createInput(false, chunkPool.getChunk("subDataMetadata")));
 
-		if (dataInput == null)
+		int metadataCount = io.getInteger("subDataCount");
+		
+		for (int count = 0; count < metadataCount; count++)
 		{
-			return null;
+			I input = factory.createInput(false, chunkPool.getChunk("subData" + count));
+			
+			IOBridge inputBridge = factory.createInputBridge(input);
+
+			Class<?> clazz = inputBridge.getSerializedClass(METADATA_KEY + count);
+			
+			@SuppressWarnings("unchecked")
+			DATA subData = (DATA) IOCore.io().create(clazz, defaultConstructor);
+
+			if (readMetadata != null)
+			{
+				readMetadata.setSubData(subData);
+			}
+
+			subData.read(input);
+
+			readMetadata = subData;
 		}
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
-		Class<?> classToRead = ioFactory.getSerializedClass(DATA_KEY, input);
 
-		FILE ioFile = (FILE) this.getManager().getRegistry().create(classToRead, constructors);
-
-		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
-
-		ioFactory.preReading(ioFile, file, input);
-
-		FILE readFile = serializer.readFile(dataInput, ioFile, file, ioFactory, constructors);
-
-		dataInput.close();
-
-		return readFile;
+		return readMetadata;
 	}
-
+	
 	@Override
-	public <I, O, FILE extends IOFile<I, O>> void readFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException
+	public <I, O, DATA extends IOData<I, O>> void writeSubData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
 	{
-		final DataInputStream dataInput = this.createDataInput(file);
+		Optional<IOData<I, O>> metadata = data.getSubData();
 
-		if (dataInput == null)
+		int metadataCount = 0;
+		
+		while (metadata != null && metadata.isPresent())
 		{
-			return;
+			metadata = metadata.get().getSubData();
+			
+			metadataCount++;
 		}
+		
+		IOBridge io = factory.createOutputBridge(factory.createOutput(false));
+		
+		io.setInteger("subDataCount", metadataCount);
+		
+		metadata = data.getSubData();
+		
+		chunkPool.setChunk("subDataMetadata", io.getBytes());
+		
+		for (int count = 0; count < metadataCount; count++)
+		{
+			IOData<I, O> metadataFile = metadata.get();
 
-		I input = ioFactory.createInput(IOUtil.readBytes(dataInput));
+			final O output = factory.createOutput(false);
+			
+			IOBridge outputBridge = factory.createOutputBridge(output);
+			
+			outputBridge.setSerializedClass(METADATA_KEY + count, metadataFile.getClass());
+			
+			metadataFile.write(output);
+			
+			chunkPool.setChunk("subData" + count, outputBridge.getBytes());
 
-		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
+			metadata = metadataFile.getSubData();
+		}
+	}
+	
+	private <I, O, DATA extends IOData<I, O>> DATA readMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException
+	{
+		I input = factory.createInput(false, chunkPool.getChunk("mainData"));
 
-		ioFactory.preReading(ioFile, file, input);
+		data.read(input);
 
-		serializer.readFile(dataInput, ioFile, file, ioFactory);
-
-		dataInput.close();
+		return data;
 	}
 
-	@Override
-	public <I, O> IOFileMetadata<I, O> readFileMetadata(File file, IOFactory<?, I, O> ioFactory) throws IOException
+	private <I, O, DATA extends IOData<I, O>> void writeMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
 	{
-		final DataInputStream dataInput = this.createDataInput(file);
+		final O output = factory.createOutput(false);
 
-		if (dataInput == null)
-		{
-			return null;
-		}
+		IOBridge outputBridge = factory.createOutputBridge(output);
+		
+		data.write(output);
 
-		Class<?> classToRead = this.getClassToRead(dataInput, ioFactory);
-
-		IOSerializerInternal serializer = this.getManager().getInternalSerializer();
-
-		IOFileMetadata<I, O> metadata = serializer.readFileMetadata(dataInput, file, ioFactory);
-
-		dataInput.close();
-
-		return metadata;
+		chunkPool.setChunk("mainData", outputBridge.getBytes());
 	}
 
-	@Override
-	public <I, O, FILE extends IOFile<I, O>> void writeFile(File file, FILE ioFile, IOFactory<FILE, I, O> ioFactory) throws IOException
-	{
-		if (file.getParentFile() != null)
-		{
-			file.getParentFile().mkdirs();
-		}
-
-		if (!file.exists())
-		{
-			file.createNewFile();
-		}
-
-		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
-		final BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new GZIPOutputStream(fileOutputStream), BUFFER_SIZE);
-
-		final DataOutputStream dataOutput = new DataOutputStream(bufferedOutputStream);
-
-		O output = ioFactory.createOutput();
-
-		ioFactory.setSerializedClass(DATA_KEY, output, ioFile.getClass());
-
-		IOUtil.writeBytes(output, dataOutput, ioFactory);
-
-		IOManager manager = this.getManager();
-		IOSerializerInternal serializer = manager.getInternalSerializer();
-
-		serializer.writeFile(dataOutput, file, ioFile, ioFactory);
-
-		dataOutput.close();
-	}
-
-	private DataInputStream createDataInput(File file) throws IOException
-	{
-		if (!file.exists())
-		{
-			return null;
-		}
-
-		final FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
-		final BufferedInputStream bufferedInputStream = new BufferedInputStream(new GZIPInputStream(fileInputStream), BUFFER_SIZE);
-
-		return new DataInputStream(bufferedInputStream);
-	}
-
-	private <I> Class<?> getClassToRead(DataInputStream stream, IOFactory<?, I, ?> ioFactory) throws IOException
-	{
-		I input = ioFactory.createInput(IOUtil.readBytes(stream));
-
-		return ioFactory.getSerializedClass(DATA_KEY, input);
-	}
 
 }

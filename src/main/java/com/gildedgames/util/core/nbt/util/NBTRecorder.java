@@ -1,4 +1,4 @@
-package com.gildedgames.util.core.nbt;
+package com.gildedgames.util.core.nbt.util;
 
 import java.util.ArrayList;
 
