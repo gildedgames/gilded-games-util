@@ -57,13 +57,13 @@ public class IOSerializerDefault implements IOSerializer
 	{
 		DATA readMetadata = null;
 		
-		IOBridge io = factory.createInputBridge(factory.createInput(false, chunkPool.getChunk("subDataMetadata")));
+		IOBridge io = factory.createInputBridge(factory.createInput(chunkPool.getChunk("subDataMetadata")));
 
 		int metadataCount = io.getInteger("subDataCount");
 		
 		for (int count = 0; count < metadataCount; count++)
 		{
-			I input = factory.createInput(false, chunkPool.getChunk("subData" + count));
+			I input = factory.createInput(chunkPool.getChunk("subData" + count));
 			
 			IOBridge inputBridge = factory.createInputBridge(input);
 
@@ -99,7 +99,7 @@ public class IOSerializerDefault implements IOSerializer
 			metadataCount++;
 		}
 		
-		IOBridge io = factory.createOutputBridge(factory.createOutput(false));
+		IOBridge io = factory.createOutputBridge(factory.createOutput());
 		
 		io.setInteger("subDataCount", metadataCount);
 		
@@ -111,7 +111,7 @@ public class IOSerializerDefault implements IOSerializer
 		{
 			IOData<I, O> metadataFile = metadata.get();
 
-			final O output = factory.createOutput(false);
+			final O output = factory.createOutput();
 			
 			IOBridge outputBridge = factory.createOutputBridge(output);
 			
@@ -127,7 +127,7 @@ public class IOSerializerDefault implements IOSerializer
 	
 	private <I, O, DATA extends IOData<I, O>> DATA readMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException
 	{
-		I input = factory.createInput(false, chunkPool.getChunk("mainData"));
+		I input = factory.createInput(chunkPool.getChunk("mainData"));
 
 		data.read(input);
 
@@ -136,7 +136,7 @@ public class IOSerializerDefault implements IOSerializer
 
 	private <I, O, DATA extends IOData<I, O>> void writeMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
 	{
-		final O output = factory.createOutput(false);
+		final O output = factory.createOutput();
 
 		IOBridge outputBridge = factory.createOutputBridge(output);
 		

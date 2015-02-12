@@ -42,6 +42,8 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		Class<?> classToReadFrom = inputBridge.getSerializedClass(key);
 
+		byte[] array = inputBridge.getByteArray(key + "bytes");
+
 		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
 		if (io instanceof IOData)
@@ -51,7 +53,7 @@ public class IOVolatileControllerDefault implements IOVolatileController
 			IOManager manager = IOCore.io().getManager(io.getClass());
 			IOSerializer serializer = manager.getSerializer();
 
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(inputBridge.getBytes());
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(array);
 			DataInputStream dataInput = new DataInputStream(inputStream);
 
 			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
@@ -84,21 +86,23 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		if (objectToWrite instanceof IOData)
 		{
-			IOData data = (IOData) objectToWrite;
+			IOData<I, O> data = (IOData<I, O>) objectToWrite;
 
 			IOManager manager = IOCore.io().getManager(objectToWrite.getClass());
 			IOSerializer serializer = manager.getSerializer();
 
-			ByteArrayOutputStream inputStream = new ByteArrayOutputStream();
-			DataOutputStream dataInput = new DataOutputStream(inputStream);
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			DataOutputStream dataOutput = new DataOutputStream(outputStream);
 
-			ByteChunkPool chunkPool = new ByteChunkPool(dataInput);
+			ByteChunkPool chunkPool = new ByteChunkPool(dataOutput);
 
 			try
 			{
 				serializer.writeData(chunkPool, data, factory);
 
 				chunkPool.writeChunks();
+
+				outputBridge.setByteArray(key + "bytes", outputStream.toByteArray());
 			}
 			catch (IOException e)
 			{
@@ -114,13 +118,13 @@ public class IOVolatileControllerDefault implements IOVolatileController
 	@Override
 	public <T extends IO<I, O>, I, O> T clone(IOFactory<I, O> factory, T objectToClone) throws IOException
 	{
-		O output = factory.createOutput(false);
+		O output = factory.createOutput();
 
 		this.set("clonedObject", output, factory, objectToClone);
 
 		IOBridge outputBridge = factory.createOutputBridge(output);
 
-		I input = factory.createInput(false, outputBridge.getBytes());
+		I input = factory.createInput(outputBridge.getBytes());
 
 		T clone = this.get("clonedObject", input, factory);
 

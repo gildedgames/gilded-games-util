@@ -53,7 +53,7 @@ public class IOFileControllerDefault implements IOFileController
 		
 		chunkPool.readChunks();
 		
-		I input = factory.createInput(false, chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));
 		
 		IOBridge inputBridge = factory.createInputBridge(input);
 		
@@ -84,7 +84,7 @@ public class IOFileControllerDefault implements IOFileController
 		
 		chunkPool.readChunks();
 
-		I input = factory.createInput(false, chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));
 
 		IOSerializer serializer = this.getManager().getSerializer();
 
@@ -107,7 +107,7 @@ public class IOFileControllerDefault implements IOFileController
 		
 		chunkPool.readChunks();
 		
-		I input = factory.createInput(false, chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));
 		
 		IOBridge inputBridge = factory.createInputBridge(input);
 
@@ -142,7 +142,7 @@ public class IOFileControllerDefault implements IOFileController
 		
 		ByteChunkPool chunkPool = new ByteChunkPool(dataOutput);
 
-		O output = factory.createOutput(false);
+		O output = factory.createOutput();
 		
 		IOBridge outputBridge = factory.createOutputBridge(output);
 

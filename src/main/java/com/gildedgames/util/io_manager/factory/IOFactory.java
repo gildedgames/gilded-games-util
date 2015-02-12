@@ -7,15 +7,13 @@ public interface IOFactory<I, O>
 
 	/**
 	 * Creates a new Input object based on the given byte[]. 
-	 * @param orderDependent TODO
 	 */
-	I createInput(boolean orderDependent, byte[] reading);
+	I createInput(byte[] reading);
 
 	/**
 	 * Creates an empty Output object to write data into.
-	 * @param orderDependent TODO
 	 */
-	O createOutput(boolean orderDependent);
+	O createOutput();
 	
 	/**
 	 * Creates a new IOBridge object (which wraps around I) based on the given byte[].

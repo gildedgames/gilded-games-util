@@ -1,9 +1,5 @@
 package com.gildedgames.util.core.nbt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.nbt.util.NBTHelper;
@@ -14,17 +10,17 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 
 public class NBTBridge implements IOBridge
 {
-	
+
 	private NBTFactory factory;
-	
+
 	private NBTTagCompound tag;
-	
+
 	public NBTBridge(NBTFactory factory, NBTTagCompound tag)
 	{
 		this.factory = factory;
 		this.tag = tag;
 	}
-	
+
 	@Override
 	public void setBoolean(String key, boolean value)
 	{
@@ -80,12 +76,6 @@ public class NBTBridge implements IOBridge
 	}
 
 	@Override
-	public void setIntArray(String key, int[] value)
-	{
-		this.tag.setIntArray(key, value);
-	}
-
-	@Override
 	public byte getByte(String key)
 	{
 		return this.tag.getByte(key);
@@ -134,12 +124,6 @@ public class NBTBridge implements IOBridge
 	}
 
 	@Override
-	public int[] getIntArray(String key)
-	{
-		return this.tag.getIntArray(key);
-	}
-
-	@Override
 	public boolean getBoolean(String key)
 	{
 		return this.tag.getBoolean(key);
@@ -148,22 +132,7 @@ public class NBTBridge implements IOBridge
 	@Override
 	public byte[] getBytes()
 	{
-		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-		DataOutputStream stream = new DataOutputStream(byteStream);
-		
-		try
-		{
-			NBTHelper.writeOutputNBT(this.tag, stream);
-			byte[] bytez = byteStream.toByteArray();
-			stream.close();
-			return bytez;
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return null;
+		return NBTHelper.fromTag(this.tag);
 	}
 
 	@Override

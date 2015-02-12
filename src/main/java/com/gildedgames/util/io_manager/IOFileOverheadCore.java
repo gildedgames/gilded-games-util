@@ -54,7 +54,7 @@ public class IOFileOverheadCore implements IOFileController
 
 		chunkPool.readChunks();
 
-		I input = factory.createInput(false, chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));
 
 		IOBridge inputBridge = factory.createInputBridge(input);
 
@@ -94,7 +94,7 @@ public class IOFileOverheadCore implements IOFileController
 
 		chunkPool.readChunks();
 
-		I input = ioFactory.createInput(false, chunkPool.getChunk("class"));
+		I input = ioFactory.createInput(chunkPool.getChunk("class"));
 
 		IOManager manager = IOCore.io().getManager(ioFile.getClass());
 		IOSerializer serializer = manager.getSerializer();
@@ -132,7 +132,7 @@ public class IOFileOverheadCore implements IOFileController
 
 		ByteChunkPool chunkPool = new ByteChunkPool(dataOutput);
 
-		O output = factory.createOutput(false);
+		O output = factory.createOutput();
 
 		IOBridge outputBridge = factory.createOutputBridge(output);
 
@@ -164,7 +164,7 @@ public class IOFileOverheadCore implements IOFileController
 
 		chunkPool.readChunks();
 
-		I input = factory.createInput(false, chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));
 
 		IOBridge inputBridge = factory.createInputBridge(input);
 
