@@ -46,6 +46,12 @@ processResources
     }
 }
 
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin'
+    }
+}
+
 apply plugin: 'maven-publish'
 
 repositories {
@@ -60,6 +66,7 @@ dependencies {
 task sourceJar(type: Jar) {
 	from sourceSets.main.allJava
 }
+
 
 publishing {
     publications {
