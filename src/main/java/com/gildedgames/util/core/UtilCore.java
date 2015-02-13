@@ -29,7 +29,7 @@ public class UtilCore implements ICore
 
 	public static final String MOD_ID = "gilded-games-util";
 
-	public static final String VERSION = "1.8-1.0";
+	public static final String VERSION = "1.7.10-1.0";
 
 	private static final boolean DEBUG_MODE = true;
 
@@ -195,7 +195,7 @@ public class UtilCore implements ICore
 	{
 		if (DEBUG_MODE && line != null)
 		{
-			System.out.println("[ORBIS_CORE DEV]: " + line.toString());
+			System.out.println("[GG DEV]: " + line.toString());
 		}
 	}
 
@@ -203,7 +203,7 @@ public class UtilCore implements ICore
 	{
 		if (line != null)
 		{
-			System.out.println("[ORBIS_CORE]: " + line.toString());
+			System.out.println("[GG]: " + line.toString());
 		}
 	}
 
