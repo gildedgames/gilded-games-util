@@ -1,7 +1,10 @@
 package com.gildedgames.util.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.server.MinecraftServer;
 
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
@@ -205,6 +208,23 @@ public class UtilCore implements ICore
 		{
 			System.out.println("[GG]: " + line.toString());
 		}
+	}
+	
+	public static File getWorldDirectory()
+	{
+		String path = ".";
+		
+		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
+		{
+			path = (MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName())).getAbsolutePath().replace((MinecraftServer.getServer().getFolderName() + ".dat"), "");
+		}
+		
+		return new File(path.replace("\\data", ""));
+	}
+	
+	public static String getMinecraftDirectory()
+	{
+		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 	}
 
 }

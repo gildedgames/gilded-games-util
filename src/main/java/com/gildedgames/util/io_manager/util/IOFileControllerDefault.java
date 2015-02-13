@@ -16,6 +16,7 @@ import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IOData;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;

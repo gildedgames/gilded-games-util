@@ -8,9 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
 public class NBTHelper
@@ -128,4 +131,45 @@ public class NBTHelper
 
 		return new byte[0];
 	}
+	
+	public static NBTTagList encodeStackList(ItemStack stackList[])
+	{
+		NBTTagList tagList = new NBTTagList();
+
+		for (int i = 0; i < stackList.length; ++i)
+		{
+			if (stackList[i] != null)
+			{
+				NBTTagCompound nbttagcompound = new NBTTagCompound();
+				nbttagcompound.setByte("Slot", (byte) i);
+				stackList[i].writeToNBT(nbttagcompound);
+				tagList.appendTag(nbttagcompound);
+			}
+		}
+
+		return tagList;
+	}
+
+	public static ItemStack[] decodeStackList(NBTTagList tagList)
+	{
+		ItemStack stackList[] = new ItemStack[8];
+
+		for (int i = 0; i < tagList.tagCount(); ++i)
+		{
+			NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
+			int j = nbttagcompound.getByte("Slot") & 255;
+			ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+
+			if (itemstack != null)
+			{
+				if (j >= 0 && j < stackList.length)
+				{
+					stackList[j] = itemstack;
+				}
+			}
+		}
+
+		return stackList;
+	}
+
 }
