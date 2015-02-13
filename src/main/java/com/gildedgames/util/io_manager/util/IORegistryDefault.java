@@ -48,6 +48,7 @@ public class IORegistryDefault implements IORegistry
 
 		T instance = null;
 		IConstructor constructor = defaultConstructor;
+		
 		for (IConstructor specialConstructor : classConstructors)
 		{
 			if (specialConstructor.isApplicable(registeredClass))
@@ -56,6 +57,7 @@ public class IORegistryDefault implements IORegistry
 				break;
 			}
 		}
+		
 		try
 		{
 
