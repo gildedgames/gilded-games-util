@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.PlayerProfile;
+
+import cpw.mods.fml.relauncher.Side;
 
 public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {

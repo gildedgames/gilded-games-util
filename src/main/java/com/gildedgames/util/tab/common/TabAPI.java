@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * This is used to implement Tab functionality within various {@link GuiScreen} interfaces.

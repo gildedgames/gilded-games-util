@@ -5,10 +5,6 @@ import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Mouse;
 
@@ -19,6 +15,11 @@ import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TabClientEvents
 {
@@ -149,14 +150,7 @@ public class TabClientEvents
 						}
 						else if (Minecraft.getMinecraft().currentScreen != null)
 						{
-							try
-							{
-								Minecraft.getMinecraft().currentScreen.handleMouseInput();
-							}
-							catch (IOException e)
-							{
-								e.printStackTrace();
-							}
+							Minecraft.getMinecraft().currentScreen.handleMouseInput();
 						}
 					}
 				}

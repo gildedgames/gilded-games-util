@@ -10,10 +10,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Mouse;
 
@@ -23,6 +19,11 @@ import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.menu.MenuCore;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MenuClientEvents
 {
@@ -158,13 +159,13 @@ public class MenuClientEvents
 					{
 						boolean customButtons = menu.useCustomButtons();
 
-						boolean leftButtonMoused = customButtons ? menu.getLeftButton().isMousedOver(mouseX, mouseY) : this.leftButton.isMouseOver();
+						boolean leftButtonMoused = customButtons ? menu.getLeftButton().isMousedOver(mouseX, mouseY) : this.leftButton.func_146115_a();
 
-						boolean rightButtonMoused = customButtons ? menu.getRightButton().isMousedOver(mouseX, mouseY) : this.rightButton.isMouseOver();
+						boolean rightButtonMoused = customButtons ? menu.getRightButton().isMousedOver(mouseX, mouseY) : this.rightButton.func_146115_a();
 
 						if (Mouse.getEventButtonState() && MenuCore.locate().getRegisteredMenus().size() > 1 && (leftButtonMoused || rightButtonMoused))
 						{
-							this.leftButton.playPressSound(this.mc.getSoundHandler());
+							this.leftButton.func_146113_a(this.mc.getSoundHandler());
 
 							if (leftButtonMoused)
 							{
@@ -177,14 +178,7 @@ public class MenuClientEvents
 						}
 						else if (Minecraft.getMinecraft().currentScreen != null)
 						{
-							try
-							{
-								this.mc.currentScreen.handleMouseInput();
-							}
-							catch (IOException e)
-							{
-								e.printStackTrace();
-							}
+							this.mc.currentScreen.handleMouseInput();
 						}
 					}
 				}

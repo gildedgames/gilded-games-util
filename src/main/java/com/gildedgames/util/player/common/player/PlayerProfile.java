@@ -53,7 +53,7 @@ public class PlayerProfile implements IPlayerProfile
 	@Override
 	public String getUsername()
 	{
-		return this.player.getCommandSenderEntity().getName();
+		return this.player.getCommandSenderName();
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.CustomPacket;
 import com.gildedgames.util.core.UtilCore;
@@ -18,6 +17,8 @@ import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
+
+import cpw.mods.fml.relauncher.Side;
 
 public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 {

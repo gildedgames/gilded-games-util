@@ -5,7 +5,6 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.world.common.WorldHookPool;
 
 public class UtilServices
 {
@@ -25,7 +24,6 @@ public class UtilServices
 
 		IORegistry registry = this.io.getRegistry();
 		registry.registerClass(NBTFile.class, 0);
-		registry.registerClass(WorldHookPool.class, 1);
 		registry.registerClass(MenuConfig.class, 2);
 	}
 

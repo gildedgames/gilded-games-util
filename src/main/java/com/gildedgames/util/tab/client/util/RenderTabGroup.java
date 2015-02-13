@@ -6,8 +6,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -15,6 +13,9 @@ import org.lwjgl.opengl.GL11;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class RenderTabGroup extends Gui
 {
@@ -85,7 +86,7 @@ public class RenderTabGroup extends Gui
 		this.drawTexturedModalRect(centerX, topY, 194 - width / 2, 0, width / 2, 15);
 		this.drawTexturedModalRect(centerX, topY + 15, 194 - width / 2, 130, width / 2, 5);
 
-		this.drawCenteredString(mc.fontRendererObj, StatCollector.translateToLocal(tabGroup.getSelectedTab().getUnlocalizedName()), centerX, topY + 8, 0xFFFFFFFF);
+		this.drawCenteredString(mc.fontRenderer, StatCollector.translateToLocal(tabGroup.getSelectedTab().getUnlocalizedName()), centerX, topY + 8, 0xFFFFFFFF);
 
 		for (ITab tab : tabGroup.getEnabledTabs())
 		{
@@ -119,7 +120,7 @@ public class RenderTabGroup extends Gui
 
 		if (hoveredTab != null)
 		{
-			this.drawHoveringText(StatCollector.translateToLocal(hoveredTab.getUnlocalizedName()), Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth, scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1, mc.fontRendererObj);
+			this.drawHoveringText(StatCollector.translateToLocal(hoveredTab.getUnlocalizedName()), Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth, scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1, mc.fontRenderer);
 		}
 	}
 	

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
@@ -52,7 +52,7 @@ public class TabBackpack implements ITab
 	public void renderIcon(int x, int y)
 	{
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-		Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth());
+		Gui.func_146110_a(x, y, 0, 0, sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth());
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class TabBackpack implements ITab
 	@Override
 	public void onClose(EntityPlayer player)
 	{
-		EntityPlayerSP playerSP = (EntityPlayerSP) player;
+		EntityClientPlayerMP playerSP = (EntityClientPlayerMP) player;
 
 		playerSP.sendQueue.addToSendQueue(new C0DPacketCloseWindow(playerSP.openContainer.windowId));
 		playerSP.inventory.setItemStack((ItemStack) null);

@@ -3,9 +3,10 @@ package com.gildedgames.util.tab.common.util;
 import java.util.EnumMap;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.google.common.collect.Maps;
+
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * This is what contains {@link ITab}s for a {@link GuiScreen}'s tab interface.

@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.common.util;
 
-import net.minecraftforge.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.Side;
 
 public interface ITabGroupHandler
 {
