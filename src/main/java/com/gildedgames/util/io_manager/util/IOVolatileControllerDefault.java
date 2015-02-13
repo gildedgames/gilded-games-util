@@ -42,13 +42,13 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		Class<?> classToReadFrom = inputBridge.getSerializedClass(key);
 
-		byte[] array = inputBridge.getByteArray(key + "bytes");
-
 		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
 		if (io instanceof IOData)
 		{
 			IOData<I, O> data = (IOData<I, O>) io;
+			
+			byte[] array = inputBridge.getByteArray(key + "bytes");
 
 			IOManager manager = IOCore.io().getManager(io.getClass());
 			IOSerializer serializer = manager.getSerializer();
