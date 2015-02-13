@@ -27,24 +27,25 @@ public class DefaultConstructor implements IConstructor
 			final T instance = constructor.newInstance();
 
 			constructor.setAccessible(false);
-			
+
 			if (instance != null)
 			{
 				return instance;
 			}
 		}
 
+		@SuppressWarnings("unchecked")
 		final Constructor<T> constr = (Constructor<T>) clazz.getDeclaredConstructors()[0];
-	    final List<Object> params = new ArrayList<Object>();
-	    
-	    constr.setAccessible(false);
-	    
-	    for (Class<?> pType : constr.getParameterTypes())
-	    {
-	        params.add((pType.isPrimitive()) ? ClassUtils.primitiveToWrapper(pType).newInstance() : null);
-	    }
-	    
-	    final T instance = constr.newInstance(params.toArray());
+		final List<Object> params = new ArrayList<Object>();
+
+		constr.setAccessible(false);
+
+		for (Class<?> pType : constr.getParameterTypes())
+		{
+			params.add(pType.isPrimitive() ? ClassUtils.primitiveToWrapper(pType).newInstance() : null);
+		}
+
+		final T instance = constr.newInstance(params.toArray());
 
 		return instance;
 	}

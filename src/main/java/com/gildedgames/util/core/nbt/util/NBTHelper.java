@@ -1,5 +1,6 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -108,4 +109,23 @@ public class NBTHelper
 		return null;
 	}
 
+	public static byte[] fromTag(NBTTagCompound tag)
+	{
+		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+		DataOutputStream stream = new DataOutputStream(byteStream);
+
+		try
+		{
+			NBTHelper.writeOutputNBT(tag, stream);
+			byte[] bytez = byteStream.toByteArray();
+			stream.close();
+			return bytez;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return new byte[0];
+	}
 }

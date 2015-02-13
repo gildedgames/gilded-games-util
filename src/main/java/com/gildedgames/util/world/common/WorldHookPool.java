@@ -8,8 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.io_manager.IOManager;
 import com.gildedgames.util.world.WorldCore;
 import com.gildedgames.util.world.common.world.IWorld;
 

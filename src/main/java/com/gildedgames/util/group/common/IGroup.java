@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.io.IRawData;
-import com.gildedgames.util.io_manager.io.NBT;
 
 public interface IGroup extends NBT, IRawData
 {

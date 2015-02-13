@@ -9,7 +9,10 @@ import java.util.UUID;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.io_manager.IOManager;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.overhead.IOManager;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
@@ -26,6 +29,8 @@ public class GGUtilDataSet
 {
 
 	private static Random random = new Random();
+
+	private static IOManager manager;
 
 	public static List<IPlayerHookPool<?>> playerHookPools(List<UUID> uuids)
 	{
@@ -108,7 +113,7 @@ public class GGUtilDataSet
 	public static List<TestNBTFile> nbtFiles()
 	{
 		List<TestNBTFile> list = new ArrayList<TestNBTFile>();
-		for (int i = 0; i < 5; i++)
+		for (int i = 4; i < 15; i++)
 		{
 			list.add(new TestNBTFile(i, i + 100));
 		}
@@ -135,14 +140,20 @@ public class GGUtilDataSet
 		return System.getProperty("user.dir") + File.separator + "eclipse" + File.separator + "test";
 	}
 
+	static
+	{
+		manager = new IOManagerDefault("testgg");
+		IORegistry registry = manager.getRegistry();
+		registry.registerClass(TestWorldHook.class, 0);
+		registry.registerClass(TestPlayerHook.class, 1);
+		registry.registerClass(TestPlayerHookFactory.class, 2);
+		registry.registerClass(TestMetadata.class, 3);
+		registry.registerClass(TestNBTFile.class, 4);
+		IOCore.io().registerManager(manager);
+	}
+
 	public static IOManager iomanager()
 	{
-		IOManager manager = new IOManager();
-		manager.register(TestWorldHook.class, 0);
-		manager.register(TestPlayerHook.class, 1);
-		manager.register(TestPlayerHookFactory.class, 2);
-		manager.register(TestMetadata.class, 3);
-		manager.register(TestNBTFile.class, 4);
 		return manager;
 	}
 

@@ -18,6 +18,8 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.tab.TabCore;
@@ -60,6 +62,15 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		try
+		{
+			IOCore.io().registerManager(UtilCore.locate().getIOManager());
+		}
+		catch (IOManagerTakenException e)
+		{
+			e.printStackTrace();
+		}
+		
 		UtilCore.NETWORK.init();
 
 		for (ICore core : this.cores)
@@ -157,12 +168,6 @@ public class UtilCore implements ICore
 	public static UtilServices locate()
 	{
 		return instance.serviceLocator.instance();
-	}
-
-	public static void registerIO(Class<?> clazz, int id)
-	{
-		instance.serviceLocator.client().getIO().register(clazz, id);
-		instance.serviceLocator.server().getIO().register(clazz, id);
 	}
 
 	public static String modAddress()

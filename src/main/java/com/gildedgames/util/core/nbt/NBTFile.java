@@ -1,12 +1,11 @@
-package com.gildedgames.util.io_manager.util.nbt;
+package com.gildedgames.util.core.nbt;
 
 import java.io.File;
 
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
-import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.io_manager.io.IOData;
 import com.google.common.base.Optional;
 
 public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
@@ -56,13 +55,13 @@ public class NBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 	}
 
 	@Override
-	public Optional<IOFileMetadata<NBTTagCompound, NBTTagCompound>> getMetadata()
+	public Optional<IOData<NBTTagCompound, NBTTagCompound>> getSubData()
 	{
 		return Optional.absent();
 	}
 
 	@Override
-	public void setMetadata(IOFileMetadata<NBTTagCompound, NBTTagCompound> metadata)
+	public void setSubData(IOData<NBTTagCompound, NBTTagCompound> metadata)
 	{
 
 	}

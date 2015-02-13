@@ -80,8 +80,17 @@ public class WorldMinecraft implements IWorld
 		{
 			return true;
 		}
-		
-		return this.world.equals(obj);
+
+		if (this.world.equals(obj))
+		{
+			return true;
+		}
+		if (obj instanceof IWorld)
+		{
+			IWorld world = (IWorld) obj;
+			return world.getDimensionID() == this.getDimensionID();
+		}
+		return false;
 	}
 
 	@Override

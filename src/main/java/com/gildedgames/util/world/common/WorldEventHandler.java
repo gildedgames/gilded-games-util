@@ -11,9 +11,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.io_manager.util.nbt.NBTFactory;
-import com.gildedgames.util.io_manager.util.nbt.NBTFile;
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.world.WorldCore;
 
 public class WorldEventHandler
@@ -57,7 +57,7 @@ public class WorldEventHandler
 			{
 				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
 
-				UtilCore.locate().getIO().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
+				IOCore.io().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
 			}
 			catch (IOException e)
 			{
@@ -82,7 +82,7 @@ public class WorldEventHandler
 				{
 					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
 
-					UtilCore.locate().getIO().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
+					IOCore.io().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
 				}
 				catch (IOException e)
 				{

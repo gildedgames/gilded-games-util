@@ -42,8 +42,6 @@ public class ClientProxy extends ServerProxy
 
 		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
 		
-		MenuCore.INSTANCE.registerMenu(new MenuMinecraft());
-		
 		TabClientEvents clientEvents = new TabClientEvents();
 		
 		MinecraftForge.EVENT_BUS.register(clientEvents);

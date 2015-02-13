@@ -3,7 +3,7 @@ package com.gildedgames.util.testutil.io;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.io.IOFileMetadata;
+import com.gildedgames.util.io_manager.io.IOData;
 import com.google.common.base.Optional;
 
 public class TestNBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
@@ -11,7 +11,7 @@ public class TestNBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 
 	private int id;
 
-	private IOFileMetadata<NBTTagCompound, NBTTagCompound> metadata;
+	private IOData<NBTTagCompound, NBTTagCompound> metadata;
 
 	private TestNBTFile()
 	{
@@ -56,13 +56,13 @@ public class TestNBTFile implements IOFile<NBTTagCompound, NBTTagCompound>
 	}
 
 	@Override
-	public Optional<IOFileMetadata<NBTTagCompound, NBTTagCompound>> getMetadata()
+	public Optional<IOData<NBTTagCompound, NBTTagCompound>> getSubData()
 	{
 		return Optional.of(this.metadata);
 	}
 
 	@Override
-	public void setMetadata(IOFileMetadata<NBTTagCompound, NBTTagCompound> metadata)
+	public void setSubData(IOData<NBTTagCompound, NBTTagCompound> metadata)
 	{
 		this.metadata = metadata;
 	}
