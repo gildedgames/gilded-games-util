@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.core.nbt.util.NBTHelper;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.factory.IOObserver;

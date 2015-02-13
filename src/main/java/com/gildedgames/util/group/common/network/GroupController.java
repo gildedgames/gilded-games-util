@@ -1,8 +1,5 @@
 package com.gildedgames.util.group.common.network;
 
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,18 +40,6 @@ public class GroupController implements IGroupController
 	public void read(NBTTagCompound input)
 	{
 		this.targetGroup.read(input);
-	}
-
-	@Override
-	public void writeRawData(ByteBuf output) throws IOException
-	{
-		this.targetGroup.writeRawData(output);
-	}
-
-	@Override
-	public void readRawData(ByteBuf input) throws IOException
-	{
-		this.targetGroup.readRawData(input);
 	}
 
 	@Override

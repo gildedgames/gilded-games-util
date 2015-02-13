@@ -2,7 +2,6 @@ package com.gildedgames.util.core.nbt;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.core.nbt.util.NBTHelper;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOBridge;

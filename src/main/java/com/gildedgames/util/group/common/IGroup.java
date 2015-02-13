@@ -6,9 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.group.common.player.GroupMember;
-import com.gildedgames.util.io_manager.io.IRawData;
 
-public interface IGroup extends NBT, IRawData
+public interface IGroup extends NBT
 {
 	
 	String getName();

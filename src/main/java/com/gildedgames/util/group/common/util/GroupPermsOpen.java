@@ -59,16 +59,4 @@ public class GroupPermsOpen implements IGroupPerms
 		
 	}
 
-	@Override
-	public void writeRawData(ByteBuf output) throws IOException
-	{
-		
-	}
-
-	@Override
-	public void readRawData(ByteBuf input) throws IOException
-	{
-		
-	}
-
 }
