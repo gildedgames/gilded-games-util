@@ -60,11 +60,12 @@ public class MenuServices
 	{
 		for (IMenu menu : this.menus)
 		{
-			if (screen.getClass().isAssignableFrom(menu.getMenuClass()))
+			if (screen != null && menu != null && screen.getClass().isAssignableFrom(menu.getMenuClass()))
 			{
 				return menu;
 			}
 		}
+		
 		return null;
 	}
 
