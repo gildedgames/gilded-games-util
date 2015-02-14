@@ -114,6 +114,11 @@ public class MenuClientEvents
 	public void onGuiOpen(GuiOpenEvent event)
 	{
 		GuiScreen gui = event.gui;
+		
+		if (gui == null)
+		{
+			return;
+		}
 
 		IMenu menu = MenuCore.locate().getCurrentMenu();
 
