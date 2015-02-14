@@ -48,7 +48,8 @@ processResources
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin'
+        attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin',
+            'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 
