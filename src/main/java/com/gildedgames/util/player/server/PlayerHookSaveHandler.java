@@ -120,11 +120,6 @@ public class PlayerHookSaveHandler
 	{
 		for (IPlayerHookPool<?> manager : pools)
 		{
-			if (!manager.shouldSave())
-			{
-				continue;
-			}
-
 			File prefix = new File(this.playerDirectory, manager.getName());
 
 			prefix.mkdirs();
