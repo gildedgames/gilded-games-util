@@ -85,7 +85,11 @@ public class PlayerCore implements ICore
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
 		this.playerHookSaveHandler.flushData();
+	}
 
+	@Override
+	public void serverStopped(FMLServerStoppedEvent event)
+	{
 		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
 		{
 			if (manager != null)
@@ -97,12 +101,6 @@ public class PlayerCore implements ICore
 				/** TO-DO: error log here, manager should never be null **/
 			}
 		}
-	}
-
-	@Override
-	public void serverStopped(FMLServerStoppedEvent event)
-	{
-
 	}
 
 	public static PlayerServices locate()

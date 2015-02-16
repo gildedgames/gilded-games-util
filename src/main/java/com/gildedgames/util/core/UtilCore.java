@@ -1,8 +1,10 @@
 package com.gildedgames.util.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -201,7 +203,7 @@ public class UtilCore implements ICore
 	{
 		if (DEBUG_MODE && line != null)
 		{
-			System.out.println("[ORBIS_CORE DEV]: " + line.toString());
+			System.out.println("[GG DEV]: " + line.toString());
 		}
 	}
 
@@ -209,8 +211,25 @@ public class UtilCore implements ICore
 	{
 		if (line != null)
 		{
-			System.out.println("[ORBIS_CORE]: " + line.toString());
+			System.out.println("[GG]: " + line.toString());
 		}
+	}
+	
+	public static File getWorldDirectory()
+	{
+		String path = ".";
+		
+		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
+		{
+			path = (MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName())).getAbsolutePath().replace((MinecraftServer.getServer().getFolderName() + ".dat"), "");
+		}
+		
+		return new File(path.replace("\\data", ""));
+	}
+	
+	public static String getMinecraftDirectory()
+	{
+		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 	}
 
 }

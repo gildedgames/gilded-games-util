@@ -17,6 +17,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
@@ -35,16 +36,14 @@ public class PlayerHookSaveHandler
 	@SubscribeEvent
 	public void onSavePlayerFile(PlayerEvent.SaveToFile event)
 	{
-		this.playerDirectory = event.playerDirectory;
-
+		this.playerDirectory = new File(UtilCore.getWorldDirectory(), "playerdata/");
 		this.writePlayerData(UUID.fromString(event.playerUUID), PlayerCore.locate().getPools());
 	}
 
 	@SubscribeEvent
 	public void onLoadPlayerFile(PlayerEvent.LoadFromFile event)
 	{
-		this.playerDirectory = event.playerDirectory;
-
+		this.playerDirectory = new File(UtilCore.getWorldDirectory(), "playerdata/");
 		this.readPlayerData(UUID.fromString(event.playerUUID), event.entityPlayer, PlayerCore.locate().getPools());
 	}
 
@@ -52,11 +51,6 @@ public class PlayerHookSaveHandler
 	{
 		for (IPlayerHookPool<?> manager : pools)
 		{
-			if (!manager.shouldSave())
-			{
-				continue;
-			}
-
 			IPlayerHook playerHook = manager.get(uuid);
 
 			NBTTagCompound tag = new NBTTagCompound();

@@ -27,7 +27,7 @@ def coremodManifest = {
 }
 
 minecraft {
-    version = "1.8-11.14.0.1281-1.8"
+    version = "1.8-11.14.1.1308"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -55,6 +55,13 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+jar {
+    manifest {
+        attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin',
+            'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

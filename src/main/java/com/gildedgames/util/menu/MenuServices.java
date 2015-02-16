@@ -3,6 +3,8 @@ package com.gildedgames.util.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiScreen;
+
 import com.gildedgames.util.menu.client.IMenu;
 
 public class MenuServices
@@ -52,6 +54,18 @@ public class MenuServices
 		}
 		
 		return this.menus.get(index);
+	}
+	
+	public IMenu fromGui(GuiScreen screen)
+	{
+		for (IMenu menu : this.menus)
+		{
+			if (screen != null && menu != null && screen.getClass().isAssignableFrom(menu.getMenuClass()))
+			{
+				return menu;
+			}
+		}
+		return null;
 	}
 	
 	public List<IMenu> getRegisteredMenus()

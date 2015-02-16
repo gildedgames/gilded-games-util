@@ -13,6 +13,7 @@ import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOData;
+import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.gildedgames.util.io_manager.overhead.IOVolatileController;
@@ -71,7 +72,9 @@ public class IOVolatileControllerDefault implements IOVolatileController
 		}
 		else
 		{
-			io.read(input);
+			byte[] array = inputBridge.getByteArray(key + "bytes");
+			I newInput = factory.createInput(array);
+			io.read(newInput);
 		}
 
 		return io;
@@ -111,7 +114,9 @@ public class IOVolatileControllerDefault implements IOVolatileController
 		}
 		else
 		{
-			objectToWrite.write(output);
+			O newOutput = factory.createOutput();
+			objectToWrite.write(newOutput);
+			outputBridge.setByteArray(key + "bytes", factory.createOutputBridge(newOutput).getBytes());
 		}
 	}
 

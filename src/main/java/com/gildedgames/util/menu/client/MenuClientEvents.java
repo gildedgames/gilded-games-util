@@ -79,11 +79,16 @@ public class MenuClientEvents
 			return;
 		}
 
+		int mouseX = Mouse.getX();
+		int mouseY = Mouse.getY();
+
 		MenuCore.locate().setCurrentMenu(menu);
 
 		this.mc.displayGuiScreen(menu.getNewInstance());
 
 		menu.onOpen();
+
+		Mouse.setCursorPosition(mouseX, mouseY);
 
 		if (!shouldSaveToConfig)
 		{
@@ -108,8 +113,17 @@ public class MenuClientEvents
 	public void onGuiOpen(GuiOpenEvent event)
 	{
 		GuiScreen gui = event.gui;
+		
+		if (gui == null)
+		{
+			return;
+		}
 
-		if (gui instanceof GuiMainMenu && MenuCore.locate().getCurrentMenu() == null)
+		IMenu menu = MenuCore.locate().getCurrentMenu();
+
+		IMenu hooked = MenuCore.locate().fromGui(gui);
+
+		if ((gui instanceof GuiMainMenu || hooked != null) && menu == null || gui.getClass() == GuiMainMenu.class && menu.getMenuClass() != GuiMainMenu.class)
 		{
 			event.setCanceled(true);
 
@@ -132,6 +146,10 @@ public class MenuClientEvents
 			{
 				this.openMenu(ClientProxy.MINECRAFT_MENU);
 			}
+		}
+		else if (gui != null && menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))
+		{
+			MenuCore.locate().setCurrentMenu(null);
 		}
 	}
 
@@ -189,25 +207,7 @@ public class MenuClientEvents
 					}
 				}
 			}
-			else if (this.configSaveLocation.exists())
-			{
-				try
-				{
-					MenuConfig config = new MenuConfig();
 
-					IOCore.io().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
-
-					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-			else
-			{
-				this.openMenu(ClientProxy.MINECRAFT_MENU);
-			}
 		}
 	}
 
