@@ -1,14 +1,20 @@
 package com.gildedgames.util.ui;
 
-public interface UIGraphics<GRAPHICS> extends UIDimensions, UIElement
+import com.gildedgames.util.ui.util.UIDimensions;
+
+public interface UIGraphics<GRAPHICS> extends UIElement
 {
 
 	void draw(GRAPHICS graphics);
-	
-	boolean isGraphicsCompatible(Object graphics);
-	
+
+	Class<? extends GRAPHICS> getGraphicsClass();
+
 	boolean isVisible();
-	
+
 	void setVisible(boolean visible);
-	
+
+	UIDimensions getDimensions();
+
+	void setDimensions(UIDimensions dimensions);
+
 }

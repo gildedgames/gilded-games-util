@@ -11,6 +11,11 @@ gradlew
 gradlew.bat
 /target/
 /maven/
+/logs/
+/saves/
+/config/
+/mod-config/
+usernamecache.json
 
 *.db
 *.php

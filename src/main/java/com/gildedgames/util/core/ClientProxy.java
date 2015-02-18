@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.core.gui.TestTab;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
@@ -23,7 +24,7 @@ public class ClientProxy extends ServerProxy
 	private Minecraft mc = Minecraft.getMinecraft();
 
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
-	
+
 	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
 
 	@Override
@@ -41,19 +42,21 @@ public class ClientProxy extends ServerProxy
 		FMLCommonHandler.instance().bus().register(menuClientEvents);
 
 		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
-		
+
 		TabClientEvents clientEvents = new TabClientEvents();
-		
+
 		MinecraftForge.EVENT_BUS.register(clientEvents);
 		FMLCommonHandler.instance().bus().register(clientEvents);
-		
+
 		TabAPI.INSTANCE.setBackpackTab(new TabBackpack());
-		
+
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(TabAPI.INSTANCE.getBackpackTab());
-		
+
 		TabAPI.INSTANCE.register(TabAPI.INSTANCE.getInventoryGroup());
-		
+
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
+		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
+
 	}
 
 }

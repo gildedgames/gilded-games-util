@@ -3,12 +3,10 @@ package com.gildedgames.util.ui.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.UIDimensions;
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIGraphics;
-import com.gildedgames.util.ui.UIPosition;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
@@ -18,33 +16,37 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 {
 
 	protected final static ListFilter LIST_FILTER = new ListFilter();
-	
+
 	protected final List<UIElement> elements = new ArrayList<UIElement>();
-	
-	protected UIPosition position = new UIPosition(0, 0);
-	
-	protected double scale = 1.0D;
-	
+
 	protected boolean visible = true;
-	
+
 	protected boolean enabled = true;
 
 	protected final UIDimensions screenDimensions;
-	
+
+	protected UIDimensions holderDimensions;
+
 	protected final Class<? extends GRAPHICS> graphicsClass;
-	
-	public UIElementWrapper(UIDimensions screenDimensions, Class<? extends GRAPHICS> graphicsClass)
+
+	/**
+	 * @param holderDimensions Where the elements are drawn in
+	 * @param screenDimensions The dimensions of the screen
+	 * @param graphicsClass The class to use for the graphics
+	 */
+	public UIElementWrapper(UIDimensions holderDimensions, UIDimensions screenDimensions, Class<? extends GRAPHICS> graphicsClass)
 	{
 		this.screenDimensions = screenDimensions;
 		this.graphicsClass = graphicsClass;
+		this.holderDimensions = holderDimensions;
 	}
-	
+
 	@Override
 	public void draw(GRAPHICS graphics)
 	{
-		for (UIGraphics<GRAPHICS> element : LIST_FILTER.getTypesFrom(this.elements, UIGraphics.class))
+		for (UIGraphics element : LIST_FILTER.getTypesFrom(this.elements, UIGraphics.class))
 		{
-			if (element != null && element.isGraphicsCompatible(graphics) && element.isVisible())
+			if (element != null && element.getGraphicsClass().isAssignableFrom(graphics.getClass()) && element.isVisible())
 			{
 				element.draw(graphics);
 			}
@@ -64,42 +66,6 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public UIPosition getPosition()
-	{
-		return this.position;
-	}
-
-	@Override
-	public void setPosition(UIPosition position)
-	{
-		this.position = position;
-	}
-
-	@Override
-	public double getWidth()
-	{
-		return 0;
-	}
-
-	@Override
-	public double getHeight()
-	{
-		return 0;
-	}
-
-	@Override
-	public double getScale()
-	{
-		return this.scale;
-	}
-
-	@Override
-	public void setScale(double scale)
-	{
-		this.scale = scale;
-	}
-
-	@Override
 	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
 	{
 		for (IKeyboardListener element : LIST_FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
@@ -114,7 +80,7 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -144,7 +110,7 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 			{
 				continue;
 			}
-			
+
 			if (element.isEnabled())
 			{
 				element.onMouseScroll(mouseX, mouseY, scrollDifference);
@@ -161,7 +127,7 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 			{
 				continue;
 			}
-			
+
 			element.init(this, screenDimensions);
 		}
 	}
@@ -179,9 +145,9 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public boolean isGraphicsCompatible(Object graphics)
+	public Class<? extends GRAPHICS> getGraphicsClass()
 	{
-		return graphics != null && this.graphicsClass.equals(graphics.getClass());
+		return this.graphicsClass;
 	}
 
 	@Override
@@ -199,9 +165,15 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public UIFrame getWrapper()
+	public UIDimensions getDimensions()
 	{
-		return this;
+		return this.holderDimensions;
 	}
-	
+
+	@Override
+	public void setDimensions(UIDimensions dimensions)
+	{
+		this.holderDimensions = dimensions;
+	}
+
 }
