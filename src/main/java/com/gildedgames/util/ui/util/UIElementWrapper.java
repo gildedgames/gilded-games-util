@@ -1,0 +1,207 @@
+package com.gildedgames.util.ui.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.gildedgames.util.ui.UIDimensions;
+import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIGraphics;
+import com.gildedgames.util.ui.UIPosition;
+import com.gildedgames.util.ui.listeners.ButtonState;
+import com.gildedgames.util.ui.listeners.IKeyboardListener;
+import com.gildedgames.util.ui.listeners.IMouseListener;
+import com.gildedgames.util.ui.listeners.MouseButton;
+
+public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementHolder
+{
+
+	protected final static ListFilter LIST_FILTER = new ListFilter();
+	
+	protected final List<UIElement> elements = new ArrayList<UIElement>();
+	
+	protected UIPosition position = new UIPosition(0, 0);
+	
+	protected double scale = 1.0D;
+	
+	protected boolean visible = true;
+	
+	protected boolean enabled = true;
+
+	protected final UIDimensions screenDimensions;
+	
+	protected final Class<? extends GRAPHICS> graphicsClass;
+	
+	public UIElementWrapper(UIDimensions screenDimensions, Class<? extends GRAPHICS> graphicsClass)
+	{
+		this.screenDimensions = screenDimensions;
+		this.graphicsClass = graphicsClass;
+	}
+	
+	@Override
+	public void draw(GRAPHICS graphics)
+	{
+		for (UIGraphics<GRAPHICS> element : LIST_FILTER.getTypesFrom(this.elements, UIGraphics.class))
+		{
+			if (element != null && element.isGraphicsCompatible(graphics) && element.isVisible())
+			{
+				element.draw(graphics);
+			}
+		}
+	}
+
+	@Override
+	public boolean isVisible()
+	{
+		return this.visible;
+	}
+
+	@Override
+	public void setVisible(boolean visible)
+	{
+		this.visible = visible;
+	}
+
+	@Override
+	public UIPosition getPosition()
+	{
+		return this.position;
+	}
+
+	@Override
+	public void setPosition(UIPosition position)
+	{
+		this.position = position;
+	}
+
+	@Override
+	public double getWidth()
+	{
+		return 0;
+	}
+
+	@Override
+	public double getHeight()
+	{
+		return 0;
+	}
+
+	@Override
+	public double getScale()
+	{
+		return this.scale;
+	}
+
+	@Override
+	public void setScale(double scale)
+	{
+		this.scale = scale;
+	}
+
+	@Override
+	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
+	{
+		for (IKeyboardListener element : LIST_FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+
+			if (element.isEnabled() && element.onKeyState(charTyped, keyTyped, state))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void onMouseState(int mouseX, int mouseY, MouseButton button, ButtonState state)
+	{
+		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+
+			if (element.isEnabled())
+			{
+				element.onMouseState(mouseX, mouseY, button, state);
+			}
+		}
+	}
+
+	@Override
+	public void onMouseScroll(int mouseX, int mouseY, int scrollDifference)
+	{
+		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+			
+			if (element.isEnabled())
+			{
+				element.onMouseScroll(mouseX, mouseY, scrollDifference);
+			}
+		}
+	}
+
+	@Override
+	public void init(UIElementHolder elementHolder, UIDimensions screenDimensions)
+	{
+		for (UIElement element : LIST_FILTER.getTypesFrom(this.elements, UIElement.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+			
+			element.init(this, screenDimensions);
+		}
+	}
+
+	@Override
+	public boolean isEnabled()
+	{
+		return this.enabled;
+	}
+
+	@Override
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+
+	@Override
+	public boolean isGraphicsCompatible(Object graphics)
+	{
+		return graphics != null && this.graphicsClass.equals(graphics.getClass());
+	}
+
+	@Override
+	public void add(UIElement element)
+	{
+		element.init(this, this.screenDimensions);
+
+		this.elements.add(element);
+	}
+
+	@Override
+	public void remove(UIElement element)
+	{
+		this.elements.remove(element);
+	}
+
+	@Override
+	public UIFrame getWrapper()
+	{
+		return this;
+	}
+	
+}
