@@ -58,13 +58,13 @@ public class WorldMinecraft implements IWorld
 	@Override
 	public boolean setBlockToAir(BlockPos pos)
 	{
-		return this.setBlockToAir(pos);
+		return this.world.setBlockToAir(pos);
 	}
 
 	@Override
 	public boolean destroyBlock(BlockPos pos, boolean dropBlock)
 	{
-		return this.destroyBlock(pos, dropBlock);
+		return this.world.destroyBlock(pos, dropBlock);
 	}
 
 	@Override
