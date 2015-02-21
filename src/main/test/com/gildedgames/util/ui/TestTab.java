@@ -1,4 +1,4 @@
-package com.gildedgames.util.core.gui;
+package com.gildedgames.util.ui;
 
 import java.util.Arrays;
 import java.util.List;

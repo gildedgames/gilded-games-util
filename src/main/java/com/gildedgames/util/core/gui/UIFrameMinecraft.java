@@ -7,28 +7,29 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
+import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.MouseButton;
-import com.gildedgames.util.ui.util.UIDimensions;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
-public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame<GraphicsMinecraft>
+public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame, UIElementHolder
 {
 
 	protected final static GraphicsMinecraft GRAPHICS = new GraphicsMinecraft(Minecraft.getMinecraft());
 
-	protected static UIDimensions SCREEN_DIMENSIONS = new UIDimensions(0, 0);
+	protected static Dimensions2D SCREEN_DIMENSIONS = new Dimensions2D(0, 0);
 
-	private final UIElementWrapper<GraphicsMinecraft> elementWrapper;
+	private final UIElementWrapper elementWrapper;
 
 	private GuiScreen parent;
 
-	public UIFrameMinecraft(GuiScreen parent, UIDimensions holderDimensions)
+	public UIFrameMinecraft(GuiScreen parent, Dimensions2D holderDimensions)
 	{
 		this.parent = parent;
-		this.elementWrapper = new UIElementWrapper<GraphicsMinecraft>(holderDimensions, SCREEN_DIMENSIONS, GraphicsMinecraft.class);
+		this.elementWrapper = new UIElementWrapper(holderDimensions, SCREEN_DIMENSIONS);
 	}
 
 	public GuiScreen getParent()
@@ -36,18 +37,22 @@ public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame<Grap
 		return this.parent;
 	}
 
-	public UIElementWrapper<GraphicsMinecraft> getWrapper()
+	public UIElementWrapper getWrapper()
 	{
 		return this.elementWrapper;
 	}
-
+	
 	@Override
-	public final void init(UIElementHolder elementHolder, UIDimensions screenDimensions)
+	public void add(UIElement element)
 	{
-		this.initContent(elementHolder, screenDimensions);
+		this.elementWrapper.add(element);
 	}
 
-	public abstract void initContent(UIElementHolder elementHolder, UIDimensions screenDimensions);
+	@Override
+	public void remove(UIElement element)
+	{
+		this.elementWrapper.remove(element);
+	}
 
 	@Override
 	public boolean isEnabled()
@@ -59,12 +64,6 @@ public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame<Grap
 	public void setEnabled(boolean enabled)
 	{
 		this.getWrapper().setEnabled(enabled);
-	}
-
-	@Override
-	public Class<? extends GraphicsMinecraft> getGraphicsClass()
-	{
-		return GraphicsMinecraft.class;
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame<Grap
 		this.width = resolution.getScaledWidth();
 		this.height = resolution.getScaledHeight();
 
-		SCREEN_DIMENSIONS = SCREEN_DIMENSIONS.copyAndSetDimensions(this.width, this.height);
+		SCREEN_DIMENSIONS = SCREEN_DIMENSIONS.copyWith(this.width, this.height);
 
 		this.init(this.elementWrapper, SCREEN_DIMENSIONS);
 
@@ -157,13 +156,13 @@ public abstract class UIFrameMinecraft extends GuiScreen implements UIFrame<Grap
 	}
 
 	@Override
-	public UIDimensions getDimensions()
+	public Dimensions2D getDimensions()
 	{
 		return this.elementWrapper.getDimensions();
 	}
 
 	@Override
-	public void setDimensions(UIDimensions dimensions)
+	public void setDimensions(Dimensions2D dimensions)
 	{
 		this.elementWrapper.setDimensions(dimensions);
 	}

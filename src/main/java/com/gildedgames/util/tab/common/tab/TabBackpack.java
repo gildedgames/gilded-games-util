@@ -16,7 +16,7 @@ import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.core.Sprite;
+import com.gildedgames.util.core.SpriteGeneric;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.util.ITab;
 
@@ -29,7 +29,7 @@ public class TabBackpack implements ITab
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/tab_icons/backpack.png");
 
-	private static final Sprite sprite = new Sprite("backpack.png", 16, 16);
+	private static final SpriteGeneric sprite = new SpriteGeneric("backpack.png", 16, 16);
 	
 	public TabBackpack()
 	{

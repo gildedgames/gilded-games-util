@@ -6,13 +6,15 @@ import java.util.List;
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIFrame;
-import com.gildedgames.util.ui.UIGraphics;
+import com.gildedgames.util.ui.UIGraphical;
+import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
 
-public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementHolder
+public class UIElementWrapper implements UIFrame, UIElementHolder
 {
 
 	protected final static ListFilter LIST_FILTER = new ListFilter();
@@ -23,30 +25,27 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 
 	protected boolean enabled = true;
 
-	protected final UIDimensions screenDimensions;
+	protected final Dimensions2D screenDimensions;
 
-	protected UIDimensions holderDimensions;
-
-	protected final Class<? extends GRAPHICS> graphicsClass;
+	protected Dimensions2D holderDimensions;
 
 	/**
 	 * @param holderDimensions Where the elements are drawn in
 	 * @param screenDimensions The dimensions of the screen
 	 * @param graphicsClass The class to use for the graphics
 	 */
-	public UIElementWrapper(UIDimensions holderDimensions, UIDimensions screenDimensions, Class<? extends GRAPHICS> graphicsClass)
+	public UIElementWrapper(Dimensions2D holderDimensions, Dimensions2D screenDimensions)
 	{
 		this.screenDimensions = screenDimensions;
-		this.graphicsClass = graphicsClass;
 		this.holderDimensions = holderDimensions;
 	}
 
 	@Override
-	public void draw(GRAPHICS graphics)
+	public void draw(IGraphics graphics)
 	{
-		for (UIGraphics element : LIST_FILTER.getTypesFrom(this.elements, UIGraphics.class))
+		for (UIGraphical element : LIST_FILTER.getTypesFrom(this.elements, UIGraphical.class))
 		{
-			if (element != null && element.getGraphicsClass().isAssignableFrom(graphics.getClass()) && element.isVisible())
+			if (element != null && element.isVisible())
 			{
 				element.draw(graphics);
 			}
@@ -119,7 +118,7 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, UIDimensions screenDimensions)
+	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
 	{
 		for (UIElement element : LIST_FILTER.getTypesFrom(this.elements, UIElement.class))
 		{
@@ -145,12 +144,6 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public Class<? extends GRAPHICS> getGraphicsClass()
-	{
-		return this.graphicsClass;
-	}
-
-	@Override
 	public void add(UIElement element)
 	{
 		element.init(this, this.screenDimensions);
@@ -165,13 +158,13 @@ public class UIElementWrapper<GRAPHICS> implements UIFrame<GRAPHICS>, UIElementH
 	}
 
 	@Override
-	public UIDimensions getDimensions()
+	public Dimensions2D getDimensions()
 	{
 		return this.holderDimensions;
 	}
 
 	@Override
-	public void setDimensions(UIDimensions dimensions)
+	public void setDimensions(Dimensions2D dimensions)
 	{
 		this.holderDimensions = dimensions;
 	}

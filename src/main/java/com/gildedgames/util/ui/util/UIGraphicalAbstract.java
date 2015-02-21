@@ -1,15 +1,16 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIGraphics;
+import com.gildedgames.util.ui.UIGraphical;
+import com.gildedgames.util.ui.data.Dimensions2D;
 
-public abstract class UIGraphicsAbstract<GRAPHICS> implements UIGraphics<GRAPHICS>
+public abstract class UIGraphicalAbstract implements UIGraphical
 {
 
 	protected boolean enabled = true, visible = true;
 
-	protected UIDimensions dimensions;
+	protected Dimensions2D dimensions;
 
-	public UIGraphicsAbstract(UIDimensions dimensions)
+	public UIGraphicalAbstract(Dimensions2D dimensions)
 	{
 		this.dimensions = dimensions;
 	}
@@ -39,13 +40,13 @@ public abstract class UIGraphicsAbstract<GRAPHICS> implements UIGraphics<GRAPHIC
 	}
 
 	@Override
-	public UIDimensions getDimensions()
+	public Dimensions2D getDimensions()
 	{
 		return this.dimensions;
 	}
 
 	@Override
-	public void setDimensions(UIDimensions dimensions)
+	public void setDimensions(Dimensions2D dimensions)
 	{
 		this.dimensions = dimensions;
 	}
