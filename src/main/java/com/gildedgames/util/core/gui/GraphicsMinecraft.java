@@ -138,7 +138,7 @@ public class GraphicsMinecraft implements IGraphics
 		public void draw()
 		{
 			float xOffset = this.dim.isCenteredHorizontally() ? this.fontRenderer.getStringWidth(text.getData()) / 2 : 0.0F;
-			this.fontRenderer.func_175063_a(this.text.getData(), this.dim.getX() - xOffset, this.dim.getY(), this.data.getColorHex());
+			this.fontRenderer.drawStringWithShadow(this.text.getData(), this.dim.getX() - xOffset, this.dim.getY(), this.data.getColorHex());
 		}
 		
 	}

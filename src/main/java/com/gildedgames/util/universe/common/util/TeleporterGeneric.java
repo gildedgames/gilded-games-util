@@ -11,18 +11,18 @@ public class TeleporterGeneric extends Teleporter
 	{
 		super(worldIn);
 	}
-
-	@Override
-    public void func_180266_a(Entity p_180266_1_, float p_180266_2_)
-    {
-		
-    }
 	
 	@Override
-    public boolean func_180620_b(Entity p_180620_1_, float p_180620_2_)
-    {
+	public boolean placeInExistingPortal(Entity entityIn, float p_180620_2_) 
+	{
 		return false;
-    }
+	}
+	
+	@Override
+	public void placeInPortal(Entity entityIn, float rotationYaw) 
+	{
+		
+	}
 	
 	@Override
     public boolean makePortal(Entity p_85188_1_)
