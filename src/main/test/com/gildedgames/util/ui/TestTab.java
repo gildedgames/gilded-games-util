@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 
 public class TestTab extends TabBackpack
@@ -13,7 +14,7 @@ public class TestTab extends TabBackpack
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		Minecraft.getMinecraft().displayGuiScreen(new TestUI(null));
+		UtilCore.locate().view(new TestUI());
 	}
 
 	@Override

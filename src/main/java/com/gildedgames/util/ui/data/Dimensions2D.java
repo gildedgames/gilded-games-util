@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.data;
 
+import java.util.List;
+
 
 
 public class Dimensions2D
@@ -10,6 +12,11 @@ public class Dimensions2D
 	protected final float width, height;
 	
 	protected final boolean centeredVertically, centeredHorizontally;
+	
+	private Dimensions2D()
+	{
+		this(0, 0);
+	}
 
 	public Dimensions2D(float width, float height)
 	{
@@ -90,6 +97,30 @@ public class Dimensions2D
 	public Dimensions2D copyWith(boolean centeredVertically, boolean centeredHorizontally)
 	{
 		return new Dimensions2D(this.position, this.width, this.height, centeredVertically, centeredHorizontally);
+	}
+	
+	public static Dimensions2D combine(List<Dimensions2D> dimensions)
+	{
+		Dimensions2D result = new Dimensions2D();
+		
+		for (Dimensions2D dimension : dimensions)
+		{
+			if (dimension != null)
+			{
+				boolean changed = false;
+				
+				float minX = Math.min(result.getX(), dimension.getX());
+				float minY = Math.min(result.getY(), dimension.getY());
+				
+				float maxX = Math.max(result.getX() + result.getWidth(), dimension.getX() + dimension.getWidth());
+				float maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
+				
+				result = result.copyWith(new Position2D(minX, minY));
+				result = result.copyWith(maxX - minY, maxY - minY);
+			}
+		}
+		
+		return result;
 	}
 
 }

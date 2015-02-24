@@ -1,9 +1,9 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIGraphical;
+import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 
-public abstract class UIGraphicalAbstract implements UIGraphical
+public abstract class UIGraphicalAbstract implements UIView
 {
 
 	protected boolean enabled = true, visible = true;
@@ -40,15 +40,21 @@ public abstract class UIGraphicalAbstract implements UIGraphical
 	}
 
 	@Override
-	public Dimensions2D getDimensions()
+	public Dimensions2D getFocusArea()
 	{
 		return this.dimensions;
 	}
 
 	@Override
-	public void setDimensions(Dimensions2D dimensions)
+	public void setFocusArea(Dimensions2D dimensions)
 	{
 		this.dimensions = dimensions;
+	}
+
+	@Override
+	public void onFocused()
+	{
+		
 	}
 
 }

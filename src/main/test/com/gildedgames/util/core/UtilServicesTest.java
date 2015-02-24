@@ -9,7 +9,7 @@ public class UtilServicesTest
 	@Test
 	public void test()
 	{
-		UtilServices services = new UtilServices();
+		UtilServices services = new UtilServices(null);
 	}
 
 }

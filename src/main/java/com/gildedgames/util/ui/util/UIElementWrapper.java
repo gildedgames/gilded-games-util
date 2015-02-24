@@ -5,16 +5,16 @@ import java.util.List;
 
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
-import com.gildedgames.util.ui.UIFrame;
-import com.gildedgames.util.ui.UIGraphical;
+import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.Dimensions2DMutable;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
 
-public class UIElementWrapper implements UIFrame, UIElementHolder
+public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListener, IMouseListener
 {
 
 	protected final static ListFilter LIST_FILTER = new ListFilter();
@@ -27,23 +27,20 @@ public class UIElementWrapper implements UIFrame, UIElementHolder
 
 	protected final Dimensions2D screenDimensions;
 
-	protected Dimensions2D holderDimensions;
-
 	/**
 	 * @param holderDimensions Where the elements are drawn in
 	 * @param screenDimensions The dimensions of the screen
 	 * @param graphicsClass The class to use for the graphics
 	 */
-	public UIElementWrapper(Dimensions2D holderDimensions, Dimensions2D screenDimensions)
+	public UIElementWrapper(Dimensions2D screenDimensions)
 	{
 		this.screenDimensions = screenDimensions;
-		this.holderDimensions = holderDimensions;
 	}
 
 	@Override
 	public void draw(IGraphics graphics)
 	{
-		for (UIGraphical element : LIST_FILTER.getTypesFrom(this.elements, UIGraphical.class))
+		for (UIView element : LIST_FILTER.getTypesFrom(this.elements, UIView.class))
 		{
 			if (element != null && element.isVisible())
 			{
@@ -158,15 +155,33 @@ public class UIElementWrapper implements UIFrame, UIElementHolder
 	}
 
 	@Override
-	public Dimensions2D getDimensions()
+	public Dimensions2D getFocusArea()
 	{
-		return this.holderDimensions;
+		List<Dimensions2D> areas = new ArrayList<Dimensions2D>();
+		
+		for (UIElement element : this.elements)
+		{
+			if (element instanceof UIView)
+			{
+				UIView view = (UIView)element;
+				
+				areas.add(new Dimensions2DMutable(view.getFocusArea()));
+			}
+		}
+		
+		return Dimensions2D.combine(areas);
 	}
 
 	@Override
-	public void setDimensions(Dimensions2D dimensions)
+	public void setFocusArea(Dimensions2D dimensions)
 	{
-		this.holderDimensions = dimensions;
+		
+	}
+
+	@Override
+	public void onFocused()
+	{
+		
 	}
 
 }

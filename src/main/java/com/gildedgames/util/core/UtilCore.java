@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.core.gui.UIViewerMinecraft;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
@@ -48,7 +49,7 @@ public class UtilCore implements ICore
 
 	public List<ICore> cores = new ArrayList<ICore>();
 
-	private SidedObject<UtilServices> serviceLocator = new SidedObject<UtilServices>(new UtilServices(), new UtilServices());
+	private final SidedObject<UtilServices> serviceLocator;
 
 	public UtilCore()
 	{
@@ -58,6 +59,17 @@ public class UtilCore implements ICore
 		this.cores.add(TabCore.INSTANCE);
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
+		
+		UtilServices clientLocator = new UtilServices(null);
+		
+		if (UtilCore.isClient())
+		{
+			clientLocator = new UtilServices(new UIViewerMinecraft());
+		}
+		
+		UtilServices serverLocator = new UtilServices(null);
+		
+		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
 	}
 
 	@Override

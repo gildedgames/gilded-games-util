@@ -6,8 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.Resource;
-import com.gildedgames.util.core.gui.UIFrameMinecraft;
-import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.core.gui.UIElementWrapperMinecraft;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Position2D;
@@ -17,12 +16,12 @@ import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.UITexture;
 
-public class TestUI extends UIFrameMinecraft
+public class TestUI extends UIFrame
 {
 
-	public TestUI(GuiScreen parent)
+	public TestUI()
 	{
-		super(parent, UIFrameMinecraft.SCREEN_DIMENSIONS);
+		super(new Dimensions2D(0, 0), new Dimensions2D(0, 0));
 	}
 
 	@Override
@@ -65,4 +64,10 @@ public class TestUI extends UIFrameMinecraft
 
 	}
 
+	@Override
+	public void onFocused()
+	{
+		
+	}
+	
 }
