@@ -14,11 +14,13 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.world.common.IWorldHook;
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.WorldEventHandler;
 import com.gildedgames.util.world.common.world.IWorld;
-import com.gildedgames.util.world.common.world.WorldMinecraftFactory;
+import com.gildedgames.util.world.common.world.WorldMinecraftFactoryClient;
+import com.gildedgames.util.world.common.world.WorldMinecraftFactoryServer;
 
 public class WorldCore implements ICore
 {
@@ -26,13 +28,26 @@ public class WorldCore implements ICore
 	public static final WorldCore INSTANCE = new WorldCore();
 
 	//Change the factories here to use different IWorlds throughout the workspace
-	private SidedObject<WorldServices> serviceLocator = new SidedObject<WorldServices>(new WorldServices(true, new WorldMinecraftFactory()), new WorldServices(false, new WorldMinecraftFactory()));
+	private final SidedObject<WorldServices> serviceLocator;
 
 	private WorldEventHandler worldEventHandler = new WorldEventHandler();
 
 	public WorldCore()
 	{
-
+		WorldServices clientLocator = null;
+		
+		if (UtilCore.isServer())
+		{
+			clientLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
+		}
+		else
+		{
+			clientLocator = new WorldServices(true, new WorldMinecraftFactoryClient());
+		}
+		
+		WorldServices serverLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
+		
+		this.serviceLocator = new SidedObject<WorldServices>(clientLocator, serverLocator);
 	}
 
 	@Override
