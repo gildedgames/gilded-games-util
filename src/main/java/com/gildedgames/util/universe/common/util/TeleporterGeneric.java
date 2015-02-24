@@ -7,25 +7,25 @@ import net.minecraft.world.WorldServer;
 public class TeleporterGeneric extends Teleporter
 {
 	
-	public TeleporterGeneric(WorldServer worldIn)
+	public TeleporterGeneric(WorldServer world)
 	{
-		super(worldIn);
+		super(world);
 	}
 	
 	@Override
-	public boolean placeInExistingPortal(Entity entityIn, float p_180620_2_) 
-	{
-		return false;
-	}
-	
-	@Override
-	public void placeInPortal(Entity entityIn, float rotationYaw) 
+	public void func_180266_a(Entity entity, float rotationYaw) 
 	{
 		
 	}
 	
 	@Override
-    public boolean makePortal(Entity p_85188_1_)
+	public boolean func_180620_b(Entity entity, float rotationYaw) 
+	{
+		return false;
+	}
+	
+	@Override
+    public boolean makePortal(Entity entity)
     {
 		return false;
     }
