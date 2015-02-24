@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui;
 
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
@@ -27,13 +28,25 @@ public abstract class UIFrame implements UIView, UIElementHolder, IKeyboardListe
 	}
 	
 	@Override
-	public void add(UIElement element)
+	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
+	{
+		this.elementWrapper.init(elementHolder, screenDimensions);
+	}
+	
+	@Override
+	public void draw(IGraphics graphics)
+	{
+		this.elementWrapper.draw(graphics);
+	}
+	
+	@Override
+	public final void add(UIElement element)
 	{
 		this.elementWrapper.add(element);
 	}
 
 	@Override
-	public void remove(UIElement element)
+	public final void remove(UIElement element)
 	{
 		this.elementWrapper.remove(element);
 	}

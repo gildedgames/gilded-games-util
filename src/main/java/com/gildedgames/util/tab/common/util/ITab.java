@@ -34,7 +34,7 @@ public interface ITab
 	 * @return All of the {@link GuiScreen} classes which are used within this tab.
 	 */
 	@SideOnly(Side.CLIENT)
-	List getGuiClasses();
+	boolean isTabValid(GuiScreen gui);
 
 	/**
 	 * This is where this {@link ITab}'s display icon is rendered

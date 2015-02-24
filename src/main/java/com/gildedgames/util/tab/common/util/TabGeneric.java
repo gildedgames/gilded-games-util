@@ -1,11 +1,10 @@
-package com.gildedgames.util.universe.client.gui.util;
+package com.gildedgames.util.tab.common.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 
 import com.gildedgames.util.core.SpriteGeneric;
-import com.gildedgames.util.tab.common.util.ITab;
 
 public abstract class TabGeneric implements ITab
 {

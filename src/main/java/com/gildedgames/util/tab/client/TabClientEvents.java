@@ -25,12 +25,6 @@ public class TabClientEvents
 
 	@SideOnly(Side.CLIENT)
 	private final static RenderTabGroup tabGroupRenderer = new RenderTabGroup();
-	
-	@SideOnly(Side.CLIENT)
-	private boolean isTabValid(ITab tab, GuiScreen gui)
-	{
-		return tab.getGuiClasses().contains(gui.getClass());
-	}
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event)
@@ -47,7 +41,7 @@ public class TabClientEvents
 			{
 				ITab selectedTab = activeGroup.getSelectedTab();
 				
-				if (event.gui != null && this.isTabValid(selectedTab, gui))
+				if (event.gui != null && selectedTab.isTabValid(gui))
 				{
 					return;
 				}
@@ -64,11 +58,11 @@ public class TabClientEvents
 			
 			for (ITab tab : tabGroup.getTabs())
 			{
-				if (tab != null && event.gui != null && this.isTabValid(tab, gui))
+				if (tab != null && event.gui != null && tab.isTabValid(gui))
 				{
 					ITab selectedTab = tabGroup.getSelectedTab();
 					
-					if (selectedTab != null && !this.isTabValid(selectedTab, gui))
+					if (selectedTab != null && !selectedTab.isTabValid(gui))
 					{
 						if (tabGroup.getRememberSelectedTab())
 						{

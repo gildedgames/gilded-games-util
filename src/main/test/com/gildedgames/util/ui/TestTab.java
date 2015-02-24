@@ -1,16 +1,15 @@
 package com.gildedgames.util.ui;
 
-import java.util.Arrays;
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.gui.UIElementWrapperMinecraft;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 
 public class TestTab extends TabBackpack
 {
+	
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
@@ -18,8 +17,16 @@ public class TestTab extends TabBackpack
 	}
 
 	@Override
-	public List getGuiClasses()
+	public boolean isTabValid(GuiScreen gui)
 	{
-		return Arrays.asList(TestUI.class);
+		if (gui instanceof UIElementWrapperMinecraft)
+		{
+			UIElementWrapperMinecraft wrapper = (UIElementWrapperMinecraft)gui;
+			
+			return wrapper.getView().getClass() == TestUI.class;
+		}
+		
+		return false;
 	}
+	
 }

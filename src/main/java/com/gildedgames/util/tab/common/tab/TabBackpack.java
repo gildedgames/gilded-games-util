@@ -43,9 +43,9 @@ public class TabBackpack implements ITab
 	}
 
 	@Override
-	public List getGuiClasses()
+	public boolean isTabValid(GuiScreen gui)
 	{
-		return Arrays.asList(GuiInventory.class, GuiContainerCreative.class);
+		return Arrays.asList(GuiInventory.class, GuiContainerCreative.class).contains(gui.getClass());
 	}
 
 	@Override

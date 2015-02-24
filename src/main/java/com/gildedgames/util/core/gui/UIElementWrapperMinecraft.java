@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
 import com.gildedgames.util.ui.UIView;
-import com.gildedgames.util.ui.UIViewer;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.MouseButton;
@@ -29,6 +28,13 @@ public final class UIElementWrapperMinecraft extends GuiScreen
 	{
 		this.view = view;
 		this.elementWrapper = new UIElementWrapper(SCREEN_DIMENSIONS);
+		
+		this.elementWrapper.add(this.view);
+	}
+	
+	public UIView getView()
+	{
+		return this.view;
 	}
 	
 	@Override
