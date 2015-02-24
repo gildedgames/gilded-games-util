@@ -13,6 +13,8 @@ public class PlayerProfile implements IPlayerProfile
 	protected EntityPlayer player;
 
 	protected UUID uuid;
+	
+	protected String username;
 
 	protected boolean isLoggedIn, isDirty;
 
@@ -27,14 +29,23 @@ public class PlayerProfile implements IPlayerProfile
 		this.setEntity(player);
 
 		this.setUUID(player.getUniqueID());
+		this.username = player.getCommandSenderName();
 	}
 
 	@Override
 	public void onUpdate()
 	{
-		if (this.getUUID() == null && this.player != null)
+		if (this.player != null)
 		{
-			this.setUUID(this.player.getUniqueID());
+			if (this.getUUID() == null)
+			{
+				this.setUUID(this.player.getUniqueID());
+			}
+			
+			if (this.username == null)
+			{
+				this.username = player.getCommandSenderName();
+			}
 		}
 	}
 
@@ -53,7 +64,7 @@ public class PlayerProfile implements IPlayerProfile
 	@Override
 	public String getUsername()
 	{
-		return this.player.getCommandSenderName();
+		return this.username;
 	}
 
 	@Override
