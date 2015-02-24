@@ -3,7 +3,7 @@
   "modid": "gilded-games-util",
   "name": "Gilded Games Utility",
   "description": "A module which supports several major systems that are used between different Gilded Games projects.",
-  "version": "1.7.10-1.0",
+  "version": "1.7.10-1.1",
   "mcversion": "${mcversion}",
   "url": "www.gilded-games.com/gilded-games-util/",
   "updateUrl": "www.gilded-games.com/gilded-games-util/",
