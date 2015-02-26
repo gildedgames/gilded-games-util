@@ -1,10 +1,9 @@
 package com.gildedgames.util.menu.client.util;
 
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
-
 import com.gildedgames.util.menu.client.ICustomSwitchButton;
 import com.gildedgames.util.menu.client.IMenu;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreen;
 
 public class MenuMinecraft implements IMenu
 {

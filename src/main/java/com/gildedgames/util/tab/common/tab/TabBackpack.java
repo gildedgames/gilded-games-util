@@ -1,8 +1,8 @@
 package com.gildedgames.util.tab.common.tab;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.gildedgames.util.core.SpriteGeneric;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.tab.common.util.ITab;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -11,14 +11,11 @@ import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.core.SpriteGeneric;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.tab.common.util.ITab;
+import java.util.Arrays;
 
 /**
  * The {@link ITab} representation of the Minecraft's vanilla Inventory {@link GuiScreen}
@@ -45,7 +42,8 @@ public class TabBackpack implements ITab
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return Arrays.asList(GuiInventory.class, GuiContainerCreative.class).contains(gui.getClass());
+		Class<? extends GuiScreen> clazz = gui.getClass();
+		return clazz == GuiInventory.class || clazz == GuiContainerCreative.class;
 	}
 
 	@Override
@@ -67,7 +65,7 @@ public class TabBackpack implements ITab
 		EntityPlayerSP playerSP = (EntityPlayerSP) player;
 
 		playerSP.sendQueue.addToSendQueue(new C0DPacketCloseWindow(playerSP.openContainer.windowId));
-		playerSP.inventory.setItemStack((ItemStack) null);
+		playerSP.inventory.setItemStack(null);
 		playerSP.openContainer = playerSP.inventoryContainer;
 	}
 

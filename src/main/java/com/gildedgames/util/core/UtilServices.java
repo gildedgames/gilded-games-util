@@ -14,7 +14,7 @@ public class UtilServices implements UIViewer
 
 	private IOManager io;
 	
-	private UIViewer viewer;
+	private final UIViewer viewer;
 
 	private static final String MANAGER_NAME = "GildedGamesUtil";
 

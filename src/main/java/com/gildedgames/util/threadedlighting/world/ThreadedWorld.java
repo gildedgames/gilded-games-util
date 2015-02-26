@@ -1,8 +1,6 @@
 package com.gildedgames.util.threadedlighting.world;
 
-import java.util.ArrayList;
-import java.util.concurrent.locks.ReentrantLock;
-
+import com.gildedgames.util.threadedlighting.ThreadedLighting;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.profiler.Profiler;
@@ -12,14 +10,15 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IWorldAccess;
 import net.minecraft.world.WorldSettings;
 
-import com.gildedgames.util.threadedlighting.ThreadedLighting;
+import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ThreadedWorld extends WorldClient implements Runnable
 {
 
 	private class UpdateSkylight
 	{
-		BlockPos pos;
+		final BlockPos pos;
 
 		UpdateSkylight(BlockPos pos)
 		{
@@ -29,9 +28,9 @@ public class ThreadedWorld extends WorldClient implements Runnable
 
 	public class RelightBlock
 	{
-		ThreadedChunk chunk;
+		final ThreadedChunk chunk;
 
-		BlockPos pos;
+		final BlockPos pos;
 
 		RelightBlock(ThreadedChunk chunk, BlockPos pos)
 		{
@@ -40,11 +39,11 @@ public class ThreadedWorld extends WorldClient implements Runnable
 		}
 	}
 
-	private Thread thread;
+	private final Thread thread;
 
-	public ArrayList queue = new ArrayList();
+	public final ArrayList queue = new ArrayList();
 
-	public ReentrantLock queueLock = new ReentrantLock();
+	public final ReentrantLock queueLock = new ReentrantLock();
 
 	public ThreadedWorld(NetHandlerPlayClient par1NetClientHandler, WorldSettings par2WorldSettings, int par3, EnumDifficulty par4, Profiler par5Profiler)
 	{

@@ -1,8 +1,11 @@
 package com.gildedgames.util.menu.client;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.menu.MenuCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -14,29 +17,24 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.ClientProxy;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTFactory;
-import com.gildedgames.util.core.nbt.NBTFile;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.menu.MenuCore;
+import java.io.File;
+import java.io.IOException;
 
 public class MenuClientEvents
 {
 
 	@SideOnly(Side.CLIENT)
-	private GuiButton leftButton = new GuiButton(0, 5, 5, 20, 20, "<");
+	private final GuiButton leftButton = new GuiButton(0, 5, 5, 20, 20, "<");
 
 	@SideOnly(Side.CLIENT)
-	private GuiButton rightButton = new GuiButton(0, 30, 5, 20, 20, ">");
+	private final GuiButton rightButton = new GuiButton(0, 30, 5, 20, 20, ">");
 
 	@SideOnly(Side.CLIENT)
-	private Minecraft mc = Minecraft.getMinecraft();
+	private final Minecraft mc = Minecraft.getMinecraft();
 
-	private File configSaveLocation;
+	private final File configSaveLocation;
 
 	public static class MenuConfig implements NBT
 	{
@@ -147,7 +145,7 @@ public class MenuClientEvents
 				this.openMenu(ClientProxy.MINECRAFT_MENU);
 			}
 		}
-		else if (gui != null && menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))
+		else if (menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))
 		{
 			MenuCore.locate().setCurrentMenu(null);
 		}
@@ -188,7 +186,7 @@ public class MenuClientEvents
 							{
 								this.openMenu(MenuCore.locate().getPreviousMenu());
 							}
-							else if (rightButtonMoused)
+							else
 							{
 								this.openMenu(MenuCore.locate().getNextMenu());
 							}

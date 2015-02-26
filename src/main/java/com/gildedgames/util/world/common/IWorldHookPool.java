@@ -1,11 +1,10 @@
 package com.gildedgames.util.world.common;
 
-import java.util.Collection;
-
-import net.minecraft.world.World;
-
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.world.common.world.IWorld;
+import net.minecraft.world.World;
+
+import java.util.Collection;
 
 public interface IWorldHookPool<W extends IWorldHook> extends NBT
 {

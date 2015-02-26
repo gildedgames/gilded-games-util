@@ -1,13 +1,12 @@
 package com.gildedgames.util.player.common.networking.messages;
 
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.common.player.IPlayerHook;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.player.common.player.IPlayerHook;
 
 public class MessagePlayerHookClient implements IMessage
 {

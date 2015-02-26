@@ -1,8 +1,5 @@
 package com.gildedgames.util.ui.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIView;
@@ -13,6 +10,9 @@ import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListener, IMouseListener
 {

@@ -1,15 +1,14 @@
 package com.gildedgames.util.tab.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.gildedgames.util.tab.common.util.ITab;
+import com.gildedgames.util.tab.common.util.ITabGroupHandler;
+import com.gildedgames.util.tab.common.util.TabGroupHandler;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.tab.common.util.ITabGroupHandler;
-import com.gildedgames.util.tab.common.util.TabGroupHandler;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is used to implement Tab functionality within various {@link GuiScreen} interfaces.
@@ -20,7 +19,7 @@ public enum TabAPI
 	
 	INSTANCE;
 
-	private Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<Integer, ITabGroupHandler>();
+	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<Integer, ITabGroupHandler>();
 
 	private ITabGroupHandler activeGroup;
 	

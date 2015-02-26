@@ -1,10 +1,13 @@
 package com.gildedgames.util.universe.common.player;
 
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.IPlayerProfile;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.util.IUniverse;
+import com.mojang.authlib.GameProfile;
 import io.netty.buffer.ByteBuf;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,13 +19,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.util.IUniverse;
-import com.mojang.authlib.GameProfile;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerUniverse implements IPlayerHook
 {
@@ -35,9 +33,9 @@ public class PlayerUniverse implements IPlayerHook
 
 	private String universeID = UniverseAPI.instance().getMinecraftUniverseID();
 
-	private Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
+	private final Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
 
-	private IPlayerHookPool<PlayerUniverse> pool;
+	private final IPlayerHookPool<PlayerUniverse> pool;
 
 	public PlayerUniverse(IPlayerHookPool<PlayerUniverse> pool, IPlayerProfile profile)
 	{
@@ -59,6 +57,7 @@ public class PlayerUniverse implements IPlayerHook
 
 		if (!this.player.worldObj.isRemote)
 		{
+			//TODO: This is empty :D
 			/*EntityPlayerMP playerMP = (EntityPlayerMP)this.player;
 
 			ServerConfigurationManager scm = playerMP.mcServer.getConfigurationManager();

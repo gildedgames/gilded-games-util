@@ -1,24 +1,23 @@
 package com.gildedgames.util.universe.common;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
 import com.gildedgames.util.universe.common.universe.UniverseMinecraft;
 import com.gildedgames.util.universe.common.util.IUniverse;
 import com.gildedgames.util.universe.common.util.IUniverseListener;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UniverseAPI
 {
 
-	private Map<String, IUniverse> universes = new HashMap<String, IUniverse>();
+	private final Map<String, IUniverse> universes = new HashMap<String, IUniverse>();
 
-	private List<IUniverseListener> listeners = new ArrayList<IUniverseListener>();
+	private final List<IUniverseListener> listeners = new ArrayList<IUniverseListener>();
 
 	private final IUniverse MINECRAFT = new UniverseMinecraft();
 
@@ -38,6 +37,8 @@ public class UniverseAPI
 
 		String id = this.getIDFrom(universe);
 		boolean hasTravelBefore = false;
+		//TODO: This variable is always false. Why?
+
 
 		PlayerUniverse playerHook = UniverseCore.locate().getPlayers().get(player);
 
@@ -70,7 +71,7 @@ public class UniverseAPI
 		}
 
 		String id = this.getIDFrom(universe);//TODO: id is not used here!
-		boolean hasLeftBefore = false;
+		boolean hasLeftBefore = false;//TODO: hasLeftBefore is always null
 
 		for (IUniverseListener listener : this.listeners)
 		{

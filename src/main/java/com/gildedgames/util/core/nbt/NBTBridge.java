@@ -1,22 +1,18 @@
 package com.gildedgames.util.core.nbt;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.overhead.IOManager;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTBridge implements IOBridge
 {
 
-	private NBTFactory factory;
+	private final NBTTagCompound tag;
 
-	private NBTTagCompound tag;
-
-	public NBTBridge(NBTFactory factory, NBTTagCompound tag)
+	public NBTBridge( NBTTagCompound tag)
 	{
-		this.factory = factory;
 		this.tag = tag;
 	}
 

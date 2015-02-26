@@ -1,8 +1,8 @@
 package com.gildedgames.util.io_manager.factory;
 
-import java.io.File;
-
 import com.gildedgames.util.io_manager.io.IOFile;
+
+import java.io.File;
 
 public interface IOObserver<I, O>
 {

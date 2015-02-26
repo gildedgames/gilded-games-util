@@ -1,10 +1,9 @@
 package com.gildedgames.util.universe.common.universe;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.universe.common.util.IUniverse;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
 
 public class UniverseMinecraft implements IUniverse
 {

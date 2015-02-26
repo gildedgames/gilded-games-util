@@ -1,7 +1,11 @@
 package com.gildedgames.util.universe.client.gui;
 
-import java.io.IOException;
-
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
+import com.gildedgames.util.universe.common.player.PlayerUniverse;
+import com.gildedgames.util.universe.common.util.IUniverse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -9,15 +13,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
-
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
-import com.gildedgames.util.universe.common.player.PlayerUniverse;
-import com.gildedgames.util.universe.common.util.IUniverse;
+import java.io.IOException;
 
 public class GuiUniverseHopper extends GuiScreen
 {
@@ -34,7 +32,7 @@ public class GuiUniverseHopper extends GuiScreen
 
 	private TravelButton travelButton;
 
-	private PlayerUniverse usingPlayer = UniverseCore.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer);
+	private final PlayerUniverse usingPlayer = UniverseCore.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer);
 
 	public GuiUniverseHopper()
 	{
@@ -130,14 +128,7 @@ public class GuiUniverseHopper extends GuiScreen
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
-		if (SELECTED_UNIVERSE == this.usingPlayer.getUniverse())
-		{
-			this.travelButton.enabled = false;
-		}
-		else
-		{
-			this.travelButton.enabled = true;
-		}
+		this.travelButton.enabled = SELECTED_UNIVERSE != this.usingPlayer.getUniverse();
 
 		this.drawDefaultBackground();
 

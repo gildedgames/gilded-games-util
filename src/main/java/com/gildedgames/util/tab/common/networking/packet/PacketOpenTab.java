@@ -1,16 +1,5 @@
 package com.gildedgames.util.tab.common.networking.packet;
 
-import io.netty.buffer.ByteBuf;
-
-import java.util.Iterator;
-import java.util.Map;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.CustomPacket;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.TabAPI;
@@ -18,6 +7,15 @@ import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.Iterator;
+import java.util.Map;
 
 public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 {
@@ -32,17 +30,16 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 
 	public PacketOpenTab(ITab tab)
 	{
-		Iterator it = TabAPI.INSTANCE.getRegisteredTabGroups().entrySet().iterator();
-		
-	    while (it.hasNext())
-	    {
-	        Map.Entry<Integer, TabGroupHandler> pairs = (Map.Entry)it.next();
-	        
-	        int groupIndex = pairs.getKey();
-	        TabGroupHandler tabGroup = pairs.getValue();
-	        
+
+		for (Object o : TabAPI.INSTANCE.getRegisteredTabGroups().entrySet())
+		{
+			Map.Entry<Integer, TabGroupHandler> pairs = (Map.Entry) o;
+
+			int groupIndex = pairs.getKey();
+			TabGroupHandler tabGroup = pairs.getValue();
+
 			int index = 0;
-			
+
 			for (ITab groupTab : tabGroup.getSide(Side.CLIENT).getTabs())
 			{
 				if (tab == groupTab)
@@ -51,7 +48,7 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 					this.tabIndex = index;
 					return;
 				}
-				
+
 				index++;
 			}
 		}
@@ -117,7 +114,7 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 				{
 					ITab tab = tabGroup.getTabs().get(this.tabIndex);
 	
-					Container container = (Container) tab.getCurrentContainer(entityPlayer, entityPlayer.worldObj, (int) entityPlayer.posX, (int) entityPlayer.posY, (int) entityPlayer.posZ);
+					Container container = tab.getCurrentContainer(entityPlayer, entityPlayer.worldObj, (int) entityPlayer.posX, (int) entityPlayer.posY, (int) entityPlayer.posZ);
 	
 					if (container != null)
 					{

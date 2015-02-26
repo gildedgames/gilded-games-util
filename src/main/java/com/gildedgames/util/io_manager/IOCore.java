@@ -1,10 +1,5 @@
 package com.gildedgames.util.io_manager;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -12,27 +7,28 @@ import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOData;
 import com.gildedgames.util.io_manager.io.IOFile;
-import com.gildedgames.util.io_manager.overhead.IOFileController;
-import com.gildedgames.util.io_manager.overhead.IOManager;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.overhead.IOSerializer;
-import com.gildedgames.util.io_manager.overhead.IOVolatileController;
+import com.gildedgames.util.io_manager.overhead.*;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class IOCore implements IORegistry, IOFileController, IOVolatileController, IOManager
 {
 
 	private static final IOCore INSTANCE = new IOCore();
 
-	private List<IOManager> internalManagers = new ArrayList<IOManager>();
+	private final List<IOManager> internalManagers = new ArrayList<IOManager>();
 
-	protected IOFileController fileComponent;
+	protected final IOFileController fileComponent;
 
-	protected IOVolatileController volatileComponent;
+	protected final IOVolatileController volatileComponent;
 
-	protected IORegistry registryComponent;
+	protected final IORegistry registryComponent;
 
-	protected IOManager defaultManager;
+	protected final IOManager defaultManager;
 
 	private IOCore()
 	{
@@ -136,8 +132,8 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 
 	/**
 	 * Registers a class to serialize in the default manager.
-	 * Registring through this method is highly discouraged, 
-	 * as there is no guarentee that other clients won't 
+	 * Registering through this method is highly discouraged,
+	 * as there is no guarantee that other clients won't
 	 * register under the same ID.
 	 */
 	@Override

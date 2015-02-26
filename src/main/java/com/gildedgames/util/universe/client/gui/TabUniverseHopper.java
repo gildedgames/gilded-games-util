@@ -1,7 +1,8 @@
 package com.gildedgames.util.universe.client.gui;
 
-import java.util.Arrays;
-
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.tab.common.util.TabGeneric;
+import com.gildedgames.util.universe.common.UniverseAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,9 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.tab.common.util.TabGeneric;
-import com.gildedgames.util.universe.common.UniverseAPI;
+import java.util.Arrays;
 
 public class TabUniverseHopper extends TabGeneric
 {
@@ -27,7 +26,7 @@ public class TabUniverseHopper extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return Arrays.asList(GuiUniverseHopper.class).contains(gui.getClass());
+		return GuiUniverseHopper.class.equals(gui.getClass());
 	}
 
 	@Override

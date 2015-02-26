@@ -1,19 +1,12 @@
 package com.gildedgames.util.core.nbt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+
+import java.io.*;
 
 public class NBTHelper
 {
@@ -155,7 +148,7 @@ public class NBTHelper
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound = (NBTTagCompound) tagList.getCompoundTagAt(i);
+			NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
 			int j = nbttagcompound.getByte("Slot") & 255;
 			ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
 

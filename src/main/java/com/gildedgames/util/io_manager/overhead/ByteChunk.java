@@ -8,7 +8,7 @@ public class ByteChunk
 	
 	private int length;
 	
-	private String key;
+	private final String key;
 	
 	public ByteChunk(String key, byte[] bytes)
 	{

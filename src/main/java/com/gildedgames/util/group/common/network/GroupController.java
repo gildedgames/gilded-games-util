@@ -1,23 +1,22 @@
 package com.gildedgames.util.group.common.network;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.IGroupPool;
 import com.gildedgames.util.group.common.player.GroupMember;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.List;
 
 public class GroupController implements IGroupController
 {
 	
 	private IGroup targetGroup;
 	
-	private Side side;
+	private final Side side;
 	
 	public GroupController(Side side)
 	{

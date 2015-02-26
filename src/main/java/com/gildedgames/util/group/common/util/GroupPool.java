@@ -1,18 +1,18 @@
 package com.gildedgames.util.group.common.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupFactory;
 import com.gildedgames.util.group.common.IGroupPool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GroupPool<G extends IGroup> implements IGroupPool<G>
 {
 	
-	protected String id;
+	protected final String id;
 	
-	protected IGroupFactory<G> factory;
+	protected final IGroupFactory<G> factory;
 	
 	protected List<G> groups = new ArrayList<G>();
 

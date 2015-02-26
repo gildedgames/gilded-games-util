@@ -1,9 +1,8 @@
 package com.gildedgames.util.world.common.world;
 
+import com.gildedgames.util.core.UtilCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
-
-import com.gildedgames.util.core.UtilCore;
 
 public class WorldMinecraftFactoryClient implements IWorldFactory<WorldMinecraft>
 {

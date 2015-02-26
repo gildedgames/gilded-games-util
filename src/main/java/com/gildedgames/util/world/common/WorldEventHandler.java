@@ -1,8 +1,9 @@
 package com.gildedgames.util.world.common;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.world.WorldCore;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
@@ -11,10 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-import com.gildedgames.util.core.nbt.NBTFactory;
-import com.gildedgames.util.core.nbt.NBTFile;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.world.WorldCore;
+import java.io.File;
+import java.io.IOException;
 
 public class WorldEventHandler
 {
@@ -95,7 +94,7 @@ public class WorldEventHandler
 			}
 			else
 			{
-				/** TO-DO: error log here, manager should never be null **/
+				/** TODO: error log here, manager should never be null **/
 			}
 		}
 	}

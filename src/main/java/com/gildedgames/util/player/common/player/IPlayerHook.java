@@ -1,11 +1,10 @@
 package com.gildedgames.util.player.common.player;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
-
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.io_manager.networking.ISyncable;
 import com.gildedgames.util.player.common.IPlayerHookPool;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.DamageSource;
 
 public interface IPlayerHook extends NBT, ISyncable
 {

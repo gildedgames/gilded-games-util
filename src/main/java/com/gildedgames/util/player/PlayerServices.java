@@ -1,17 +1,15 @@
 package com.gildedgames.util.player;
 
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.PlayerProfile;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.PlayerProfile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerServices
 {
@@ -62,9 +60,7 @@ public class PlayerServices
 
 		profile.readFromServer(buf);//Assuming disregard cuz player is known
 
-		IPlayerHook playerHook = manager.get(player);
-
-		return playerHook;
+		return manager.get(player);
 	}
 
 	public IPlayerHook readHookReference(Side side, ByteBuf buf)
@@ -75,9 +71,7 @@ public class PlayerServices
 
 		profile.readFromServer(buf);
 
-		IPlayerHook playerHook = manager.get(profile.getUUID());
-
-		return playerHook;
+		return manager.get(profile.getUUID());
 	}
 
 	public void registerPlayerHookPool(IPlayerHookPool<?> playerPool)

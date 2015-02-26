@@ -1,13 +1,5 @@
 package com.gildedgames.util.core.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.IResource;
@@ -15,15 +7,21 @@ import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.graphics.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 public class GraphicsMinecraft implements IGraphics
 {
 	
-	protected Minecraft minecraft;
+	protected final Minecraft minecraft;
 	
 	protected Gui gui = new Gui();
 	
-	protected FontRenderer fontRenderer;
+	protected final FontRenderer fontRenderer;
 
 	public GraphicsMinecraft(Minecraft minecraft)
 	{
@@ -110,7 +108,7 @@ public class GraphicsMinecraft implements IGraphics
 		public void draw()
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getResource()));
-			this.graphics.gui.drawModalRectWithCustomSizedTexture((int) this.dim.getX(), (int) this.dim.getY(), (int) this.sprite.getMinU(), (int) this.sprite.getMinV(), (int) this.sprite.getMaxU(), (int) this.sprite.getMaxV(), (int) this.sprite.getTextureWidth(), (int) this.sprite.getTextureHeight());
+			Gui.drawModalRectWithCustomSizedTexture((int) this.dim.getX(), (int) this.dim.getY(), (int) this.sprite.getMinU(), (int) this.sprite.getMinV(), (int) this.sprite.getMaxU(), (int) this.sprite.getMaxV(), (int) this.sprite.getTextureWidth(), (int) this.sprite.getTextureHeight());
 		}
 		
 	}
@@ -162,7 +160,7 @@ public class GraphicsMinecraft implements IGraphics
 		@Override
 		public void draw()
 		{
-			this.graphics.gui.drawRect((int)this.dim.getX(), (int)this.dim.getY(), (int)(this.dim.getX() + this.dim.getWidth()), (int)(this.dim.getY() + this.dim.getHeight()), this.data.getColorHex());
+			Gui.drawRect((int) this.dim.getX(), (int) this.dim.getY(), (int) (this.dim.getX() + this.dim.getWidth()), (int) (this.dim.getY() + this.dim.getHeight()), this.data.getColorHex());
 		}
 		
 	}

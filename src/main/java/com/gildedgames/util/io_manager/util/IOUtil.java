@@ -1,18 +1,14 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class IOUtil
 {
@@ -138,7 +134,7 @@ public class IOUtil
 	private static class FilenameFilterExtension implements FilenameFilter
 	{
 
-		public String extension;
+		public final String extension;
 
 		public FilenameFilterExtension(String extension)
 		{

@@ -1,16 +1,15 @@
 package com.gildedgames.util.menu;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.gildedgames.util.menu.client.IMenu;
 import net.minecraft.client.gui.GuiScreen;
 
-import com.gildedgames.util.menu.client.IMenu;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuServices
 {
 
-	protected List<IMenu> menus = new ArrayList<IMenu>();
+	protected final List<IMenu> menus = new ArrayList<IMenu>();
 	
 	protected IMenu current;	
 	

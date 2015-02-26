@@ -1,16 +1,5 @@
 package com.gildedgames.util.group;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.group.common.IGroup;
@@ -19,13 +8,16 @@ import com.gildedgames.util.group.common.network.IGroupController;
 import com.gildedgames.util.group.common.network.IGroupPoolController;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.player.PlayerCore;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class GroupCore implements ICore
 {
 
 	public final static GroupCore INSTANCE = new GroupCore();
 
-	private SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
+	private final SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
 
 	public static GroupServices locate()
 	{

@@ -1,20 +1,17 @@
 package com.gildedgames.util.threadedlighting;
 
-import java.util.Arrays;
-
+import com.gildedgames.util.core.UtilCore;
+import com.google.common.eventbus.EventBus;
 import net.minecraftforge.fml.common.DummyModContainer;
 import net.minecraftforge.fml.common.LoadController;
 import net.minecraftforge.fml.common.ModMetadata;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.eventbus.EventBus;
+import java.util.Arrays;
 
 public class ThreadedLighting extends DummyModContainer
 {
-
-	private static boolean debugMode = true;
 
 	private static final Logger logger = LogManager.getLogger("THREADED_LIGHTING");
 
@@ -41,7 +38,7 @@ public class ThreadedLighting extends DummyModContainer
 
 	public static void print(String line)
 	{
-		if (debugMode)
+		if (UtilCore.DEBUG_MODE)
 		{
 			logger.info(line);
 		}

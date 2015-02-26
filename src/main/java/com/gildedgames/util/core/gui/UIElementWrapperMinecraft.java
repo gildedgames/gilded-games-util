@@ -1,17 +1,16 @@
 package com.gildedgames.util.core.gui;
 
-import java.io.IOException;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.UIElementWrapper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+
+import java.io.IOException;
 
 public final class UIElementWrapperMinecraft extends GuiScreen
 {
@@ -22,7 +21,7 @@ public final class UIElementWrapperMinecraft extends GuiScreen
 
 	private final UIElementWrapper elementWrapper;
 
-	private UIView view;
+	private final UIView view;
 
 	public UIElementWrapperMinecraft(UIView view)
 	{

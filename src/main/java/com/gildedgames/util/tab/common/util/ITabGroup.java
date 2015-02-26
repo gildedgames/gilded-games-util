@@ -1,10 +1,10 @@
 package com.gildedgames.util.tab.common.util;
 
-import java.util.List;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.List;
 
 public interface ITabGroup
 {

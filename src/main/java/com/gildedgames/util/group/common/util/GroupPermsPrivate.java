@@ -1,13 +1,8 @@
 package com.gildedgames.util.group.common.util;
 
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GroupPermsPrivate implements IGroupPerms
 {

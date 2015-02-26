@@ -8,7 +8,7 @@ public class BinaryOutputStream
 	
 	private static final int BITS_IN_BYTE = 8;
 	
-	private OutputStream output;
+	private final OutputStream output;
 	
 	private int index;
 	

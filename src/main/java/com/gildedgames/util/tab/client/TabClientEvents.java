@@ -1,17 +1,5 @@
 package com.gildedgames.util.tab.client;
 
-import java.io.IOException;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.input.Mouse;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.client.util.RenderTabGroup;
 import com.gildedgames.util.tab.common.TabAPI;
@@ -19,6 +7,16 @@ import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 public class TabClientEvents
 {
@@ -114,12 +112,9 @@ public class TabClientEvents
 					while (Mouse.next())
 					{
 						ITab hoveredTab = null;
-	
-						if (activeGroup != null)
-						{
-							hoveredTab = this.tabGroupRenderer.getHoveredTab(activeGroup);
-						}
-	
+
+						hoveredTab = tabGroupRenderer.getHoveredTab(activeGroup);
+
 						if (Mouse.getEventButtonState() && hoveredTab != null)
 						{
 							if (hoveredTab != activeGroup.getSelectedTab())
@@ -171,7 +166,7 @@ public class TabClientEvents
 				
 				if (activeGroup != null)
 				{
-					this.tabGroupRenderer.render(activeGroup);
+					tabGroupRenderer.render(activeGroup);
 				}
 			}
 		}

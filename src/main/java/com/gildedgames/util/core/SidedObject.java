@@ -3,7 +3,9 @@ package com.gildedgames.util.core;
 public class SidedObject<T>
 {
 
-	private T client, server;
+	private final T client;
+
+	private final T server;
 
 	public SidedObject(T client, T server)
 	{

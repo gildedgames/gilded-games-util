@@ -1,15 +1,14 @@
 package com.gildedgames.util.world.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.gildedgames.util.world.WorldCore;
+import com.gildedgames.util.world.common.world.IWorld;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 
-import com.gildedgames.util.world.WorldCore;
-import com.gildedgames.util.world.common.world.IWorld;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 {
@@ -18,7 +17,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 
 	private List<W> hooks = new ArrayList<W>();
 
-	private String poolName;
+	private final String poolName;
 
 	public WorldHookPool(IWorldHookFactory<W> factory, String poolName)
 	{

@@ -1,9 +1,8 @@
 package com.gildedgames.util.core.gui;
 
+import com.gildedgames.util.ui.data.IResource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-
-import com.gildedgames.util.ui.data.IResource;
 
 public class Resource implements IResource
 {

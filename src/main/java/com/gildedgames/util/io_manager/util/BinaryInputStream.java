@@ -10,7 +10,7 @@ public class BinaryInputStream
 	
 	private static final int BITS_IN_BYTE = 8;
 
-	private InputStream input;
+	private final InputStream input;
 	
 	private byte buffer;
 	

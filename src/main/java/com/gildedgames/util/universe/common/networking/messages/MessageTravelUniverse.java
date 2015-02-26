@@ -1,5 +1,7 @@
 package com.gildedgames.util.universe.common.networking.messages;
 
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.util.IUniverse;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -7,9 +9,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.util.IUniverse;
 
 public class MessageTravelUniverse implements IMessage
 {

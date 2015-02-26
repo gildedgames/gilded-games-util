@@ -1,12 +1,11 @@
 package com.gildedgames.util.universe;
 
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
 import com.gildedgames.util.universe.common.player.PlayerUniverseFactory;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class UniverseServices
 {
@@ -15,7 +14,7 @@ public class UniverseServices
 
 	public UniverseAPI api;
 
-	private Side side;
+	private final Side side;
 
 	public UniverseServices(Side side)
 	{

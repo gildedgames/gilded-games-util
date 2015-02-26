@@ -1,18 +1,17 @@
 package com.gildedgames.util.group.common.network;
 
-import java.util.List;
-
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPool;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.List;
 
 public class GroupPoolController implements IGroupPoolController
 {
 	
 	private IGroupPool targetPool;
 	
-	private Side side;
+	private final Side side;
 	
 	public GroupPoolController(Side side)
 	{

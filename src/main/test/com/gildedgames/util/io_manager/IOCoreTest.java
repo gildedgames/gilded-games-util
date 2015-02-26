@@ -74,8 +74,8 @@ public class IOCoreTest
 			}
 			catch (IOException e)
 			{
-				Assert.fail();
 				e.printStackTrace();
+				Assert.fail();
 			}
 		}
 	}

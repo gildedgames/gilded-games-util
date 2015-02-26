@@ -1,14 +1,5 @@
 package com.gildedgames.util.group.common.util;
 
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroup;
@@ -16,11 +7,16 @@ import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.IGroupPool;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.IOCore;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Group implements IGroup
 {
 	
-	protected IGroupPool parentPool;
+	protected final IGroupPool parentPool;
 	
 	protected IGroupPerms permissions;
 	
@@ -28,9 +24,9 @@ public class Group implements IGroup
 	
 	protected GroupMember owner;
 	
-	protected List<GroupMember> members = new ArrayList<GroupMember>();
+	protected final List<GroupMember> members = new ArrayList<GroupMember>();
 	
-	protected List<GroupMember> invitedMembers = new ArrayList<GroupMember>();
+	protected final List<GroupMember> invitedMembers = new ArrayList<GroupMember>();
 	
 	public Group(IGroupPool parentPool, IGroupPerms permissions)
 	{
@@ -52,7 +48,7 @@ public class Group implements IGroup
 	{
 		NBTFactory factory = new NBTFactory();
 		
-		this.permissions = (IGroupPerms) IOCore.io().get("permissions", input, factory);
+		this.permissions = IOCore.io().get("permissions", input, factory);
 		this.name = input.getString("name");
 	}
 

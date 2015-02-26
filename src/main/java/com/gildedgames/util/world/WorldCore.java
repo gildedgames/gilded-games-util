@@ -1,17 +1,5 @@
 package com.gildedgames.util.world;
 
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
@@ -21,6 +9,10 @@ import com.gildedgames.util.world.common.WorldEventHandler;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryClient;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryServer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.*;
 
 public class WorldCore implements ICore
 {
@@ -30,7 +22,7 @@ public class WorldCore implements ICore
 	//Change the factories here to use different IWorlds throughout the workspace
 	private final SidedObject<WorldServices> serviceLocator;
 
-	private WorldEventHandler worldEventHandler = new WorldEventHandler();
+	private final WorldEventHandler worldEventHandler = new WorldEventHandler();
 
 	public WorldCore()
 	{

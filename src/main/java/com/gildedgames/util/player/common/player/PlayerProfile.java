@@ -1,12 +1,11 @@
 package com.gildedgames.util.player.common.player;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+
+import java.util.UUID;
 
 public class PlayerProfile implements IPlayerProfile
 {
@@ -178,12 +177,7 @@ public class PlayerProfile implements IPlayerProfile
 			return true;
 		}
 		
-		if (obj instanceof PlayerProfile && this.getUUID().equals(((PlayerProfile) obj).getUUID()))
-		{
-			return true;
-		}
-		
-		return false;
+		return obj instanceof PlayerProfile && this.getUUID().equals(((PlayerProfile) obj).getUUID());
 	}
 
 }

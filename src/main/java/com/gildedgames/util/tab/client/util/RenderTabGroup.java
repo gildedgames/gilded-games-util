@@ -1,5 +1,8 @@
 package com.gildedgames.util.tab.client.util;
 
+import com.gildedgames.util.tab.common.util.ITab;
+import com.gildedgames.util.tab.common.util.ITabGroup;
+import com.gildedgames.util.tab.common.util.TabGroupHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -8,13 +11,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
-import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.tab.common.util.ITabGroup;
-import com.gildedgames.util.tab.common.util.TabGroupHandler;
 
 public class RenderTabGroup extends Gui
 {

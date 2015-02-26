@@ -1,24 +1,16 @@
 package com.gildedgames.util.menu;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.menu.client.IMenu;
+import net.minecraftforge.fml.common.event.*;
 
 public class MenuCore implements ICore
 {
 	
 	public static final MenuCore INSTANCE = new MenuCore();
 	
-	private SidedObject<MenuServices> serviceLocator = new SidedObject<MenuServices>(new MenuServices(), new MenuServices());
+	private final SidedObject<MenuServices> serviceLocator = new SidedObject<MenuServices>(new MenuServices(), new MenuServices());
 
 	public MenuCore()
 	{

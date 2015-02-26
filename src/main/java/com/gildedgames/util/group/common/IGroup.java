@@ -1,11 +1,10 @@
 package com.gildedgames.util.group.common;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.group.common.player.GroupMember;
+import net.minecraft.entity.player.EntityPlayer;
+
+import java.util.List;
 
 public interface IGroup extends NBT
 {

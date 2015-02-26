@@ -6,7 +6,7 @@ import java.util.List;
 public class TabGroup implements ITabGroup
 {
 	
-	protected ArrayList<ITab> tabs = new ArrayList<ITab>();
+	protected final ArrayList<ITab> tabs = new ArrayList<ITab>();
 	
 	protected ITab selectedTab, rememberedTab;
 

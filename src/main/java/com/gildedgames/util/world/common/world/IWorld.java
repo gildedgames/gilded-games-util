@@ -1,12 +1,12 @@
 package com.gildedgames.util.world.common.world;
 
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
+
+import java.util.Random;
 
 /**
  * Wrapper around an implementation of Minecraft worlds.

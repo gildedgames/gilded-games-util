@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.IOException;
-
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
@@ -12,6 +10,8 @@ import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.google.common.base.Optional;
+
+import java.io.IOException;
 
 public class IOSerializerDefault implements IOSerializer
 {

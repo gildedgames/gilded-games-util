@@ -1,11 +1,5 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
@@ -18,12 +12,14 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.gildedgames.util.io_manager.overhead.IOVolatileController;
 
+import java.io.*;
+
 public class IOVolatileControllerDefault implements IOVolatileController
 {
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	private IOManager manager;
+	private final IOManager manager;
 
 	public IOVolatileControllerDefault(IOManager manager)
 	{
@@ -131,9 +127,7 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		I input = factory.createInput(outputBridge.getBytes());
 
-		T clone = this.get("clonedObject", input, factory);
-
-		return clone;
+		return this.get("clonedObject", input, factory);
 	}
 
 	@SuppressWarnings("unchecked")

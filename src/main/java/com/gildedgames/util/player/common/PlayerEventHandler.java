@@ -1,5 +1,10 @@
 package com.gildedgames.util.player.common;
 
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
+import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookClient;
+import com.gildedgames.util.player.common.player.IPlayerHook;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -10,12 +15,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensio
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
-
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
-import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookClient;
-import com.gildedgames.util.player.common.player.IPlayerHook;
 
 public class PlayerEventHandler
 {

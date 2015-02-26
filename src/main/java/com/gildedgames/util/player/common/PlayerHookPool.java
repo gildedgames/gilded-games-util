@@ -1,18 +1,13 @@
 package com.gildedgames.util.player.common;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.PlayerProfile;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.*;
 
 public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {

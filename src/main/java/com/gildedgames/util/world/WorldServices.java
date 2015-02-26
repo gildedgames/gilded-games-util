@@ -1,18 +1,18 @@
 package com.gildedgames.util.world;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.IWorldFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WorldServices
 {
 
 	private List<IWorldHookPool<?>> worldPools;
 
-	private List<IWorld> worldWrappers = new ArrayList<IWorld>();
+	private final List<IWorld> worldWrappers = new ArrayList<IWorld>();
 
 	private final IWorldFactory<?> wrapperFactory;//Change to use different IWorld wrappers
 

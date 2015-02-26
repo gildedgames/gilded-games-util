@@ -1,12 +1,11 @@
 package com.gildedgames.util.player.common;
 
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import net.minecraft.entity.player.EntityPlayer;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-
-import com.gildedgames.util.player.common.player.IPlayerHook;
 
 public interface IPlayerHookPool<T extends IPlayerHook>
 {

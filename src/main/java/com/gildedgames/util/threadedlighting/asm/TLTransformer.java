@@ -1,20 +1,13 @@
 package com.gildedgames.util.threadedlighting.asm;
 
-import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
-import static org.objectweb.asm.Opcodes.INVOKESPECIAL;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import net.minecraft.launchwrapper.IClassTransformer;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.tree.*;
 
 import java.util.Iterator;
 
-import net.minecraft.launchwrapper.IClassTransformer;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.MethodInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.TypeInsnNode;
+import static org.objectweb.asm.Opcodes.*;
 
 public class TLTransformer implements IClassTransformer
 {
@@ -167,7 +160,10 @@ public class TLTransformer implements IClassTransformer
 					if (mn.owner.equals(oldInstance) && mn.name.equals("<init>"))
 					{
 						mn.owner = newInstance;
-						previousTypeInsnNode.desc = newInstance;
+						if(previousTypeInsnNode != null)
+						{
+							previousTypeInsnNode.desc = newInstance;
+						}
 					}
 				}
 			}

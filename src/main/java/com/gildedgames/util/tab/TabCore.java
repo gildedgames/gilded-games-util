@@ -1,26 +1,18 @@
 package com.gildedgames.util.tab;
 
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TabCore implements ICore
 {
 	
 	public static final TabCore INSTANCE = new TabCore();
 	
-	private SidedObject<TabServices> serviceLocator = new SidedObject<TabServices>(new TabServices(), new TabServices());
+	private final SidedObject<TabServices> serviceLocator = new SidedObject<TabServices>(new TabServices(), new TabServices());
 
 	public static TabServices locate()
 	{

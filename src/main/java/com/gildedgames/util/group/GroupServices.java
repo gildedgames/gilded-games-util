@@ -1,10 +1,5 @@
 package com.gildedgames.util.group;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPool;
 import com.gildedgames.util.group.common.network.GroupController;
@@ -15,13 +10,17 @@ import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.group.common.player.GroupMemberFactory;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
+import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupServices
 {
 
 	private IPlayerHookPool<GroupMember> players;
 
-	private Side side;
+	private final Side side;
 	
 	private IGroupController groupController;
 	
