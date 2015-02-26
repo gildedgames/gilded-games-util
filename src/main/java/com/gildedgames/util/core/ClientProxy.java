@@ -15,7 +15,6 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.ui.TestTab;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
 public class ClientProxy extends ServerProxy
@@ -55,8 +54,6 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.INSTANCE.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
-		
-		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 
 	}
 
