@@ -17,6 +17,6 @@ public interface IGraphics
 
 	void drawRectangle(Dimensions2D dim, DrawingData data);
 	
-	void drawGradientRectangle(DrawingData startColor, DrawingData endColor, Dimensions2D dim);
+	void drawGradientRectangle(Dimensions2D dim, DrawingData startColor, DrawingData endColor);
 	
 }

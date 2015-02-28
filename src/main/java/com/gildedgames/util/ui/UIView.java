@@ -2,11 +2,12 @@ package com.gildedgames.util.ui;
 
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.input.InputProvider;
 
 public interface UIView extends UIElement
 {
 
-	void draw(IGraphics graphics);
+	void draw(IGraphics graphics, InputProvider input);
 
 	boolean isVisible();
 
@@ -16,6 +17,6 @@ public interface UIView extends UIElement
 
 	void setFocusArea(Dimensions2D focusArea);
 	
-	void onFocused();
+	void onFocused(InputProvider input);
 	
 }

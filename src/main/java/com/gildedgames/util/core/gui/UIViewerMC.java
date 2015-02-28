@@ -4,18 +4,18 @@ import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.UIViewer;
 import net.minecraft.client.Minecraft;
 
-public class UIViewerMinecraft implements UIViewer
+public class UIViewerMC implements UIViewer
 {
 	
-	public UIViewerMinecraft()
+	public UIViewerMC()
 	{
 		
 	}
 	
 	@Override
 	public void view(UIView view)
-	{
-		Minecraft.getMinecraft().displayGuiScreen(new UIElementWrapperMinecraft(view));
+	{	
+		Minecraft.getMinecraft().displayGuiScreen(view == null ? null : new UIElementWrapperMC(view));
 	}
 	
 }

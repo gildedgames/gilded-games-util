@@ -6,19 +6,29 @@ import com.gildedgames.util.ui.data.IResource;
 public class Sprite
 {
 	
-	private final double minU, minV, maxU, maxV, textureWidth, textureHeight;
+	private final double u, v, width, height, textureWidth, textureHeight;
 
 	private final IResource resource;
 	
-	public Sprite(IResource resource, double minU, double minV, double maxU, double maxV, double textureWidth, double textureHeight)
+	public Sprite(IResource resource, double width, double height)
+	{
+		this(resource, width, height, width, height);
+	}
+	
+	public Sprite(IResource resource, double width, double height, double textureWidth, double textureHeight)
+	{
+		this(resource, 0, 0, width, height, textureWidth, textureHeight);
+	}
+
+	public Sprite(IResource resource, double u, double v, double width, double height, double textureWidth, double textureHeight)
 	{
 		this.resource = resource;
 		
-		this.minU = minU;
-		this.minV = minV;
+		this.u = u;
+		this.v = v;
 		
-		this.maxU = maxU;
-		this.maxV = maxV;
+		this.width = width;
+		this.height = height;
 		
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
@@ -41,22 +51,32 @@ public class Sprite
 
     public double getMinU()
     {
-    	return this.minU;
+    	return this.u;
     }
 
     public double getMinV()
     {
-    	return this.minV;
+    	return this.v;
     }
     
     public double getMaxU()
     {
-        return this.maxU;
+        return this.getMinU() + this.getWidth();
     }
 
     public double getMaxV()
     {
-        return this.maxV;
+        return this.getMinV() + this.getHeight();
+    }
+    
+    public double getWidth()
+    {
+    	return this.width;
+    }
+    
+    public double getHeight()
+    {
+    	return this.height;
     }
 	
 }

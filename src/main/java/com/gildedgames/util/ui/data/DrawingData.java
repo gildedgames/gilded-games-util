@@ -1,63 +1,46 @@
 package com.gildedgames.util.ui.data;
 
-import javax.vecmath.Color4f;
+import java.awt.Color;
+
 
 public class DrawingData
 {
 
-	protected final float scale;
-	
-	protected final Color4f color;
+	protected final Color color;
 	
 	public DrawingData()
 	{
-		this(1.0F);
+		this(new Color(1.0F, 1.0F, 1.0F, 1.0F));
 	}
 	
-	public DrawingData(float scale)
+	public DrawingData(Color color)
 	{
-		this(scale, new Color4f(1.0F, 1.0F, 1.0F, 1.0F));
-	}
-	
-	public DrawingData(float scale, Color4f color)
-	{
-		this.scale = scale;
 		this.color = color;
 	}
-	
-	public int getColorHex()
-	{
-		return Integer.valueOf(String.format("%02X%02X%02X%02X", this.getRed(), this.getGreen(), this.getBlue(), this.getAlpha()));
-	}
-	
-	public Color4f getColor()
+
+	public Color getColor()
 	{
 		return this.color;
 	}
 	
 	public float getAlpha()
 	{
-		return this.color.w;
+		return this.color.getAlpha();
 	}
 	
 	public float getRed()
 	{
-		return this.color.x;
+		return this.color.getRed();
 	}
 	
 	public float getGreen()
 	{
-		return this.color.y;
+		return this.color.getGreen();
 	}
 	
 	public float getBlue()
 	{
-		return this.color.z;
+		return this.color.getBlue();
 	}
-	
-	public float getScale()
-	{
-		return this.scale;
-	}
-	
+
 }

@@ -26,5 +26,18 @@ public class ListFilter
 
 		return returnList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getType(Object object, Class<? extends T> typeClass)
+	{
+		T returnObject = null;
+
+		if (object != null && typeClass.isAssignableFrom(object.getClass()))
+		{
+			returnObject = (T) object;
+		}
+
+		return returnObject;
+	}
 
 }

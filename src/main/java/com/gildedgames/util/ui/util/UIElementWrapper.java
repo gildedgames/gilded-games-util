@@ -1,20 +1,22 @@
 package com.gildedgames.util.ui.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIOverhead;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Dimensions2DMutable;
 import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListener, IMouseListener
+public class UIElementWrapper implements UIOverhead
 {
 
 	protected final static ListFilter LIST_FILTER = new ListFilter();
@@ -25,26 +27,26 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 
 	protected boolean enabled = true;
 
-	protected final Dimensions2D screenDimensions;
+	protected Dimensions2D screen;
 
 	/**
 	 * @param holderDimensions Where the elements are drawn in
-	 * @param screenDimensions The dimensions of the screen
+	 * @param screen The dimensions of the screen
 	 * @param graphicsClass The class to use for the graphics
 	 */
-	public UIElementWrapper(Dimensions2D screenDimensions)
+	public UIElementWrapper()
 	{
-		this.screenDimensions = screenDimensions;
+		
 	}
 
 	@Override
-	public void draw(IGraphics graphics)
+	public void draw(IGraphics graphics, InputProvider input)
 	{
 		for (UIView element : LIST_FILTER.getTypesFrom(this.elements, UIView.class))
 		{
 			if (element != null && element.isVisible())
 			{
-				element.draw(graphics);
+				element.draw(graphics, input);
 			}
 		}
 	}
@@ -81,7 +83,7 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 	}
 
 	@Override
-	public void onMouseState(int mouseX, int mouseY, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
 	{
 		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
@@ -92,13 +94,13 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 
 			if (element.isEnabled())
 			{
-				element.onMouseState(mouseX, mouseY, button, state);
+				element.onMouseState(input, button, state);
 			}
 		}
 	}
 
 	@Override
-	public void onMouseScroll(int mouseX, int mouseY, int scrollDifference)
+	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
 		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
@@ -109,13 +111,13 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 
 			if (element.isEnabled())
 			{
-				element.onMouseScroll(mouseX, mouseY, scrollDifference);
+				element.onMouseScroll(input, scrollDifference);
 			}
 		}
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
+	public void init(UIElementHolder elementHolder, Dimensions2D screen)
 	{
 		for (UIElement element : LIST_FILTER.getTypesFrom(this.elements, UIElement.class))
 		{
@@ -124,7 +126,7 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 				continue;
 			}
 
-			element.init(this, screenDimensions);
+			element.init(elementHolder, screen);
 		}
 	}
 
@@ -143,8 +145,6 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 	@Override
 	public void add(UIElement element)
 	{
-		element.init(this, this.screenDimensions);
-
 		this.elements.add(element);
 	}
 
@@ -152,6 +152,12 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 	public void remove(UIElement element)
 	{
 		this.elements.remove(element);
+	}
+	
+	@Override
+	public void clear()
+	{
+		this.elements.clear();
 	}
 
 	@Override
@@ -179,9 +185,27 @@ public class UIElementWrapper implements UIView, UIElementHolder, IKeyboardListe
 	}
 
 	@Override
-	public void onFocused()
+	public void onFocused(InputProvider input)
 	{
-		
+		for (UIView element : LIST_FILTER.getTypesFrom(this.elements, UIView.class))
+		{
+			if (element != null && element.isEnabled() && input.isHovered(element.getFocusArea()))
+			{
+				element.onFocused(input);
+			}
+		}
+	}
+
+	@Override
+	public List<UIElement> getElements()
+	{
+		return this.elements;
+	}
+
+	@Override
+	public void setScreen(Dimensions2D screen)
+	{
+		this.screen = screen;
 	}
 
 }

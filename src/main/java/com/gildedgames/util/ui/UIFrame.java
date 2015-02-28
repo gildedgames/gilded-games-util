@@ -1,42 +1,43 @@
 package com.gildedgames.util.ui;
 
+import java.util.List;
+
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.IKeyboardListener;
-import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
 
-public abstract class UIFrame implements UIView, UIElementHolder, IKeyboardListener, IMouseListener
+public abstract class UIFrame implements UIOverhead
 {
 	
 	private final UIElementWrapper elementWrapper;
 	
-	protected boolean visible = true;
-
-	protected boolean enabled = true;
+	private boolean visible = true;
 	
-	protected Dimensions2D focusArea;
+	private boolean enabled = true;
 	
-	public UIFrame(Dimensions2D focusArea, Dimensions2D screenDimensions)
+	private Dimensions2D focusArea;
+	
+	public UIFrame(Dimensions2D focusArea)
 	{
-		this.elementWrapper = new UIElementWrapper(screenDimensions);
+		this.elementWrapper = new UIElementWrapper();
 		
 		this.focusArea = focusArea;
 	}
 	
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
+	public void init(UIElementHolder holder, Dimensions2D screen)
 	{
-		this.elementWrapper.init(elementHolder, screenDimensions);
+		this.elementWrapper.init(holder, screen);
 	}
 	
 	@Override
-	public void draw(IGraphics graphics)
+	public void draw(IGraphics graphics, InputProvider input)
 	{
-		this.elementWrapper.draw(graphics);
+		this.elementWrapper.draw(graphics, input);
 	}
 	
 	@Override
@@ -52,21 +53,33 @@ public abstract class UIFrame implements UIView, UIElementHolder, IKeyboardListe
 	}
 	
 	@Override
+	public final void clear()
+	{
+		this.elementWrapper.clear();
+	}
+	
+	@Override
+	public final List<UIElement> getElements()
+	{
+		return this.elementWrapper.getElements();
+	}
+	
+	@Override
 	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
 	{
 		return this.elementWrapper.onKeyState(charTyped, keyTyped, state);
 	}
 	
 	@Override
-	public void onMouseState(int mouseX, int mouseY, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
 	{
-		this.elementWrapper.onMouseState(mouseX, mouseY, button, state);
+		this.elementWrapper.onMouseState(input, button, state);
 	}
 
 	@Override
-	public void onMouseScroll(int mouseX, int mouseY, int scrollDifference)
+	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		this.elementWrapper.onMouseScroll(mouseX, mouseY, scrollDifference);
+		this.elementWrapper.onMouseScroll(input, scrollDifference);
 	}
 	
 	@Override
@@ -103,6 +116,18 @@ public abstract class UIFrame implements UIView, UIElementHolder, IKeyboardListe
 	public void setFocusArea(Dimensions2D focusArea)
 	{
 		this.focusArea = focusArea;
+	}
+	
+	@Override
+	public void onFocused(InputProvider input)
+	{
+		this.elementWrapper.onFocused(input);
+	}
+	
+	@Override
+	public void setScreen(Dimensions2D screen)
+	{
+		this.elementWrapper.setScreen(screen);
 	}
 	
 }

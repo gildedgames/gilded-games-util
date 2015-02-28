@@ -13,50 +13,63 @@ public class Dimensions2D
 	
 	protected final boolean centeredVertically, centeredHorizontally;
 	
-	private Dimensions2D()
+	protected final float scale;
+	
+	public Dimensions2D()
 	{
-		this(0, 0);
-	}
-
-	public Dimensions2D(float width, float height)
-	{
-		this(new Position2D(0, 0), width, height);
+		this(new Position2D(0, 0), 0, 0, 0, false, false);
 	}
 	
-	public Dimensions2D(Position2D position, float width, float height)
+	public Dimensions2D(Dimensions2D dim)
 	{
-		this(position, width, height, false);
-	}
-	
-	public Dimensions2D(Position2D position, float width, float height, boolean centered)
-	{
-		this(position, width, height, centered, centered);
+		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredVertically(), dim.isCenteredHorizontally());
 	}
 
-	public Dimensions2D(Position2D position, float width, float height, boolean centeredVertically, boolean centeredHorizontally)
+	private Dimensions2D(Position2D position, float width, float height, float scale, boolean centeredVertically, boolean centeredHorizontally)
 	{
+		this.position = position;
+		
 		this.width = width;
 		this.height = height;
-
-		this.position = position;
+		
+		this.scale = scale;
 		
 		this.centeredVertically = centeredVertically;
 		this.centeredHorizontally = centeredHorizontally;
 	}
+	
+	public float getScale()
+	{
+		return this.scale;
+	}
+	
+	private float getScaledX()
+	{
+		float offset = this.isCenteredHorizontally() ? (this.getWidth() * this.getScale()) / 2 : 0;
+		
+		return this.position.getX() - offset;
+	}
+	
+	private float getScaledY()
+	{
+		float offset = this.isCenteredVertically() ? (this.getHeight() * this.getScale()) / 2 : 0;
+		
+		return this.position.getY() - offset;
+	}
 
 	public Position2D getPosition()
 	{
-		return this.position;
+		return new Position2D(this.getScaledX(), this.getScaledY());
 	}
-
+	
 	public float getX()
 	{
-		return this.position.getX();
+		return this.getScaledX();
 	}
 
 	public float getY()
 	{
-		return this.position.getY();
+		return this.getScaledY();
 	}
 
 	public float getWidth()
@@ -78,25 +91,30 @@ public class Dimensions2D
 	{
 		return this.centeredHorizontally;
 	}
-
-	public Dimensions2D copyWith(float width, float height)
+	
+	public Dimensions2D set(float scale)
 	{
-		return new Dimensions2D(this.position, width, height);
+		return new Dimensions2D(this.position, this.width, this.height, scale, this.centeredVertically, this.centeredHorizontally);
 	}
 
-	public Dimensions2D copyWith(Position2D position)
+	public Dimensions2D set(float width, float height)
 	{
-		return new Dimensions2D(position, this.width, this.height);
+		return new Dimensions2D(this.position, width, height, this.scale, this.centeredVertically, this.centeredHorizontally);
+	}
+
+	public Dimensions2D set(Position2D position)
+	{
+		return new Dimensions2D(position, this.width, this.height, this.scale, this.centeredVertically, this.centeredHorizontally);
 	}
 	
-	public Dimensions2D copyWith(boolean centered)
+	public Dimensions2D set(boolean centered)
 	{
-		return this.copyWith(centered, centered);
+		return this.set(centered, centered);
 	}
 	
-	public Dimensions2D copyWith(boolean centeredVertically, boolean centeredHorizontally)
+	public Dimensions2D set(boolean centeredVertically, boolean centeredHorizontally)
 	{
-		return new Dimensions2D(this.position, this.width, this.height, centeredVertically, centeredHorizontally);
+		return new Dimensions2D(this.position, this.width, this.height, this.scale, centeredVertically, centeredHorizontally);
 	}
 	
 	public static Dimensions2D combine(List<Dimensions2D> dimensions)
@@ -115,8 +133,8 @@ public class Dimensions2D
 				float maxX = Math.max(result.getX() + result.getWidth(), dimension.getX() + dimension.getWidth());
 				float maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
 				
-				result = result.copyWith(new Position2D(minX, minY));
-				result = result.copyWith(maxX - minY, maxY - minY);
+				result = result.set(new Position2D(minX, minY));
+				result = result.set(maxX - minY, maxY - minY);
 			}
 		}
 		

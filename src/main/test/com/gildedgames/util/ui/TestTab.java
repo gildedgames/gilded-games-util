@@ -4,7 +4,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.gui.UIElementWrapperMinecraft;
+import com.gildedgames.util.core.gui.UIElementWrapperMC;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 
 public class TestTab extends TabBackpack
@@ -19,9 +19,9 @@ public class TestTab extends TabBackpack
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		if (gui instanceof UIElementWrapperMinecraft)
+		if (gui instanceof UIElementWrapperMC)
 		{
-			UIElementWrapperMinecraft wrapper = (UIElementWrapperMinecraft)gui;
+			UIElementWrapperMC wrapper = (UIElementWrapperMC)gui;
 			
 			return wrapper.getView().getClass() == TestUI.class;
 		}

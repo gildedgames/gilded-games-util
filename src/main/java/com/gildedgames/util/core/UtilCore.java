@@ -1,6 +1,25 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.core.gui.UIViewerMinecraft;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.util.core.gui.UIViewerMC;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
@@ -9,17 +28,6 @@ import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.tab.TabCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.relauncher.Side;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
 public class UtilCore implements ICore
@@ -56,7 +64,7 @@ public class UtilCore implements ICore
 		
 		if (UtilCore.isClient())
 		{
-			clientLocator = new UtilServices(new UIViewerMinecraft());
+			clientLocator = new UtilServices(new UIViewerMC());
 		}
 		
 		UtilServices serverLocator = new UtilServices(null);

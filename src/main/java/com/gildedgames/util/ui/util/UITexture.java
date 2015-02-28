@@ -1,12 +1,14 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.graphics.Sprite;
+import com.gildedgames.util.ui.input.InputProvider;
 
-public class UITexture extends UIGraphicalAbstract
+public class UITexture extends UIFrame
 {
 
 	protected final Sprite sprite;
@@ -37,15 +39,21 @@ public class UITexture extends UIGraphicalAbstract
 	}
 
 	@Override
-	public void draw(IGraphics graphics)
+	public void draw(IGraphics graphics, InputProvider input)
 	{
-		graphics.drawSprite(this.sprite, this.dimensions, this.data);
+		graphics.drawSprite(this.sprite, this.getFocusArea(), this.data);
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
+	public void init(UIElementHolder holder, Dimensions2D screen)
 	{
-		
+		super.init(holder, screen);
+	}
+
+	@Override
+	public void onFocused(InputProvider input)
+	{
+		super.onFocused(input);
 	}
 
 }

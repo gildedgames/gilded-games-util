@@ -13,13 +13,13 @@ public class TeleporterGeneric extends Teleporter
 	}
 	
 	@Override
-	public boolean placeInExistingPortal(Entity entityIn, float p_180620_2_) 
+	public boolean func_180620_b(Entity entityIn, float p_180620_2_) 
 	{
 		return false;
 	}
 	
 	@Override
-	public void placeInPortal(Entity entityIn, float rotationYaw)
+	public void func_180266_a(Entity entityIn, float rotationYaw)
 	{
 		
 	}

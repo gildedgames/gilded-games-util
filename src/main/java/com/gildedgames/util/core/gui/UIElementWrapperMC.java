@@ -12,23 +12,27 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import java.io.IOException;
 
-public final class UIElementWrapperMinecraft extends GuiScreen
+public final class UIElementWrapperMC extends GuiScreen
 {
 
-	protected final static GraphicsMinecraft GRAPHICS = new GraphicsMinecraft(Minecraft.getMinecraft());
+	protected final static GraphicsMC GRAPHICS = new GraphicsMC(Minecraft.getMinecraft());
 
-	protected static Dimensions2D SCREEN_DIMENSIONS = new Dimensions2D(0, 0);
+	protected final static InputProviderMC INPUT = new InputProviderMC(Minecraft.getMinecraft());
+	
+	protected static Dimensions2D SCREEN_DIMENSIONS = new Dimensions2D();
 
-	private final UIElementWrapper elementWrapper;
+	private final UIElementWrapper elementWrapper, viewWrapper;
 
 	private final UIView view;
 
-	public UIElementWrapperMinecraft(UIView view)
+	public UIElementWrapperMC(UIView view)
 	{
 		this.view = view;
-		this.elementWrapper = new UIElementWrapper(SCREEN_DIMENSIONS);
 		
-		this.elementWrapper.add(this.view);
+		this.elementWrapper = new UIElementWrapper();
+		this.viewWrapper = new UIElementWrapper();
+		
+		this.viewWrapper.add(this.view);
 	}
 	
 	public UIView getView()
@@ -46,14 +50,21 @@ public final class UIElementWrapperMinecraft extends GuiScreen
 		this.width = resolution.getScaledWidth();
 		this.height = resolution.getScaledHeight();
 
-		SCREEN_DIMENSIONS = SCREEN_DIMENSIONS.copyWith(this.width, this.height);
+		SCREEN_DIMENSIONS = SCREEN_DIMENSIONS.set(this.width, this.height);
 
+		this.elementWrapper.clear();
+		
+		this.viewWrapper.setScreen(SCREEN_DIMENSIONS);
+		this.elementWrapper.setScreen(SCREEN_DIMENSIONS);
+		
+		this.viewWrapper.init(this.elementWrapper, SCREEN_DIMENSIONS);
 		this.elementWrapper.init(this.elementWrapper, SCREEN_DIMENSIONS);
 	}
 
 	@Override
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
+		this.viewWrapper.onKeyState(charTyped, keyTyped, ButtonState.PRESS);
 		this.elementWrapper.onKeyState(charTyped, keyTyped, ButtonState.PRESS);
 	}
 
@@ -62,7 +73,11 @@ public final class UIElementWrapperMinecraft extends GuiScreen
 	{
 		MouseButton button = MouseButton.fromIndex(mouseButtonIndex);
 
-		this.elementWrapper.onMouseState(mouseX, mouseY, button, ButtonState.PRESS);
+		this.viewWrapper.onMouseState(INPUT, button, ButtonState.PRESS);
+		this.elementWrapper.onMouseState(INPUT, button, ButtonState.PRESS);
+		
+		this.viewWrapper.onFocused(INPUT);
+		this.elementWrapper.onFocused(INPUT);
 	}
 
 	@Override
@@ -70,13 +85,18 @@ public final class UIElementWrapperMinecraft extends GuiScreen
 	{
 		MouseButton button = MouseButton.fromIndex(mouseButtonIndex);
 
-		this.elementWrapper.onMouseState(mouseX, mouseY, button, ButtonState.RELEASED);
+		this.viewWrapper.onMouseState(INPUT, button, ButtonState.RELEASED);
+		this.elementWrapper.onMouseState(INPUT, button, ButtonState.RELEASED);
+		
+		this.viewWrapper.onFocused(INPUT);
+		this.elementWrapper.onFocused(INPUT);
 	}
 
 	@Override
 	public final void drawScreen(int mouseX, int mouseY, float partialTick)
 	{
-		this.elementWrapper.draw(GRAPHICS);
+		this.viewWrapper.draw(GRAPHICS, INPUT);
+		this.elementWrapper.draw(GRAPHICS, INPUT);
 	}
 
 	@Override

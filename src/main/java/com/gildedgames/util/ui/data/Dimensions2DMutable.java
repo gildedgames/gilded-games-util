@@ -5,33 +5,18 @@ public class Dimensions2DMutable extends Dimensions2D
 	
 	protected Position2D position;
 
-	protected float width, height;
+	protected float width, height, scale;
 	
 	protected boolean centeredVertically, centeredHorizontally;
 	
 	public Dimensions2DMutable(Dimensions2D dim)
 	{
-		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.isCenteredVertically(), dim.isCenteredHorizontally());
+		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredVertically(), dim.isCenteredHorizontally());
 	}
 
-	public Dimensions2DMutable(float width, float height)
+	public Dimensions2DMutable(Position2D position, float width, float height, float scale, boolean centeredVertically, boolean centeredHorizontally)
 	{
-		this(new Position2D(0, 0), width, height);
-	}
-	
-	public Dimensions2DMutable(Position2D position, float width, float height)
-	{
-		this(position, width, height, false);
-	}
-	
-	public Dimensions2DMutable(Position2D position, float width, float height, boolean centered)
-	{
-		this(position, width, height, centered, centered);
-	}
-
-	public Dimensions2DMutable(Position2D position, float width, float height, boolean centeredVertically, boolean centeredHorizontally)
-	{
-		super(position, width, height, centeredVertically, centeredHorizontally);
+		super();
 		
 		this.width = width;
 		this.height = height;
@@ -42,42 +27,64 @@ public class Dimensions2DMutable extends Dimensions2D
 		this.centeredHorizontally = centeredHorizontally;
 	}
 	
+	@Override
+	public float getScale()
+	{
+		return this.scale;
+	}
+	
+	@Override
 	public Position2D getPosition()
 	{
 		return this.position;
 	}
 
+	@Override
 	public float getX()
 	{
 		return this.position.getX();
 	}
 
+	@Override
 	public float getY()
 	{
 		return this.position.getY();
 	}
 
+	@Override
 	public float getWidth()
 	{
 		return this.width;
 	}
 
+	@Override
 	public float getHeight()
 	{
 		return this.height;
 	}
 	
+	@Override
 	public boolean isCenteredVertically()
 	{
 		return this.centeredVertically;
 	}
 	
+	@Override
 	public boolean isCenteredHorizontally()
 	{
 		return this.centeredHorizontally;
 	}
 
-	public Dimensions2D copyWith(float width, float height)
+	@Override
+	public Dimensions2D set(float scale)
+	{
+		this.scale = scale;
+		
+		return this;
+	}
+	
+	@Override
+	public Dimensions2D set(float width, float height)
 	{
 		this.width = width;
 		this.height = height;
@@ -85,19 +92,22 @@ public class Dimensions2DMutable extends Dimensions2D
 		return this;
 	}
 
-	public Dimensions2D copyWith(Position2D position)
+	@Override
+	public Dimensions2D set(Position2D position)
 	{
 		this.position = position;
 		
 		return this;
 	}
 	
-	public Dimensions2D copyWith(boolean centered)
+	@Override
+	public Dimensions2D set(boolean centered)
 	{
-		return this.copyWith(centered, centered);
+		return this.set(centered, centered);
 	}
 	
-	public Dimensions2D copyWith(boolean centeredVertically, boolean centeredHorizontally)
+	@Override
+	public Dimensions2D set(boolean centeredVertically, boolean centeredHorizontally)
 	{
 		this.centeredVertically = centeredVertically;
 		this.centeredHorizontally = centeredHorizontally;
