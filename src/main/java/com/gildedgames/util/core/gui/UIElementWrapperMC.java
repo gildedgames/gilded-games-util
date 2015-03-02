@@ -1,16 +1,16 @@
 package com.gildedgames.util.core.gui;
 
-import com.gildedgames.util.ui.UIView;
-import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
-import com.gildedgames.util.ui.util.UIElementWrapper;
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 
-import java.io.IOException;
+import com.gildedgames.util.ui.UIView;
+import com.gildedgames.util.ui.listeners.ButtonState;
+import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.util.UIElementWrapper;
 
 public final class UIElementWrapperMC extends GuiScreen
 {
@@ -18,8 +18,6 @@ public final class UIElementWrapperMC extends GuiScreen
 	protected final static GraphicsMC GRAPHICS = new GraphicsMC(Minecraft.getMinecraft());
 
 	protected final static InputProviderMC INPUT = new InputProviderMC(Minecraft.getMinecraft());
-	
-	protected static Dimensions2D SCREEN_DIMENSIONS = new Dimensions2D();
 
 	private final UIElementWrapper elementWrapper, viewWrapper;
 
@@ -50,15 +48,12 @@ public final class UIElementWrapperMC extends GuiScreen
 		this.width = resolution.getScaledWidth();
 		this.height = resolution.getScaledHeight();
 
-		SCREEN_DIMENSIONS = SCREEN_DIMENSIONS.set(this.width, this.height);
-
 		this.elementWrapper.clear();
 		
-		this.viewWrapper.setScreen(SCREEN_DIMENSIONS);
-		this.elementWrapper.setScreen(SCREEN_DIMENSIONS);
-		
-		this.viewWrapper.init(this.elementWrapper, SCREEN_DIMENSIONS);
-		this.elementWrapper.init(this.elementWrapper, SCREEN_DIMENSIONS);
+		INPUT.setScreen(this.width, this.height);
+
+		this.viewWrapper.init(this.elementWrapper, INPUT);
+		this.elementWrapper.init(this.elementWrapper, INPUT);
 	}
 
 	@Override

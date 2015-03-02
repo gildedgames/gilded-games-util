@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
-import com.gildedgames.util.ui.UIOverhead;
+import com.gildedgames.util.ui.UIBase;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Dimensions2DMutable;
@@ -16,18 +16,16 @@ import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
 
-public class UIElementWrapper implements UIOverhead
+public class UIElementWrapper implements UIBase
 {
 
-	protected final static ListFilter LIST_FILTER = new ListFilter();
+	protected final static ObjectFilter LIST_FILTER = new ObjectFilter();
 
 	protected final List<UIElement> elements = new ArrayList<UIElement>();
 
 	protected boolean visible = true;
 
 	protected boolean enabled = true;
-
-	protected Dimensions2D screen;
 
 	/**
 	 * @param holderDimensions Where the elements are drawn in
@@ -117,7 +115,7 @@ public class UIElementWrapper implements UIOverhead
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screen)
+	public void init(UIElementHolder elementHolder, InputProvider input)
 	{
 		for (UIElement element : LIST_FILTER.getTypesFrom(this.elements, UIElement.class))
 		{
@@ -126,7 +124,7 @@ public class UIElementWrapper implements UIOverhead
 				continue;
 			}
 
-			element.init(elementHolder, screen);
+			element.init(elementHolder, input);
 		}
 	}
 
@@ -200,12 +198,6 @@ public class UIElementWrapper implements UIOverhead
 	public List<UIElement> getElements()
 	{
 		return this.elements;
-	}
-
-	@Override
-	public void setScreen(Dimensions2D screen)
-	{
-		this.screen = screen;
 	}
 
 }

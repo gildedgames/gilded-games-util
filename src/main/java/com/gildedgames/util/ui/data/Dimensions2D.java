@@ -2,8 +2,6 @@ package com.gildedgames.util.ui.data;
 
 import java.util.List;
 
-
-
 public class Dimensions2D
 {
 
@@ -17,7 +15,7 @@ public class Dimensions2D
 	
 	public Dimensions2D()
 	{
-		this(new Position2D(0, 0), 0, 0, 0, false, false);
+		this(new Position2D(0, 0), 0, 0, 1.0F, false, false);
 	}
 	
 	public Dimensions2D(Dimensions2D dim)
@@ -92,27 +90,27 @@ public class Dimensions2D
 		return this.centeredHorizontally;
 	}
 	
-	public Dimensions2D set(float scale)
+	public Dimensions2D setScale(float scale)
 	{
 		return new Dimensions2D(this.position, this.width, this.height, scale, this.centeredVertically, this.centeredHorizontally);
 	}
 
-	public Dimensions2D set(float width, float height)
+	public Dimensions2D setArea(float width, float height)
 	{
 		return new Dimensions2D(this.position, width, height, this.scale, this.centeredVertically, this.centeredHorizontally);
 	}
 
-	public Dimensions2D set(Position2D position)
+	public Dimensions2D setPos(Position2D position)
 	{
 		return new Dimensions2D(position, this.width, this.height, this.scale, this.centeredVertically, this.centeredHorizontally);
 	}
 	
-	public Dimensions2D set(boolean centered)
+	public Dimensions2D setCentered(boolean centered)
 	{
-		return this.set(centered, centered);
+		return this.setCentered(centered, centered);
 	}
 	
-	public Dimensions2D set(boolean centeredVertically, boolean centeredHorizontally)
+	public Dimensions2D setCentered(boolean centeredVertically, boolean centeredHorizontally)
 	{
 		return new Dimensions2D(this.position, this.width, this.height, this.scale, centeredVertically, centeredHorizontally);
 	}
@@ -133,8 +131,7 @@ public class Dimensions2D
 				float maxX = Math.max(result.getX() + result.getWidth(), dimension.getX() + dimension.getWidth());
 				float maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
 				
-				result = result.set(new Position2D(minX, minY));
-				result = result.set(maxX - minY, maxY - minY);
+				result = result.setPos(new Position2D(minX, minY)).setArea(maxX - minY, maxY - minY);
 			}
 		}
 		

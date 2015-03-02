@@ -17,10 +17,10 @@ public class UITexture extends UIFrame
 	
 	public UITexture(Sprite sprite, Dimensions2D dim)
 	{
-		this(sprite, dim, new DrawingData());
+		this(dim, sprite, new DrawingData());
 	}
 	
-	public UITexture(Sprite sprite, Dimensions2D dim, DrawingData data)
+	public UITexture(Dimensions2D dim, Sprite sprite, DrawingData data)
 	{
 		super(dim);
 
@@ -45,9 +45,9 @@ public class UITexture extends UIFrame
 	}
 
 	@Override
-	public void init(UIElementHolder holder, Dimensions2D screen)
+	public void init(UIElementHolder holder, InputProvider input)
 	{
-		super.init(holder, screen);
+		super.init(holder, input);
 	}
 
 	@Override

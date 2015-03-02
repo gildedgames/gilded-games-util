@@ -24,9 +24,9 @@ public class UIButton extends UIFrame
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, Dimensions2D screenDimensions)
+	public void init(UIElementHolder holder, InputProvider input)
 	{
-		super.init(holder, screenDimensions);
+		super.init(holder, input);
 		
 		this.defaultState.setVisible(true);
 		this.hoveredState.setVisible(false);

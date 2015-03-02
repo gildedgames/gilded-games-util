@@ -5,6 +5,10 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 public interface InputProvider
 {
 	
+	int getScreenWidth();
+	
+	int getScreenHeight();
+	
 	int getMouseX();
 	
 	int getMouseY();

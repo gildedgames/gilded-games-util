@@ -10,13 +10,13 @@ import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
 import com.gildedgames.util.ui.listeners.MouseButton;
-import com.gildedgames.util.ui.util.ListFilter;
+import com.gildedgames.util.ui.util.ObjectFilter;
 
 
-public abstract class UIDecorator implements UIOverhead
+public abstract class UIDecorator implements UIBase
 {
 	
-	protected final static ListFilter FILTER = new ListFilter();
+	protected final static ObjectFilter FILTER = new ObjectFilter();
 
 	private UIElement element;
 	
@@ -101,9 +101,9 @@ public abstract class UIDecorator implements UIOverhead
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screen)
+	public void init(UIElementHolder elementHolder, InputProvider input)
 	{
-		this.element.init(elementHolder, screen);
+		this.element.init(elementHolder, input);
 	}
 
 	@Override
@@ -116,17 +116,6 @@ public abstract class UIDecorator implements UIOverhead
 	public void setEnabled(boolean enabled)
 	{
 		this.element.setEnabled(enabled);
-	}
-
-	@Override
-	public void setScreen(Dimensions2D screen)
-	{
-		UIElementHolder elementHolder = FILTER.getType(this.element, UIElementHolder.class);
-		
-		if (elementHolder != null)
-		{
-			elementHolder.setScreen(screen);
-		}
 	}
 
 	@Override

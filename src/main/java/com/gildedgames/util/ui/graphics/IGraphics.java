@@ -13,7 +13,7 @@ public interface IGraphics
 	
 	void drawText(Text text, Dimensions2D dim, DrawingData data);
 
-	void drawLine(DrawingData drawingData, Position2D startPos, Position2D endPos);
+	void drawLine(Position2D startPos, Position2D endPos, DrawingData drawingData);
 
 	void drawRectangle(Dimensions2D dim, DrawingData data);
 	

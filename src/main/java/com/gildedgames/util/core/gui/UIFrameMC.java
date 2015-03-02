@@ -10,6 +10,7 @@ import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.util.UIRectangle;
 
@@ -36,16 +37,16 @@ public class UIFrameMC extends UIFrame
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, Dimensions2D screen)
+	public void init(UIElementHolder holder, InputProvider input)
 	{
-		super.init(holder, screen);
+		super.init(holder, input);
 		
 		if (this.shouldDrawBackground())
 		{
 			DrawingData startColor = new DrawingData(new Color(-1072689136, true));
 			DrawingData endColor = new DrawingData(new Color(-804253680, true));
 			
-			holder.add(new UIRectangle(new Dimensions2D().set(screen.getWidth(), screen.getHeight()), startColor, endColor));
+			holder.add(new UIRectangle(new Dimensions2D().setArea(input.getScreenWidth(), input.getScreenHeight()), startColor, endColor));
 		}
 	}
 	

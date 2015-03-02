@@ -3,10 +3,10 @@ package com.gildedgames.util.ui.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListFilter
+public class ObjectFilter
 {
 
-	public ListFilter()
+	public ObjectFilter()
 	{
 
 	}

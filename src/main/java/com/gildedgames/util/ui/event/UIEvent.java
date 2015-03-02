@@ -3,6 +3,7 @@ package com.gildedgames.util.ui.event;
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.input.InputProvider;
 
 public abstract class UIEvent implements UIElement
 {
@@ -10,7 +11,7 @@ public abstract class UIEvent implements UIElement
 	private boolean enabled = true;
 
 	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screen)
+	public void init(UIElementHolder elementHolder, InputProvider input)
 	{
 		
 	}

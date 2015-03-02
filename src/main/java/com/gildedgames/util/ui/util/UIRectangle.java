@@ -54,10 +54,4 @@ public class UIRectangle extends UIFrame
 		
 	}
 
-	@Override
-	public void init(UIElementHolder elementHolder, Dimensions2D screenDimensions)
-	{
-		
-	}
-
 }

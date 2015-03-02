@@ -1,7 +1,6 @@
 package com.gildedgames.util.core.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
@@ -13,37 +12,41 @@ public class InputProviderMC implements InputProvider
 	
 	protected Minecraft mc;
 	
-	protected ScaledResolution resolution;
+	protected int screenWidth, screenHeight;
 	
 	public InputProviderMC(Minecraft mc)
 	{
 		this.mc = mc;
 	}
 	
-	private int getScaledWidth()
+	public void setScreen(int screenWidth, int screenHeight)
 	{
-		this.resolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-		
-		return this.resolution.getScaledWidth();
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
 	}
 	
-	private int getScaledHeight()
+	@Override
+	public int getScreenWidth()
 	{
-		this.resolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-		
-		return this.resolution.getScaledHeight();
+		return this.screenWidth;
+	}
+	
+	@Override
+	public int getScreenHeight()
+	{
+		return this.screenHeight;
 	}
 
 	@Override
 	public int getMouseX()
 	{
-		return Mouse.getX() * this.getScaledWidth() / this.mc.displayWidth;
+		return Mouse.getX() * this.getScreenWidth() / this.mc.displayWidth;
 	}
 
 	@Override
 	public int getMouseY()
 	{
-		return this.getScaledHeight() - Mouse.getY() * this.getScaledHeight() / this.mc.displayHeight - 1;
+		return this.getScreenHeight() - Mouse.getY() * this.getScreenHeight() / this.mc.displayHeight - 1;
 	}
 
 	@Override

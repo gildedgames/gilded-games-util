@@ -1,11 +1,11 @@
 package com.gildedgames.util.ui;
 
-import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.input.InputProvider;
 
 public interface UIElement
 {
 	
-	void init(UIElementHolder elementHolder, Dimensions2D screen);
+	void init(UIElementHolder elementHolder, InputProvider input);
 
 	boolean isEnabled();
 

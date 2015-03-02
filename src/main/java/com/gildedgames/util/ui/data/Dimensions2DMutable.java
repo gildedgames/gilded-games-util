@@ -76,7 +76,7 @@ public class Dimensions2DMutable extends Dimensions2D
 	}
 
 	@Override
-	public Dimensions2D set(float scale)
+	public Dimensions2D setScale(float scale)
 	{
 		this.scale = scale;
 		
@@ -84,7 +84,7 @@ public class Dimensions2DMutable extends Dimensions2D
 	}
 	
 	@Override
-	public Dimensions2D set(float width, float height)
+	public Dimensions2D setArea(float width, float height)
 	{
 		this.width = width;
 		this.height = height;
@@ -93,7 +93,7 @@ public class Dimensions2DMutable extends Dimensions2D
 	}
 
 	@Override
-	public Dimensions2D set(Position2D position)
+	public Dimensions2D setPos(Position2D position)
 	{
 		this.position = position;
 		
@@ -101,13 +101,13 @@ public class Dimensions2DMutable extends Dimensions2D
 	}
 	
 	@Override
-	public Dimensions2D set(boolean centered)
+	public Dimensions2D setCentered(boolean centered)
 	{
-		return this.set(centered, centered);
+		return this.setCentered(centered, centered);
 	}
 	
 	@Override
-	public Dimensions2D set(boolean centeredVertically, boolean centeredHorizontally)
+	public Dimensions2D setCentered(boolean centeredVertically, boolean centeredHorizontally)
 	{
 		this.centeredVertically = centeredVertically;
 		this.centeredHorizontally = centeredHorizontally;

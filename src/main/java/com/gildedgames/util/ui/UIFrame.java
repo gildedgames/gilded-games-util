@@ -10,7 +10,7 @@ import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
 
-public abstract class UIFrame implements UIOverhead
+public abstract class UIFrame implements UIBase
 {
 	
 	private final UIElementWrapper elementWrapper;
@@ -29,9 +29,9 @@ public abstract class UIFrame implements UIOverhead
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, Dimensions2D screen)
+	public void init(UIElementHolder holder, InputProvider input)
 	{
-		this.elementWrapper.init(holder, screen);
+		this.elementWrapper.init(holder, input);
 	}
 	
 	@Override
@@ -122,12 +122,6 @@ public abstract class UIFrame implements UIOverhead
 	public void onFocused(InputProvider input)
 	{
 		this.elementWrapper.onFocused(input);
-	}
-	
-	@Override
-	public void setScreen(Dimensions2D screen)
-	{
-		this.elementWrapper.setScreen(screen);
 	}
 	
 }
