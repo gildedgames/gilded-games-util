@@ -5,7 +5,8 @@ import java.awt.Color;
 import net.minecraft.client.Minecraft;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIBase;
+import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
@@ -21,9 +22,9 @@ public class UIFrameMC extends UIFrame
 	
 	private Minecraft mc = Minecraft.getMinecraft();
 
-	public UIFrameMC(Dimensions2D focusArea)
-	{
-		super(focusArea);
+	public UIFrameMC(UIBase parent, Dimensions2D dim)
+	{ 
+		super(parent, dim);
 	}
 	
 	public boolean shouldDrawBackground()
@@ -37,16 +38,16 @@ public class UIFrameMC extends UIFrame
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, InputProvider input)
+	public void init(UIElementContainer container, InputProvider input)
 	{
-		super.init(holder, input);
+		super.init(container, input);
 		
 		if (this.shouldDrawBackground())
 		{
 			DrawingData startColor = new DrawingData(new Color(-1072689136, true));
 			DrawingData endColor = new DrawingData(new Color(-804253680, true));
 			
-			holder.add(new UIRectangle(new Dimensions2D().setArea(input.getScreenWidth(), input.getScreenHeight()), startColor, endColor));
+			container.add(new UIRectangle(new Dimensions2D().setArea(input.getScreenWidth(), input.getScreenHeight()), startColor, endColor));
 		}
 	}
 	

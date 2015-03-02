@@ -1,6 +1,5 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
@@ -24,7 +23,7 @@ public class UIRectangle extends UIFrame
 	
 	public UIRectangle(Dimensions2D dim, DrawingData startColor, DrawingData endColor)
 	{
-		super(dim);
+		super(null, dim);
 
 		this.startColor = startColor;
 		this.endColor = endColor;
@@ -45,11 +44,11 @@ public class UIRectangle extends UIFrame
 	{
 		if (this.endColor == null)
 		{
-			graphics.drawRectangle(this.getFocusArea(), this.startColor);
+			graphics.drawRectangle(this.getDimensions(), this.startColor);
 		}
 		else
 		{
-			graphics.drawGradientRectangle(this.getFocusArea(), this.startColor, this.endColor);
+			graphics.drawGradientRectangle(this.getDimensions(), this.startColor, this.endColor);
 		}
 		
 	}

@@ -22,18 +22,34 @@ public class UIButtonMinecraft extends UIFrame
 	
 	public UIButtonMinecraft(GuiButton button, boolean centered)
 	{
-		super(new Dimensions2D().setPos(new Position2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentered(centered));
+		super(null, new Dimensions2D().setPos(new Position2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentered(centered));
 		
 		this.button = button;
 	}
 	
 	public UIButtonMinecraft(Dimensions2D dim, String text)
 	{
-		super(dim);
+		super(null, dim);
 		
 		this.text = text;
 		
 		this.button = new GuiButton(-1, (int)dim.getX(), (int)dim.getY(), (int)dim.getWidth(), (int)dim.getHeight(), text);
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled)
+	{
+		super.setEnabled(enabled);
+		
+		this.button.enabled = enabled;
+	}
+	
+	@Override
+	public void setVisible(boolean visible)
+	{
+		super.setVisible(visible);
+	
+		this.button.visible = visible;
 	}
 	
 	@Override

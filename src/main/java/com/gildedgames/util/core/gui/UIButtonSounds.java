@@ -38,7 +38,7 @@ public class UIButtonSounds extends UIDecorator
 	{
 		UIView view = this.getDecoratedElement();
 		
-		if (input.isHovered(view.getFocusArea()) && state.equals(this.state) && button.equals(this.button))
+		if (input.isHovered(view.getDimensions()) && state.equals(this.state) && button.equals(this.button))
 		{
 			this.playPressSound(this.mc.getSoundHandler());
 		}

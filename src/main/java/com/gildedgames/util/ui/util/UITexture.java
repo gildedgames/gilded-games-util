@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
@@ -22,7 +22,7 @@ public class UITexture extends UIFrame
 	
 	public UITexture(Dimensions2D dim, Sprite sprite, DrawingData data)
 	{
-		super(dim);
+		super(null, dim);
 
 		this.sprite = sprite;
 		this.data = data;
@@ -41,19 +41,7 @@ public class UITexture extends UIFrame
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		graphics.drawSprite(this.sprite, this.getFocusArea(), this.data);
-	}
-
-	@Override
-	public void init(UIElementHolder holder, InputProvider input)
-	{
-		super.init(holder, input);
-	}
-
-	@Override
-	public void onFocused(InputProvider input)
-	{
-		super.onFocused(input);
+		graphics.drawSprite(this.sprite, this.getDimensions(), this.data);
 	}
 
 }

@@ -70,9 +70,6 @@ public final class UIElementWrapperMC extends GuiScreen
 
 		this.viewWrapper.onMouseState(INPUT, button, ButtonState.PRESS);
 		this.elementWrapper.onMouseState(INPUT, button, ButtonState.PRESS);
-		
-		this.viewWrapper.onFocused(INPUT);
-		this.elementWrapper.onFocused(INPUT);
 	}
 
 	@Override
@@ -82,9 +79,6 @@ public final class UIElementWrapperMC extends GuiScreen
 
 		this.viewWrapper.onMouseState(INPUT, button, ButtonState.RELEASED);
 		this.elementWrapper.onMouseState(INPUT, button, ButtonState.RELEASED);
-		
-		this.viewWrapper.onFocused(INPUT);
-		this.elementWrapper.onFocused(INPUT);
 	}
 
 	@Override

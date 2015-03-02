@@ -5,7 +5,7 @@ import com.gildedgames.util.ui.input.InputProvider;
 public interface UIElement
 {
 	
-	void init(UIElementHolder elementHolder, InputProvider input);
+	void init(UIElementContainer container, InputProvider input);
 
 	boolean isEnabled();
 

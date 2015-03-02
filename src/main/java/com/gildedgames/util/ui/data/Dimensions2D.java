@@ -72,12 +72,12 @@ public class Dimensions2D
 
 	public float getWidth()
 	{
-		return this.width;
+		return this.width * this.scale;
 	}
 
 	public float getHeight()
 	{
-		return this.height;
+		return this.height * this.scale;
 	}
 	
 	public boolean isCenteredVertically()

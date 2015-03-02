@@ -13,10 +13,14 @@ public interface UIView extends UIElement
 
 	void setVisible(boolean visible);
 
-	Dimensions2D getFocusArea();
+	Dimensions2D getDimensions();
 
-	void setFocusArea(Dimensions2D focusArea);
+	void setDimensions(Dimensions2D dim);
 	
-	void onFocused(InputProvider input);
+	boolean isFocused();
 	
+	void setFocused(boolean focused);
+	
+	boolean query(Object... input);
+
 }

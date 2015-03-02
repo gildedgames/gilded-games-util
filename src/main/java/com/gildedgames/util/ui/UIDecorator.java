@@ -66,44 +66,33 @@ public abstract class UIDecorator implements UIBase
 	}
 
 	@Override
-	public Dimensions2D getFocusArea()
+	public Dimensions2D getDimensions()
 	{
 		UIView view = FILTER.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
-			return view.getFocusArea();
+			return view.getDimensions();
 		}
 		
 		return null;
 	}
 
 	@Override
-	public void setFocusArea(Dimensions2D focusArea)
+	public void setDimensions(Dimensions2D dim)
 	{
 		UIView view = FILTER.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
-			view.setFocusArea(focusArea);
+			view.setDimensions(dim);
 		}
 	}
 
 	@Override
-	public void onFocused(InputProvider input)
+	public void init(UIElementContainer container, InputProvider input)
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
-		
-		if (view != null)
-		{
-			view.onFocused(input);
-		}
-	}
-
-	@Override
-	public void init(UIElementHolder elementHolder, InputProvider input)
-	{
-		this.element.init(elementHolder, input);
+		this.element.init(container, input);
 	}
 
 	@Override
@@ -121,44 +110,44 @@ public abstract class UIDecorator implements UIBase
 	@Override
 	public void add(UIElement element)
 	{
-		UIElementHolder elementHolder = FILTER.getType(this.element, UIElementHolder.class);
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
-		if (elementHolder != null)
+		if (container != null)
 		{
-			elementHolder.add(element);
+			container.add(element);
 		}
 	}
 
 	@Override
 	public void remove(UIElement element)
 	{
-		UIElementHolder elementHolder = FILTER.getType(this.element, UIElementHolder.class);
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
-		if (elementHolder != null)
+		if (container != null)
 		{
-			elementHolder.remove(element);
+			container.remove(element);
 		}
 	}
 
 	@Override
 	public void clear()
 	{
-		UIElementHolder elementHolder = FILTER.getType(this.element, UIElementHolder.class);
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
-		if (elementHolder != null)
+		if (container != null)
 		{
-			elementHolder.clear();
+			container.clear();
 		}
 	}
 
 	@Override
 	public List<UIElement> getElements()
 	{
-		UIElementHolder elementHolder = FILTER.getType(this.element, UIElementHolder.class);
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
-		if (elementHolder != null)
+		if (container != null)
 		{
-			return elementHolder.getElements();
+			return container.getElements();
 		}
 		
 		return Collections.EMPTY_LIST;
@@ -197,6 +186,80 @@ public abstract class UIDecorator implements UIBase
 		{
 			listener.onMouseScroll(input, scrollDifference);
 		}
+	}
+	
+	@Override
+	public void clear(Class<? extends UIElement> classToRemove)
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			container.clear(classToRemove);
+		}
+	}
+	
+	@Override
+	public boolean isFocused()
+	{
+		UIView view = FILTER.getType(this.element, UIView.class);
+		
+		if (view != null)
+		{
+			return view.isFocused();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void setFocused(boolean focused)
+	{
+		UIView view = FILTER.getType(this.element, UIView.class);
+		
+		if (view != null)
+		{
+			view.setFocused(focused);
+		}
+	}
+	
+	@Override
+	public boolean query(Object... input)
+	{
+		UIView view = FILTER.getType(this.element, UIView.class);
+		
+		if (view != null)
+		{
+			return view.query(input);
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public List<UIView> queryAll(Object... input)
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			return container.queryAll(input);
+		}
+		
+		return Collections.EMPTY_LIST;
+	}
+	
+	@Override
+	public boolean contains(UIElement element)
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			return container.contains(element);
+		}
+		
+		return false;
 	}
 
 }

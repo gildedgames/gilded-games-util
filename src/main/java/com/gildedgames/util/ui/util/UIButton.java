@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIElementHolder;
+import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.event.view.UIEventViewFocus;
@@ -16,7 +16,7 @@ public class UIButton extends UIFrame
 
 	public UIButton(Dimensions2D dim, UITexture defaultState, UITexture hoveredState, UITexture clickedState)
 	{
-		super(dim);
+		super(null, dim);
 		
 		this.defaultState = defaultState;
 		this.hoveredState = hoveredState;
@@ -24,9 +24,9 @@ public class UIButton extends UIFrame
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, InputProvider input)
+	public void init(UIElementContainer container, InputProvider input)
 	{
-		super.init(holder, input);
+		super.init(container, input);
 		
 		this.defaultState.setVisible(true);
 		this.hoveredState.setVisible(false);
@@ -34,13 +34,13 @@ public class UIButton extends UIFrame
 		
 		this.clickedState.add(new UIEventViewFocus(this.clickedState, MouseButton.LEFT, ButtonState.PRESS));
 		
-		holder.add(this.defaultState);
-		holder.add(this.hoveredState);
-		holder.add(this.clickedState);
+		container.add(this.defaultState);
+		container.add(this.hoveredState);
+		container.add(this.clickedState);
 		
-		this.defaultState.setFocusArea(this.getFocusArea());
-		this.hoveredState.setFocusArea(this.getFocusArea());
-		this.clickedState.setFocusArea(this.getFocusArea());
+		this.defaultState.setDimensions(this.getDimensions());
+		this.hoveredState.setDimensions(this.getDimensions());
+		this.clickedState.setDimensions(this.getDimensions());
 	}
 	
 	@Override
@@ -48,7 +48,7 @@ public class UIButton extends UIFrame
 	{
 		super.draw(graphics, input);
 		
-		if (input.isHovered(this.getFocusArea()))
+		if (input.isHovered(this.getDimensions()))
 		{
 			this.hoveredState.setVisible(true);
 		}
@@ -56,12 +56,6 @@ public class UIButton extends UIFrame
 		{
 			this.hoveredState.setVisible(false);
 		}
-	}
-
-	@Override
-	public void onFocused(InputProvider input)
-	{
-		super.onFocused(input);
 	}
 
 }

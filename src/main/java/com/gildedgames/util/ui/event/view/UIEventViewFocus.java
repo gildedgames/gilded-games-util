@@ -34,7 +34,7 @@ public class UIEventViewFocus extends UIEventMouse
 		final boolean buttonCorrect = button != null ? button.equals(this.getButton()) : true;
 		final boolean stateCorrect = button != null ? state.equals(this.getState()) : true;
 		
-		if (input.isHovered(this.view.getFocusArea()) && buttonCorrect && stateCorrect)
+		if (input.isHovered(this.view.getDimensions()) && buttonCorrect && stateCorrect)
 		{
 			this.view.setVisible(true);
 		}

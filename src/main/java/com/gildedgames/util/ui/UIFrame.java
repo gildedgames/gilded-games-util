@@ -15,23 +15,28 @@ public abstract class UIFrame implements UIBase
 	
 	private final UIElementWrapper elementWrapper;
 	
-	private boolean visible = true;
+	private boolean visible = true, enabled = true, focused = false;
 	
-	private boolean enabled = true;
+	private Dimensions2D dim;
 	
-	private Dimensions2D focusArea;
+	private UIBase parent;
 	
-	public UIFrame(Dimensions2D focusArea)
+	public UIFrame(UIBase parent, Dimensions2D dim)
 	{
 		this.elementWrapper = new UIElementWrapper();
 		
-		this.focusArea = focusArea;
+		this.dim = dim;
+	}
+	
+	public UIBase getParent()
+	{
+		return this.parent;
 	}
 	
 	@Override
-	public void init(UIElementHolder holder, InputProvider input)
+	public void init(UIElementContainer container, InputProvider input)
 	{
-		this.elementWrapper.init(holder, input);
+		this.elementWrapper.init(container, input);
 	}
 	
 	@Override
@@ -41,25 +46,31 @@ public abstract class UIFrame implements UIBase
 	}
 	
 	@Override
-	public final void add(UIElement element)
+	public void add(UIElement element)
 	{
 		this.elementWrapper.add(element);
 	}
 
 	@Override
-	public final void remove(UIElement element)
+	public void remove(UIElement element)
 	{
 		this.elementWrapper.remove(element);
 	}
 	
 	@Override
-	public final void clear()
+	public void clear()
 	{
 		this.elementWrapper.clear();
 	}
 	
 	@Override
-	public final List<UIElement> getElements()
+	public void clear(Class<? extends UIElement> classToRemove)
+	{
+		this.elementWrapper.clear(classToRemove);
+	}
+	
+	@Override
+	public List<UIElement> getElements()
 	{
 		return this.elementWrapper.getElements();
 	}
@@ -107,21 +118,45 @@ public abstract class UIFrame implements UIBase
 	}
 	
 	@Override
-	public Dimensions2D getFocusArea()
+	public Dimensions2D getDimensions()
 	{
-		return this.focusArea;
+		return this.dim;
 	}
 
 	@Override
-	public void setFocusArea(Dimensions2D focusArea)
+	public void setDimensions(Dimensions2D dim)
 	{
-		this.focusArea = focusArea;
+		this.dim = dim;
 	}
 	
 	@Override
-	public void onFocused(InputProvider input)
+	public boolean isFocused()
 	{
-		this.elementWrapper.onFocused(input);
+		return this.focused;
+	}
+	
+	@Override
+	public void setFocused(boolean focused)
+	{
+		this.focused = focused;
+	}
+	
+	@Override
+	public List<UIView> queryAll(Object... input)
+	{
+		return this.elementWrapper.queryAll(input);
+	}
+	
+	@Override
+	public boolean query(Object... input)
+	{
+		return this.elementWrapper.query(input);
+	}
+	
+	@Override
+	public boolean contains(UIElement element)
+	{
+		return this.elementWrapper.contains(element);
 	}
 	
 }

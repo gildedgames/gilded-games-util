@@ -13,7 +13,7 @@ public class TestTab extends TabBackpack
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		UtilCore.locate().view(new TestUI());
+		UtilCore.locate().view(new TestUI(null));
 	}
 
 	@Override

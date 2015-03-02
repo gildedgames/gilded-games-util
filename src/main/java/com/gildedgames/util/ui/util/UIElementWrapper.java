@@ -3,9 +3,9 @@ package com.gildedgames.util.ui.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.UIElement;
-import com.gildedgames.util.ui.UIElementHolder;
 import com.gildedgames.util.ui.UIBase;
+import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Dimensions2DMutable;
@@ -19,16 +19,14 @@ import com.gildedgames.util.ui.listeners.MouseButton;
 public class UIElementWrapper implements UIBase
 {
 
-	protected final static ObjectFilter LIST_FILTER = new ObjectFilter();
+	protected final static ObjectFilter FILTER = new ObjectFilter();
 
 	protected final List<UIElement> elements = new ArrayList<UIElement>();
 
-	protected boolean visible = true;
-
-	protected boolean enabled = true;
-
+	protected boolean visible = true, enabled = true, focused = false;
+	
 	/**
-	 * @param holderDimensions Where the elements are drawn in
+	 * @param containerDimensions Where the elements are drawn in
 	 * @param screen The dimensions of the screen
 	 * @param graphicsClass The class to use for the graphics
 	 */
@@ -40,7 +38,7 @@ public class UIElementWrapper implements UIBase
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		for (UIView element : LIST_FILTER.getTypesFrom(this.elements, UIView.class))
+		for (UIView element : FILTER.getTypesFrom(this.elements, UIView.class))
 		{
 			if (element != null && element.isVisible())
 			{
@@ -64,7 +62,7 @@ public class UIElementWrapper implements UIBase
 	@Override
 	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
 	{
-		for (IKeyboardListener element : LIST_FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
+		for (IKeyboardListener element : FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
 		{
 			if (element == null)
 			{
@@ -83,7 +81,7 @@ public class UIElementWrapper implements UIBase
 	@Override
 	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
 	{
-		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
+		for (IMouseListener element : FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
 			if (element == null)
 			{
@@ -100,7 +98,7 @@ public class UIElementWrapper implements UIBase
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		for (IMouseListener element : LIST_FILTER.getTypesFrom(this.elements, IMouseListener.class))
+		for (IMouseListener element : FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
 			if (element == null)
 			{
@@ -115,16 +113,16 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public void init(UIElementHolder elementHolder, InputProvider input)
+	public void init(UIElementContainer elementcontainer, InputProvider input)
 	{
-		for (UIElement element : LIST_FILTER.getTypesFrom(this.elements, UIElement.class))
+		for (UIElement element : FILTER.getTypesFrom(this.elements, UIElement.class))
 		{
 			if (element == null)
 			{
 				continue;
 			}
 
-			element.init(elementHolder, input);
+			element.init(elementcontainer, input);
 		}
 	}
 
@@ -159,7 +157,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public Dimensions2D getFocusArea()
+	public Dimensions2D getDimensions()
 	{
 		List<Dimensions2D> areas = new ArrayList<Dimensions2D>();
 		
@@ -169,7 +167,7 @@ public class UIElementWrapper implements UIBase
 			{
 				UIView view = (UIView)element;
 				
-				areas.add(new Dimensions2DMutable(view.getFocusArea()));
+				areas.add(new Dimensions2DMutable(view.getDimensions()));
 			}
 		}
 		
@@ -177,27 +175,81 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public void setFocusArea(Dimensions2D dimensions)
+	public void setDimensions(Dimensions2D dimensions)
 	{
 		
-	}
-
-	@Override
-	public void onFocused(InputProvider input)
-	{
-		for (UIView element : LIST_FILTER.getTypesFrom(this.elements, UIView.class))
-		{
-			if (element != null && element.isEnabled() && input.isHovered(element.getFocusArea()))
-			{
-				element.onFocused(input);
-			}
-		}
 	}
 
 	@Override
 	public List<UIElement> getElements()
 	{
 		return this.elements;
+	}
+
+	@Override
+	public void clear(Class<? extends UIElement> classToRemove)
+	{
+		List objectsToRemove = FILTER.getTypesFrom(this.elements, classToRemove);
+		
+		this.elements.removeAll(objectsToRemove);
+	}
+
+	@Override
+	public boolean isFocused()
+	{
+		return this.focused;
+	}
+
+	@Override
+	public void setFocused(boolean focused)
+	{
+		this.focused = focused;
+	}
+
+	@Override
+	public List<UIView> queryAll(Object... input)
+	{
+		List<UIView> views = new ArrayList<UIView>();
+		
+		for (UIView element : FILTER.getTypesFrom(this.elements, UIView.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+			
+			if (element.query(input))
+			{
+				views.add(element);
+			}
+		}
+		
+		return views;
+	}
+
+	@Override
+	public boolean query(Object... input)
+	{
+		for (UIView element : FILTER.getTypesFrom(this.elements, UIView.class))
+		{
+			if (element == null)
+			{
+				continue;
+			}
+			
+			if (element.query(input))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean contains(UIElement element)
+	{
+		return this.elements.contains(element);
 	}
 
 }
