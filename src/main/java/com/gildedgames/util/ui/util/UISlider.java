@@ -32,7 +32,7 @@ public class UISlider extends UIDecorator
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		float sliderValue = 0.0F;
+		/*float sliderValue = 0.0F;
 
 		this.totalHeight = this.getDimensions().getHeight();
 
@@ -74,7 +74,7 @@ public class UISlider extends UIDecorator
 		super.draw(graphics, input);
 
 		GlStateManager.popMatrix();
-		GlStateManager.disableBooleanStateAt(GL_SCISSOR_TEST);
+		GlStateManager.disableBooleanStateAt(GL_SCISSOR_TEST);*/
 	}
 
 }

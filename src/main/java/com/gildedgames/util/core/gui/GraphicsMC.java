@@ -87,9 +87,9 @@ public class GraphicsMC implements IGraphics
 		this.draw(dim, startColor, new DrawGradientRectangle(this, dim, startColor, endColor));
 	}
 	
-    public void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
+    protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
     {
-        float f = (float)(startColor >> 24 & 255) / 255.0F;
+    	float f = (float)(startColor >> 24 & 255) / 255.0F;
         float f1 = (float)(startColor >> 16 & 255) / 255.0F;
         float f2 = (float)(startColor >> 8 & 255) / 255.0F;
         float f3 = (float)(startColor & 255) / 255.0F;
@@ -97,7 +97,7 @@ public class GraphicsMC implements IGraphics
         float f5 = (float)(endColor >> 16 & 255) / 255.0F;
         float f6 = (float)(endColor >> 8 & 255) / 255.0F;
         float f7 = (float)(endColor & 255) / 255.0F;
-        GlStateManager.func_179090_x();
+        GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
@@ -105,17 +105,17 @@ public class GraphicsMC implements IGraphics
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.startDrawingQuads();
-        worldrenderer.func_178960_a(f1, f2, f3, f);
+        worldrenderer.setColorRGBA_F(f1, f2, f3, f);
         worldrenderer.addVertex((double)right, (double)top, (double)this.zLevel);
         worldrenderer.addVertex((double)left, (double)top, (double)this.zLevel);
-        worldrenderer.func_178960_a(f5, f6, f7, f4);
+        worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
         worldrenderer.addVertex((double)left, (double)bottom, (double)this.zLevel);
         worldrenderer.addVertex((double)right, (double)bottom, (double)this.zLevel);
         tessellator.draw();
         GlStateManager.shadeModel(7424);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
-        GlStateManager.func_179098_w();
+        GlStateManager.enableTexture2D();
     }
 	
 	private static interface DrawInner
@@ -170,7 +170,7 @@ public class GraphicsMC implements IGraphics
 		@Override
 		public void draw()
 		{
-			this.fontRenderer.func_175063_a(this.text.getData(), this.dim.getX(), this.dim.getY(), this.data.getColor().getRGB());
+			this.fontRenderer.drawStringWithShadow(this.text.getData(), this.dim.getX(), this.dim.getY(), this.data.getColor().getRGB());
 		}
 		
 	}

@@ -74,7 +74,7 @@ public class TestBlockState implements IBlockState
 	@Override
 	public Comparable getValue(IProperty property)
 	{
-		if (property == BlockStone.VARIANT_PROP)
+		if (property == BlockStone.VARIANT)
 		{
 			if (this == stone)
 			{
