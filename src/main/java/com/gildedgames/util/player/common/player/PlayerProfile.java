@@ -1,11 +1,12 @@
 package com.gildedgames.util.player.common.player;
 
 import io.netty.buffer.ByteBuf;
+
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-
-import java.util.UUID;
 
 public class PlayerProfile implements IPlayerProfile
 {
@@ -13,7 +14,7 @@ public class PlayerProfile implements IPlayerProfile
 	protected EntityPlayer player;
 
 	protected UUID uuid;
-	
+
 	protected String username;
 
 	protected boolean isLoggedIn, isDirty;
@@ -29,8 +30,8 @@ public class PlayerProfile implements IPlayerProfile
 		this.setEntity(player);
 
 		this.setUUID(player.getUniqueID());
-		
-		this.username = player.getCommandSenderEntity().getCommandSenderName();
+
+		this.username = player.getCommandSenderEntity().getName();//TODO: May be wrong method.
 	}
 
 	@Override
@@ -42,10 +43,10 @@ public class PlayerProfile implements IPlayerProfile
 			{
 				this.setUUID(this.player.getUniqueID());
 			}
-			
+
 			if (this.username == null)
 			{
-				this.username = this.player.getCommandSenderEntity().getCommandSenderName();
+				this.username = this.player.getCommandSenderEntity().getName();
 			}
 		}
 	}
@@ -99,7 +100,7 @@ public class PlayerProfile implements IPlayerProfile
 	{
 		tag.setLong("UUIDMost", this.uuid.getMostSignificantBits());
 		tag.setLong("UUIDLeast", this.uuid.getLeastSignificantBits());
-		
+
 		tag.setString("username", this.username);
 	}
 
@@ -114,7 +115,7 @@ public class PlayerProfile implements IPlayerProfile
 		{
 			this.uuid = UUID.fromString(tag.getString("UUID"));
 		}
-		
+
 		this.username = tag.getString("username");
 	}
 
@@ -125,7 +126,7 @@ public class PlayerProfile implements IPlayerProfile
 		buf.writeLong(this.uuid.getLeastSignificantBits());
 
 		ByteBufUtils.writeUTF8String(buf, this.username);
-		
+
 		buf.writeBoolean(this.isLoggedIn);
 	}
 
@@ -133,9 +134,9 @@ public class PlayerProfile implements IPlayerProfile
 	public void readFromServer(ByteBuf buf)
 	{
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
-		
+
 		this.username = ByteBufUtils.readUTF8String(buf);
-		
+
 		this.isLoggedIn = buf.readBoolean();
 	}
 
@@ -176,7 +177,7 @@ public class PlayerProfile implements IPlayerProfile
 		{
 			return true;
 		}
-		
+
 		return obj instanceof PlayerProfile && this.getUUID().equals(((PlayerProfile) obj).getUUID());
 	}
 

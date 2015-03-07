@@ -59,16 +59,16 @@ public class UtilCore implements ICore
 		this.cores.add(TabCore.INSTANCE);
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
-		
+
 		UtilServices clientLocator = new UtilServices(null);
-		
+
 		if (UtilCore.isClient())
 		{
 			clientLocator = new UtilServices(new UIViewerMC());
 		}
-		
+
 		UtilServices serverLocator = new UtilServices(null);
-		
+
 		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
 	}
 
@@ -84,7 +84,7 @@ public class UtilCore implements ICore
 		{
 			e.printStackTrace();
 		}
-		
+
 		UtilCore.NETWORK.init();
 
 		for (ICore core : this.cores)
@@ -226,19 +226,19 @@ public class UtilCore implements ICore
 			System.out.println("[GG]: " + line.toString());
 		}
 	}
-	
+
 	public static File getWorldDirectory()
 	{
 		String path = ".";
-		
+
 		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
 		{
-			path = (MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName())).getAbsolutePath().replace((MinecraftServer.getServer().getFolderName() + ".dat"), "");
+			path = MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 		}
-		
+
 		return new File(path.replace("\\data", ""));
 	}
-	
+
 	public static String getMinecraftDirectory()
 	{
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");

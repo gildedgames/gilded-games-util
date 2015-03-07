@@ -11,19 +11,19 @@ public class TeleporterGeneric extends Teleporter
 	{
 		super(world);
 	}
-	
+
 	@Override
 	public boolean placeInExistingPortal(Entity entity, float rotationYaw)
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void placeInPortal(Entity entity, float rotationYaw)
 	{
-		
+
 	}
-	
+
 	@Override
     public boolean makePortal(Entity entity)
     {
