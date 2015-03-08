@@ -9,42 +9,41 @@ import com.gildedgames.util.ui.listeners.ButtonState;
 import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
-
 public abstract class UIFrame implements UIBase
 {
-	
+
 	private final UIElementWrapper elementWrapper;
-	
+
 	private boolean visible = true, enabled = true, focused = false;
-	
+
 	private Dimensions2D dim;
-	
+
 	private UIBase parent;
-	
+
 	public UIFrame(UIBase parent, Dimensions2D dim)
 	{
 		this.elementWrapper = new UIElementWrapper();
-		
+
 		this.dim = dim;
 	}
-	
+
 	public UIBase getParent()
 	{
 		return this.parent;
 	}
-	
+
 	@Override
 	public void init(UIElementContainer container, InputProvider input)
 	{
 		this.elementWrapper.init(container, input);
 	}
-	
+
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
 		this.elementWrapper.draw(graphics, input);
 	}
-	
+
 	@Override
 	public void add(UIElement element)
 	{
@@ -56,31 +55,31 @@ public abstract class UIFrame implements UIBase
 	{
 		this.elementWrapper.remove(element);
 	}
-	
+
 	@Override
 	public void clear()
 	{
 		this.elementWrapper.clear();
 	}
-	
+
 	@Override
 	public void clear(Class<? extends UIElement> classToRemove)
 	{
 		this.elementWrapper.clear(classToRemove);
 	}
-	
+
 	@Override
 	public List<UIElement> getElements()
 	{
 		return this.elementWrapper.getElements();
 	}
-	
+
 	@Override
 	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
 	{
 		return this.elementWrapper.onKeyState(charTyped, keyTyped, states);
 	}
-	
+
 	@Override
 	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
@@ -92,7 +91,7 @@ public abstract class UIFrame implements UIBase
 	{
 		this.elementWrapper.onMouseScroll(input, scrollDifference);
 	}
-	
+
 	@Override
 	public boolean isVisible()
 	{
@@ -104,7 +103,7 @@ public abstract class UIFrame implements UIBase
 	{
 		this.visible = visible;
 	}
-	
+
 	@Override
 	public boolean isEnabled()
 	{
@@ -116,7 +115,7 @@ public abstract class UIFrame implements UIBase
 	{
 		this.enabled = enabled;
 	}
-	
+
 	@Override
 	public Dimensions2D getDimensions()
 	{
@@ -128,35 +127,35 @@ public abstract class UIFrame implements UIBase
 	{
 		this.dim = dim;
 	}
-	
+
 	@Override
 	public boolean isFocused()
 	{
 		return this.focused;
 	}
-	
+
 	@Override
 	public void setFocused(boolean focused)
 	{
 		this.focused = focused;
 	}
-	
+
 	@Override
 	public List<UIView> queryAll(Object... input)
 	{
 		return this.elementWrapper.queryAll(input);
 	}
-	
+
 	@Override
 	public boolean query(Object... input)
 	{
 		return this.elementWrapper.query(input);
 	}
-	
+
 	@Override
 	public boolean contains(UIElement element)
 	{
 		return this.elementWrapper.contains(element);
 	}
-	
+
 }

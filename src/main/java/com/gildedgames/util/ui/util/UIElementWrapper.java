@@ -23,7 +23,7 @@ public class UIElementWrapper implements UIBase
 	protected final List<UIElement> elements = new ArrayList<UIElement>();
 
 	protected boolean visible = true, enabled = true, focused = false;
-	
+
 	/**
 	 * @param containerDimensions Where the elements are drawn in
 	 * @param screen The dimensions of the screen
@@ -31,7 +31,7 @@ public class UIElementWrapper implements UIBase
 	 */
 	public UIElementWrapper()
 	{
-		
+
 	}
 
 	@Override
@@ -114,14 +114,20 @@ public class UIElementWrapper implements UIBase
 	@Override
 	public void init(UIElementContainer elementcontainer, InputProvider input)
 	{
-		for (UIElement element : FILTER.getTypesFrom(this.elements, UIElement.class))
+		List<UIElement> filtered = null;
+		List<UIElement> initialized = new ArrayList<UIElement>();
+		while (!(filtered = FILTER.getTypesFrom(this.elements, UIElement.class)).equals(initialized))
 		{
-			if (element == null)
+			for (UIElement element : filtered)
 			{
-				continue;
-			}
+				if (element == null || initialized.contains(element))
+				{
+					continue;
+				}
 
-			element.init(elementcontainer, input);
+				element.init(elementcontainer, input);
+				initialized.add(element);
+			}
 		}
 	}
 
@@ -148,7 +154,7 @@ public class UIElementWrapper implements UIBase
 	{
 		this.elements.remove(element);
 	}
-	
+
 	@Override
 	public void clear()
 	{
@@ -159,24 +165,24 @@ public class UIElementWrapper implements UIBase
 	public Dimensions2D getDimensions()
 	{
 		List<Dimensions2D> areas = new ArrayList<Dimensions2D>();
-		
+
 		for (UIElement element : this.elements)
 		{
 			if (element instanceof UIView)
 			{
-				UIView view = (UIView)element;
-				
+				UIView view = (UIView) element;
+
 				areas.add(view.getDimensions());
 			}
 		}
-		
+
 		return Dimensions2D.combine(areas);
 	}
 
 	@Override
 	public void setDimensions(Dimensions2D dimensions)
 	{
-		
+
 	}
 
 	@Override
@@ -189,7 +195,7 @@ public class UIElementWrapper implements UIBase
 	public void clear(Class<? extends UIElement> classToRemove)
 	{
 		List objectsToRemove = FILTER.getTypesFrom(this.elements, classToRemove);
-		
+
 		this.elements.removeAll(objectsToRemove);
 	}
 
@@ -209,20 +215,20 @@ public class UIElementWrapper implements UIBase
 	public List<UIView> queryAll(Object... input)
 	{
 		List<UIView> views = new ArrayList<UIView>();
-		
+
 		for (UIView element : FILTER.getTypesFrom(this.elements, UIView.class))
 		{
 			if (element == null)
 			{
 				continue;
 			}
-			
+
 			if (element.query(input))
 			{
 				views.add(element);
 			}
 		}
-		
+
 		return views;
 	}
 
@@ -235,13 +241,13 @@ public class UIElementWrapper implements UIBase
 			{
 				continue;
 			}
-			
+
 			if (element.query(input))
 			{
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
