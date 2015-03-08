@@ -6,6 +6,7 @@ import com.gildedgames.util.ui.UIBase;
 import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.event.view.UIEventViewMouse;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.listeners.ButtonState;
@@ -79,9 +80,36 @@ public class UIScrollBar extends UIFrame
 		this.getDimensions().setPos(this.scrollableFrame.getPosition());
 
 		this.topArrowButton.getDimensions().setPos(this.getDimensions().getPosition());
-		this.bottomArrowButton.getDimensions().setY(this.getDimensions().getHeight() + this.getDimensions().getY());
+		this.bottomArrowButton.getDimensions().setY(this.getDimensions().getHeight() + this.getDimensions().getY() - this.bottomArrowButton.getDimensions().getHeight());
 
-		this.topArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredHorizontally());
+		this.topArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
+		this.bottomArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
+		
+		this.topArrowButton.add(new UIEventViewMouse(this)
+		{
+
+			@Override
+			public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+			{
+				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
+				
+				scrollBar.bar.addY(5);
+			}
+		
+		});
+		
+		this.bottomArrowButton.add(new UIEventViewMouse(this)
+		{
+
+			@Override
+			public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+			{
+				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
+				
+				scrollBar.bar.addY(-5);
+			}
+		
+		});
 
 		container.add(this.topArrowButton);
 		container.add(this.bottomArrowButton);
@@ -117,7 +145,7 @@ public class UIScrollBar extends UIFrame
 
 		if (buttons.contains(MouseButton.LEFT))
 		{
-			if (states.contains(ButtonState.PRESS) && input.isHovered(this.getDimensions()))
+			if (states.contains(ButtonState.PRESS) && input.isHovered(this.getBase()))
 			{
 				this.grabbedBar = true;
 			}

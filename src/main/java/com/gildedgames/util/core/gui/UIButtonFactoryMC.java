@@ -87,7 +87,13 @@ public class UIButtonFactoryMC
 		
 		Dimensions2D dim = new Dimensions2D().withArea(10, height).withPos(pos);
 		
-		UIScrollBar scrollBar = new UIScrollBar(dim, dim.withArea(50, height + 200), this.createArrowButton(), this.createArrowButton(), new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		UIBase topButton = this.createArrowButton();
+		UIBase bottomButton = this.createArrowButton();
+		
+		topButton.getDimensions().setScale(1F);
+		bottomButton.getDimensions().setScale(1F);
+		
+		UIScrollBar scrollBar = new UIScrollBar(dim, dim.withArea(50, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
 		
 		return scrollBar;
 	}

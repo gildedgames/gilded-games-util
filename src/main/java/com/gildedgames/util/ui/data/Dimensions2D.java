@@ -20,7 +20,7 @@ public class Dimensions2D
 
 	public Dimensions2D(Dimensions2D dim)
 	{
-		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredX(), dim.isCenteredHorizontally());
+		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredX(), dim.isCenteredY());
 	}
 
 	private Dimensions2D(Position2D position, float width, float height, float scale, boolean centeredVertically, boolean centeredHorizontally)
@@ -43,7 +43,7 @@ public class Dimensions2D
 
 	private float getScaledX()
 	{
-		float offset = this.isCenteredHorizontally() ? this.getWidth() * this.getScale() / 2 : 0;
+		float offset = this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0;
 
 		return this.position.getX() - offset;
 	}
@@ -100,7 +100,7 @@ public class Dimensions2D
 		return this.centeredX;
 	}
 
-	public boolean isCenteredHorizontally()
+	public boolean isCenteredY()
 	{
 		return this.centeredY;
 	}
