@@ -9,6 +9,8 @@ public interface InputProvider
 	
 	int getScreenHeight();
 	
+	int getScaleFactor();
+	
 	int getMouseX();
 	
 	int getMouseY();

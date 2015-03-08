@@ -154,26 +154,26 @@ public abstract class UIDecorator implements UIBase
 	}
 
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
+	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
 	{
 		IKeyboardListener listener = FILTER.getType(this.element, IKeyboardListener.class);
 		
 		if (listener != null)
 		{
-			return listener.onKeyState(charTyped, keyTyped, state);
+			return listener.onKeyState(charTyped, keyTyped, states);
 		}
 		
 		return false;
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
 		IMouseListener listener = FILTER.getType(this.element, IMouseListener.class);
 		
 		if (listener != null)
 		{
-			listener.onMouseState(input, button, state);
+			listener.onMouseState(input, buttons, states);
 		}
 	}
 

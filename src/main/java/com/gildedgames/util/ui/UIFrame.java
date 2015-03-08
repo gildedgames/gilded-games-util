@@ -76,15 +76,15 @@ public abstract class UIFrame implements UIBase
 	}
 	
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
+	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
 	{
-		return this.elementWrapper.onKeyState(charTyped, keyTyped, state);
+		return this.elementWrapper.onKeyState(charTyped, keyTyped, states);
 	}
 	
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
-		this.elementWrapper.onMouseState(input, button, state);
+		this.elementWrapper.onMouseState(input, buttons, states);
 	}
 
 	@Override

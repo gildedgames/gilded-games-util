@@ -11,7 +11,7 @@ public enum MouseButton
 	{
 		this.index = index;
 	}
-	
+
 	public int getIndex()
 	{
 		return this.index;

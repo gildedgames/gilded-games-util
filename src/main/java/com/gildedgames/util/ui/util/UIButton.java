@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.util;
 
+import java.util.Arrays;
+
 import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
@@ -32,7 +34,7 @@ public class UIButton extends UIFrame
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
 		
-		this.clickedState.add(new UIEventViewFocus(this.clickedState, MouseButton.LEFT, ButtonState.PRESS));
+		this.clickedState.add(new UIEventViewFocus(this.clickedState, Arrays.asList(MouseButton.LEFT), Arrays.asList(ButtonState.PRESS)));
 		
 		container.add(this.defaultState);
 		container.add(this.hoveredState);

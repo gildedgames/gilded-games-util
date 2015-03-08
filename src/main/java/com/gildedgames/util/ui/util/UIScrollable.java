@@ -2,7 +2,6 @@ package com.gildedgames.util.ui.util;
 
 import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 
 import org.lwjgl.opengl.GL11;
@@ -13,16 +12,16 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class UISlider extends UIDecorator
+public class UIScrollable extends UIDecorator
 {
 	
 	protected Minecraft mc = Minecraft.getMinecraft();
 
 	protected Dimensions2D box;
 	
-	protected float totalHeight;
+	protected int totalHeight, heightOffset;
 	
-	public UISlider(Dimensions2D dim, UIElement element)
+	public UIScrollable(Dimensions2D dim, UIElement element)
 	{
 		super(element);
 		
@@ -32,9 +31,9 @@ public class UISlider extends UIDecorator
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		/*float sliderValue = 0.0F;
+		float sliderValue = 0.0F;
 
-		this.totalHeight = this.getDimensions().getHeight();
+		this.totalHeight = (int) this.getDimensions().getHeight();
 
 		if (this.totalHeight > this.box.getHeight())
 		{
@@ -44,27 +43,22 @@ public class UISlider extends UIDecorator
 		double mouseFactor = this.slider.sliderValue * (this.totalHeight - this.box.getHeight());
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.slider.xPosition = this.box.getX() + (this.isRight ? this.box.getWidth() - 10 : 0);
+		
+		this.slider.xPosition = this.box.getX();
 		this.slider.yPosition = this.box.getY() + this.heightOffset;
 
 		this.slider.drawButton(this.mc, input.getMouseX(), input.getMouseY());
 		
-		ScaledResolution scaledRes = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-		int scaleFactor = scaledRes.getScaleFactor();
+		float yFactor = Math.abs(this.box.getY() + this.heightOffset - input.getScreenHeight()) - this.box.getHeight();
 
-		int scHeight = scaledRes.getScaledHeight();
+		float cornerX = this.box.getX() * input.getScaleFactor();
+		float cornerY = yFactor * input.getScaleFactor();
 
-		int yFactor = Math.abs(this.box.getY() + this.heightOffset - scHeight) - this.box.getHeight();
+		float cutWidth = this.box.getWidth() * input.getScaleFactor();
+		float cutHeight = this.box.getWidth() * input.getScaleFactor();
 
-		float cornerX = this.box.getX() * scaleFactor;
-		float cornerY = yFactor * scaleFactor;
-
-		float scaledY = this.getDimensions().getY();
-
-		float cutWidth = this.box.getWidth() * scaleFactor;
-		float cutHeight = this.box.getWidth() * scaleFactor;
-
-		GlStateManager.enableBooleanStateAt(GL_SCISSOR_TEST);
+		GL11.glEnable(GL_SCISSOR_TEST);
+		
 		GL11.glScissor((int)cornerX, (int)cornerY, (int)cutWidth, (int)cutHeight);
 
 		GlStateManager.pushMatrix();
@@ -74,7 +68,8 @@ public class UISlider extends UIDecorator
 		super.draw(graphics, input);
 
 		GlStateManager.popMatrix();
-		GlStateManager.disableBooleanStateAt(GL_SCISSOR_TEST);*/
+		
+		GL11.glDisable(GL_SCISSOR_TEST);
 	}
 
 }

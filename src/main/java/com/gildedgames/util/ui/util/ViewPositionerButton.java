@@ -18,7 +18,7 @@ public class ViewPositionerButton implements IViewPositioner
 		{
 			if (view != null)
 			{
-				view.getDimensions().setPos(startingPos.add(0, view.getDimensions().getHeight()));
+				view.getDimensions().setPos(startingPos.withAdded(0, view.getDimensions().getHeight()));
 			}
 		}
 		

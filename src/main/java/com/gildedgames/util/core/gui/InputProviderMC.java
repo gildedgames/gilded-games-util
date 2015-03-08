@@ -12,7 +12,7 @@ public class InputProviderMC implements InputProvider
 	
 	protected Minecraft mc;
 	
-	protected int screenWidth, screenHeight;
+	protected int screenWidth, screenHeight, scaleFactor;
 	
 	public InputProviderMC(Minecraft mc)
 	{
@@ -23,6 +23,11 @@ public class InputProviderMC implements InputProvider
 	{
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+	}
+	
+	public void setScaleFactor(int scaleFactor)
+	{
+		this.scaleFactor = scaleFactor;
 	}
 	
 	@Override
@@ -58,6 +63,12 @@ public class InputProviderMC implements InputProvider
 		}
 		
 		return this.getMouseX() >= dim.getX() && this.getMouseY() >= dim.getY() && this.getMouseX() < dim.getX() + dim.getWidth() && this.getMouseY() < dim.getY() + dim.getHeight();
+	}
+
+	@Override
+	public int getScaleFactor()
+	{
+		return this.scaleFactor;
 	}
 
 }

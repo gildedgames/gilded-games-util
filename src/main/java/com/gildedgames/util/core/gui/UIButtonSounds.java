@@ -1,5 +1,7 @@
 package com.gildedgames.util.core.gui;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -34,16 +36,16 @@ public class UIButtonSounds extends UIDecorator
 	}
 	
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
 		UIView view = this.getDecoratedElement();
 		
-		if (input.isHovered(view.getDimensions()) && state.equals(this.state) && button.equals(this.button))
+		if (input.isHovered(view.getDimensions()) && states.contains(this.state) && buttons.contains(this.button))
 		{
 			this.playPressSound(this.mc.getSoundHandler());
 		}
 		
-		super.onMouseState(input, button, state);
+		super.onMouseState(input, buttons, states);
 	}
 	
 	public void playPressSound(SoundHandler soundHandlerIn)

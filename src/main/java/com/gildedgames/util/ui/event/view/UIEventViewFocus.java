@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.event.view;
 
+import java.util.List;
+
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.event.UIEventMouse;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -16,23 +18,23 @@ public class UIEventViewFocus extends UIEventMouse
 		this(view, null, null);
 	}
 	
-	public UIEventViewFocus(UIView view, MouseButton button)
+	public UIEventViewFocus(UIView view, List<MouseButton> buttons)
 	{
-		this(view, button, null);
+		this(view, buttons, null);
 	}
 	
-	public UIEventViewFocus(UIView view, MouseButton button, ButtonState state)
+	public UIEventViewFocus(UIView view, List<MouseButton> buttons, List<ButtonState> states)
 	{
-		super(button, state);
+		super(buttons, states);
 		
 		this.view = view;
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
-		final boolean buttonCorrect = button != null ? button.equals(this.getButton()) : true;
-		final boolean stateCorrect = button != null ? state.equals(this.getState()) : true;
+		final boolean buttonCorrect = buttons != null ? buttons.containsAll(this.getButtons()) : true;
+		final boolean stateCorrect = buttons != null ? states.containsAll(this.getStates()) : true;
 		
 		if (input.isHovered(this.view.getDimensions()) && buttonCorrect && stateCorrect)
 		{

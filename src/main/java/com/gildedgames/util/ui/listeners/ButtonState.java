@@ -3,7 +3,7 @@ package com.gildedgames.util.ui.listeners;
 public enum ButtonState
 {
 
-	NONE(-1), DOWN(0), PRESS(1), RELEASED(2);
+	NONE(-1), DOWN(0), PRESS(1), RELEASED(2), MOVING(3), STILL(4);
 	
 	private final int index;
 	

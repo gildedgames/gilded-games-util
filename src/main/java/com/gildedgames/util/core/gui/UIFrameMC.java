@@ -1,6 +1,7 @@
 package com.gildedgames.util.core.gui;
 
 import java.awt.Color;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 
@@ -52,14 +53,14 @@ public class UIFrameMC extends UIFrame
 	}
 	
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
+	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
 	{
 		if (keyTyped == 1 || keyTyped == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
 			UtilCore.locate().view((UIView)null);
         }
 		
-		return super.onKeyState(charTyped, keyTyped, state);
+		return super.onKeyState(charTyped, keyTyped, states);
 	}
 
 }

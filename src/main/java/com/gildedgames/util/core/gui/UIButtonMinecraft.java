@@ -1,5 +1,7 @@
 package com.gildedgames.util.core.gui;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
@@ -22,7 +24,7 @@ public class UIButtonMinecraft extends UIFrame
 	
 	public UIButtonMinecraft(GuiButton button, boolean centered)
 	{
-		super(null, new Dimensions2D().setPos(new Position2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentered(centered));
+		super(null, new Dimensions2D().setPos(new Position2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentering(centered));
 		
 		this.button = button;
 	}
@@ -61,14 +63,14 @@ public class UIButtonMinecraft extends UIFrame
 	}
 	
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
-		if (state == ButtonState.PRESS)
+		if (states.contains(ButtonState.PRESS))
 		{
 			this.button.mousePressed(mc, input.getMouseX(), input.getMouseY());
 		}
 		
-		if (state == ButtonState.RELEASED)
+		if (states.contains(ButtonState.RELEASED))
 		{
 			this.button.mouseReleased(input.getMouseX(), input.getMouseY());
 		}

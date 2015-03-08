@@ -24,12 +24,14 @@ public class TestUI extends UIFrameMC
 		UIButtonFactoryMC buttonFactory = new UIButtonFactoryMC();
 
 		UIBase button = buttonFactory.createArrowButton(center);
-		UIBase button2 = buttonFactory.createArrowButton(center.add(-50, -50));
-		UIBase button3 = buttonFactory.createButton(center.add(50, 50), 60, "bitch");
+		UIBase button2 = buttonFactory.createArrowButton(center.withAdded(-50, -50));
+		UIBase button3 = buttonFactory.createButton(center.withAdded(50, 50), 60, "bitch");
 		
 		container.add(button);
 		container.add(button2);
 		container.add(button3);
+		
+		container.add(buttonFactory.createScrollBar(new Position2D(0, 20), 200, false));
 	}
 
 }

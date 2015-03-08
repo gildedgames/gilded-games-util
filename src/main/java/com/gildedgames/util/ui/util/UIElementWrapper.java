@@ -8,7 +8,6 @@ import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.Dimensions2DMutable;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.listeners.ButtonState;
@@ -60,7 +59,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, ButtonState state)
+	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
 	{
 		for (IKeyboardListener element : FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
 		{
@@ -69,7 +68,7 @@ public class UIElementWrapper implements UIBase
 				continue;
 			}
 
-			if (element.isEnabled() && element.onKeyState(charTyped, keyTyped, state))
+			if (element.isEnabled() && element.onKeyState(charTyped, keyTyped, states))
 			{
 				return true;
 			}
@@ -79,7 +78,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, MouseButton button, ButtonState state)
+	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
 	{
 		for (IMouseListener element : FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
@@ -90,7 +89,7 @@ public class UIElementWrapper implements UIBase
 
 			if (element.isEnabled())
 			{
-				element.onMouseState(input, button, state);
+				element.onMouseState(input, buttons, states);
 			}
 		}
 	}
@@ -167,7 +166,7 @@ public class UIElementWrapper implements UIBase
 			{
 				UIView view = (UIView)element;
 				
-				areas.add(new Dimensions2DMutable(view.getDimensions()));
+				areas.add(view.getDimensions());
 			}
 		}
 		

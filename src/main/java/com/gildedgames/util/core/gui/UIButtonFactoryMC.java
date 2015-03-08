@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.UIButton;
+import com.gildedgames.util.ui.util.UIScrollBar;
 import com.gildedgames.util.ui.util.UITexture;
 
 public class UIButtonFactoryMC
@@ -16,9 +17,16 @@ public class UIButtonFactoryMC
 	
 	private static final Resource HOPPER_TEXTURE = new Resource(UtilCore.MOD_ID, "textures/gui/universe_hopper/base.png");
 	
+	private static final Resource SCROLL_BAR_TEXTURE = new Resource(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
+	
 	public UIBase createButtonWithSound(UIView button)
 	{
 		return new UIButtonSounds(button);
+	}
+	
+	public UIBase createArrowButton()
+	{
+		return this.createArrowButton(new Position2D(0, 0));
 	}
 	
 	public UIBase createArrowButton(Position2D pos)
@@ -32,7 +40,7 @@ public class UIButtonFactoryMC
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
 		Sprite buttonClickedSprite = new Sprite(HOPPER_TEXTURE, 40, 174, 20, 20, 256, 256);
 		
-		Dimensions2D dim = new Dimensions2D().setPos(pos).setArea(20, 20).setCentered(centered);
+		Dimensions2D dim = new Dimensions2D().setPos(pos).setArea(20, 20).setCentering(centered);
 		
 		UIButton button = new UIButton(dim, new UITexture(buttonDefaultSprite, dim), new UITexture(buttonHoveredSprite, dim), new UITexture(buttonClickedSprite, dim));
 		
@@ -46,7 +54,7 @@ public class UIButtonFactoryMC
 	
 	public UIBase createButton(Position2D pos, int width, String text, boolean centered)
 	{
-		Dimensions2D dim = new Dimensions2D().setArea(width, 20).setCentered(centered).setPos(pos);
+		Dimensions2D dim = new Dimensions2D().setArea(width, 20).setCentering(centered).setPos(pos);
 		
 		UIView button = new UIButtonMinecraft(dim, text);
 		
@@ -61,6 +69,27 @@ public class UIButtonFactoryMC
 	public UIBase createButton(GuiButton button, boolean centered)
 	{
 		return this.createButtonWithSound(new UIButtonMinecraft(button, centered));
+	}
+	
+	public UIBase createScrollBar(Position2D pos, int height)
+	{
+		return this.createScrollBar(pos, height, true);
+	}
+	
+	public UIBase createScrollBar(Position2D pos, int height, boolean centered)
+	{
+		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
+		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
+		Sprite upArrow = new Sprite(SCROLL_BAR_TEXTURE, 20, 0, 10, 10, 40, 10);
+		Sprite downArrow = new Sprite(SCROLL_BAR_TEXTURE, 30, 0, 10, 10, 40, 10);
+		
+		Dimensions2D spriteDim = new Dimensions2D().withPos(pos).withArea(10, 10).withCentering(centered);
+		
+		Dimensions2D dim = new Dimensions2D().withArea(10, height).withPos(pos);
+		
+		UIScrollBar scrollBar = new UIScrollBar(dim, dim.withArea(50, height + 200), this.createArrowButton(), this.createArrowButton(), new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		
+		return scrollBar;
 	}
 	
 }
