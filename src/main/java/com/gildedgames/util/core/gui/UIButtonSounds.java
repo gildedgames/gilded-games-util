@@ -1,7 +1,5 @@
 package com.gildedgames.util.core.gui;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
@@ -9,43 +7,42 @@ import net.minecraft.util.ResourceLocation;
 
 import com.gildedgames.util.ui.UIDecorator;
 import com.gildedgames.util.ui.UIView;
+import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.MouseButton;
+import com.gildedgames.util.ui.input.MouseEvent;
+import com.gildedgames.util.ui.input.MouseEventPool;
 
 public class UIButtonSounds extends UIDecorator
 {
 
 	protected Minecraft mc = Minecraft.getMinecraft();
 	
-	protected MouseButton button;
-	
-	protected ButtonState state;
+	protected MouseEvent event;
 	
 	public UIButtonSounds(UIView view)
 	{
-		this(view, MouseButton.LEFT, ButtonState.PRESS);
+		this(view, new MouseEvent(MouseButton.LEFT, ButtonState.PRESSED));
 	}
 	
-	public UIButtonSounds(UIView decoratedView, MouseButton button, ButtonState state)
+	public UIButtonSounds(UIView decoratedView, MouseEvent event)
 	{
 		super(decoratedView);
 		
-		this.button = button;
-		this.state = state;
+		this.event = event;
 	}
 	
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
 		UIView view = this.getDecoratedElement();
 		
-		if (input.isHovered(view.getDimensions()) && states.contains(this.state) && buttons.contains(this.button))
+		if (input.isHovered(view.getDimensions()) && pool.contains(this.event))
 		{
 			this.playPressSound(this.mc.getSoundHandler());
 		}
 		
-		super.onMouseState(input, buttons, states);
+		super.onMouseEvent(input, pool);
 	}
 	
 	public void playPressSound(SoundHandler soundHandlerIn)

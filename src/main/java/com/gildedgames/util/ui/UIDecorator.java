@@ -6,10 +6,10 @@ import java.util.List;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
+import com.gildedgames.util.ui.input.KeyEventPool;
+import com.gildedgames.util.ui.input.MouseEventPool;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
-import com.gildedgames.util.ui.listeners.MouseButton;
 import com.gildedgames.util.ui.util.ObjectFilter;
 
 
@@ -154,26 +154,26 @@ public abstract class UIDecorator implements UIBase
 	}
 
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
+	public boolean onKeyEvent(KeyEventPool pool)
 	{
 		IKeyboardListener listener = FILTER.getType(this.element, IKeyboardListener.class);
 		
 		if (listener != null)
 		{
-			return listener.onKeyState(charTyped, keyTyped, states);
+			return listener.onKeyEvent(pool);
 		}
 		
 		return false;
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
 		IMouseListener listener = FILTER.getType(this.element, IMouseListener.class);
 		
 		if (listener != null)
 		{
-			listener.onMouseState(input, buttons, states);
+			listener.onMouseEvent(input, pool);
 		}
 	}
 

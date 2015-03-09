@@ -1,9 +1,10 @@
 package com.gildedgames.util.core.gui;
 
 import java.awt.Color;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
+
+import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.ui.UIBase;
@@ -13,7 +14,7 @@ import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
+import com.gildedgames.util.ui.input.KeyEventPool;
 import com.gildedgames.util.ui.util.UIRectangle;
 
 public class UIFrameMC extends UIFrame
@@ -53,14 +54,14 @@ public class UIFrameMC extends UIFrame
 	}
 	
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
+	public boolean onKeyEvent(KeyEventPool pool)
 	{
-		if (keyTyped == 1 || keyTyped == this.mc.gameSettings.keyBindInventory.getKeyCode())
+		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
         {
 			UtilCore.locate().view((UIView)null);
         }
 		
-		return super.onKeyState(charTyped, keyTyped, states);
+		return super.onKeyEvent(pool);
 	}
 
 }

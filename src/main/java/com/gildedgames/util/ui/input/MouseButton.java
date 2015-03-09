@@ -1,4 +1,4 @@
-package com.gildedgames.util.ui.listeners;
+package com.gildedgames.util.ui.input;
 
 public enum MouseButton
 {

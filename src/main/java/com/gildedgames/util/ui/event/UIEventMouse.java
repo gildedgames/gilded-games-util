@@ -2,36 +2,38 @@ package com.gildedgames.util.ui.event;
 
 import java.util.List;
 
-import com.gildedgames.util.ui.listeners.ButtonState;
+import scala.actors.threadpool.Arrays;
+
+import com.gildedgames.util.ui.input.MouseEvent;
 import com.gildedgames.util.ui.listeners.IMouseListener;
-import com.gildedgames.util.ui.listeners.MouseButton;
 
 public abstract class UIEventMouse extends UIEvent implements IMouseListener
 {
 	
-	private final List<MouseButton> buttons;
+	private final MouseEvent[] events;
 	
-	private final List<ButtonState> states;
+	private final List<MouseEvent> eventList;
 	
-	public UIEventMouse(List<MouseButton> buttons)
+	public UIEventMouse(MouseEvent... events)
 	{
-		this(buttons, null);
+		this.events = events;
+		this.eventList = Arrays.asList(this.events);
 	}
 	
-	public UIEventMouse(List<MouseButton> buttons, List<ButtonState> states)
+	public UIEventMouse(List<MouseEvent> events)
 	{
-		this.buttons = buttons;
-		this.states = states;
+		this.eventList = events;
+		this.events = this.eventList.toArray(new MouseEvent[this.eventList.size()]);
 	}
 	
-	public List<MouseButton> getButtons()
+	public MouseEvent[] getEventArray()
 	{
-		return this.buttons;
+		return this.events;
 	}
 
-	public List<ButtonState> getStates()
+	public List<MouseEvent> getEvents()
 	{
-		return this.states;
+		return this.eventList;
 	}
 	
 }

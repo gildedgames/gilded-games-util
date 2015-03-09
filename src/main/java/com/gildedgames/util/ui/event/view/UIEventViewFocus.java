@@ -1,12 +1,13 @@
 package com.gildedgames.util.ui.event.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.event.UIEventMouse;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.MouseEvent;
+import com.gildedgames.util.ui.input.MouseEventPool;
 
 public class UIEventViewFocus extends UIEventMouse
 {
@@ -15,28 +16,27 @@ public class UIEventViewFocus extends UIEventMouse
 
 	public UIEventViewFocus(UIView view)
 	{
-		this(view, null, null);
+		this(view, new ArrayList<MouseEvent>());
 	}
 	
-	public UIEventViewFocus(UIView view, List<MouseButton> buttons)
+	public UIEventViewFocus(UIView view, List<MouseEvent> events)
 	{
-		this(view, buttons, null);
+		super(events);
+		
+		this.view = view;
 	}
 	
-	public UIEventViewFocus(UIView view, List<MouseButton> buttons, List<ButtonState> states)
+	public UIEventViewFocus(UIView view, MouseEvent... events)
 	{
-		super(buttons, states);
+		super(events);
 		
 		this.view = view;
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
-		final boolean buttonCorrect = buttons != null ? buttons.containsAll(this.getButtons()) : true;
-		final boolean stateCorrect = buttons != null ? states.containsAll(this.getStates()) : true;
-		
-		if (input.isHovered(this.view.getDimensions()) && buttonCorrect && stateCorrect)
+		if (input.isHovered(this.view.getDimensions()) && pool.containsAll(this.getEvents()))
 		{
 			this.view.setVisible(true);
 		}

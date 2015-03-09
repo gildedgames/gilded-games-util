@@ -1,12 +1,11 @@
 package com.gildedgames.util.ui.listeners;
 
-import java.util.List;
-
 import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.input.KeyEventPool;
 
 public interface IKeyboardListener extends UIElement
 {
 
-	boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states);
+	boolean onKeyEvent(KeyEventPool pool);
 
 }

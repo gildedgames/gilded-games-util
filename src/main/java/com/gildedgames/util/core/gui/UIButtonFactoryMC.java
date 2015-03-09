@@ -83,9 +83,9 @@ public class UIButtonFactoryMC
 		Sprite upArrow = new Sprite(SCROLL_BAR_TEXTURE, 20, 0, 10, 10, 40, 10);
 		Sprite downArrow = new Sprite(SCROLL_BAR_TEXTURE, 30, 0, 10, 10, 40, 10);
 		
-		Dimensions2D spriteDim = new Dimensions2D().withPos(pos).withArea(10, 10).withCentering(centered);
+		Dimensions2D spriteDim = new Dimensions2D().copyWithPos(pos).copyWithArea(10, 10).copyWithCentering(centered);
 		
-		Dimensions2D dim = new Dimensions2D().withArea(10, height).withPos(pos);
+		Dimensions2D dim = new Dimensions2D().copyWithArea(10, height).copyWithPos(pos);
 		
 		UIBase topButton = this.createArrowButton();
 		UIBase bottomButton = this.createArrowButton();
@@ -93,7 +93,7 @@ public class UIButtonFactoryMC
 		topButton.getDimensions().setScale(1F);
 		bottomButton.getDimensions().setScale(1F);
 		
-		UIScrollBar scrollBar = new UIScrollBar(dim, dim.withArea(50, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		UIScrollBar scrollBar = new UIScrollBar(dim, dim.copyWithArea(50, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
 		
 		return scrollBar;
 	}

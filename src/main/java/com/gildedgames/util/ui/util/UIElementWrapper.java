@@ -10,10 +10,10 @@ import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
+import com.gildedgames.util.ui.input.KeyEventPool;
+import com.gildedgames.util.ui.input.MouseEventPool;
 import com.gildedgames.util.ui.listeners.IKeyboardListener;
 import com.gildedgames.util.ui.listeners.IMouseListener;
-import com.gildedgames.util.ui.listeners.MouseButton;
 
 public class UIElementWrapper implements UIBase
 {
@@ -59,7 +59,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
+	public boolean onKeyEvent(KeyEventPool pool)
 	{
 		for (IKeyboardListener element : FILTER.getTypesFrom(this.elements, IKeyboardListener.class))
 		{
@@ -68,7 +68,7 @@ public class UIElementWrapper implements UIBase
 				continue;
 			}
 
-			if (element.isEnabled() && element.onKeyState(charTyped, keyTyped, states))
+			if (element.isEnabled() && element.onKeyEvent(pool))
 			{
 				return true;
 			}
@@ -78,7 +78,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
 		for (IMouseListener element : FILTER.getTypesFrom(this.elements, IMouseListener.class))
 		{
@@ -89,7 +89,7 @@ public class UIElementWrapper implements UIBase
 
 			if (element.isEnabled())
 			{
-				element.onMouseState(input, buttons, states);
+				element.onMouseEvent(input, pool);
 			}
 		}
 	}
@@ -116,6 +116,7 @@ public class UIElementWrapper implements UIBase
 	{
 		List<UIElement> filtered = null;
 		List<UIElement> initialized = new ArrayList<UIElement>();
+		
 		while (!(filtered = FILTER.getTypesFrom(this.elements, UIElement.class)).equals(initialized))
 		{
 			for (UIElement element : filtered)

@@ -1,16 +1,15 @@
 package com.gildedgames.util.ui.util;
 
-import java.util.List;
-
 import com.gildedgames.util.ui.UIBase;
 import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.event.view.UIEventViewMouse;
 import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.MouseButton;
+import com.gildedgames.util.ui.input.MouseEventPool;
 
 public class UIScrollBar extends UIFrame
 {
@@ -59,7 +58,7 @@ public class UIScrollBar extends UIFrame
 		this.repeatedBase = repeatedBase;
 		this.repeatedBar = repeatedBar;
 
-		this.bar = new Dimensions2D().withPos(this.getDimensions().getPosition()).withWidth(this.repeatedBar.getDimensions().getWidth());
+		this.bar = new Dimensions2D().copyWithPos(this.getDimensions().getPosition()).copyWithWidth(this.repeatedBar.getDimensions().getWidth());
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -89,11 +88,14 @@ public class UIScrollBar extends UIFrame
 		{
 
 			@Override
-			public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+			public void onMouseEvent(InputProvider input, MouseEventPool pool)
 			{
 				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
-				
-				scrollBar.bar.addY(5);
+
+				if (pool.has(MouseButton.LEFT) && input.isHovered(scrollBar.topArrowButton.getDimensions()))
+				{
+					scrollBar.bar.addY(-5);
+				}
 			}
 		
 		});
@@ -102,11 +104,16 @@ public class UIScrollBar extends UIFrame
 		{
 
 			@Override
-			public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+			public void onMouseEvent(InputProvider input, MouseEventPool pool)
 			{
 				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
 				
-				scrollBar.bar.addY(-5);
+				if (input.isHovered(scrollBar.bottomArrowButton.getDimensions()))
+				{
+					System.out.println("wow wtf2");
+					
+					scrollBar.bar.addY(5);
+				}
 			}
 		
 		});
@@ -117,7 +124,7 @@ public class UIScrollBar extends UIFrame
 		float heightOffset = this.bottomArrowButton.getDimensions().getHeight() + this.topArrowButton.getDimensions().getHeight();
 
 		this.bar.addY(this.topArrowButton.getDimensions().getHeight());
-		this.base = this.getDimensions().withAddedHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight());
+		this.base = this.getDimensions().copyWithAddedHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight());
 
 		this.repeatedBase.getDimensions().addY(this.topArrowButton.getDimensions().getHeight());
 	}
@@ -134,22 +141,22 @@ public class UIScrollBar extends UIFrame
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
-		super.onMouseState(input, buttons, states);
+		super.onMouseEvent(input, pool);
 
-		if (this.grabbedBar && !states.contains(ButtonState.DOWN))
+		if (this.grabbedBar && !pool.has(ButtonState.DOWN))
 		{
 			this.grabbedBar = false;
 		}
 
-		if (buttons.contains(MouseButton.LEFT))
+		if (pool.has(MouseButton.LEFT))
 		{
-			if (states.contains(ButtonState.PRESS) && input.isHovered(this.getBase()))
+			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.getBase()))
 			{
 				this.grabbedBar = true;
 			}
-			else if (states.contains(ButtonState.RELEASED))
+			else if (pool.has(ButtonState.RELEASED))
 			{
 				this.grabbedBar = false;
 			}

@@ -111,77 +111,77 @@ public class Dimensions2D
 		return new Dimensions2D(this.position, this.width, this.height, this.scale, this.centeredX, this.centeredY);
 	}
 
-	public Dimensions2D withScale(float scale)
+	public Dimensions2D copyWithScale(float scale)
 	{
 		return new Dimensions2D(this.position, this.width, this.height, scale, this.centeredX, this.centeredY);
 	}
 
-	public Dimensions2D withArea(float width, float height)
+	public Dimensions2D copyWithArea(float width, float height)
 	{
 		return new Dimensions2D(this.position, width, height, this.scale, this.centeredX, this.centeredY);
 	}
 
-	public Dimensions2D withAddedArea(float width, float height)
+	public Dimensions2D copyWithAddedArea(float width, float height)
 	{
-		return this.withArea(this.width + width, this.height + height);
+		return this.copyWithArea(this.width + width, this.height + height);
 	}
 
-	public Dimensions2D withWidth(float width)
+	public Dimensions2D copyWithWidth(float width)
 	{
-		return this.withArea(width, this.height);
+		return this.copyWithArea(width, this.height);
 	}
 
-	public Dimensions2D withHeight(float height)
+	public Dimensions2D copyWithHeight(float height)
 	{
-		return this.withArea(this.width, height);
+		return this.copyWithArea(this.width, height);
 	}
 
-	public Dimensions2D withAddedWidth(float width)
+	public Dimensions2D copyWithAddedWidth(float width)
 	{
-		return this.withArea(this.width + width, this.height);
+		return this.copyWithArea(this.width + width, this.height);
 	}
 
-	public Dimensions2D withAddedHeight(float height)
+	public Dimensions2D copyWithAddedHeight(float height)
 	{
-		return this.withArea(this.width, this.height + height);
+		return this.copyWithArea(this.width, this.height + height);
 	}
 
-	public Dimensions2D withPos(Position2D position)
+	public Dimensions2D copyWithPos(Position2D position)
 	{
 		return new Dimensions2D(position, this.width, this.height, this.scale, this.centeredX, this.centeredY);
 	}
 
-	public Dimensions2D withAddedPos(Position2D pos)
+	public Dimensions2D copyWithAddedPos(Position2D pos)
 	{
-		return this.withPos(new Position2D(this.position.getX() + pos.getX(), this.position.getY() + pos.getY()));
+		return this.copyWithPos(new Position2D(this.position.getX() + pos.getX(), this.position.getY() + pos.getY()));
 	}
 
-	public Dimensions2D withY(float y)
+	public Dimensions2D copyWithY(float y)
 	{
-		return this.withPos(new Position2D(this.position.getX(), y));
+		return this.copyWithPos(new Position2D(this.position.getX(), y));
 	}
 
-	public Dimensions2D withX(float x)
+	public Dimensions2D copyWithX(float x)
 	{
-		return this.withPos(new Position2D(x, this.position.getY()));
+		return this.copyWithPos(new Position2D(x, this.position.getY()));
 	}
 
-	public Dimensions2D withAddedX(float x)
+	public Dimensions2D copyWithAddedX(float x)
 	{
-		return this.withPos(new Position2D(this.position.getX() + x, this.position.getY()));
+		return this.copyWithPos(new Position2D(this.position.getX() + x, this.position.getY()));
 	}
 
-	public Dimensions2D withAddedY(float y)
+	public Dimensions2D copyWithAddedY(float y)
 	{
-		return this.withPos(new Position2D(this.position.getX(), this.position.getY() + y));
+		return this.copyWithPos(new Position2D(this.position.getX(), this.position.getY() + y));
 	}
 
-	public Dimensions2D withCentering(boolean centered)
+	public Dimensions2D copyWithCentering(boolean centered)
 	{
-		return this.withCentering(centered, centered);
+		return this.copyWithCentering(centered, centered);
 	}
 
-	public Dimensions2D withCentering(boolean centeredX, boolean centeredY)
+	public Dimensions2D copyWithCentering(boolean centeredX, boolean centeredY)
 	{
 		return new Dimensions2D(this.position, this.width, this.height, this.scale, centeredX, centeredY);
 	}

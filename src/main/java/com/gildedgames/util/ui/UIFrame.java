@@ -5,8 +5,8 @@ import java.util.List;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.KeyEventPool;
+import com.gildedgames.util.ui.input.MouseEventPool;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
 public abstract class UIFrame implements UIBase
@@ -75,15 +75,15 @@ public abstract class UIFrame implements UIBase
 	}
 
 	@Override
-	public boolean onKeyState(char charTyped, int keyTyped, List<ButtonState> states)
+	public boolean onKeyEvent(KeyEventPool pool)
 	{
-		return this.elementWrapper.onKeyState(charTyped, keyTyped, states);
+		return this.elementWrapper.onKeyEvent(pool);
 	}
 
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
-		this.elementWrapper.onMouseState(input, buttons, states);
+		this.elementWrapper.onMouseEvent(input, pool);
 	}
 
 	@Override

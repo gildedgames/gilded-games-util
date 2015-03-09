@@ -12,8 +12,13 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.ui.UIView;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.ButtonState;
+import com.gildedgames.util.ui.input.KeyEvent;
+import com.gildedgames.util.ui.input.KeyEventPool;
+import com.gildedgames.util.ui.input.MouseButton;
+import com.gildedgames.util.ui.input.MouseEvent;
+import com.gildedgames.util.ui.input.MouseEventPool;
+import com.gildedgames.util.ui.input.MouseMotion;
 import com.gildedgames.util.ui.util.UIElementWrapper;
 
 public final class UIElementWrapperMC extends GuiScreen
@@ -64,40 +69,37 @@ public final class UIElementWrapperMC extends GuiScreen
 	@Override
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
-		List<ButtonState> states = Arrays.asList(ButtonState.PRESS);
+		KeyEventPool pool = new KeyEventPool(new KeyEvent(charTyped, keyTyped, ButtonState.PRESSED));
 		
-		this.viewWrapper.onKeyState(charTyped, keyTyped, states);
-		this.elementWrapper.onKeyState(charTyped, keyTyped, states);
+		this.viewWrapper.onKeyEvent(pool);
+		this.elementWrapper.onKeyEvent(pool);
 	}
 
 	@Override
 	protected final void mouseClicked(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		List<MouseButton> buttons = Arrays.asList(MouseButton.fromIndex(mouseButtonIndex));
-		List<ButtonState> states = Arrays.asList(ButtonState.PRESS);
+		MouseEventPool pool = new MouseEventPool(new MouseEvent(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
 
-		this.viewWrapper.onMouseState(INPUT, buttons, states);
-		this.elementWrapper.onMouseState(INPUT, buttons, states);
+		this.viewWrapper.onMouseEvent(INPUT, pool);
+		this.elementWrapper.onMouseEvent(INPUT, pool);
 	}
 
 	@Override
 	public final void mouseReleased(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		List<MouseButton> buttons = Arrays.asList(MouseButton.fromIndex(mouseButtonIndex));
-		List<ButtonState> states = Arrays.asList(ButtonState.RELEASED);
+		MouseEventPool pool = new MouseEventPool(new MouseEvent(MouseButton.fromIndex(mouseButtonIndex), ButtonState.RELEASED));
 
-		this.viewWrapper.onMouseState(INPUT, buttons, states);
-		this.elementWrapper.onMouseState(INPUT, buttons, states);
+		this.viewWrapper.onMouseEvent(INPUT, pool);
+		this.elementWrapper.onMouseEvent(INPUT, pool);
 	}
 	
 	@Override
-	protected final void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
+	protected final void mouseClickMove(int mouseX, int mouseY, int mouseButtonIndex, long timeSinceLastClick)
 	{
-		List<MouseButton> buttons = Arrays.asList(MouseButton.fromIndex(clickedMouseButton));
-		List<ButtonState> states = Arrays.asList(ButtonState.DOWN, ButtonState.MOVING);
+		MouseEventPool pool = new MouseEventPool(new MouseEvent(MouseButton.fromIndex(mouseButtonIndex), ButtonState.DOWN, MouseMotion.MOVING));
 
-		this.viewWrapper.onMouseState(INPUT, buttons, states);
-		this.elementWrapper.onMouseState(INPUT, buttons, states);
+		this.viewWrapper.onMouseEvent(INPUT, pool);
+		this.elementWrapper.onMouseEvent(INPUT, pool);
 	}
 
 	@Override

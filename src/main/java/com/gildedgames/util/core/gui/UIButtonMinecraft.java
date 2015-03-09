@@ -1,7 +1,5 @@
 package com.gildedgames.util.core.gui;
 
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
@@ -9,9 +7,9 @@ import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.MouseEventPool;
 
 public class UIButtonMinecraft extends UIFrame
 {
@@ -63,14 +61,14 @@ public class UIButtonMinecraft extends UIFrame
 	}
 	
 	@Override
-	public void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states)
+	public void onMouseEvent(InputProvider input, MouseEventPool pool)
 	{
-		if (states.contains(ButtonState.PRESS))
+		if (pool.contains(ButtonState.PRESSED))
 		{
 			this.button.mousePressed(mc, input.getMouseX(), input.getMouseY());
 		}
 		
-		if (states.contains(ButtonState.RELEASED))
+		if (pool.contains(ButtonState.RELEASED))
 		{
 			this.button.mouseReleased(input.getMouseX(), input.getMouseY());
 		}

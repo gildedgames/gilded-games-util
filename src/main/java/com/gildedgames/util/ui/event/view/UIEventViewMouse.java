@@ -1,12 +1,12 @@
 package com.gildedgames.util.ui.event.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.event.UIEventMouse;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.listeners.ButtonState;
-import com.gildedgames.util.ui.listeners.MouseButton;
+import com.gildedgames.util.ui.input.MouseEvent;
 
 public abstract class UIEventViewMouse extends UIEventMouse
 {
@@ -15,17 +15,19 @@ public abstract class UIEventViewMouse extends UIEventMouse
 
 	public UIEventViewMouse(UIView view)
 	{
-		this(view, null, null);
+		this(view, new ArrayList<MouseEvent>());
 	}
 	
-	public UIEventViewMouse(UIView view, List<MouseButton> buttons)
+	public UIEventViewMouse(UIView view, List<MouseEvent> events)
 	{
-		this(view, buttons, null);
+		super(events);
+		
+		this.view = view;
 	}
 	
-	public UIEventViewMouse(UIView view, List<MouseButton> buttons, List<ButtonState> states)
+	public UIEventViewMouse(UIView view, MouseEvent... events)
 	{
-		super(buttons, states);
+		super(events);
 		
 		this.view = view;
 	}

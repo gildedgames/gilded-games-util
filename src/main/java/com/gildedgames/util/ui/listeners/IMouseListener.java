@@ -1,14 +1,13 @@
 package com.gildedgames.util.ui.listeners;
 
-import java.util.List;
-
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.input.MouseEventPool;
 
 public interface IMouseListener extends UIElement
 {
 
-	void onMouseState(InputProvider input, List<MouseButton> buttons, List<ButtonState> states);
+	void onMouseEvent(InputProvider input, MouseEventPool pool);
 
 	void onMouseScroll(InputProvider input, int scrollDifference);
 
