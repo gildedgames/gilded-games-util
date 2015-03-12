@@ -4,13 +4,13 @@ import com.gildedgames.util.core.gui.UIButtonFactoryMC;
 import com.gildedgames.util.core.gui.UIFrameMC;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
+import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.TestButtonProvider;
 import com.gildedgames.util.ui.util.UIButtonList;
 import com.gildedgames.util.ui.util.UIScrollBar;
 import com.gildedgames.util.ui.util.UIScrollable;
 import com.gildedgames.util.ui.util.ViewPositionerButton;
-import com.gildedgames.util.ui.util.ViewSorterSearch;
 
 public class TestUI extends UIFrameMC
 {
@@ -29,9 +29,19 @@ public class TestUI extends UIFrameMC
 
 		UIButtonFactoryMC buttonFactory = new UIButtonFactoryMC();
 
-		UIButtonList list = new UIButtonList(new Position2D(0, 0), 60, new ViewPositionerButton(), new ViewSorterSearch(), new TestButtonProvider());
+		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonProvider());
 
+		//list.add(buttonFactory.createButton(new Position2D(), 10, "lol"));
+		
 		container.add(new UIScrollable(new Dimensions2D().setArea(60, 200), list, (UIScrollBar) buttonFactory.createScrollBar(new Position2D(0, 0), 200, false)));
+	}
+	
+	@Override
+	public void draw(IGraphics graphics, InputProvider input)
+	{
+		super.draw(graphics, input);
+		
+		
 	}
 
 }

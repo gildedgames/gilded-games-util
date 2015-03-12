@@ -28,6 +28,8 @@ public class ViewPositionerButton implements IViewPositioner
 				{
 					view.getDimensions().setPos(startingPos);
 				}
+				
+				view.getDimensions().setCentering(false);
 			}
 			
 			prevView = view;

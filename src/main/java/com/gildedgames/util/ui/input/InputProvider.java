@@ -19,8 +19,8 @@ public interface InputProvider
 	
 	InputProvider clone();
 	
-	void setMouseXOffset(int xOffset);
+	InputProvider copyWithMouseXOffset(int xOffset);
 	
-	void setMouseYOffset(int yOffset);
+	InputProvider copyWithMouseYOffset(int yOffset);
 	
 }

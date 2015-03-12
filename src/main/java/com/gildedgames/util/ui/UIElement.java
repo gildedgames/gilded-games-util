@@ -6,9 +6,9 @@ public interface UIElement
 {
 	
 	void init(UIElementContainer container, InputProvider input);
-
+	
 	boolean isEnabled();
-
+	
 	void setEnabled(boolean enabled);
 	
 }

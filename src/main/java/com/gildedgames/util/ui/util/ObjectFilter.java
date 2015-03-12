@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ObjectFilter
@@ -12,7 +13,7 @@ public class ObjectFilter
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> List<T> getTypesFrom(List<?> list, Class<? extends T> typeClass)
+	public <T> List<T> getTypesFrom(Collection<?> list, Class<? extends T> typeClass)
 	{
 		List<T> returnList = new ArrayList<T>();
 

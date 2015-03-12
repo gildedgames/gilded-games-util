@@ -39,15 +39,13 @@ public class UIScrollable extends UIDecorator
 	@Override
 	public void init(UIElementContainer container, InputProvider input)
 	{
-		this.shiftedInput = input.clone();
+		this.shiftedWidth = (int) this.scrollBar.getDimensions().getWidth();
 		
-		this.shiftedInput.setMouseXOffset(this.shiftedWidth);
+		this.shiftedInput = input.copyWithMouseXOffset(this.shiftedWidth);
 		
 		super.init(container, this.shiftedInput);
 		
 		container.add(this.scrollBar);
-		
-		this.shiftedWidth = (int) this.scrollBar.getDimensions().getWidth();
 		
 		this.box.setX(this.scrollBar.getDimensions().getX() + this.shiftedWidth);
 	}
@@ -78,8 +76,8 @@ public class UIScrollable extends UIDecorator
 
 		GlStateManager.translate(this.shiftedWidth, scrollValue, 0.0F);
 		
-		this.shiftedInput.setMouseXOffset(this.shiftedWidth);
-		this.shiftedInput.setMouseYOffset((int)scrollValue);
+		this.shiftedInput = this.shiftedInput.copyWithMouseXOffset(this.shiftedWidth);
+		this.shiftedInput = this.shiftedInput.copyWithMouseYOffset((int)scrollValue);
 
 		super.draw(graphics, this.shiftedInput);
 

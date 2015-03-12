@@ -5,15 +5,14 @@ import java.util.List;
 
 import com.gildedgames.util.core.gui.UIButtonFactoryMC;
 import com.gildedgames.util.ui.UIElement;
-import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.data.Position2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.google.common.collect.ImmutableList;
 
 public class TestButtonProvider implements IContentProvider
 {
 
 	@Override
-	public List<UIElement> provideContent()
+	public List<UIElement> provideContent(ImmutableList<UIElement> currentContent)
 	{
 		List<UIElement> buttons = new ArrayList<UIElement>();
 		

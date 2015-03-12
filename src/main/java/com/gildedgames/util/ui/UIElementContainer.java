@@ -5,11 +5,11 @@ import java.util.List;
 
 public interface UIElementContainer
 {
-
+	
 	void add(UIElement element);
 	
 	void addAll(Collection<? extends UIElement> elements);
-
+	
 	void remove(UIElement element);
 	
 	void removeAll(Collection<? extends UIElement> elements);
@@ -29,5 +29,5 @@ public interface UIElementContainer
 	List<UIElement> getElements();
 	
 	List<UIView> queryAll(List input);
-
+	
 }

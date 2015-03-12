@@ -12,8 +12,8 @@ import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
-import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.google.common.collect.ImmutableList;
 
 public class UIButtonList extends UIFrame
 {
@@ -25,18 +25,39 @@ public class UIButtonList extends UIFrame
 	protected IViewSorter sorter;
 	
 	protected List<IContentProvider> contentProviders = new ArrayList<IContentProvider>();
+	
+	protected List<UIView> manualContent = new ArrayList<UIView>();
 
-	public UIButtonList(Position2D pos, int width, IViewPositioner positioner, IViewSorter sorter, IContentProvider... contentProviders)
+	public UIButtonList(Position2D pos, int width, IViewPositioner positioner, IContentProvider... contentProviders)
 	{
 		super(null, new Dimensions2D().setPos(pos).setWidth(width));
 		
 		this.positioner = positioner;
-		this.sorter = sorter;
 		
 		this.contentProviders.addAll(Arrays.asList(contentProviders));
 	}
 	
-	public void refresh()
+	public void setPositioner(IViewPositioner positioner)
+	{
+		this.positioner = positioner;
+	}
+	
+	public IViewPositioner getPositioner()
+	{
+		return this.positioner;
+	}
+	
+	public void setSorter(IViewSorter sorter)
+	{
+		this.sorter = sorter;
+	}
+	
+	public IViewSorter getSorter()
+	{
+		return this.sorter;
+	}
+	
+	private void provideContent()
 	{
 		super.clear(UIView.class);
 		
@@ -44,12 +65,17 @@ public class UIButtonList extends UIFrame
 		{
 			if (contentProvider != null)
 			{
-				super.addAll(contentProvider.provideContent());
+				super.addAll(contentProvider.provideContent(ImmutableList.copyOf(this.getElements())));
 			}
 		}
-
+		
+		this.addAll(this.manualContent);
+	}
+	
+	public void sortAndPositionContent()
+	{
 		List<UIView> filteredViews = FILTER.getTypesFrom(this.getElements(), UIView.class);
-		List<UIView> sortedViews = this.sorter.sortList(filteredViews);
+		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 		
 		this.positioner.positionList(sortedViews, this.getDimensions());
 
@@ -60,22 +86,21 @@ public class UIButtonList extends UIFrame
 		
 		for (UIView view : sortedViews)
 		{
-			System.out.println("Hee");
 			view.setVisible(true);
 		}
 	}
 	
-	@Override
-	public void draw(IGraphics graphics, InputProvider input)
+	public void refresh()
 	{
-		super.draw(graphics, input);
+		this.provideContent();
+		this.sortAndPositionContent();
 	}
-	
+
 	@Override
 	public void init(UIElementContainer container, InputProvider input)
 	{
 		super.init(container, input);
-		
+
 		this.refresh();
 	}
 	
@@ -84,7 +109,12 @@ public class UIButtonList extends UIFrame
 	{
 		super.add(element);
 		
-		this.refresh();
+		if (element instanceof UIView)
+		{
+			this.manualContent.add((UIView) element);
+		}
+		
+		this.sortAndPositionContent();
 	}
 	
 	@Override
@@ -92,7 +122,9 @@ public class UIButtonList extends UIFrame
 	{
 		super.addAll(elements);
 		
-		this.refresh();
+		this.manualContent.addAll(FILTER.getTypesFrom(elements, UIView.class));
+		
+		this.sortAndPositionContent();
 	}
 
 	@Override
@@ -100,7 +132,12 @@ public class UIButtonList extends UIFrame
 	{
 		super.remove(element);
 		
-		this.refresh();
+		if (element instanceof UIView)
+		{
+			this.manualContent.remove((UIView) element);
+		}
+		
+		this.sortAndPositionContent();
 	}
 	
 	@Override
@@ -108,7 +145,9 @@ public class UIButtonList extends UIFrame
 	{
 		super.clear();
 		
-		this.refresh();
+		this.manualContent.clear();
+		
+		this.sortAndPositionContent();
 	}
 	
 	@Override
@@ -116,7 +155,11 @@ public class UIButtonList extends UIFrame
 	{
 		super.clear(classToRemove);
 		
-		this.refresh();
+		List objectsToRemove = FILTER.getTypesFrom(this.manualContent, classToRemove);
+
+		this.manualContent.removeAll(objectsToRemove);
+		
+		this.sortAndPositionContent();
 	}
 	
 }

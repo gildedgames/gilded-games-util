@@ -72,19 +72,27 @@ public class InputProviderMC implements InputProvider
 	}
 
 	@Override
-	public void setMouseXOffset(int xOffset)
+	public InputProvider copyWithMouseXOffset(int xOffset)
 	{
-		this.xOffset = xOffset;
+		InputProviderMC input = (InputProviderMC) this.clone();
+		
+		input.xOffset = xOffset;
+		
+		return input;
 	}
 	
 	@Override
-	public void setMouseYOffset(int yOffset)
+	public InputProvider copyWithMouseYOffset(int yOffset)
 	{
-		this.yOffset = yOffset;
+		InputProviderMC input = (InputProviderMC) this.clone();
+		
+		input.yOffset = yOffset;
+		
+		return input;
 	}
 
 	@Override
-	public InputProviderMC clone()
+	public InputProvider clone()
 	{
 		InputProviderMC input = new InputProviderMC(this.mc);
 		
