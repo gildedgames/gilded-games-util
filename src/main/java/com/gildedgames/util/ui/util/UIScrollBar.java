@@ -59,6 +59,10 @@ public class UIScrollBar extends UIFrame
 		this.repeatedBar = repeatedBar;
 
 		this.bar = new Dimensions2D().setPos(this.getDimensions().getPosition()).setWidth(this.repeatedBar.getDimensions().getWidth());
+		
+		float maxWidth = Math.max(Math.max(this.topArrowButton.getDimensions().getWidth(), this.bottomArrowButton.getDimensions().getWidth()), this.repeatedBase.getDimensions().getWidth());
+
+		this.getDimensions().setWidth(maxWidth);
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
