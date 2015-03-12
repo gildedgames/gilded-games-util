@@ -24,6 +24,10 @@ public class UIScrollable extends UIDecorator
 	
 	protected UIScrollBar scrollBar;
 	
+	protected InputProvider shiftedInput;
+	
+	protected int shiftedWidth;
+	
 	public UIScrollable(Dimensions2D dim, UIElement element, UIScrollBar scrollBar)
 	{
 		super(element);
@@ -35,28 +39,36 @@ public class UIScrollable extends UIDecorator
 	@Override
 	public void init(UIElementContainer container, InputProvider input)
 	{
-		super.init(container, input);
+		this.shiftedInput = input.clone();
+		
+		this.shiftedInput.setMouseXOffset(this.shiftedWidth);
+		
+		super.init(container, this.shiftedInput);
 		
 		container.add(this.scrollBar);
+		
+		this.shiftedWidth = (int) this.scrollBar.getDimensions().getWidth();
+		
+		this.box.setX(this.scrollBar.getDimensions().getX() + this.shiftedWidth);
 	}
 	
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		/*float scrollValue = 0.0F;
+		float scrollValue = 0.0F;
 
-		if (this.getDimensions().getHeight() > this.box.getHeight())
+		if (this.box.getHeight() > this.getDimensions().getHeight())
 		{
-			scrollValue = -this.scrollBar.getScrollPercentage() * (this.getDimensions().getHeight() - this.box.getHeight());
+			scrollValue = -this.scrollBar.getScrollPercentage() * (this.box.getHeight() - this.getDimensions().getHeight());
 		}
 		
 		float yFactor = Math.abs(this.box.getY() + this.heightOffset - input.getScreenHeight()) - this.box.getHeight();
 
-		float cornerX = this.box.getX() * input.getScaleFactor();
+		float cornerX = (this.box.getX() * input.getScaleFactor());
 		float cornerY = yFactor * input.getScaleFactor();
 
 		float cutWidth = this.box.getWidth() * input.getScaleFactor();
-		float cutHeight = this.box.getWidth() * input.getScaleFactor();
+		float cutHeight = this.box.getHeight() * input.getScaleFactor();
 
 		GL11.glEnable(GL_SCISSOR_TEST);
 		
@@ -64,13 +76,16 @@ public class UIScrollable extends UIDecorator
 
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate(0.0F, scrollValue, 0.0F);*/
-
-		super.draw(graphics, input);
-
-		/*GlStateManager.popMatrix();
+		GlStateManager.translate(this.shiftedWidth, scrollValue, 0.0F);
 		
-		GL11.glDisable(GL_SCISSOR_TEST);*/
+		this.shiftedInput.setMouseXOffset(this.shiftedWidth);
+		this.shiftedInput.setMouseYOffset((int)scrollValue);
+
+		super.draw(graphics, this.shiftedInput);
+
+		GlStateManager.popMatrix();
+		
+		GL11.glDisable(GL_SCISSOR_TEST);
 	}
 
 }

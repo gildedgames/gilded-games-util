@@ -58,7 +58,7 @@ public class UIScrollBar extends UIFrame
 		this.repeatedBase = repeatedBase;
 		this.repeatedBar = repeatedBar;
 
-		this.bar = new Dimensions2D().copyWithPos(this.getDimensions().getPosition()).copyWithWidth(this.repeatedBar.getDimensions().getWidth());
+		this.bar = new Dimensions2D().setPos(this.getDimensions().getPosition()).setWidth(this.repeatedBar.getDimensions().getWidth());
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -110,8 +110,6 @@ public class UIScrollBar extends UIFrame
 				
 				if (input.isHovered(scrollBar.bottomArrowButton.getDimensions()))
 				{
-					System.out.println("wow wtf2");
-					
 					scrollBar.bar.addY(5);
 				}
 			}
@@ -124,7 +122,7 @@ public class UIScrollBar extends UIFrame
 		float heightOffset = this.bottomArrowButton.getDimensions().getHeight() + this.topArrowButton.getDimensions().getHeight();
 
 		this.bar.addY(this.topArrowButton.getDimensions().getHeight());
-		this.base = this.getDimensions().copyWithAddedHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight());
+		this.base = this.getDimensions().clone().addHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight());
 
 		this.repeatedBase.getDimensions().addY(this.topArrowButton.getDimensions().getHeight());
 	}

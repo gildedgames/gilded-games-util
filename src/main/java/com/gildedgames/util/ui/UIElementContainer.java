@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UIElementContainer
@@ -7,13 +8,17 @@ public interface UIElementContainer
 
 	void add(UIElement element);
 	
-	void addAll(List<? extends UIElement> elements);
+	void addAll(Collection<? extends UIElement> elements);
 
 	void remove(UIElement element);
+	
+	void removeAll(Collection<? extends UIElement> elements);
 	
 	void clear();
 	
 	boolean contains(UIElement element);
+	
+	int size();
 	
 	/**
 	 * Any element that is an instance of the provided class will be removed.
@@ -23,6 +28,6 @@ public interface UIElementContainer
 	
 	List<UIElement> getElements();
 	
-	List<UIView> queryAll(Object... input);
+	List<UIView> queryAll(List input);
 
 }

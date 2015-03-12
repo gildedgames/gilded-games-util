@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.core.gui.UIButtonFactoryMC;
-import com.gildedgames.util.ui.UIView;
+import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.UIElementContainer;
 import com.gildedgames.util.ui.data.Position2D;
+import com.gildedgames.util.ui.input.InputProvider;
 
-public class ButtonFiller implements IContentFiller
+public class TestButtonProvider implements IContentProvider
 {
 
 	@Override
-	public List<UIView> fillContent()
+	public List<UIElement> provideContent()
 	{
-		List<UIView> buttons = new ArrayList<UIView>();
+		List<UIElement> buttons = new ArrayList<UIElement>();
 		
 		UIButtonFactoryMC factory = new UIButtonFactoryMC();
 		

@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.gildedgames.util.ui.UIBase;
@@ -31,7 +32,7 @@ public class UIElementWrapper implements UIBase
 	 */
 	public UIElementWrapper()
 	{
-
+		
 	}
 
 	@Override
@@ -213,7 +214,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public List<UIView> queryAll(Object... input)
+	public List<UIView> queryAll(List input)
 	{
 		List<UIView> views = new ArrayList<UIView>();
 
@@ -234,7 +235,7 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public boolean query(Object... input)
+	public boolean query(List input)
 	{
 		for (UIView element : FILTER.getTypesFrom(this.elements, UIView.class))
 		{
@@ -259,9 +260,21 @@ public class UIElementWrapper implements UIBase
 	}
 
 	@Override
-	public void addAll(List<? extends UIElement> elements)
+	public void addAll(Collection<? extends UIElement> elements)
 	{
 		this.elements.addAll(elements);
+	}
+
+	@Override
+	public int size()
+	{
+		return this.elements.size();
+	}
+
+	@Override
+	public void removeAll(Collection<? extends UIElement> elements)
+	{
+		this.elements.removeAll(elements);
 	}
 
 }

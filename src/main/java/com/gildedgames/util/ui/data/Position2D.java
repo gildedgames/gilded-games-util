@@ -16,6 +16,11 @@ public class Position2D
 		this.y = y;
 	}
 	
+	public Position2D clone()
+	{
+		return new Position2D(this.x, this.y);
+	}
+	
 	public Position2D withAdded(float x, float y)
 	{
 		float newX = this.x + x;

@@ -17,4 +17,10 @@ public interface InputProvider
 	
 	boolean isHovered(Dimensions2D dim);
 	
+	InputProvider clone();
+	
+	void setMouseXOffset(int xOffset);
+	
+	void setMouseYOffset(int yOffset);
+	
 }

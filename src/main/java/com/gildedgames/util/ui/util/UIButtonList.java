@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import scala.actors.threadpool.Arrays;
@@ -11,6 +12,7 @@ import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
+import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class UIButtonList extends UIFrame
@@ -22,53 +24,51 @@ public class UIButtonList extends UIFrame
 	
 	protected IViewSorter sorter;
 	
-	protected List<IContentFiller> contentFillers = new ArrayList<IContentFiller>();
-	
-	public UIButtonList(Position2D pos, int width, IViewPositioner positioner, IViewSorter sorter, IContentFiller... contentFillers)
+	protected List<IContentProvider> contentProviders = new ArrayList<IContentProvider>();
+
+	public UIButtonList(Position2D pos, int width, IViewPositioner positioner, IViewSorter sorter, IContentProvider... contentProviders)
 	{
 		super(null, new Dimensions2D().setPos(pos).setWidth(width));
 		
 		this.positioner = positioner;
 		this.sorter = sorter;
 		
-		this.contentFillers.addAll(Arrays.asList(contentFillers));
-	}
-	
-	public void addContentFiller(IContentFiller contentFiller)
-	{
-		this.contentFillers.add(contentFiller);
+		this.contentProviders.addAll(Arrays.asList(contentProviders));
 	}
 	
 	public void refresh()
 	{
-		List<UIView> oldViews = FILTER.getTypesFrom(this.getElements(), UIView.class);
-		
 		super.clear(UIView.class);
 		
-		for (IContentFiller contentFiller : this.contentFillers)
+		for (IContentProvider contentProvider : this.contentProviders)
 		{
-			if (contentFiller != null)
+			if (contentProvider != null)
 			{
-				super.addAll(contentFiller.fillContent());
+				super.addAll(contentProvider.provideContent());
 			}
 		}
+
+		List<UIView> filteredViews = FILTER.getTypesFrom(this.getElements(), UIView.class);
+		List<UIView> sortedViews = this.sorter.sortList(filteredViews);
 		
-		List<UIElement> viewsToRemove = new ArrayList<UIElement>();
-		
-		for (UIElement element : this.getElements())
+		this.positioner.positionList(sortedViews, this.getDimensions());
+
+		for (UIView view : filteredViews)
 		{
-			if (oldViews.contains(element))
-			{
-				viewsToRemove.add(element);
-			}
+			view.setVisible(false);
 		}
 		
-		oldViews.removeAll(viewsToRemove);
-		
-		super.addAll(oldViews);
-		
-		List<UIView> elements = this.sorter.sortList(FILTER.getTypesFrom(this.getElements(), UIView.class));
-		this.positioner.positionList(elements, this.getDimensions());
+		for (UIView view : sortedViews)
+		{
+			System.out.println("Hee");
+			view.setVisible(true);
+		}
+	}
+	
+	@Override
+	public void draw(IGraphics graphics, InputProvider input)
+	{
+		super.draw(graphics, input);
 	}
 	
 	@Override
@@ -88,13 +88,12 @@ public class UIButtonList extends UIFrame
 	}
 	
 	@Override
-	public void addAll(List<? extends UIElement> elements)
+	public void addAll(Collection<? extends UIElement> elements)
 	{
 		super.addAll(elements);
 		
 		this.refresh();
 	}
-
 
 	@Override
 	public void remove(UIElement element)

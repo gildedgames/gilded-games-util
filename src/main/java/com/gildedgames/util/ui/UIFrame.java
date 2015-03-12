@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.gildedgames.util.ui.data.Dimensions2D;
@@ -141,13 +142,13 @@ public abstract class UIFrame implements UIBase
 	}
 
 	@Override
-	public List<UIView> queryAll(Object... input)
+	public List<UIView> queryAll(List input)
 	{
 		return this.elementWrapper.queryAll(input);
 	}
 
 	@Override
-	public boolean query(Object... input)
+	public boolean query(List input)
 	{
 		return this.elementWrapper.query(input);
 	}
@@ -159,9 +160,21 @@ public abstract class UIFrame implements UIBase
 	}
 	
 	@Override
-	public void addAll(List<? extends UIElement> elements)
+	public void addAll(Collection<? extends UIElement> elements)
 	{
 		this.elementWrapper.addAll(elements);
+	}
+	
+	@Override
+	public void removeAll(Collection<? extends UIElement> elements)
+	{
+		this.elementWrapper.removeAll(elements);
+	}
+	
+	@Override
+	public int size()
+	{
+		return this.elementWrapper.size();
 	}
 
 }

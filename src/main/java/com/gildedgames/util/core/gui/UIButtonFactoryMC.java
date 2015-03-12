@@ -40,7 +40,7 @@ public class UIButtonFactoryMC
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
 		Sprite buttonClickedSprite = new Sprite(HOPPER_TEXTURE, 40, 174, 20, 20, 256, 256);
 		
-		Dimensions2D dim = new Dimensions2D().setPos(pos).setArea(20, 20).setCentering(centered);
+		Dimensions2D dim = new Dimensions2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
 		
 		UIButton button = new UIButton(dim, new UITexture(buttonDefaultSprite, dim), new UITexture(buttonHoveredSprite, dim), new UITexture(buttonClickedSprite, dim));
 		
@@ -54,7 +54,7 @@ public class UIButtonFactoryMC
 	
 	public UIBase createButton(Position2D pos, int width, String text, boolean centered)
 	{
-		Dimensions2D dim = new Dimensions2D().setArea(width, 20).setCentering(centered).setPos(pos);
+		Dimensions2D dim = new Dimensions2D().setArea(width, 20).setCentering(centered).setPos(pos.clone());
 		
 		UIView button = new UIButtonMinecraft(dim, text);
 		
@@ -83,9 +83,9 @@ public class UIButtonFactoryMC
 		Sprite upArrow = new Sprite(SCROLL_BAR_TEXTURE, 20, 0, 10, 10, 40, 10);
 		Sprite downArrow = new Sprite(SCROLL_BAR_TEXTURE, 30, 0, 10, 10, 40, 10);
 		
-		Dimensions2D spriteDim = new Dimensions2D().copyWithPos(pos).copyWithArea(10, 10).copyWithCentering(centered);
+		Dimensions2D spriteDim = new Dimensions2D().setPos(pos.clone()).setArea(10, 10).setCentering(centered);
 		
-		Dimensions2D dim = new Dimensions2D().copyWithArea(10, height).copyWithPos(pos);
+		Dimensions2D dim = new Dimensions2D().setArea(10, height).setPos(pos);
 		
 		UIBase topButton = this.createArrowButton();
 		UIBase bottomButton = this.createArrowButton();
@@ -93,7 +93,7 @@ public class UIButtonFactoryMC
 		topButton.getDimensions().setScale(1F);
 		bottomButton.getDimensions().setScale(1F);
 		
-		UIScrollBar scrollBar = new UIScrollBar(dim, dim.copyWithArea(50, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		UIScrollBar scrollBar = new UIScrollBar(dim, dim.clone().setArea(60, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
 		
 		return scrollBar;
 	}

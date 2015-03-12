@@ -12,7 +12,7 @@ public class InputProviderMC implements InputProvider
 	
 	protected Minecraft mc;
 	
-	protected int screenWidth, screenHeight, scaleFactor;
+	protected int screenWidth, screenHeight, scaleFactor, xOffset, yOffset;
 	
 	public InputProviderMC(Minecraft mc)
 	{
@@ -45,13 +45,13 @@ public class InputProviderMC implements InputProvider
 	@Override
 	public int getMouseX()
 	{
-		return Mouse.getX() * this.getScreenWidth() / this.mc.displayWidth;
+		return (Mouse.getX() * this.getScreenWidth() / this.mc.displayWidth) - this.xOffset;
 	}
 
 	@Override
 	public int getMouseY()
 	{
-		return this.getScreenHeight() - Mouse.getY() * this.getScreenHeight() / this.mc.displayHeight - 1;
+		return (this.getScreenHeight() - Mouse.getY() * this.getScreenHeight() / this.mc.displayHeight - 1) - this.yOffset;
 	}
 
 	@Override
@@ -71,4 +71,30 @@ public class InputProviderMC implements InputProvider
 		return this.scaleFactor;
 	}
 
+	@Override
+	public void setMouseXOffset(int xOffset)
+	{
+		this.xOffset = xOffset;
+	}
+	
+	@Override
+	public void setMouseYOffset(int yOffset)
+	{
+		this.yOffset = yOffset;
+	}
+
+	@Override
+	public InputProviderMC clone()
+	{
+		InputProviderMC input = new InputProviderMC(this.mc);
+		
+		input.screenWidth = this.screenWidth;
+		input.screenHeight = this.screenHeight;
+		input.scaleFactor = this.scaleFactor;
+		input.xOffset = this.xOffset;
+		input.yOffset = this.yOffset;
+		
+		return input;
+	}
+	
 }

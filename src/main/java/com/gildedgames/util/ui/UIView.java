@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui;
 
+import java.util.List;
+
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -21,6 +23,6 @@ public interface UIView extends UIElement
 	
 	void setFocused(boolean focused);
 	
-	boolean query(Object... input);
+	boolean query(List input);
 
 }

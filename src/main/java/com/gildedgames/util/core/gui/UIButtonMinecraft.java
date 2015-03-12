@@ -1,5 +1,7 @@
 package com.gildedgames.util.core.gui;
 
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
@@ -10,6 +12,7 @@ import com.gildedgames.util.ui.graphics.IGraphics;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseEventPool;
+import com.gildedgames.util.ui.util.ObjectFilter;
 
 public class UIButtonMinecraft extends UIFrame
 {
@@ -19,6 +22,8 @@ public class UIButtonMinecraft extends UIFrame
 	protected String text;
 	
 	protected GuiButton button;
+	
+	protected final static ObjectFilter FILTER = new ObjectFilter();
 	
 	public UIButtonMinecraft(GuiButton button, boolean centered)
 	{
@@ -58,6 +63,12 @@ public class UIButtonMinecraft extends UIFrame
 		super.draw(graphics, input);
 		
 		this.button.drawButton(mc, input.getMouseX(), input.getMouseY());
+		
+		this.button.xPosition = (int) this.getDimensions().getX();
+		this.button.yPosition = (int) this.getDimensions().getY();
+		
+		this.button.width = (int) this.getDimensions().getWidth();
+		this.button.height = (int) this.getDimensions().getHeight();
 	}
 	
 	@Override
@@ -72,6 +83,22 @@ public class UIButtonMinecraft extends UIFrame
 		{
 			this.button.mouseReleased(input.getMouseX(), input.getMouseY());
 		}
+	}
+	
+	@Override
+	public boolean query(List input)
+	{
+		List<String> strings = FILTER.getTypesFrom(input, String.class);
+		
+		for (String string : strings)
+		{
+			if (string != null && this.text.toLowerCase().contains(string.toLowerCase()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

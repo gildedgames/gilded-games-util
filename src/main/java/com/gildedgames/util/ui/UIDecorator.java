@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -224,7 +225,7 @@ public abstract class UIDecorator implements UIBase
 	}
 	
 	@Override
-	public boolean query(Object... input)
+	public boolean query(List input)
 	{
 		UIView view = FILTER.getType(this.element, UIView.class);
 		
@@ -237,7 +238,7 @@ public abstract class UIDecorator implements UIBase
 	}
 	
 	@Override
-	public List<UIView> queryAll(Object... input)
+	public List<UIView> queryAll(List input)
 	{
 		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
@@ -263,13 +264,37 @@ public abstract class UIDecorator implements UIBase
 	}
 	
 	@Override
-	public void addAll(List<? extends UIElement> elements)
+	public void addAll(Collection<? extends UIElement> elements)
 	{
 		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
 		
 		if (container != null)
 		{
 			container.addAll(elements);
+		}
+	}
+	
+	@Override
+	public int size()
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			return container.size();
+		}
+		
+		return 0;
+	}
+	
+	@Override
+	public void removeAll(Collection<? extends UIElement> elements)
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			container.removeAll(elements);
 		}
 	}
 

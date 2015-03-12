@@ -30,9 +30,13 @@ public class ViewSorterSearch implements IViewSorter
 		
 		List<UIView> result = new ArrayList<UIView>();
 		
+		List input = new ArrayList();
+		
+		input.add(this.searchText);
+		
 		for (UIView view : list)
 		{
-			if (view != null && view.query(this.searchText))
+			if (view != null && view.query(input))
 			{
 				result.add(view);
 			}
