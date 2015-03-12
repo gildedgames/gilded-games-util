@@ -196,6 +196,16 @@ public class UIScrollBar extends UIFrame
 
 		super.draw(graphics, input);
 	}
+	
+	/**
+	 * @return A float value between 0.0F - 1.0F which represents the position of the grabbed bar on the scroll base.
+	 */
+	public float getScrollPercentage()
+	{
+		float baseBottomY = this.getBase().getY() + this.getBase().getHeight();
+		
+		return (baseBottomY - this.bar.getY()) / this.getBase().getHeight();
+	}
 
 	private void snapBarToProportions()
 	{

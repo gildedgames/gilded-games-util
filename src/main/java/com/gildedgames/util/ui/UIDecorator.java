@@ -261,5 +261,16 @@ public abstract class UIDecorator implements UIBase
 		
 		return false;
 	}
+	
+	@Override
+	public void addAll(List<? extends UIElement> elements)
+	{
+		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
+		
+		if (container != null)
+		{
+			container.addAll(elements);
+		}
+	}
 
 }

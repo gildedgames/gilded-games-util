@@ -11,7 +11,7 @@ public interface IGroupPerms extends NBT
 	
 	String getDescription();
 	
-	boolean canBeInvited(GroupMember member);
+	boolean canBeInvited(GroupMember inviter, GroupMember member);
 	
 	boolean canJoin(GroupMember member);
 	

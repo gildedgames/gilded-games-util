@@ -5,6 +5,11 @@ public class Position2D
 	
 	protected final float x, y;
 	
+	public Position2D()
+	{
+		this(0, 0);
+	}
+	
 	public Position2D(float x, float y)
 	{
 		this.x = x;

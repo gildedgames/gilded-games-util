@@ -258,4 +258,10 @@ public class UIElementWrapper implements UIBase
 		return this.elements.contains(element);
 	}
 
+	@Override
+	public void addAll(List<? extends UIElement> elements)
+	{
+		this.elements.addAll(elements);
+	}
+
 }

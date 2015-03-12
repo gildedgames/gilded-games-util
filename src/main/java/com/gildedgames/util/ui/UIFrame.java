@@ -157,5 +157,11 @@ public abstract class UIFrame implements UIBase
 	{
 		return this.elementWrapper.contains(element);
 	}
+	
+	@Override
+	public void addAll(List<? extends UIElement> elements)
+	{
+		this.elementWrapper.addAll(elements);
+	}
 
 }

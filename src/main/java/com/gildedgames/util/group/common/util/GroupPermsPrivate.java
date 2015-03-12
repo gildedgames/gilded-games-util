@@ -25,7 +25,7 @@ public class GroupPermsPrivate implements IGroupPerms
 	}
 
 	@Override
-	public boolean canBeInvited(GroupMember member)
+	public boolean canBeInvited(GroupMember inviter, GroupMember member)
 	{
 		return true;
 	}

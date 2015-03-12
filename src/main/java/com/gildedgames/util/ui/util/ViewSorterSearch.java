@@ -23,6 +23,11 @@ public class ViewSorterSearch implements IViewSorter
 	@Override
 	public List<UIView> sortList(List<UIView> list)
 	{
+		if (this.searchText == null || this.searchText.isEmpty())
+		{
+			return list;
+		}
+		
 		List<UIView> result = new ArrayList<UIView>();
 		
 		for (UIView view : list)

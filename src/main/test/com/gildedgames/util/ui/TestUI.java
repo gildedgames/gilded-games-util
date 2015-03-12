@@ -5,6 +5,12 @@ import com.gildedgames.util.core.gui.UIFrameMC;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.util.ButtonFiller;
+import com.gildedgames.util.ui.util.UIButtonList;
+import com.gildedgames.util.ui.util.UIScrollBar;
+import com.gildedgames.util.ui.util.UIScrollable;
+import com.gildedgames.util.ui.util.ViewPositionerButton;
+import com.gildedgames.util.ui.util.ViewSorterSearch;
 
 public class TestUI extends UIFrameMC
 {
@@ -30,8 +36,10 @@ public class TestUI extends UIFrameMC
 		container.add(button);
 		container.add(button2);
 		container.add(button3);*/
+		
+		UIButtonList list = new UIButtonList(new Position2D(), 50, new ViewPositionerButton(), new ViewSorterSearch(), new ButtonFiller());
 
-		container.add(buttonFactory.createScrollBar(new Position2D(0, 0), 200, false));
+		container.add(new UIScrollable(new Dimensions2D().copyWithArea(50, 200), list, (UIScrollBar) buttonFactory.createScrollBar(new Position2D(0, 0), 200, false)));
 	}
 
 }

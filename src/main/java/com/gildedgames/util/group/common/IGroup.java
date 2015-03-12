@@ -1,10 +1,11 @@
 package com.gildedgames.util.group.common;
 
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.group.common.player.GroupMember;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.List;
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.group.common.player.GroupMember;
 
 public interface IGroup extends NBT
 {
@@ -26,11 +27,7 @@ public interface IGroup extends NBT
 	GroupMember getOwner();
 	
 	List<GroupMember> getMembers();
-	
-	List<GroupMember> getMembersOnline();
-	
-	List<GroupMember> getMembersOffline();
-	
+
 	IGroupPool getParentPool();
 	
 }

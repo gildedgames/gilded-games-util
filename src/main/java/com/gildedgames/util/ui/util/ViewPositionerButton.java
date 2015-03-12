@@ -14,12 +14,23 @@ public class ViewPositionerButton implements IViewPositioner
 	{
 		Position2D startingPos = new Position2D(listDimensions.getX(), listDimensions.getY());
 		
+		UIView prevView = null;
+		
 		for (UIView view : views)
-		{
+		{	
 			if (view != null)
 			{
-				view.getDimensions().setPos(startingPos.withAdded(0, view.getDimensions().getHeight()));
+				if (prevView != null)
+				{
+					view.getDimensions().setPos(prevView.getDimensions().getPosition().withAdded(0, prevView.getDimensions().getHeight()));
+				}
+				else
+				{
+					view.getDimensions().setPos(startingPos);
+				}
 			}
+			
+			prevView = view;
 		}
 		
 		return views;

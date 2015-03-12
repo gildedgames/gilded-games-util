@@ -107,18 +107,6 @@ public class GroupController implements IGroupController
 	}
 
 	@Override
-	public List<GroupMember> getMembersOnline()
-	{
-		return null;
-	}
-
-	@Override
-	public List<GroupMember> getMembersOffline()
-	{
-		return null;
-	}
-
-	@Override
 	public IGroupPool getParentPool()
 	{
 		return null;

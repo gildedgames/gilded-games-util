@@ -128,38 +128,6 @@ public class Group implements IGroup
 	}
 
 	@Override
-	public List<GroupMember> getMembersOnline()
-	{
-		ArrayList<GroupMember> onlineMembers = new ArrayList<GroupMember>();
-		
-		for (GroupMember member : this.members)
-		{
-			if (member != null && member.getProfile().isLoggedIn())
-			{
-				onlineMembers.add(member);
-			}
-		}
-		
-		return onlineMembers;
-	}
-
-	@Override
-	public List<GroupMember> getMembersOffline()
-	{
-		ArrayList<GroupMember> offlineMembers = new ArrayList<GroupMember>();
-		
-		for (GroupMember member : this.members)
-		{
-			if (member != null && !member.getProfile().isLoggedIn())
-			{
-				offlineMembers.add(member);
-			}
-		}
-		
-		return offlineMembers;
-	}
-
-	@Override
 	public IGroupPool getParentPool()
 	{
 		return this.parentPool;

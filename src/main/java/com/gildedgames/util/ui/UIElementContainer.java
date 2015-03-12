@@ -6,6 +6,8 @@ public interface UIElementContainer
 {
 
 	void add(UIElement element);
+	
+	void addAll(List<? extends UIElement> elements);
 
 	void remove(UIElement element);
 	
