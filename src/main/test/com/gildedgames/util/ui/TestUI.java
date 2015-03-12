@@ -33,7 +33,9 @@ public class TestUI extends UIFrameMC
 
 		//list.add(buttonFactory.createButton(new Position2D(), 10, "lol"));
 		
-		container.add(new UIScrollable(new Dimensions2D().setArea(60, 200), list, (UIScrollBar) buttonFactory.createScrollBar(new Position2D(0, 0), 200, false)));
+		Dimensions2D dim = new Dimensions2D().setArea(60, 200);
+		
+		container.add(new UIScrollable(dim, list, (UIScrollBar) buttonFactory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
 	}
 	
 	@Override

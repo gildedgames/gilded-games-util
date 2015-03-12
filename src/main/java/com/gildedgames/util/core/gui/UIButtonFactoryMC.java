@@ -71,12 +71,12 @@ public class UIButtonFactoryMC
 		return this.createButtonWithSound(new UIButtonMinecraft(button, centered));
 	}
 	
-	public UIBase createScrollBar(Position2D pos, int height)
+	public UIBase createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea)
 	{
-		return this.createScrollBar(pos, height, true);
+		return this.createScrollBar(pos, height, scrollableArea, true);
 	}
 	
-	public UIBase createScrollBar(Position2D pos, int height, boolean centered)
+	public UIBase createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
@@ -93,7 +93,9 @@ public class UIButtonFactoryMC
 		topButton.getDimensions().setScale(1F);
 		bottomButton.getDimensions().setScale(1F);
 		
-		UIScrollBar scrollBar = new UIScrollBar(dim, dim.clone().setArea(60, height + 200), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		UIScrollBar scrollBar = new UIScrollBar(dim, new Dimensions2D(), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
+		
+		scrollBar.setScrollableFrame(scrollableArea.clone().addWidth(scrollBar.getDimensions().getWidth()));
 		
 		return scrollBar;
 	}

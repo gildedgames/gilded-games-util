@@ -64,6 +64,11 @@ public class UIScrollBar extends UIFrame
 
 		this.getDimensions().setWidth(maxWidth);
 	}
+	
+	public void setScrollableFrame(Dimensions2D scrollableFrame)
+	{
+		this.scrollableFrame = scrollableFrame;
+	}
 
 	public void setScrollSpeed(float scrollSpeed)
 	{
