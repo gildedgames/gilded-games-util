@@ -7,12 +7,7 @@ import com.google.common.collect.ImmutableList;
 
 public interface IContentProvider
 {
-	
-	/**
-	 * Recreated every refresh
-	 * @param currentContent
-	 * @return
-	 */
+
 	List<UIElement> provideContent(ImmutableList<UIElement> currentContent);
 	
 }
