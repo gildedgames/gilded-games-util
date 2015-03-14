@@ -177,4 +177,9 @@ public abstract class UIFrame implements UIBase
 		return this.elementWrapper.size();
 	}
 
+	public Dimensions2D getWrapperDimensions()
+	{
+		return this.elementWrapper.getDimensions();
+	}
+
 }

@@ -34,6 +34,8 @@ public class UIScrollBar extends UIFrame
 	 */
 	protected Dimensions2D bar;
 
+	protected Dimensions2D contentDimensions;
+	
 	/**
 	 * True if the bar is grabbed.
 	 */
@@ -104,6 +106,7 @@ public class UIScrollBar extends UIFrame
 				if (pool.has(MouseButton.LEFT) && input.isHovered(scrollBar.topArrowButton.getDimensions()))
 				{
 					scrollBar.bar.addY(-5);
+					scrollBar.snapBarToProportions();
 				}
 			}
 		
@@ -120,6 +123,7 @@ public class UIScrollBar extends UIFrame
 				if (input.isHovered(scrollBar.bottomArrowButton.getDimensions()))
 				{
 					scrollBar.bar.addY(5);
+					scrollBar.snapBarToProportions();
 				}
 			}
 		
@@ -144,6 +148,7 @@ public class UIScrollBar extends UIFrame
 		if (input.isHovered(this.bar) || input.isHovered(this.scrollableFrame))
 		{
 			this.bar.addY(-scrollDifference * this.scrollSpeed);
+			this.snapBarToProportions();
 		}
 	}
 
@@ -210,8 +215,24 @@ public class UIScrollBar extends UIFrame
 	public float getScrollPercentage()
 	{
 		float baseBottomY = this.getBase().getY() + this.getBase().getHeight();
+		float barBottomY = this.bar.getY() + this.bar.getHeight();
 		
-		return (baseBottomY - this.bar.getY()) / this.getBase().getHeight();
+		float scrollOriginY = this.getBase().getY() + this.bar.getHeight();
+		float scrollHeight = baseBottomY - this.bar.getHeight();
+
+		float scrollPosition = barBottomY - scrollOriginY;
+
+		return scrollPosition / scrollHeight;
+	}
+	
+	public void setContentDimensions(Dimensions2D contentDimensions)
+	{
+		this.contentDimensions = contentDimensions;
+	}
+	
+	public Dimensions2D getContentDimensions()
+	{
+		return this.contentDimensions;
 	}
 
 	private void snapBarToProportions()
@@ -223,7 +244,7 @@ public class UIScrollBar extends UIFrame
 
 	private void refreshProportions(InputProvider input)
 	{
-		this.bar.setHeight(this.getBase().getHeight() * (this.getBase().getHeight() / this.scrollableFrame.getHeight()));
+		this.bar.setHeight(this.getContentDimensions().getHeight() / this.getBase().getHeight());
 
 		if (this.grabbedBar)
 		{

@@ -162,4 +162,10 @@ public class UIButtonList extends UIFrame
 		this.sortAndPositionContent();
 	}
 	
+	@Override
+	public Dimensions2D getDimensions()
+	{
+		return this.getWrapperDimensions();
+	}
+	
 }

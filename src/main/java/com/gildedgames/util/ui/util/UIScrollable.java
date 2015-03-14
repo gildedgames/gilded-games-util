@@ -48,18 +48,15 @@ public class UIScrollable extends UIDecorator
 		container.add(this.scrollBar);
 		
 		this.box.setX(this.scrollBar.getDimensions().getX() + this.shiftedWidth);
+		
+		this.scrollBar.setContentDimensions(this.getDimensions());
 	}
 	
 	@Override
 	public void draw(IGraphics graphics, InputProvider input)
 	{
-		float scrollValue = 0.0F;
+		float scrollValue = -this.scrollBar.getScrollPercentage() * (this.getDimensions().getHeight() - this.box.getHeight());
 
-		if (this.box.getHeight() > this.getDimensions().getHeight())
-		{
-			scrollValue = -this.scrollBar.getScrollPercentage() * (this.box.getHeight() - this.getDimensions().getHeight());
-		}
-		
 		float yFactor = Math.abs(this.box.getY() + this.heightOffset - input.getScreenHeight()) - this.box.getHeight();
 
 		float cornerX = (this.box.getX() * input.getScaleFactor());
