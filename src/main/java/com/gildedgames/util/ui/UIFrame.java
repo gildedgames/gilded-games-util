@@ -20,11 +20,17 @@ public abstract class UIFrame implements UIBase
 	private Dimensions2D dim;
 
 	private UIBase parent;
+	
+	public UIFrame(Dimensions2D dim)
+	{
+		this(null, dim);
+	}
 
 	public UIFrame(UIBase parent, Dimensions2D dim)
 	{
 		this.elementWrapper = new UIElementWrapper();
 
+		this.parent = parent;
 		this.dim = dim;
 	}
 

@@ -52,7 +52,7 @@ public class Position2D
 	@Override
 	public String toString()
 	{
-		return "Position X: '" + this.x + "', Position Y: '" + this.y + "'";
+		return "Position() X: '" + this.x + "', Y: '" + this.y + "'";
 	}
 	
 }

@@ -220,5 +220,13 @@ public class Dimensions2D
 
 		return result;
 	}
+	
+	@Override
+	public String toString()
+	{
+		String link = ", ";
+		
+		return this.getPosition().toString() + link + "Area() Width: '" + this.width + "', Height: '" + this.height + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale + "'";
+	}
 
 }

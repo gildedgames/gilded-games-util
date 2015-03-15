@@ -26,7 +26,9 @@ public class UIScrollBar extends UIFrame
 	 * The two textures used in the scrollbar. They are
 	 * repeated to make longer bars.
 	 */
-	protected UITexture repeatedBase, repeatedBar;
+	protected UITexture baseTexture, barTexture;
+	
+	protected UIRepeatable repeatedBase, repeatedBar;
 
 	/**
 	 * Dimensions of the part of the scroll bar that
@@ -46,9 +48,9 @@ public class UIScrollBar extends UIFrame
 	 */
 	private Dimensions2D base;
 
-	protected float scrollSpeed = 0.075F;
+	protected float scrollSpeed = 0.075F, grabbedMouseYOffset;
 
-	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollableFrame, UIBase topArrowButton, UIBase bottomArrowButton, UITexture repeatedBase, UITexture repeatedBar)
+	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollableFrame, UIBase topArrowButton, UIBase bottomArrowButton, UITexture baseTexture, UITexture barTexture)
 	{
 		super(null, barDim);
 
@@ -56,13 +58,13 @@ public class UIScrollBar extends UIFrame
 
 		this.topArrowButton = topArrowButton;
 		this.bottomArrowButton = bottomArrowButton;
-
-		this.repeatedBase = repeatedBase;
-		this.repeatedBar = repeatedBar;
-
-		this.bar = new Dimensions2D().setPos(this.getDimensions().getPosition()).setWidth(this.repeatedBar.getDimensions().getWidth());
 		
-		float maxWidth = Math.max(Math.max(this.topArrowButton.getDimensions().getWidth(), this.bottomArrowButton.getDimensions().getWidth()), this.repeatedBase.getDimensions().getWidth());
+		this.baseTexture = baseTexture;
+		this.barTexture = barTexture;
+
+		this.bar = new Dimensions2D().setPos(this.getDimensions().getPosition()).setWidth(this.barTexture.getDimensions().getWidth());
+		
+		float maxWidth = Math.max(Math.max(this.topArrowButton.getDimensions().getWidth(), this.bottomArrowButton.getDimensions().getWidth()), this.baseTexture.getDimensions().getWidth());
 
 		this.getDimensions().setWidth(maxWidth);
 	}
@@ -90,7 +92,7 @@ public class UIScrollBar extends UIFrame
 		this.getDimensions().setPos(this.scrollableFrame.getPosition());
 
 		this.topArrowButton.getDimensions().setPos(this.getDimensions().getPosition());
-		this.bottomArrowButton.getDimensions().setY(this.getDimensions().getHeight() + this.getDimensions().getY() - this.bottomArrowButton.getDimensions().getHeight());
+		this.bottomArrowButton.getDimensions().setY(this.getDimensions().getY() + this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight());
 
 		this.topArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
 		this.bottomArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
@@ -135,8 +137,11 @@ public class UIScrollBar extends UIFrame
 		float heightOffset = this.bottomArrowButton.getDimensions().getHeight() + this.topArrowButton.getDimensions().getHeight();
 
 		this.bar.addY(this.topArrowButton.getDimensions().getHeight());
-		this.base = this.getDimensions().clone().addHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight());
+		this.base = this.getDimensions().clone().addHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight() + 0.5F);
 
+		this.repeatedBase = new UIRepeatable(this.base, this.baseTexture);
+		this.repeatedBar = new UIRepeatable(this.bar, this.barTexture);
+		
 		this.repeatedBase.getDimensions().addY(this.topArrowButton.getDimensions().getHeight());
 	}
 
@@ -167,6 +172,15 @@ public class UIScrollBar extends UIFrame
 			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.getBase()))
 			{
 				this.grabbedBar = true;
+				
+				if (input.isHovered(this.bar))
+				{
+					this.grabbedMouseYOffset = this.bar.getY() - input.getMouseY();
+				}
+				else
+				{
+					this.grabbedMouseYOffset = -this.bar.getHeight() / 2;
+				}
 			}
 			else if (pool.has(ButtonState.RELEASED))
 			{
@@ -180,31 +194,10 @@ public class UIScrollBar extends UIFrame
 	{
 		this.refreshProportions(input);
 
-		float baseHeight = this.repeatedBase.getDimensions().getHeight();
-		int baseCount = (int) (this.getBase().getHeight() / baseHeight);
-
-		float barHeight = this.repeatedBar.getDimensions().getHeight();
-		int barCount = (int) (this.bar.getHeight() / barHeight);
-
-		Dimensions2D oldBaseDim = this.repeatedBase.getDimensions().clone();
-		Dimensions2D oldBarDim = this.repeatedBar.getDimensions().clone();
-
 		this.repeatedBar.getDimensions().setY(this.bar.getY());
-
-		for (int drawBaseCount = 0; drawBaseCount < baseCount; drawBaseCount++)
-		{
-			this.repeatedBase.draw(graphics, input);
-			this.repeatedBase.getDimensions().addY(baseHeight);
-		}
-
-		for (int drawBarCount = 0; drawBarCount < barCount; drawBarCount++)
-		{
-			this.repeatedBar.draw(graphics, input);
-			this.repeatedBar.getDimensions().addY(barHeight);
-		}
-
-		this.repeatedBase.setDimensions(oldBaseDim);
-		this.repeatedBar.setDimensions(oldBarDim);
+		
+		this.repeatedBase.draw(graphics, input);
+		this.repeatedBar.draw(graphics, input);
 
 		super.draw(graphics, input);
 	}
@@ -214,13 +207,9 @@ public class UIScrollBar extends UIFrame
 	 */
 	public float getScrollPercentage()
 	{
-		float baseBottomY = this.getBase().getY() + this.getBase().getHeight();
-		float barBottomY = this.bar.getY() + this.bar.getHeight();
-		
-		float scrollOriginY = this.getBase().getY() + this.bar.getHeight();
-		float scrollHeight = baseBottomY - this.bar.getHeight();
+		float scrollHeight = this.getBase().getHeight() - this.bar.getHeight();
 
-		float scrollPosition = barBottomY - scrollOriginY;
+		float scrollPosition = this.bar.getY() - this.getBase().getY();
 
 		return scrollPosition / scrollHeight;
 	}
@@ -237,9 +226,13 @@ public class UIScrollBar extends UIFrame
 
 	private void snapBarToProportions()
 	{
-		float barTopY = Math.min(this.getBase().getY() + this.getBase().getHeight() - this.bar.getHeight(), Math.max(this.getBase().getY(), this.bar.getY()));
+		float bottomY = this.getBase().getY() + this.getBase().getHeight() - this.bar.getHeight();
 
-		this.bar.setY(barTopY);
+		float topY = Math.max(this.getBase().getY(), this.bar.getY());
+		
+		float snappedY = Math.min(bottomY, topY);
+
+		this.bar.setY(snappedY);
 	}
 
 	private void refreshProportions(InputProvider input)
@@ -248,7 +241,7 @@ public class UIScrollBar extends UIFrame
 
 		if (this.grabbedBar)
 		{
-			this.bar.setY(input.getMouseY() - this.bar.getHeight());
+			this.bar.setY(input.getMouseY() + this.grabbedMouseYOffset);
 		}
 
 		this.snapBarToProportions();
