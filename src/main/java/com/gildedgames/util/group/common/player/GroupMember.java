@@ -1,12 +1,19 @@
 package com.gildedgames.util.group.common.player;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+
+import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.group.common.core.GroupPool;
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 public class GroupMember implements IPlayerHook
 {
@@ -16,6 +23,10 @@ public class GroupMember implements IPlayerHook
 	private final IPlayerHookPool<GroupMember> pool;
 
 	private boolean isDirty;
+
+	private List<Group> groups = new ArrayList<Group>();
+
+	private List<Group> invitations = new ArrayList<Group>();
 
 	public GroupMember(IPlayerProfile profile, IPlayerHookPool<GroupMember> pool)
 	{
@@ -123,6 +134,47 @@ public class GroupMember implements IPlayerHook
 	public void onUpdate()
 	{
 
+	}
+
+	public void joinGroup(Group group)
+	{
+		this.removeInvite(group);
+		this.groups.add(group);
+	}
+
+	public void leaveGroup(Group group)
+	{
+		this.groups.remove(group);
+	}
+
+	public List<Group> getGroupsIn()
+	{
+		return this.groups;
+	}
+
+	public List<Group> groupsInFor(GroupPool pool)
+	{
+		List<Group> groups = new ArrayList<Group>();
+		for (Group group : this.groups)
+		{
+			if (group.getParentPool().equals(pool))
+			{
+				groups.add(group);
+			}
+		}
+		return groups;
+	}
+
+	public void addInvite(Group group)
+	{
+		this.invitations.add(group);
+	}
+
+	public void removeInvite(Group group)
+	{
+		while (this.invitations.remove(group))
+		{
+		}
 	}
 
 }

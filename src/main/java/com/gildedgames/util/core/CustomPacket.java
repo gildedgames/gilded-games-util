@@ -10,17 +10,31 @@ public abstract class CustomPacket<REQ extends IMessage> implements IMessage, IM
 {
 
 	@Override
-	public REQ onMessage(REQ message, MessageContext ctx)
+	public REQ onMessage(final REQ message, final MessageContext ctx)
 	{
 		if (ctx.side == Side.SERVER)
 		{
-			handleServerSide(message, ctx.getServerHandler().playerEntity);
+			ctx.getServerHandler().playerEntity.getServerForPlayer().addScheduledTask(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					CustomPacket.this.handleServerSide(message, ctx.getServerHandler().playerEntity);
+				}
+			});
 		}
 		else
 		{
-			handleClientSide(message, UtilCore.proxy.getPlayer());
+			UtilCore.proxy.addScheduledTask(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					CustomPacket.this.handleClientSide(message, UtilCore.proxy.getPlayer());
+				}
+			});
 		}
-		
+
 		return null;
 	}
 

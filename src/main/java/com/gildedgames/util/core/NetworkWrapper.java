@@ -7,23 +7,26 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.group.common.player.GroupMember;
+
 public class NetworkWrapper
 {
 
 	private SimpleNetworkWrapper internal;
-	
+
 	private int discriminator;
-	
+
 	public void init()
 	{
 		this.internal = NetworkRegistry.INSTANCE.newSimpleChannel(UtilCore.MOD_ID);
 	}
-	
+
 	public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side)
-    {
+	{
 		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, side);
 	}
-	
+
 	public void sendToAll(IMessage message)
 	{
 		this.internal.sendToAll(message);
@@ -48,5 +51,13 @@ public class NetworkWrapper
 	{
 		this.internal.sendToServer(message);
 	}
-	
+
+	public void sendToGroup(IMessage message, Group group)
+	{
+		for (GroupMember member : group.getMemberData())
+		{
+			this.sendTo(message, (EntityPlayerMP) member.getProfile().getEntity());
+		}
+	}
+
 }

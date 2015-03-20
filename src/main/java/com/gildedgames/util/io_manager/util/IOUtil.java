@@ -1,47 +1,57 @@
 package com.gildedgames.util.io_manager.util;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
+
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.*;
-import java.util.Map.Entry;
+import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 public class IOUtil
 {
-	
+
 	public static <I, O> void setIOList(String key, List<? extends IO<I, O>> list, IOFactory<I, O> factory, O output)
 	{
 		IOBridge outputBridge = factory.createOutputBridge(output);
-		
+
 		outputBridge.setInteger(key + "listSize", list.size());
-		
+
 		for (int count = 0; count < list.size(); count++)
 		{
 			IO<I, O> obj = list.get(count);
-			
+
 			IOCore.io().set(key + "IO" + count, output, factory, obj);
 		}
 	}
-	
-	public static <I, O> List<? extends IO<I, O>> getIOList(String key, IOFactory<I, O> factory, I input)
+
+	public static <I, O, T extends IO<I, O>> List<T> getIOList(String key, IOFactory<I, O> factory, I input)
 	{
 		IOBridge inputBridge = factory.createInputBridge(input);
-		
+
 		int listSize = inputBridge.getInteger(key + "listSize");
-		
-		List<IO<I, O>> list = new ArrayList<IO<I, O>>(listSize);
-		
+
+		List<T> list = new ArrayList<T>(listSize);
+
 		for (int count = 0; count < listSize; count++)
 		{
-			IO<I, O> obj = IOCore.io().get(key + "IO" + count, input, factory);
-			
+			T obj = IOCore.io().get(key + "IO" + count, input, factory);
+
 			list.add(obj);
 		}
-		
+
 		return list;
 	}
 
@@ -49,9 +59,9 @@ public class IOUtil
 	{
 		IOBridge outputBridge = factory.createOutputBridge(output);
 		outputBridge.setInteger(key + "mapSize", map.size());
-		
+
 		int count = 0;
-		
+
 		for (Entry<? extends IO<I, O>, ? extends IO<I, O>> entry : map.entrySet())
 		{
 			IO<I, O> keyObj = entry.getKey();
@@ -68,7 +78,7 @@ public class IOUtil
 	{
 		IOBridge inputBridge = factory.createInputBridge(input);
 		int size = inputBridge.getInteger(key + "mapSize");
-		
+
 		Map<IO<I, O>, IO<I, O>> map = new HashMap<IO<I, O>, IO<I, O>>(size);
 
 		for (int count = 0; count < size; count++)
@@ -131,6 +141,29 @@ public class IOUtil
 		return directory.listFiles(new FilenameFilterExtension(extension));
 	}
 
+	public static void writeUUID(UUID uuid, ByteBuf buf)
+	{
+		buf.writeLong(uuid.getMostSignificantBits());
+		buf.writeLong(uuid.getLeastSignificantBits());
+	}
+
+	public static UUID readUUID(ByteBuf buf)
+	{
+		return new UUID(buf.readLong(), buf.readLong());
+	}
+
+	public static void setUUID(IPlayerProfile profile, NBTTagCompound tag, String name)
+	{
+		UUID uuid = profile.getUUID();
+		tag.setLong(name + "most", uuid.getMostSignificantBits());
+		tag.setLong(name + "least", uuid.getLeastSignificantBits());
+	}
+
+	public static UUID getUUID(NBTTagCompound tag, String name)
+	{
+		return new UUID(tag.getLong(name + "most"), tag.getLong("least"));
+	}
+
 	private static class FilenameFilterExtension implements FilenameFilter
 	{
 
@@ -149,5 +182,5 @@ public class IOUtil
 		}
 
 	}
-	
+
 }

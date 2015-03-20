@@ -1,15 +1,53 @@
 package com.gildedgames.util.core.nbt;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
-import java.io.*;
+import com.gildedgames.util.io_manager.IOCore;
 
 public class NBTHelper
 {
+
+	public static <T extends NBT> T readInputObject(ByteBuf buf)
+	{
+		NBTTagCompound tag = readInputNBT(buf);
+		return IOCore.io().get("a", tag, new NBTFactory());
+	}
+
+	public static NBTTagCompound readInputNBT(ByteBuf buf)
+	{
+		int size = buf.readInt();
+		byte[] array = new byte[size];
+		buf.readBytes(array);
+		ByteArrayInputStream byteArray = new ByteArrayInputStream(array);
+		DataInputStream dataInput = new DataInputStream(byteArray);
+		try
+		{
+			NBTTagCompound tag = readInputNBT(dataInput);
+			dataInput.close();
+			return tag;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return new NBTTagCompound();
+	}
 
 	public static NBTTagCompound readInputNBT(DataInputStream input) throws IOException
 	{
@@ -18,6 +56,30 @@ public class NBTHelper
 			return CompressedStreamTools.read(input);
 		}
 		return null;
+	}
+
+	public static <T extends NBT> void writeOutputObject(T object, ByteBuf byteBuf)
+	{
+		NBTTagCompound tag = new NBTTagCompound();
+		IOCore.io().set("a", tag, new NBTFactory(), object);
+		NBTHelper.writeOutputNBT(tag, byteBuf);
+	}
+
+	public static void writeOutputNBT(NBTTagCompound tag, ByteBuf byteBuf)
+	{
+		ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+		DataOutputStream dataOutput = new DataOutputStream(byteArray);
+		try
+		{
+			writeOutputNBT(tag, dataOutput);
+			byteBuf.writeBytes(byteArray.toByteArray());
+			dataOutput.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void writeOutputNBT(NBTTagCompound tag, DataOutputStream output) throws IOException
@@ -123,7 +185,7 @@ public class NBTHelper
 
 		return new byte[0];
 	}
-	
+
 	public static NBTTagList encodeStackList(ItemStack stackList[])
 	{
 		NBTTagList tagList = new NBTTagList();
@@ -163,5 +225,5 @@ public class NBTHelper
 
 		return stackList;
 	}
-	
+
 }

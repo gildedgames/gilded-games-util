@@ -59,4 +59,10 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 	}
 
+	@Override
+	public void addScheduledTask(Runnable runnable)
+	{
+		Minecraft.getMinecraft().addScheduledTask(runnable);
+	}
+
 }
