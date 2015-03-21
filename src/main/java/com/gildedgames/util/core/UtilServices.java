@@ -1,5 +1,6 @@
 package com.gildedgames.util.core;
 
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
@@ -24,9 +25,11 @@ public class UtilServices
 		this.io = new IOManagerDefault(MANAGER_NAME);
 
 		IORegistry registry = this.io.getRegistry();
+		
 		registry.registerClass(NBTFile.class, 0);
 		registry.registerClass(WorldHookPool.class, 1);
 		registry.registerClass(MenuConfig.class, 2);
+		registry.registerClass(MCSyncableDispatcher.class, 3);
 	}
 
 	public IOManager getIOManager()
