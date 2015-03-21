@@ -29,11 +29,11 @@ public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 	{
 		Group group = message.group;
 		GroupMember thePlayer = GroupCore.getGroupMember(player);
-		if (!group.hasMemberData() || !group.getMemberData().contains(message.member) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
+		if (!group.hasMemberData() || !group.getMemberData().contains(message.member) || !group.getPermissions().canChangeOwner(message.member, thePlayer))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to change " + message.member.getProfile().getUsername() + " to the owner but did not have the permissions.");
 			return;
 		}
-		message.pool.changeOwner(message.member.getProfile().getEntity(), message.group);
+		//message.pool.changeOwner(message.member.getProfile().getEntity(), message.group);
 	}
 }

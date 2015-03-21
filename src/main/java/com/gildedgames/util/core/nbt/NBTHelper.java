@@ -226,4 +226,14 @@ public class NBTHelper
 		return stackList;
 	}
 
+	public static void setEnum(String key, NBTTagCompound tag, Enum<?> e)
+	{
+		tag.setString(key, e.name());
+	}
+
+	public static <T extends Enum<T>> T getEnum(String key, NBTTagCompound tag, Class<T> clazz)
+	{
+		return Enum.valueOf(clazz, tag.getString(key));
+	}
+
 }

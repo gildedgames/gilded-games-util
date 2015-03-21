@@ -27,7 +27,7 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 	@Override
 	public void handleServerSide(PacketAddInvite message, EntityPlayer player)
 	{
-		if (!message.group.getPermissions().canInvite(this.group, message.member, GroupCore.getGroupMember(player)))
+		if (!message.group.getPermissions().canInvite(message.member, GroupCore.getGroupMember(player)))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to invite " + message.member.getProfile().getUsername() + " but did not have the permissions.");
 			return;

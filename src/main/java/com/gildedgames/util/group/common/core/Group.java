@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
-import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.IOCore;
 
 public final class Group implements NBT
@@ -17,10 +16,9 @@ public final class Group implements NBT
 
 	private GroupInfo groupInfo;
 
-	public Group(GroupPool parentPool, IGroupPerms permissions, String name, GroupMember owner)
+	protected Group(GroupPool parentPool)
 	{
 		this.parentPool = parentPool;
-		this.groupInfo = new GroupInfo(permissions, name, owner);
 	}
 
 	@Override
@@ -71,11 +69,6 @@ public final class Group implements NBT
 	public IGroupPerms getPermissions()
 	{
 		return this.groupInfo.getPermissions();
-	}
-
-	public GroupMember getOwner()
-	{
-		return this.groupInfo.getOwner();
 	}
 
 	protected void setGroupInfo(GroupInfo groupInfo)

@@ -28,7 +28,8 @@ public class GroupPoolClient extends GroupPool
 	@Override
 	public Group create(String name, EntityPlayer creating)
 	{
-		UtilCore.NETWORK.sendToServer(new PacketAddGroup(this, name, creating));
+		GroupInfo groupInfo = new GroupInfo(name, null);
+		UtilCore.NETWORK.sendToServer(new PacketAddGroup(this, groupInfo));
 		return null;
 	}
 
@@ -85,17 +86,6 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void changeOwner(EntityPlayer newOwner, Group group)
-	{
-		if (!this.assertValidGroup(group))
-		{
-			return;
-		}
-		GroupMember newOwnerM = GroupCore.getGroupMember(newOwner);
-		UtilCore.NETWORK.sendToServer(new PacketChangeOwner(this, group, newOwnerM));
-	}
-
-	@Override
 	protected void removeMemberDirectly(Group group, GroupMember member)
 	{
 		super.removeMemberDirectly(group, member);
@@ -107,6 +97,7 @@ public class GroupPoolClient extends GroupPool
 
 	protected void join(Group group, MemberData members)
 	{
+		UtilCore.debugPrint("Joined group " + group.getName());
 		group.setMemberData(members);
 		members.setHooks(this.createHooks(group));
 		this.addMemberDirectly(group, this.thePlayer());
@@ -118,6 +109,7 @@ public class GroupPoolClient extends GroupPool
 
 	protected void inviteReceived(Group group)
 	{
+		UtilCore.debugPrint("Received invite for group " + group.getName());
 		this.thePlayer().addInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
@@ -127,6 +119,7 @@ public class GroupPoolClient extends GroupPool
 
 	private void onLeave(Group group)
 	{
+		UtilCore.debugPrint("Left the group " + group.getName());
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
 			listener.onLeave(group);

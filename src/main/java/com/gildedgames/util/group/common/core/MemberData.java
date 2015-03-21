@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -42,6 +43,8 @@ public class MemberData implements NBT, Iterable<GroupMember>
 		{
 			IOUtil.setUUID(this.invitedMembers.get(i).getProfile(), output, "invited" + i);
 		}
+
+		IOUtil.setIOList("hooks", this.hooks, new NBTFactory(), output);
 	}
 
 	@Override
@@ -61,6 +64,8 @@ public class MemberData implements NBT, Iterable<GroupMember>
 		{
 			this.members.add(GroupCore.getGroupMember(IOUtil.getUUID(input, "invited" + i)));
 		}
+
+		this.hooks = IOUtil.getIOList("hooks", new NBTFactory(), input);
 	}
 
 	protected void join(GroupMember member)
@@ -143,5 +148,10 @@ public class MemberData implements NBT, Iterable<GroupMember>
 	public List<GroupMember> getMembers()
 	{
 		return new ArrayList<GroupMember>(this.members);
+	}
+
+	public boolean isInvited(GroupMember player)
+	{
+		return !this.members.contains(player) && this.invitedMembers.contains(player);
 	}
 }
