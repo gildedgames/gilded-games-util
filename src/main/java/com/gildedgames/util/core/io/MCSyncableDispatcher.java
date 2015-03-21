@@ -2,30 +2,28 @@ package com.gildedgames.util.core.io;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.Map;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.io.IOSyncable;
 import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
 import com.gildedgames.util.io_manager.io.IOSyncableDispatcher;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class MCSyncableDispatcher implements IOSyncableDispatcher<ByteBuf, ByteBuf>
 {
 	
-	private List<Pair<String, IOSyncable<ByteBuf, ByteBuf>>> serverSyncables = new ArrayList<Pair<String, IOSyncable<ByteBuf, ByteBuf>>>();
+	private BiMap<String, IOSyncable<ByteBuf, ByteBuf>> serverSyncables = HashBiMap.create();
 
-	private List<Pair<String, IOSyncable<ByteBuf, ByteBuf>>> clientSyncables = new ArrayList<Pair<String, IOSyncable<ByteBuf, ByteBuf>>>();
+	private BiMap<String, IOSyncable<ByteBuf, ByteBuf>> clientSyncables = HashBiMap.create();
 	
 	public MCSyncableDispatcher()
 	{
 		
 	}
 	
-	private List<Pair<String, IOSyncable<ByteBuf, ByteBuf>>> getSyncables(SyncSide side)
+	private BiMap<String, IOSyncable<ByteBuf, ByteBuf>> getSyncables(SyncSide side)
 	{
 		return side.isServer() ? this.serverSyncables : this.clientSyncables;
 	}
@@ -33,9 +31,9 @@ public class MCSyncableDispatcher implements IOSyncableDispatcher<ByteBuf, ByteB
 	@Override
 	public void dispatchDirtySyncables(SyncSide from)
 	{
-		for (Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(from))
+		for (Map.Entry<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(from).entrySet())
 		{
-			IOSyncable<ByteBuf, ByteBuf> syncable = pair.getRight();
+			IOSyncable<ByteBuf, ByteBuf> syncable = pair.getValue();
 			
 			if (syncable != null && syncable.isDirty())
 			{
@@ -54,90 +52,34 @@ public class MCSyncableDispatcher implements IOSyncableDispatcher<ByteBuf, ByteB
 	@Override
 	public void track(String key, IOSyncable<ByteBuf, ByteBuf> syncable, SyncSide... sides)
 	{
-		Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair = new ImmutablePair<String, IOSyncable<ByteBuf, ByteBuf>>(key, syncable);
-	
 		for (SyncSide side : sides)
 		{
-			this.getSyncables(side).add(pair);
+			this.getSyncables(side).put(key, syncable);
 		}
 	}
 	
 	@Override
 	public void untrack(String key, SyncSide side)
 	{
-		Pair<String, IOSyncable<ByteBuf, ByteBuf>> toUntrack = null;
-		
-		for (Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(side))
-		{
-			String syncKey = pair.getLeft();
-			
-			if (syncKey != null && syncKey.equals(key))
-			{
-				toUntrack = pair;
-				break;
-			}
-		}
-		
-		if (toUntrack != null)
-		{
-			this.getSyncables(side).remove(toUntrack);
-		}
+		this.getSyncables(side).remove(key);
 	}
 
 	@Override
 	public void untrack(IOSyncable<ByteBuf, ByteBuf> syncable, SyncSide side)
 	{
-		Pair<String, IOSyncable<ByteBuf, ByteBuf>> toUntrack = null;
-		
-		for (Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(side))
-		{
-			IOSyncable<ByteBuf, ByteBuf> sync = pair.getRight();
-			
-			if (sync != null && sync.equals(syncable))
-			{
-				toUntrack = pair;
-				break;
-			}
-		}
-		
-		if (toUntrack != null)
-		{
-			this.getSyncables(side).remove(toUntrack);
-		}
+		this.getSyncables(side).inverse().remove(syncable);
 	}
 
 	@Override
 	public IOSyncable<ByteBuf, ByteBuf> getSyncable(String key, SyncSide side)
 	{
-		for (Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(side))
-		{
-			String syncKey = pair.getLeft();
-			IOSyncable<ByteBuf, ByteBuf> sync = pair.getRight();
-			
-			if (syncKey != null && syncKey.equals(key))
-			{
-				return sync;
-			}
-		}
-		
-		return null;
+		return this.getSyncables(side).get(key);
 	}
 
 	@Override
 	public String getKey(IOSyncable<ByteBuf, ByteBuf> syncable, SyncSide side)
 	{
-		for (Pair<String, IOSyncable<ByteBuf, ByteBuf>> pair : this.getSyncables(side))
-		{
-			String syncKey = pair.getLeft();
-			IOSyncable<ByteBuf, ByteBuf> sync = pair.getRight();
-			
-			if (sync != null && sync.equals(syncable))
-			{
-				return syncKey;
-			}
-		}
-		
-		return null;
+		return this.getSyncables(side).inverse().get(syncable);
 	}
 
 	@Override
