@@ -1,12 +1,14 @@
 package com.gildedgames.util.player.common.networking.messages;
 
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.player.common.player.IPlayerHook;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.common.player.IPlayerHook;
 
 public class MessagePlayerHookClient implements IMessage
 {
@@ -36,8 +38,8 @@ public class MessagePlayerHookClient implements IMessage
 	{
 		PlayerCore.locate().writeHookReference(this.playerHook, buf);
 		
-		this.playerHook.getProfile().writeToServer(buf);
-		this.playerHook.writeToServer(buf);
+		this.playerHook.getProfile().syncTo(buf, SyncSide.SERVER);
+		this.playerHook.syncTo(buf, SyncSide.SERVER);
 	}
 	
 	public static class Handler implements IMessageHandler<MessagePlayerHookClient, IMessage>
@@ -52,8 +54,8 @@ public class MessagePlayerHookClient implements IMessage
         		
         		IPlayerHook playerHook = PlayerCore.locate().readHookReference(player, message.buf);
         		
-        		playerHook.getProfile().readFromClient(message.buf);
-        		playerHook.readFromClient(message.buf);
+        		playerHook.getProfile().syncFrom(message.buf, SyncSide.CLIENT);
+        		playerHook.syncFrom(message.buf, SyncSide.CLIENT);
         	}
 
         	return null;

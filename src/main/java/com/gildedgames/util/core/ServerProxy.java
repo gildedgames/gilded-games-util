@@ -1,6 +1,8 @@
 package com.gildedgames.util.core;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.*;
 
 public class ServerProxy implements ICore
@@ -14,7 +16,10 @@ public class ServerProxy implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+		UtilEvents utilEvents = new UtilEvents();
+
+		MinecraftForge.EVENT_BUS.register(utilEvents);
+		FMLCommonHandler.instance().bus().register(utilEvents);
 	}
 
 	@Override

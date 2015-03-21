@@ -1,12 +1,15 @@
 package com.gildedgames.util.player.common.player;
 
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.io_manager.networking.ISyncable;
-import net.minecraft.entity.player.EntityPlayer;
+import io.netty.buffer.ByteBuf;
 
 import java.util.UUID;
 
-public interface IPlayerProfile extends NBT, ISyncable
+import net.minecraft.entity.player.EntityPlayer;
+
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.io_manager.io.IOSyncable;
+
+public interface IPlayerProfile extends NBT, IOSyncable<ByteBuf, ByteBuf>
 {
 	
 	void entityInit(EntityPlayer player);

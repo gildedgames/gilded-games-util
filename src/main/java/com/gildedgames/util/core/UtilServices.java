@@ -5,22 +5,18 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.ui.UIView;
-import com.gildedgames.util.ui.UIViewer;
 import com.gildedgames.util.world.common.WorldHookPool;
 
-public class UtilServices implements UIViewer
+public class UtilServices
 {
 
 	private IOManager io;
-	
-	private final UIViewer viewer;
 
 	private static final String MANAGER_NAME = "GildedGamesUtil";
 
-	public UtilServices(UIViewer viewer)
+	public UtilServices()
 	{
-		this.viewer = viewer;
+		
 	}
 
 	private void startIOManager()
@@ -41,12 +37,6 @@ public class UtilServices implements UIViewer
 		}
 
 		return this.io;
-	}
-
-	@Override
-	public void view(UIView view)
-	{
-		this.viewer.view(view);
 	}
 
 }

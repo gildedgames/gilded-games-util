@@ -61,25 +61,13 @@ public class TestPlayerHook implements IPlayerHook
 	}
 
 	@Override
-	public void writeToClient(ByteBuf buf)
+	public void syncTo(ByteBuf buf, SyncSide to)
 	{
 
 	}
-
+	
 	@Override
-	public void writeToServer(ByteBuf buf)
-	{
-
-	}
-
-	@Override
-	public void readFromClient(ByteBuf buf)
-	{
-
-	}
-
-	@Override
-	public void readFromServer(ByteBuf buf)
+	public void syncFrom(ByteBuf buf, SyncSide from)
 	{
 
 	}

@@ -1,12 +1,13 @@
 package com.gildedgames.util.group.common.player;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 public class GroupMember implements IPlayerHook
 {
@@ -51,30 +52,6 @@ public class GroupMember implements IPlayerHook
 	public void markDirty()
 	{
 		this.isDirty = true;
-	}
-
-	@Override
-	public void readFromClient(ByteBuf arg0)
-	{
-
-	}
-
-	@Override
-	public void readFromServer(ByteBuf arg0)
-	{
-
-	}
-
-	@Override
-	public void writeToClient(ByteBuf arg0)
-	{
-
-	}
-
-	@Override
-	public void writeToServer(ByteBuf arg0)
-	{
-
 	}
 
 	@Override
@@ -123,6 +100,18 @@ public class GroupMember implements IPlayerHook
 	public void onUpdate()
 	{
 
+	}
+	
+	@Override
+	public void syncTo(ByteBuf output, SyncSide to)
+	{
+		
+	}
+
+	@Override
+	public void syncFrom(ByteBuf input, SyncSide from)
+	{
+		
 	}
 
 }
