@@ -12,13 +12,19 @@ public class UtilEvents
 	@SubscribeEvent
 	public void tickStartClient(TickEvent.ClientTickEvent event)
 	{
-		IOCore.io().dispatchDirtySyncables(SyncSide.CLIENT);
+		if (event.phase == TickEvent.Phase.START)
+		{
+			IOCore.io().dispatchDirtySyncables(SyncSide.CLIENT);
+		}
 	}
 	
 	@SubscribeEvent
 	public void tickStartServer(TickEvent.ServerTickEvent event)
 	{
-		IOCore.io().dispatchDirtySyncables(SyncSide.SERVER);
+		if (event.phase == TickEvent.Phase.START)
+		{
+			IOCore.io().dispatchDirtySyncables(SyncSide.SERVER);
+		}
 	}
 	
 }
