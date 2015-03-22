@@ -15,8 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.notifications.core.INotification;
-import com.gildedgames.util.notifications.player.PlayerNotifications;
+import com.gildedgames.util.notifications.common.core.INotification;
+import com.gildedgames.util.notifications.common.player.PlayerNotification;
 import com.gildedgames.util.player.PlayerCore;
 
 public class NotificationCore implements ICore
@@ -31,12 +31,12 @@ public class NotificationCore implements ICore
 		return NotificationCore.INSTANCE.serviceLocator.instance();
 	}
 
-	public static PlayerNotifications getGroupMember(EntityPlayer player)
+	public static PlayerNotification getPlayerNotifications(EntityPlayer player)
 	{
 		return NotificationCore.locate().getPlayers().get(player);
 	}
 
-	public static PlayerNotifications getGroupMember(UUID uuid)
+	public static PlayerNotification getPlayerNotifications(UUID uuid)
 	{
 		return NotificationCore.locate().getPlayers().get(uuid);
 	}

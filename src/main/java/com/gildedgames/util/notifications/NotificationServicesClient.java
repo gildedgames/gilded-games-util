@@ -2,10 +2,10 @@ package com.gildedgames.util.notifications;
 
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.notifications.core.INotification;
-import com.gildedgames.util.notifications.core.NotificationDispatcher;
-import com.gildedgames.util.notifications.core.NotificationDispatcherClient;
-import com.gildedgames.util.notifications.core.NotificationQueue;
+import com.gildedgames.util.notifications.common.core.INotification;
+import com.gildedgames.util.notifications.common.core.NotificationDispatcher;
+import com.gildedgames.util.notifications.common.core.NotificationDispatcherClient;
+import com.gildedgames.util.notifications.common.core.NotificationQueue;
 
 public class NotificationServicesClient extends NotificationServices
 {
@@ -40,6 +40,11 @@ public class NotificationServicesClient extends NotificationServices
 		}
 
 		return this.dispatcher;
+	}
+
+	@Override
+	public void onServerTick()
+	{
 	}
 
 }
