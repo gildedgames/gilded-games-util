@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -242,6 +244,12 @@ public class UtilCore implements ICore
 	public static String getMinecraftDirectory()
 	{
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
+	}
+
+	public static void registerEventListener(Object listener)
+	{
+		MinecraftForge.EVENT_BUS.register(listener);
+		FMLCommonHandler.instance().bus().register(listener);
 	}
 
 }
