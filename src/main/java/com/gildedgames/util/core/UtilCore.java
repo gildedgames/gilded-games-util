@@ -66,7 +66,7 @@ public class UtilCore implements ICore
 		UtilServices serverLocator = new UtilServices();
 
 		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
-		this.syncableDispatcher = new MCSyncableDispatcher();
+		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
 
 	@Override

@@ -65,6 +65,19 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 		}
 	}
 	
+	public IOSyncableDispatcher getDispatcherFromID(String id)
+	{
+		for (IOSyncableDispatcher dispatcher : this.syncableDispatchers.instance())
+		{
+			if (dispatcher != null && dispatcher.getID().equals(id))
+			{
+				return dispatcher;
+			}
+		}
+		
+		return null;
+	}
+	
 	public void registerDispatcher(IOSyncableDispatcher<?, ?> syncableDispatcher)
 	{
 		this.syncableDispatchers.client().add(syncableDispatcher);

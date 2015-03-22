@@ -5,6 +5,8 @@ import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
 
 public interface IOSyncableDispatcher<I, O> extends IO<I, O>
 {
+	
+	String getID();
 
 	void dispatchDirtySyncables(SyncSide from);
 	

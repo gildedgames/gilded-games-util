@@ -18,14 +18,22 @@ public class MCSyncableDispatcher implements IOSyncableDispatcher<ByteBuf, ByteB
 
 	private BiMap<String, IOSyncable<ByteBuf, ByteBuf>> clientSyncables = HashBiMap.create();
 	
-	public MCSyncableDispatcher()
+	private String id;
+	
+	public MCSyncableDispatcher(String id)
 	{
-		
+		this.id = id;
 	}
 	
 	private BiMap<String, IOSyncable<ByteBuf, ByteBuf>> getSyncables(SyncSide side)
 	{
 		return side.isServer() ? this.serverSyncables : this.clientSyncables;
+	}
+	
+	@Override
+	public String getID()
+	{
+		return this.id;
 	}
 	
 	@Override

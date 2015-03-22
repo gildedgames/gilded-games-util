@@ -39,8 +39,9 @@ public class MessageSyncToServer implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		IOCore.io().set("dispatcher", buf, null, this.dispatcher);
+		ByteBufUtils.writeUTF8String(buf, this.dispatcher.getID());
 		ByteBufUtils.writeUTF8String(buf, this.dispatcher.getKey(this.syncable, SyncSide.SERVER));
+		
 		this.syncable.syncTo(buf, SyncSide.SERVER);
 	}
 	
@@ -52,8 +53,12 @@ public class MessageSyncToServer implements IMessage
         {
         	if (ctx.side.isServer())
         	{
-        		IOSyncableDispatcher<ByteBuf, ByteBuf> dispatcher = IOCore.io().get("dispatcher", message.buf, new ByteBufFactory());
-				IOSyncable<ByteBuf, ByteBuf> syncable = dispatcher.getSyncable(ByteBufUtils.readUTF8String(message.buf), SyncSide.CLIENT);
+        		String dispatcherID = ByteBufUtils.readUTF8String(message.buf);
+				String syncableID = ByteBufUtils.readUTF8String(message.buf);
+				
+				IOSyncableDispatcher<ByteBuf, ByteBuf> dispatcher = IOCore.io().getDispatcherFromID(dispatcherID);
+				IOSyncable<ByteBuf, ByteBuf> syncable = dispatcher.getSyncable(syncableID, SyncSide.CLIENT);
+				
 				syncable.syncFrom(message.buf, SyncSide.CLIENT);
         	}
 
