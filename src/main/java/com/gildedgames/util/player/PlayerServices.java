@@ -1,15 +1,18 @@
 package com.gildedgames.util.player;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.PlayerProfile;
 import io.netty.buffer.ByteBuf;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.PlayerProfile;
 
 public class PlayerServices
 {
@@ -49,7 +52,7 @@ public class PlayerServices
 
 		ByteBufUtils.writeUTF8String(buf, poolID);
 
-		playerHook.getProfile().writeToClient(buf);
+		playerHook.getProfile().syncTo(buf, SyncSide.CLIENT);
 	}
 
 	public IPlayerHook readHookReference(EntityPlayer player, ByteBuf buf)
@@ -58,7 +61,7 @@ public class PlayerServices
 
 		PlayerProfile profile = new PlayerProfile();
 
-		profile.readFromServer(buf);//Assuming disregard cuz player is known
+		profile.syncFrom(buf, SyncSide.SERVER);//Assuming disregard cuz player is known
 
 		return manager.get(player);
 	}
@@ -69,7 +72,7 @@ public class PlayerServices
 
 		PlayerProfile profile = new PlayerProfile();
 
-		profile.readFromServer(buf);
+		profile.syncFrom(buf, SyncSide.SERVER);
 
 		return manager.get(profile.getUUID());
 	}

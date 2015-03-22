@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.core.gui.UIViewerMC;
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
@@ -52,6 +52,8 @@ public class UtilCore implements ICore
 	public final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
+	
+	private final MCSyncableDispatcher syncableDispatcher;
 
 	public UtilCore()
 	{
@@ -62,16 +64,11 @@ public class UtilCore implements ICore
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
 
-		UtilServices clientLocator = new UtilServices(null);
-
-		if (UtilCore.isClient())
-		{
-			clientLocator = new UtilServices(new UIViewerMC());
-		}
-
-		UtilServices serverLocator = new UtilServices(null);
+		UtilServices clientLocator = new UtilServices();
+		UtilServices serverLocator = new UtilServices();
 
 		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
+		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
 
 	@Override
@@ -81,6 +78,7 @@ public class UtilCore implements ICore
 		try
 		{
 			IOCore.io().registerManager(UtilCore.locate().getIOManager());
+			IOCore.io().registerDispatcher(this.syncableDispatcher);
 		}
 		catch (IOManagerTakenException e)
 		{
@@ -179,6 +177,11 @@ public class UtilCore implements ICore
 		}
 
 		proxy.serverStopped(event);
+	}
+	
+	public MCSyncableDispatcher getDispatcher()
+	{
+		return this.syncableDispatcher;
 	}
 
 	public static UtilServices locate()

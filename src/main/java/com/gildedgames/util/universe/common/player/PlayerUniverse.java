@@ -1,13 +1,10 @@
 package com.gildedgames.util.universe.common.player;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.util.IUniverse;
-import com.mojang.authlib.GameProfile;
 import io.netty.buffer.ByteBuf;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,8 +16,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.common.player.IPlayerProfile;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.util.IUniverse;
+import com.mojang.authlib.GameProfile;
 
 public class PlayerUniverse implements IPlayerHook
 {
@@ -165,27 +167,21 @@ public class PlayerUniverse implements IPlayerHook
 	}
 
 	@Override
-	public void writeToClient(ByteBuf buf)
+	public void syncTo(ByteBuf buf, SyncSide to)
 	{
-		ByteBufUtils.writeUTF8String(buf, this.universeID);
+		if (to.isClient())
+		{
+			ByteBufUtils.writeUTF8String(buf, this.universeID);
+		}
 	}
 
 	@Override
-	public void readFromServer(ByteBuf buf)
+	public void syncFrom(ByteBuf buf, SyncSide from)
 	{
-		this.universeID = ByteBufUtils.readUTF8String(buf);
-	}
-
-	@Override
-	public void readFromClient(ByteBuf buf)
-	{
-
-	}
-
-	@Override
-	public void writeToServer(ByteBuf buf)
-	{
-
+		if (from.isServer())
+		{
+			this.universeID = ByteBufUtils.readUTF8String(buf);
+		}
 	}
 
 	@Override
@@ -284,5 +280,5 @@ public class PlayerUniverse implements IPlayerHook
 	{
 		return this.profile;
 	}
-
+	
 }

@@ -37,6 +37,11 @@ public class ClientProxy extends ServerProxy
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		UtilEvents utilEvents = new UtilEvents();
+
+		MinecraftForge.EVENT_BUS.register(utilEvents);
+		FMLCommonHandler.instance().bus().register(utilEvents);
+		
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 
 		MinecraftForge.EVENT_BUS.register(menuClientEvents);
