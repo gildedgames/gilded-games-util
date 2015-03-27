@@ -1,38 +1,36 @@
 package com.gildedgames.util.ui;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.KeyEventPool;
-import com.gildedgames.util.ui.input.MouseEventPool;
-import com.gildedgames.util.ui.listeners.IKeyboardListener;
-import com.gildedgames.util.ui.listeners.IMouseListener;
+import com.gildedgames.util.ui.input.KeyboardInputPool;
+import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.listeners.KeyboardListener;
+import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.ObjectFilter;
 
 
-public abstract class UIDecorator implements UIBase
+public abstract class UIDecorator<T extends UIElement> extends UIFrame
 {
 	
 	protected final static ObjectFilter FILTER = new ObjectFilter();
 
-	private UIElement element;
+	private T element;
 	
-	public UIDecorator(UIElement element)
+	public UIDecorator(T element)
 	{
+		super(null, null);
+		
 		this.element = element;
 	}
 	
-	public <T extends UIElement> T getDecoratedElement()
+	public T getDecoratedElement()
 	{
-		return (T)this.element;
+		return this.element;
 	}
 
 	@Override
-	public void draw(IGraphics graphics, InputProvider input)
+	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		UIView view = FILTER.getType(this.element, UIView.class);
 		
@@ -91,9 +89,15 @@ public abstract class UIDecorator implements UIBase
 	}
 
 	@Override
-	public void init(UIElementContainer container, InputProvider input)
+	public void onInit(UIContainer container, InputProvider input)
 	{
-		this.element.init(container, input);
+		this.element.onInit(container, input);
+	}
+	
+	@Override
+	public void onResolutionChange(UIContainer container, InputProvider input)
+	{
+		this.element.onResolutionChange(container, input);
 	}
 
 	@Override
@@ -109,97 +113,40 @@ public abstract class UIDecorator implements UIBase
 	}
 
 	@Override
-	public void add(UIElement element)
+	public boolean onKeyboardInput(KeyboardInputPool pool)
 	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.add(element);
-		}
-	}
-
-	@Override
-	public void remove(UIElement element)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.remove(element);
-		}
-	}
-
-	@Override
-	public void clear()
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.clear();
-		}
-	}
-
-	@Override
-	public List<UIElement> getElements()
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			return container.getElements();
-		}
-		
-		return Collections.EMPTY_LIST;
-	}
-
-	@Override
-	public boolean onKeyEvent(KeyEventPool pool)
-	{
-		IKeyboardListener listener = FILTER.getType(this.element, IKeyboardListener.class);
+		KeyboardListener listener = FILTER.getType(this.element, KeyboardListener.class);
 		
 		if (listener != null)
 		{
-			return listener.onKeyEvent(pool);
+			return listener.onKeyboardInput(pool);
 		}
 		
 		return false;
 	}
 
 	@Override
-	public void onMouseEvent(InputProvider input, MouseEventPool pool)
+	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		IMouseListener listener = FILTER.getType(this.element, IMouseListener.class);
+		MouseListener listener = FILTER.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
-			listener.onMouseEvent(input, pool);
+			listener.onMouseInput(input, pool);
 		}
 	}
 
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		IMouseListener listener = FILTER.getType(this.element, IMouseListener.class);
+		MouseListener listener = FILTER.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
 			listener.onMouseScroll(input, scrollDifference);
 		}
 	}
-	
-	@Override
-	public void clear(Class<? extends UIElement> classToRemove)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.clear(classToRemove);
-		}
-	}
-	
+
 	@Override
 	public boolean isFocused()
 	{
@@ -225,7 +172,7 @@ public abstract class UIDecorator implements UIBase
 	}
 	
 	@Override
-	public boolean query(List input)
+	public boolean query(Object... input)
 	{
 		UIView view = FILTER.getType(this.element, UIView.class);
 		
@@ -236,66 +183,31 @@ public abstract class UIDecorator implements UIBase
 		
 		return false;
 	}
-	
-	@Override
-	public List<UIView> queryAll(List input)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			return container.queryAll(input);
-		}
-		
-		return Collections.EMPTY_LIST;
-	}
-	
-	@Override
-	public boolean contains(UIElement element)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			return container.contains(element);
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public void addAll(Collection<? extends UIElement> elements)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.addAll(elements);
-		}
-	}
-	
-	@Override
-	public int size()
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			return container.size();
-		}
-		
-		return 0;
-	}
-	
-	@Override
-	public void removeAll(Collection<? extends UIElement> elements)
-	{
-		UIElementContainer container = FILTER.getType(this.element, UIElementContainer.class);
-		
-		if (container != null)
-		{
-			container.removeAll(elements);
-		}
-	}
 
+	@Override
+	public UIContainer getListeners()
+	{
+		UIFrame base = FILTER.getType(this.element, UIFrame.class);
+		
+		if (base != null)
+		{
+			return base.getListeners();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public UIFrame getPreviousFrame()
+	{
+		UIFrame base = FILTER.getType(this.element, UIFrame.class);
+		
+		if (base != null)
+		{
+			return base.getPreviousFrame();
+		}
+		
+		return null;
+	}
+	
 }

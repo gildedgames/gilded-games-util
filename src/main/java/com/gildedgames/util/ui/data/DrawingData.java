@@ -2,7 +2,6 @@ package com.gildedgames.util.ui.data;
 
 import java.awt.Color;
 
-
 public class DrawingData
 {
 

@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.graphics;
 
-import com.gildedgames.util.ui.data.IResource;
+import com.gildedgames.util.ui.data.AssetLocation;
 
 
 public class Sprite
@@ -8,21 +8,21 @@ public class Sprite
 	
 	private final double u, v, width, height, textureWidth, textureHeight;
 
-	private final IResource resource;
+	private final AssetLocation asset;
 	
-	public Sprite(IResource resource, double width, double height)
+	public Sprite(AssetLocation asset, double width, double height)
 	{
-		this(resource, width, height, width, height);
+		this(asset, width, height, width, height);
 	}
 	
-	public Sprite(IResource resource, double width, double height, double textureWidth, double textureHeight)
+	public Sprite(AssetLocation asset, double width, double height, double textureWidth, double textureHeight)
 	{
-		this(resource, 0, 0, width, height, textureWidth, textureHeight);
+		this(asset, 0, 0, width, height, textureWidth, textureHeight);
 	}
 
-	public Sprite(IResource resource, double u, double v, double width, double height, double textureWidth, double textureHeight)
+	public Sprite(AssetLocation asset, double u, double v, double width, double height, double textureWidth, double textureHeight)
 	{
-		this.resource = resource;
+		this.asset = asset;
 		
 		this.u = u;
 		this.v = v;
@@ -34,9 +34,9 @@ public class Sprite
 		this.textureHeight = textureHeight;
 	}
 	
-	public IResource getResource()
+	public AssetLocation getAsset()
 	{
-		return this.resource;
+		return this.asset;
 	}
 
     public double getTextureWidth()
