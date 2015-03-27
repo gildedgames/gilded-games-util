@@ -19,13 +19,6 @@ public class UIContainer implements Iterable<UIElement>
 	public void add(UIElement element)
 	{
 		this.elementContainerMap.put(element, new UIContainer());
-		
-		if (element instanceof UIHearable)
-		{
-			UIHearable hearable = (UIHearable)element;
-			
-			//this.elements.add()
-		}
 	}
 
 	public void remove(UIElement element)

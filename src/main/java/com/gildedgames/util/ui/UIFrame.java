@@ -11,7 +11,7 @@ import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.ObjectFilter;
 
-public abstract class UIFrame implements UIView, UIHearable, KeyboardListener, MouseListener
+public abstract class UIFrame implements UIView, KeyboardListener, MouseListener
 {
 	
 	protected final static ObjectFilter FILTER = new ObjectFilter();
@@ -162,7 +162,6 @@ public abstract class UIFrame implements UIView, UIHearable, KeyboardListener, M
 		return false;
 	}
 
-	@Override
 	public UIContainer getListeners()
 	{
 		return this.listeners;
