@@ -5,26 +5,30 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.gildedgames.util.core.gui.util.decorators.UIScreenMC;
-import com.gildedgames.util.core.gui.viewing.UIViewerMC;
+import com.gildedgames.util.core.gui.viewing.UIFrameMC;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 
 public class TestTab extends TabBackpack
 {
 	
+	private UIBasic ui;
+	
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		Minecraft.getMinecraft().displayGuiScreen(new UIViewerMC(new UIScreenMC(new TestUI(null))));
+		this.ui = new TestUI(null);
+		
+		Minecraft.getMinecraft().displayGuiScreen(new UIFrameMC(this.ui));
 	}
 
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		if (gui instanceof UIViewerMC)
+		if (gui instanceof UIFrameMC)
 		{
-			UIViewerMC wrapper = (UIViewerMC)gui;
+			UIFrameMC wrapper = (UIFrameMC)gui;
 			
-			return wrapper.getView() != null && wrapper.getView().getClass() == TestUI.class;
+			return wrapper.getFramedElement() != null && wrapper.getFramedElement().getClass() == this.ui.getClass();
 		}
 		
 		return false;

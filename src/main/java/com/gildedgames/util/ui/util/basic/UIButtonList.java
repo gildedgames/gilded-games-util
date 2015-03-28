@@ -1,14 +1,12 @@
-package com.gildedgames.util.ui.util.frames;
+package com.gildedgames.util.ui.util.basic;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import scala.actors.threadpool.Arrays;
 
-import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIFrame;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
@@ -20,7 +18,7 @@ import com.gildedgames.util.ui.util.transform.ViewPositioner;
 import com.gildedgames.util.ui.util.transform.ViewSorter;
 import com.google.common.collect.ImmutableList;
 
-public class UIButtonList extends UIFrame
+public class UIButtonList extends UIBasic
 {
 	
 	protected final static ObjectFilter FILTER = new ObjectFilter();
@@ -70,7 +68,7 @@ public class UIButtonList extends UIFrame
 		{
 			if (contentProvider != null)
 			{
-				super.getListeners().addAll(contentProvider.provideContent(ImmutableList.copyOf(this.getListeners().getElements())));
+				super.getListeners().addAll(contentProvider.provideContent(ImmutableList.copyOf(this.getListeners().values())));
 			}
 		}
 		
@@ -81,7 +79,7 @@ public class UIButtonList extends UIFrame
 	{
 		this.positioner.positionList(views, this.getDimensions());
 		
-		for (UIView view : FILTER.getTypesFrom(this.getListeners().getElements(), UIView.class))
+		for (UIView view : FILTER.getTypesFrom(this.getListeners().values(), UIView.class))
 		{
 			view.getDimensions().setOrigin(this.getDimensions().getPos());
 		}
@@ -89,7 +87,7 @@ public class UIButtonList extends UIFrame
 	
 	private void sortContent()
 	{
-		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().getElements(), UIView.class);
+		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().values(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
 		for (UIView view : filteredViews)
@@ -111,7 +109,7 @@ public class UIButtonList extends UIFrame
 	
 	private List<UIView> getSortedViews()
 	{
-		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().getElements(), UIView.class);
+		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().values(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 		
 		return sortedViews;
@@ -129,6 +127,8 @@ public class UIButtonList extends UIFrame
 		super.onInit(container, input);
 
 		this.refresh();
+		
+		this.setDimensions(container.getCombinedDimensions());
 	}
 	
 	@Override
@@ -136,13 +136,7 @@ public class UIButtonList extends UIFrame
 	{
 		this.positionContent(this.getSortedViews());
 		
-		//super.draw(graphics, input);
-	}
-	
-	@Override
-	public Dimensions2D getDimensions()
-	{
-		return this.getWrapperDimensions();
+		super.draw(graphics, input);
 	}
 	
 }

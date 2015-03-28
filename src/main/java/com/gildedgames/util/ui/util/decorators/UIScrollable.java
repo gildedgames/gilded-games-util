@@ -9,7 +9,7 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.frames.UIScrollBar;
+import com.gildedgames.util.ui.util.basic.UIScrollBar;
 
 public class UIScrollable extends UIDecorator<UIView>
 {

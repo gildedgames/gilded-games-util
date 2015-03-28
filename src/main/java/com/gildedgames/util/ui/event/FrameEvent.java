@@ -1,14 +1,14 @@
 package com.gildedgames.util.ui.event;
 
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class FrameEvent extends UIFrame
+public class FrameEvent extends UIBasic
 {
 
 	private boolean enabled = true;
@@ -115,7 +115,7 @@ public class FrameEvent extends UIFrame
 	}
 	
 	@Override
-	public UIFrame getPreviousFrame()
+	public UIBasic getPreviousFrame()
 	{
 		return null;
 	}

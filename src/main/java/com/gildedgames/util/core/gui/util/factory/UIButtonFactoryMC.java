@@ -6,14 +6,14 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.AssetMinecraft;
 import com.gildedgames.util.core.gui.util.decorators.UIPressSoundsMC;
 import com.gildedgames.util.core.gui.util.wrappers.UIButtonMC;
-import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.util.frames.UIButton;
-import com.gildedgames.util.ui.util.frames.UIScrollBar;
-import com.gildedgames.util.ui.util.frames.UITexture;
+import com.gildedgames.util.ui.util.basic.UIButton;
+import com.gildedgames.util.ui.util.basic.UIScrollBar;
+import com.gildedgames.util.ui.util.basic.UITexture;
 
 public class UIButtonFactoryMC
 {
@@ -22,22 +22,22 @@ public class UIButtonFactoryMC
 	
 	private static final AssetMinecraft SCROLL_BAR_TEXTURE = new AssetMinecraft(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
 	
-	public UIFrame createButtonWithSound(UIView button)
+	public UIBasic createButtonWithSound(UIView button)
 	{
 		return new UIPressSoundsMC(button);
 	}
 	
-	public UIFrame createArrowButton()
+	public UIBasic createArrowButton()
 	{
 		return this.createArrowButton(new Position2D(0, 0));
 	}
 	
-	public UIFrame createArrowButton(Position2D pos)
+	public UIBasic createArrowButton(Position2D pos)
 	{
 		return this.createArrowButton(pos, true);
 	}
 	
-	public UIFrame createArrowButton(Position2D pos, boolean centered)
+	public UIBasic createArrowButton(Position2D pos, boolean centered)
 	{
 		Sprite buttonDefaultSprite = new Sprite(HOPPER_TEXTURE, 0, 174, 20, 20, 256, 256);
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
@@ -50,12 +50,12 @@ public class UIButtonFactoryMC
 		return this.createButtonWithSound(button);
 	}
 	
-	public UIFrame createButton(Position2D pos, int width, String text)
+	public UIBasic createButton(Position2D pos, int width, String text)
 	{
 		return this.createButton(pos, width, text, true);
 	}
 	
-	public UIFrame createButton(Position2D pos, int width, String text, boolean centered)
+	public UIBasic createButton(Position2D pos, int width, String text, boolean centered)
 	{
 		Dimensions2D dim = new Dimensions2D().setArea(width, 20).setCentering(centered).setPos(pos.clone());
 		
@@ -64,22 +64,22 @@ public class UIButtonFactoryMC
 		return this.createButtonWithSound(button);
 	}
 	
-	public UIFrame createButton(GuiButton button)
+	public UIBasic createButton(GuiButton button)
 	{
 		return this.createButton(button, true);
 	}
 	
-	public UIFrame createButton(GuiButton button, boolean centered)
+	public UIBasic createButton(GuiButton button, boolean centered)
 	{
 		return this.createButtonWithSound(new UIButtonMC(button, centered));
 	}
 	
-	public UIFrame createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea)
+	public UIBasic createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea)
 	{
 		return this.createScrollBar(pos, height, scrollableArea, true);
 	}
 	
-	public UIFrame createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea, boolean centered)
+	public UIBasic createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
@@ -90,8 +90,8 @@ public class UIButtonFactoryMC
 		
 		Dimensions2D dim = new Dimensions2D().setArea(10, height).setPos(pos);
 		
-		UIFrame topButton = this.createArrowButton();
-		UIFrame bottomButton = this.createArrowButton();
+		UIBasic topButton = this.createArrowButton();
+		UIBasic bottomButton = this.createArrowButton();
 		
 		topButton.getDimensions().setScale(1F);
 		bottomButton.getDimensions().setScale(1F);

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.util.ObjectFilter;
 
 public class UIContainer implements Iterable<UIElement>
@@ -18,7 +19,9 @@ public class UIContainer implements Iterable<UIElement>
 
 	public void add(UIElement element)
 	{
-		this.elementContainerMap.put(element, new UIContainer());
+		UIContainer container = new UIContainer();
+		
+		this.elementContainerMap.put(element, container);
 	}
 
 	public void remove(UIElement element)
@@ -31,12 +34,12 @@ public class UIContainer implements Iterable<UIElement>
 		this.elementContainerMap.clear();
 	}
 
-	public List<UIElement> getElements()
+	public List<UIElement> values()
 	{
 		return new ArrayList<UIElement>(this.elementContainerMap.keySet());
 	}
 	
-	public List<UIContainer> getChildren()
+	public List<UIContainer> children()
 	{
 		return new ArrayList<UIContainer>(this.elementContainerMap.values());
 	}
@@ -53,7 +56,7 @@ public class UIContainer implements Iterable<UIElement>
 
 	public void clear(Class<? extends UIElement> classToRemove)
 	{
-		List objectsToRemove = FILTER.getTypesFrom(this.getElements(), classToRemove);
+		List objectsToRemove = FILTER.getTypesFrom(this.values(), classToRemove);
 
 		this.elementContainerMap.keySet().removeAll(objectsToRemove);
 	}
@@ -62,7 +65,7 @@ public class UIContainer implements Iterable<UIElement>
 	{
 		List<UIView> views = new ArrayList<UIView>();
 
-		for (UIView element : FILTER.getTypesFrom(this.getElements(), UIView.class))
+		for (UIView element : FILTER.getTypesFrom(this.values(), UIView.class))
 		{
 			if (element == null)
 			{
@@ -80,7 +83,7 @@ public class UIContainer implements Iterable<UIElement>
 
 	public boolean contains(UIElement element)
 	{
-		return this.getElements().contains(element);
+		return this.values().contains(element);
 	}
 
 	public void addAll(Collection<? extends UIElement> elements)
@@ -103,11 +106,37 @@ public class UIContainer implements Iterable<UIElement>
 			this.elementContainerMap.remove(element);
 		}
 	}
+	
+	public Dimensions2D getCombinedDimensions()
+	{
+		List<Dimensions2D> areas = new ArrayList<Dimensions2D>();
+
+		this.addCombinedDimensions(this, areas);
+
+		return Dimensions2D.combine(areas);
+	}
+	
+	private void addCombinedDimensions(UIContainer container, List<Dimensions2D> areas)
+	{
+		for (UIElement element : container.values())
+		{
+			if (element instanceof UIView)
+			{
+				UIView view = (UIView) element;
+
+				areas.add(view.getDimensions());
+				
+				UIContainer internal = container.getInternal(element);
+				
+				this.addCombinedDimensions(internal, areas);
+			}
+		}
+	}
 
 	@Override
 	public Iterator<UIElement> iterator()
 	{
-		return this.getElements().iterator();
+		return this.values().iterator();
 	}
 
 }

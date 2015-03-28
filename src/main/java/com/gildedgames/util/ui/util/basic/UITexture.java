@@ -1,14 +1,14 @@
-package com.gildedgames.util.ui.util.frames;
+package com.gildedgames.util.ui.util.basic;
 
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class UITexture extends UIFrame
+public class UITexture extends UIBasic
 {
 
 	protected final Sprite sprite;

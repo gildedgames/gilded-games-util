@@ -9,8 +9,8 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
+import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.UIFrame;
-import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.KeyboardInput;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -19,7 +19,7 @@ import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.input.MouseMotion;
 
-public final class UIViewerMC extends GuiScreen
+public final class UIFrameMC extends GuiScreen
 {
 
 	protected final static GraphicsMC GRAPHICS = new GraphicsMC(Minecraft.getMinecraft());
@@ -30,14 +30,14 @@ public final class UIViewerMC extends GuiScreen
 	
 	private boolean hasInit;
 
-	public UIViewerMC(UIFrame frame)
+	public UIFrameMC(UIElement element)
 	{
-		this.frame = frame;
+		this.frame = new UIFrame(element);
 	}
 	
-	public UIView getView()
+	public UIElement getFramedElement()
 	{
-		return this.frame;
+		return this.frame.getFramedElement();
 	}
 	
 	@Override

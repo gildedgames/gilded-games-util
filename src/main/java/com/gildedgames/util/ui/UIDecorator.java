@@ -10,10 +10,8 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.ObjectFilter;
 
 
-public abstract class UIDecorator<T extends UIElement> extends UIFrame
+public abstract class UIDecorator<T extends UIElement> extends UIBasic
 {
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
 
 	private T element;
 	
@@ -187,27 +185,27 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public UIContainer getListeners()
 	{
-		UIFrame base = FILTER.getType(this.element, UIFrame.class);
+		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
 		
-		if (base != null)
+		if (frame != null)
 		{
-			return base.getListeners();
+			return frame.getListeners();
 		}
 		
 		return null;
 	}
 	
 	@Override
-	public UIFrame getPreviousFrame()
+	public UIBasic getPreviousFrame()
 	{
-		UIFrame base = FILTER.getType(this.element, UIFrame.class);
+		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
 		
-		if (base != null)
+		if (frame != null)
 		{
-			return base.getPreviousFrame();
+			return frame.getPreviousFrame();
 		}
 		
 		return null;
 	}
-	
+
 }

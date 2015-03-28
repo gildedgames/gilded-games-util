@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.core.gui.viewing.UIViewerMC;
+import com.gildedgames.util.core.gui.viewing.UIFrameMC;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.UIDecorator;
 import com.gildedgames.util.ui.UIView;
@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
-import com.gildedgames.util.ui.util.frames.UIRectangle;
+import com.gildedgames.util.ui.util.basic.UIRectangle;
 
 public class UIScreenMC extends UIDecorator<UIView>
 {
@@ -57,7 +57,7 @@ public class UIScreenMC extends UIDecorator<UIView>
 	{
 		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
         {
-			Minecraft.getMinecraft().displayGuiScreen(new UIViewerMC(null));
+			Minecraft.getMinecraft().displayGuiScreen(null);
         }
 		
 		return super.onKeyboardInput(pool);

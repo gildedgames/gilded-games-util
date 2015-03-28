@@ -1,8 +1,8 @@
-package com.gildedgames.util.ui.util.frames;
+package com.gildedgames.util.ui.util.basic;
 
-import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIFrame;
+import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.event.view.MouseEventView;
@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.ObjectFilter;
 import com.gildedgames.util.ui.util.decorators.UIRepeatable;
 
-public class UIScrollBar extends UIFrame
+public class UIScrollBar extends UIBasic
 {
 
 	/**
@@ -23,7 +23,7 @@ public class UIScrollBar extends UIFrame
 	 */
 	protected Dimensions2D scrollableFrame;
 
-	protected UIFrame topArrowButton, bottomArrowButton;
+	protected UIBasic topArrowButton, bottomArrowButton;
 
 	/**
 	 * The two textures used in the scrollbar. They are
@@ -42,7 +42,7 @@ public class UIScrollBar extends UIFrame
 
 	protected float scrollSpeed = 0.075F, grabbedMouseYOffset;
 
-	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollableFrame, UIFrame topArrowButton, UIFrame bottomArrowButton, UITexture baseTexture, UITexture barTexture)
+	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollableFrame, UIBasic topArrowButton, UIBasic bottomArrowButton, UITexture baseTexture, UITexture barTexture)
 	{
 		super(null, barDim);
 
