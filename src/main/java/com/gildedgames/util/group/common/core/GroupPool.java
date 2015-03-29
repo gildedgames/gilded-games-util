@@ -93,10 +93,11 @@ public abstract class GroupPool implements NBT
 	protected void changeGroupInfoDirectly(Group group, GroupInfo groupInfo)
 	{
 		UtilCore.debugPrint("Changing info of group " + group.getName());
+		GroupInfo infoOld = new GroupInfo(group.getName(), group.getPermissions());
 		group.setGroupInfo(groupInfo);
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
-			listener.onGroupInfoChanged(group, groupInfo);
+			listener.onGroupInfoChanged(group, infoOld, groupInfo);
 		}
 	}
 
@@ -118,7 +119,7 @@ public abstract class GroupPool implements NBT
 		group.getPermissions().onMemberRemoved(member);
 	}
 
-	protected void inviteDirectly(Group group, GroupMember member)
+	protected void inviteDirectly(Group group, GroupMember member, GroupMember inviter)
 	{
 		this.assertHasMemberData(group);
 		UtilCore.debugPrint("Inviting member " + member.getProfile().getUsername() + " to group " + group.getName());
@@ -140,7 +141,7 @@ public abstract class GroupPool implements NBT
 
 	public abstract void removeMember(EntityPlayer player, Group group);
 
-	public abstract void invite(EntityPlayer player, Group group);
+	public abstract void invite(EntityPlayer player, EntityPlayer inviter, Group group);
 
 	public abstract void removeInvitation(EntityPlayer player, Group group);
 

@@ -11,8 +11,9 @@ import com.gildedgames.util.notifications.common.player.PlayerNotification;
 public class NotificationDispatcher
 {
 
-	public void sendNotification(INotification notification, EntityPlayer player)
+	public void sendNotification(INotification notification)
 	{
+		EntityPlayer player = notification.getReceiver();
 		PlayerNotification playerHook = NotificationCore.getPlayerNotifications(player);
 
 		INotificationMessage message = notification.getMessage();

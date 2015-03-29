@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -52,7 +53,7 @@ public class UtilCore implements ICore
 	public final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
-	
+
 	private final MCSyncableDispatcher syncableDispatcher;
 
 	public UtilCore()
@@ -178,7 +179,7 @@ public class UtilCore implements ICore
 
 		proxy.serverStopped(event);
 	}
-	
+
 	public MCSyncableDispatcher getDispatcher()
 	{
 		return this.syncableDispatcher;
@@ -253,6 +254,12 @@ public class UtilCore implements ICore
 	{
 		MinecraftForge.EVENT_BUS.register(listener);
 		FMLCommonHandler.instance().bus().register(listener);
+	}
+
+	public static String translate(String key)
+	{
+		//TOOD: Maybe put "ggUtil." before the key?
+		return StatCollector.translateToLocal(key);
 	}
 
 }

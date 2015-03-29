@@ -2,9 +2,11 @@ package com.gildedgames.util.notifications.common.networking.messages;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
@@ -36,16 +38,22 @@ public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 	@Override
 	public void handleClientSide(PacketRemoveMessage message, EntityPlayer player)
 	{
-		PlayerNotification hook = NotificationCore.getPlayerNotifications(player);
-		INotificationMessage noti = hook.getFromKey(message.messageKey);
-		hook.removeNotification(noti);
+		this.removeFromHook(message, player);
 	}
 
 	@Override
 	public void handleServerSide(PacketRemoveMessage message, EntityPlayer player)
 	{
-		// TODO Auto-generated method stub
+		INotificationMessage noti = this.removeFromHook(message, player);
+		UtilCore.NETWORK.sendTo(new PacketRemoveMessage(noti), (EntityPlayerMP) player);
+	}
 
+	private INotificationMessage removeFromHook(PacketRemoveMessage message, EntityPlayer player)
+	{
+		PlayerNotification hook = NotificationCore.getPlayerNotifications(player);
+		INotificationMessage noti = hook.getFromKey(message.messageKey);
+		hook.removeNotification(noti);
+		return noti;
 	}
 
 }

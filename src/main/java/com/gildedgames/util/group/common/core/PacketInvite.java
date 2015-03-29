@@ -2,7 +2,9 @@ package com.gildedgames.util.group.common.core;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PacketInvite extends PacketGroupAction<PacketInvite>
+import com.gildedgames.util.group.common.player.GroupMember;
+
+public class PacketInvite extends PacketMemberAction<PacketInvite>
 {
 
 	public PacketInvite()
@@ -10,15 +12,15 @@ public class PacketInvite extends PacketGroupAction<PacketInvite>
 
 	}
 
-	public PacketInvite(GroupPool pool, Group group)
+	public PacketInvite(GroupPool pool, Group group, GroupMember inviter)
 	{
-		super(pool, group);
+		super(pool, group, inviter);
 	}
 
 	@Override
 	public void handleClientSide(PacketInvite message, EntityPlayer player)
 	{
-		((GroupPoolClient) message.pool).inviteReceived(message.group);
+		((GroupPoolClient) message.pool).inviteReceived(message.group, message.member);
 	}
 
 	@Override

@@ -97,15 +97,22 @@ public class GroupPoolServer extends GroupPool
 	}
 
 	@Override
-	public void invite(EntityPlayer player, Group group)
+	public void invite(EntityPlayer player, EntityPlayer inviter, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
 			return;
 		}
 		GroupMember member = GroupCore.getGroupMember(player);
-		this.inviteDirectly(group, member);
-		UtilCore.NETWORK.sendToGroup(new PacketAddInvite(this, group, member), group);
+		GroupMember inviterG = GroupCore.getGroupMember(inviter);
+		if (!group.getPermissions().canInvite(member, inviterG))
+		{
+			UtilCore.print("Player " + player.getCommandSenderName() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
+			return;
+		}
+		this.inviteDirectly(group, member, inviterG);
+		UtilCore.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
+		UtilCore.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) player);
 	}
 
 	@Override

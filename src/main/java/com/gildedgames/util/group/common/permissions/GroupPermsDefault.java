@@ -2,6 +2,7 @@ package com.gildedgames.util.group.common.permissions;
 
 import java.util.Random;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.nbt.NBTHelper;
@@ -220,6 +221,11 @@ public class GroupPermsDefault implements IGroupPerms
 	public boolean canRemoveMember(GroupMember toRemove, GroupMember remover)
 	{
 		return remover.equals(this.owner);
+	}
+
+	public EntityPlayer getOwner()
+	{
+		return this.owner.getProfile().getEntity();
 	}
 
 }

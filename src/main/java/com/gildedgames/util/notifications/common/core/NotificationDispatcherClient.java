@@ -14,15 +14,17 @@ public class NotificationDispatcherClient extends NotificationDispatcher
 {
 
 	@Override
-	public void sendNotification(INotification notification, EntityPlayer player)
+	public void sendNotification(INotification notification)
 	{
 		//If the notification contains no message and is meant for the player,
 		//don't send it to the server for a check. 
-		if (notification.getMessage() == null && player == Minecraft.getMinecraft().thePlayer)
+		EntityPlayer player = notification.getReceiver();
+		EntityPlayer thePlayer = Minecraft.getMinecraft().thePlayer;
+		if (notification.getMessage() == null && player.equals(thePlayer))
 		{
 			NotificationCore.locate().queueNotificationForDisplay(notification);
 		}
-		else
+		else if (notification.getSender() == null || notification.getSender().equals(thePlayer))
 		{
 			UtilCore.NETWORK.sendToServer(new PacketNotification(notification, NotificationCore.getPlayerNotifications(player)));
 		}

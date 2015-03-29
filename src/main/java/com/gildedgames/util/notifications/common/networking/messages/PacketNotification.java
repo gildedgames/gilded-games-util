@@ -46,7 +46,7 @@ public class PacketNotification extends CustomPacket<PacketNotification>
 	@Override
 	public void handleServerSide(PacketNotification message, EntityPlayer player)
 	{
-		NotificationCore.sendNotification(message.notification, message.player.getProfile().getEntity());
+		NotificationCore.sendNotification(message.notification);
 	}
 
 }

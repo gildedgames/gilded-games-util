@@ -154,9 +154,13 @@ public class IOUtil
 
 	public static void setUUID(IPlayerProfile profile, NBTTagCompound tag, String name)
 	{
-		UUID uuid = profile.getUUID();
-		tag.setLong(name + "most", uuid.getMostSignificantBits());
-		tag.setLong(name + "least", uuid.getLeastSignificantBits());
+		setUUID(profile.getUUID(), tag, name);
+	}
+
+	public static void setUUID(UUID uuid, NBTTagCompound tag, String key)
+	{
+		tag.setLong(key + "most", uuid.getMostSignificantBits());
+		tag.setLong(key + "least", uuid.getLeastSignificantBits());
 	}
 
 	public static UUID getUUID(NBTTagCompound tag, String name)

@@ -1,0 +1,82 @@
+package com.gildedgames.util.group.common.notifications;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.group.common.IGroupPoolListenerClient;
+import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.group.common.core.GroupInfo;
+import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
+import com.gildedgames.util.notifications.NotificationCore;
+
+public class NotificationsPoolHook implements IGroupPoolListenerClient<NotificationsGroupHook>
+{
+
+	@Override
+	public NotificationsGroupHook createGroupHook(Group group)
+	{
+		return new NotificationsGroupHook(group);
+	}
+
+	@Override
+	public void onGroupAdded(Group group)
+	{
+	}
+
+	@Override
+	public void onGroupRemoved(Group group)
+	{
+	}
+
+	@Override
+	public void onGroupInfoChanged(Group group, GroupInfo infoOld, GroupInfo infoNew)
+	{
+		if (!infoOld.getName().equals(infoNew.getName()))
+		{
+			this.sendPopup(UtilCore.translate("group.namechanged") + " " + infoNew.getName(), this.getOwner(group));
+		}
+		else
+		{
+			this.sendPopup(UtilCore.translate("group.changedperms") + " " + UtilCore.translate(infoNew.getPermissions().getName()), this.getOwner(group));
+		}
+	}
+
+	private EntityPlayer getOwner(Group group)
+	{
+		if (group.getPermissions() instanceof GroupPermsDefault)
+		{
+			return ((GroupPermsDefault) group.getPermissions()).getOwner();
+		}
+		return null;
+	}
+
+	private void sendPopup(String message)
+	{
+		this.sendPopup(message, Minecraft.getMinecraft().thePlayer);
+	}
+
+	private void sendPopup(String message, EntityPlayer player)
+	{
+		NotificationCore.sendPopup(message, player, Minecraft.getMinecraft().thePlayer);
+	}
+
+	@Override
+	public void onJoin(Group group)
+	{
+		this.sendPopup(UtilCore.translate("group.joined" + " " + group.getName()));
+	}
+
+	@Override
+	public void onLeave(Group group)
+	{
+		this.sendPopup(UtilCore.translate("group.left" + " " + group.getName()));
+	}
+
+	@Override
+	public void onInvited(Group group, EntityPlayer inviter)
+	{
+		this.sendPopup(UtilCore.translate("group.invited") + " " + group.getName(), inviter);
+	}
+
+}

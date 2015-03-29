@@ -5,8 +5,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.GroupCore;
@@ -16,7 +14,6 @@ import com.gildedgames.util.group.common.player.GroupMember;
 
 //Basically just asks the server to do his work for him :) :) :)
 //Won't ever change its state on its own to ensure clients not acting weirdly
-@SideOnly(Side.CLIENT)
 public class GroupPoolClient extends GroupPool
 {
 
@@ -66,14 +63,20 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void invite(EntityPlayer player, Group group)
+	public void invite(EntityPlayer player, EntityPlayer inviting, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
 			return;
 		}
+
+		if (inviting.equals(Minecraft.getMinecraft().thePlayer))
+		{
+			UtilCore.print("Tried to invite as a different player!");
+			return;
+		}
 		GroupMember member = GroupCore.getGroupMember(player);
-		UtilCore.NETWORK.sendToServer(new PacketAddInvite(this, group, member));
+		UtilCore.NETWORK.sendToServer(new PacketAddInvite(this, group, member, this.thePlayer()));
 	}
 
 	@Override
@@ -107,13 +110,13 @@ public class GroupPoolClient extends GroupPool
 		}
 	}
 
-	protected void inviteReceived(Group group)
+	protected void inviteReceived(Group group, GroupMember inviter)
 	{
 		UtilCore.debugPrint("Received invite for group " + group.getName());
 		this.thePlayer().addInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
-			listener.onInvited(group);
+			listener.onInvited(group, inviter.getProfile().getEntity());
 		}
 	}
 

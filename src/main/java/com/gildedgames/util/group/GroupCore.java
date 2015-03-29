@@ -15,6 +15,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.group.common.core.GroupPool;
+import com.gildedgames.util.group.common.notifications.NotificationsPoolHook;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.player.PlayerCore;
 
@@ -40,10 +42,40 @@ public class GroupCore implements ICore
 		return GroupCore.locate().getPlayers().get(uuid);
 	}
 
+	private static GroupServices client()
+	{
+		return GroupCore.INSTANCE.serviceLocator.client();
+	}
+
+	private static GroupServices server()
+	{
+		return GroupCore.INSTANCE.serviceLocator.server();
+	}
+
+	/**
+	 * Register a new GroupPool.
+	 * @param client The GroupPool the client should use. You'll 
+	 * almost always want to use GroupPoolClient
+	 * @param server The GroupPool the server should use. You'll
+	 * almost always want to use GroupPoolServer
+	 */
+	public static void registerGroupPool(GroupPool client, GroupPool server)
+	{
+		client().registerPool(client);
+		server().registerPool(server);
+	}
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
+
+		GroupPool client = this.serviceLocator.client().getDefaultPool();
+		GroupPool server = this.serviceLocator.server().getDefaultPool();
+
+		client.addListener(new NotificationsPoolHook());
+
+		registerGroupPool(client, server);
 	}
 
 	@Override

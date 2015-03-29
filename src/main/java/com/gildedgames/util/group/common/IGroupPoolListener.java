@@ -11,5 +11,5 @@ public interface IGroupPoolListener<T extends IGroupHook>
 
 	void onGroupRemoved(Group group);
 
-	void onGroupInfoChanged(Group group, GroupInfo info);
+	void onGroupInfoChanged(Group group, GroupInfo infoOld, GroupInfo infoNew);
 }
