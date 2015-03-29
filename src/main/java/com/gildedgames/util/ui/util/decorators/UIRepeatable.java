@@ -16,15 +16,26 @@ public class UIRepeatable extends UIScissorable
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
+		//System.out.println(this.getDimensions());
+		
 		float textureHeight = this.getDimensions().getHeight();
+		float textureWidth = this.getDimensions().getWidth();
 
-		int textureCount = (int) (this.getCutoff().getHeight() / textureHeight);
+		int heightCountNeeded = (int) (this.getCutoff().getHeight() / textureHeight);
+		int widthCountNeeded = (int) (this.getCutoff().getWidth() / textureWidth);
 
 		Dimensions2D oldDim = this.getDimensions().clone();
-
-		for (int drawCount = 0; drawCount <= textureCount; drawCount++)
+		
+		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
-			super.draw(graphics, input);
+			for (int widthAmount = 0; widthAmount <= widthCountNeeded; widthAmount++)
+			{
+				super.draw(graphics, input);
+				
+				this.getDimensions().addX(textureWidth);
+			}
+
+			this.getDimensions().setX(oldDim.getX());
 			this.getDimensions().addY(textureHeight);
 		}
 		
