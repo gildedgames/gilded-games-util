@@ -29,23 +29,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	{
 		return this.framedElement;
 	}
-	
-	private void setOrigins(UIElement element, UIContainer internal)
-	{
-		UIView view;
-		
-		if ((view = FILTER.getType(element, UIView.class)) != null)
-		{
-			for (UIView child : FILTER.getTypesFrom(internal.values(), UIView.class))
-			{
-				if (child != null)
-				{
-					child.getDimensions().setOrigin(view.getDimensions().getPos());
-				}
-			}
-		}
-	}
-	
+
 	public void onInit(InputProvider input)
 	{
 		this.parentNode.clear();
@@ -71,7 +55,12 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			element.onInit(internal, input);
 			
-			this.setOrigins(element, internal);
+			UIView view = FILTER.getType(element, UIView.class);
+			
+			if (view != null)
+			{
+				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+			}
 			
 			this.onInit(internal, input);
 		}
@@ -86,7 +75,12 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			element.onResolutionChange(internal, input);
 			
-			this.setOrigins(element, internal);
+			UIView view = FILTER.getType(element, UIView.class);
+			
+			if (view != null)
+			{
+				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+			}
 			
 			this.onResolutionChange(internal, input);
 		}
