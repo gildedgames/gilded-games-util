@@ -10,6 +10,7 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;
 
 import cpw.mods.fml.common.Mod;
@@ -53,6 +54,7 @@ public class UtilCore implements ICore
 		this.cores.add(PlayerCore.INSTANCE);
 		this.cores.add(MenuCore.INSTANCE);
 		this.cores.add(TabCore.INSTANCE);
+		this.cores.add(new SpawningCore());
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class UtilCore implements ICore
 		{
 			e.printStackTrace();
 		}
-		
+
 		UtilCore.NETWORK.init();
 
 		for (ICore core : this.cores)
@@ -209,19 +211,19 @@ public class UtilCore implements ICore
 			System.out.println("[GG]: " + line.toString());
 		}
 	}
-	
+
 	public static File getWorldDirectory()
 	{
 		String path = ".";
-		
+
 		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
 		{
-			path = (MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName())).getAbsolutePath().replace((MinecraftServer.getServer().getFolderName() + ".dat"), "");
+			path = MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 		}
-		
+
 		return new File(path.replace("\\data", ""));
 	}
-	
+
 	public static String getMinecraftDirectory()
 	{
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
