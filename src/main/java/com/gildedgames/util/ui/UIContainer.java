@@ -17,9 +17,26 @@ public class UIContainer implements Iterable<UIElement>
 
 	protected final Map<UIElement, UIContainer> elementContainerMap = new HashMap<UIElement, UIContainer>();
 
+	private UIContainer parent;
+	
+	public UIContainer()
+	{
+		
+	}
+	
+	private UIContainer(UIContainer parent)
+	{
+		this.parent = parent;
+	}
+	
+	public UIContainer getParent()
+	{
+		return this.parent;
+	}
+	
 	public void add(UIElement element)
 	{
-		UIContainer container = new UIContainer();
+		UIContainer container = new UIContainer(this);
 		
 		this.elementContainerMap.put(element, container);
 	}
