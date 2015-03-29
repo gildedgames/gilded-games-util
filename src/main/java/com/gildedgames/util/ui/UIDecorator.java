@@ -7,7 +7,6 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
-import com.gildedgames.util.ui.util.ObjectFilter;
 
 
 public abstract class UIDecorator<T extends UIElement> extends UIBasic
@@ -95,7 +94,9 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		this.element.onResolutionChange(container, input);
+		this.onInit(container, input);
+		
+		//this.element.onResolutionChange(container, input);
 	}
 
 	@Override
