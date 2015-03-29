@@ -6,8 +6,6 @@ import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.basic.UIButtonList;
-import com.gildedgames.util.ui.util.basic.UIScrollBar;
-import com.gildedgames.util.ui.util.decorators.UIScrollable;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
 import com.gildedgames.util.ui.util.transform.ViewPositionerButton;
 
@@ -34,8 +32,10 @@ public class TestUI extends UIBasic
 		
 		Dimensions2D dim = new Dimensions2D().setArea(60, 200).setPos(new Position2D(0, 10));
 		
-		container.add(new UIScrollable(dim, list, (UIScrollBar) factory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
+		//container.add(new UIScrollable(dim, list, (UIScrollBar) factory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
 	
+		container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
+		
 		//container.add(factory.createButton(new Position2D(), 60, "Button", false));
 		//container.add(factory.createArrowButton(new Position2D(), false));
 	}
