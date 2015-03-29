@@ -21,7 +21,7 @@ public class UIScrollBar extends UIBasic
 	 * Rectangle describing the dimensions of the frame this
 	 * scrollbar is mounted to 
 	 */
-	protected Dimensions2D scrollableFrame;
+	protected Dimensions2D scrollingArea;
 
 	protected UIBasic topArrowButton, bottomArrowButton;
 
@@ -42,11 +42,11 @@ public class UIScrollBar extends UIBasic
 
 	protected float scrollSpeed = 0.075F, grabbedMouseYOffset;
 
-	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollableFrame, UIBasic topArrowButton, UIBasic bottomArrowButton, UITexture baseTexture, UITexture barTexture)
+	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollingArea, UIBasic topArrowButton, UIBasic bottomArrowButton, UITexture baseTexture, UITexture barTexture)
 	{
 		super(null, barDim);
 
-		this.scrollableFrame = scrollableFrame;
+		this.scrollingArea = scrollingArea;
 
 		this.topArrowButton = topArrowButton;
 		this.bottomArrowButton = bottomArrowButton;
@@ -59,9 +59,9 @@ public class UIScrollBar extends UIBasic
 		this.getDimensions().setWidth(maxWidth);
 	}
 	
-	public void setScrollableFrame(Dimensions2D scrollableFrame)
+	public void setScrollingArea(Dimensions2D scrollingArea)
 	{
-		this.scrollableFrame = scrollableFrame;
+		this.scrollingArea = scrollingArea;
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -146,7 +146,7 @@ public class UIScrollBar extends UIBasic
 	{
 		super.onMouseScroll(input, scrollDifference);
 
-		if (input.isHovered(this.bar.getDimensions()) || input.isHovered(this.scrollableFrame))
+		if (input.isHovered(this.bar.getDimensions()) || input.isHovered(this.scrollingArea))
 		{
 			this.bar.getDimensions().addY(-scrollDifference * this.scrollSpeed);
 			this.snapBarToProportions();
