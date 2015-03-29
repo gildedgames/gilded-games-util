@@ -14,6 +14,8 @@ import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.basic.UIButton;
 import com.gildedgames.util.ui.util.basic.UIScrollBar;
 import com.gildedgames.util.ui.util.basic.UITexture;
+import com.gildedgames.util.ui.util.decorators.UIRepeatable;
+import com.gildedgames.util.ui.util.decorators.UIScrollable;
 
 public class UIButtonFactoryMC
 {
@@ -98,9 +100,24 @@ public class UIButtonFactoryMC
 		
 		UIScrollBar scrollBar = new UIScrollBar(dim, new Dimensions2D(), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
 		
-		scrollBar.setScrollableFrame(scrollableArea.clone().addWidth(scrollBar.getDimensions().getWidth()));
+		scrollBar.setScrollingArea(scrollableArea.clone().addWidth(scrollBar.getDimensions().getWidth()));
 		
 		return scrollBar;
+	}
+	
+	public UIBasic createRepeatedTexture(Position2D pos, Dimensions2D repeatableArea, boolean centered)
+	{
+		Sprite texture = new Sprite(HOPPER_TEXTURE, 0, 174, 20, 20, 256, 256);
+		
+		Dimensions2D spriteDim = new Dimensions2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
+		
+		UIBasic repeated = new UIRepeatable(repeatableArea, new UITexture(texture, spriteDim));
+		
+		float scrollHeight = repeatableArea.getHeight() / 4;
+		
+		Dimensions2D scrollArea = new Dimensions2D().setArea(repeatableArea.getWidth(), scrollHeight);
+		
+		return new UIScrollable(scrollArea, repeated, (UIScrollBar) this.createScrollBar(new Position2D(0, 0), (int) scrollHeight, scrollArea.clone(), false));
 	}
 	
 }
