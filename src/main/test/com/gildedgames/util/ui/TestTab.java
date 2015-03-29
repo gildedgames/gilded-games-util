@@ -16,7 +16,7 @@ public class TestTab extends TabBackpack
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		this.ui = new TestUI(null);
+		this.ui = new UIScreenMC(new TestUI(null));
 		
 		Minecraft.getMinecraft().displayGuiScreen(new UIFrameMC(this.ui));
 	}
