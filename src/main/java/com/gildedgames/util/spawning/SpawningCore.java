@@ -98,42 +98,37 @@ public class SpawningCore implements ICore
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		// TODO Auto-generated method stub
-
+		for (SpawnManager spawnManager : spawnManagers)
+		{
+			spawnManager.clear();
+		}
 	}
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		// TODO Auto-generated method stub
 
 	}
 

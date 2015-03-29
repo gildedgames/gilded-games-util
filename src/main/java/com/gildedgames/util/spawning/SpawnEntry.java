@@ -19,7 +19,12 @@ public class SpawnEntry
 
 	public SpawnEntry(Class<? extends EntityLiving> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea)
 	{
-		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, avgGroupsInArea / 2, true);
+		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, true);
+	}
+
+	public SpawnEntry(Class<? extends EntityLiving> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea, boolean onGround)
+	{
+		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, avgGroupsInArea / 2, onGround);
 	}
 
 	public SpawnEntry(Class<? extends EntityLiving> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea, float groupsInAreaDeviation, boolean onGround)

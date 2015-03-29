@@ -50,6 +50,7 @@ public class ScheduledSpawn
 		}
 		else
 		{
+			//TODO: It looks like air thingies can very easily spawn into blocks. Dunno how large that chance is
 			spawnY = this.entry.getHeight(world.rand);
 		}
 
