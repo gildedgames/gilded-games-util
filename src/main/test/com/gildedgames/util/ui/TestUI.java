@@ -1,45 +1,47 @@
 package com.gildedgames.util.ui;
 
-import com.gildedgames.util.core.gui.UIButtonFactoryMC;
-import com.gildedgames.util.core.gui.UIFrameMC;
+import com.gildedgames.util.core.gui.util.factory.UIButtonFactoryMC;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
-import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.TestButtonProvider;
-import com.gildedgames.util.ui.util.UIButtonList;
-import com.gildedgames.util.ui.util.UIScrollBar;
-import com.gildedgames.util.ui.util.UIScrollable;
-import com.gildedgames.util.ui.util.ViewPositionerButton;
+import com.gildedgames.util.ui.util.basic.UIButtonList;
+import com.gildedgames.util.ui.util.factory.TestButtonFactory;
+import com.gildedgames.util.ui.util.transform.ViewPositionerButton;
 
-public class TestUI extends UIFrameMC
+public class TestUI extends UIBasic
 {
 
-	public TestUI(UIBase parent)
+	public TestUI(UIBasic parent)
 	{
 		super(parent, new Dimensions2D().setArea(50, 50));
 	}
 
 	@Override
-	public void init(UIElementContainer container, InputProvider input)
+	public void onInit(UIContainer container, InputProvider input)
 	{
-		super.init(container, input);
+		super.onInit(container, input);
 
 		Position2D center = new Position2D(input.getScreenWidth() / 2, input.getScreenHeight() / 2);
 
-		UIButtonFactoryMC buttonFactory = new UIButtonFactoryMC();
+		UIButtonFactoryMC factory = new UIButtonFactoryMC();
 
-		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonProvider());
+		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonFactory());
 
-		//list.add(buttonFactory.createButton(new Position2D(), 10, "lol"));
+		//list.add(factory.createButton(new Position2D(), 10, "lol"));
 		
-		Dimensions2D dim = new Dimensions2D().setArea(60, 200);
+		Dimensions2D dim = new Dimensions2D().setArea(60, 200).setPos(new Position2D(0, 10));
 		
-		container.add(new UIScrollable(dim, list, (UIScrollBar) buttonFactory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
+		//container.add(new UIScrollable(dim, list, (UIScrollBar) factory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
+	
+		container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
+		
+		//container.add(factory.createButton(new Position2D(), 60, "Button", false));
+		//container.add(factory.createArrowButton(new Position2D(), false));
 	}
 	
 	@Override
-	public void draw(IGraphics graphics, InputProvider input)
+	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
 		

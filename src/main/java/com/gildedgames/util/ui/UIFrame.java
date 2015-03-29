@@ -1,191 +1,229 @@
 package com.gildedgames.util.ui;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.graphics.IGraphics;
+import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.KeyEventPool;
-import com.gildedgames.util.ui.input.MouseEventPool;
-import com.gildedgames.util.ui.util.UIElementWrapper;
+import com.gildedgames.util.ui.input.KeyboardInputPool;
+import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.listeners.KeyboardListener;
+import com.gildedgames.util.ui.listeners.MouseListener;
+import com.gildedgames.util.ui.util.ObjectFilter;
 
-public abstract class UIFrame implements UIBase
+public class UIFrame implements UIView, KeyboardListener, MouseListener
 {
-
-	private final UIElementWrapper elementWrapper;
-
-	private boolean visible = true, enabled = true, focused = false;
-
-	private Dimensions2D dim;
-
-	private UIBase parent;
 	
-	public UIFrame(Dimensions2D dim)
+	protected final static ObjectFilter FILTER = new ObjectFilter();
+	
+	private UIContainer parentNode = new UIContainer();
+	
+	private UIElement framedElement;
+	
+	public UIFrame(UIElement framedElement)
 	{
-		this(null, dim);
+		this.framedElement = framedElement;
+		
+		this.parentNode.add(this.framedElement);
+	}
+	
+	public UIElement getFramedElement()
+	{
+		return this.framedElement;
 	}
 
-	public UIFrame(UIBase parent, Dimensions2D dim)
+	public void onInit(InputProvider input)
 	{
-		this.elementWrapper = new UIElementWrapper();
-
-		this.parent = parent;
-		this.dim = dim;
+		this.parentNode.clear();
+		this.parentNode.add(this.framedElement);
+		
+		this.onInit(this.parentNode, input);
 	}
-
-	public UIBase getParent()
+	
+	public void onResolutionChange(InputProvider input)
 	{
-		return this.parent;
+		this.parentNode.clear();
+		this.parentNode.add(this.framedElement);
+		
+		this.onResolutionChange(this.parentNode, input);
+	}
+	
+	@Override
+	public void onInit(UIContainer container, InputProvider input)
+	{
+		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			element.onInit(internal, input);
+			
+			UIView view = FILTER.getType(element, UIView.class);
+			
+			if (view != null)
+			{
+				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+			}
+			
+			this.onInit(internal, input);
+		}
 	}
 
 	@Override
-	public void init(UIElementContainer container, InputProvider input)
+	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		this.elementWrapper.init(container, input);
+		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			element.onResolutionChange(internal, input);
+			
+			UIView view = FILTER.getType(element, UIView.class);
+			
+			if (view != null)
+			{
+				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+			}
+			
+			this.onResolutionChange(internal, input);
+		}
 	}
 
 	@Override
-	public void draw(IGraphics graphics, InputProvider input)
+	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		this.elementWrapper.draw(graphics, input);
+		this.onMouseInput(this.parentNode, input, pool);
 	}
-
-	@Override
-	public void add(UIElement element)
+	
+	private void onMouseInput(UIContainer container, InputProvider input, MouseInputPool pool)
 	{
-		this.elementWrapper.add(element);
-	}
-
-	@Override
-	public void remove(UIElement element)
-	{
-		this.elementWrapper.remove(element);
-	}
-
-	@Override
-	public void clear()
-	{
-		this.elementWrapper.clear();
-	}
-
-	@Override
-	public void clear(Class<? extends UIElement> classToRemove)
-	{
-		this.elementWrapper.clear(classToRemove);
-	}
-
-	@Override
-	public List<UIElement> getElements()
-	{
-		return this.elementWrapper.getElements();
-	}
-
-	@Override
-	public boolean onKeyEvent(KeyEventPool pool)
-	{
-		return this.elementWrapper.onKeyEvent(pool);
-	}
-
-	@Override
-	public void onMouseEvent(InputProvider input, MouseEventPool pool)
-	{
-		this.elementWrapper.onMouseEvent(input, pool);
+		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			if (element.isEnabled())
+			{
+				element.onMouseInput(input, pool);
+				
+				this.onMouseInput(internal, input, pool);
+			}
+		}
 	}
 
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		this.elementWrapper.onMouseScroll(input, scrollDifference);
+		this.onMouseScroll(this.parentNode, input, scrollDifference);
+	}
+	
+	private void onMouseScroll(UIContainer container, InputProvider input, int scrollDifference)
+	{
+		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			if (element.isEnabled())
+			{
+				element.onMouseScroll(input, scrollDifference);
+				
+				this.onMouseScroll(internal, input, scrollDifference);
+			}
+		}
 	}
 
 	@Override
-	public boolean isVisible()
+	public boolean onKeyboardInput(KeyboardInputPool pool)
 	{
-		return this.visible;
+		return this.onKeyboardInput(this.parentNode, pool);
+	}
+	
+	private boolean onKeyboardInput(UIContainer container, KeyboardInputPool pool)
+	{
+		boolean success = false;
+		
+		for (KeyboardListener element : FILTER.getTypesFrom(container.values(), KeyboardListener.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			if (element.isEnabled())
+			{
+				success = element.onKeyboardInput(pool) || this.onKeyboardInput(internal, pool) || success;
+			}
+		}
+		
+		return success;
 	}
 
 	@Override
-	public void setVisible(boolean visible)
+	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.visible = visible;
+		this.draw(this.parentNode, graphics, input);
 	}
-
+	
+	private void draw(UIContainer container, Graphics2D graphics, InputProvider input)
+	{
+		for (UIView element : FILTER.getTypesFrom(container.values(), UIView.class))
+		{
+			UIContainer internal = container.getInternal(element);
+			
+			if (element.isVisible())
+			{
+				element.draw(graphics, input);
+				
+				this.draw(internal, graphics, input);
+			}
+		}
+	}
+	
 	@Override
 	public boolean isEnabled()
 	{
-		return this.enabled;
+		return true;
 	}
 
 	@Override
 	public void setEnabled(boolean enabled)
 	{
-		this.enabled = enabled;
+		
+	}
+
+	@Override
+	public boolean isVisible()
+	{
+		return true;
+	}
+
+	@Override
+	public void setVisible(boolean visible)
+	{
+		
 	}
 
 	@Override
 	public Dimensions2D getDimensions()
 	{
-		return this.dim;
+		return new Dimensions2D();
 	}
 
 	@Override
 	public void setDimensions(Dimensions2D dim)
 	{
-		this.dim = dim;
+		
 	}
 
 	@Override
 	public boolean isFocused()
 	{
-		return this.focused;
+		return true;
 	}
 
 	@Override
 	public void setFocused(boolean focused)
 	{
-		this.focused = focused;
+		
 	}
 
 	@Override
-	public List<UIView> queryAll(List input)
+	public boolean query(Object... input)
 	{
-		return this.elementWrapper.queryAll(input);
-	}
-
-	@Override
-	public boolean query(List input)
-	{
-		return this.elementWrapper.query(input);
-	}
-
-	@Override
-	public boolean contains(UIElement element)
-	{
-		return this.elementWrapper.contains(element);
-	}
-	
-	@Override
-	public void addAll(Collection<? extends UIElement> elements)
-	{
-		this.elementWrapper.addAll(elements);
-	}
-	
-	@Override
-	public void removeAll(Collection<? extends UIElement> elements)
-	{
-		this.elementWrapper.removeAll(elements);
-	}
-	
-	@Override
-	public int size()
-	{
-		return this.elementWrapper.size();
-	}
-
-	public Dimensions2D getWrapperDimensions()
-	{
-		return this.elementWrapper.getDimensions();
+		return false;
 	}
 
 }

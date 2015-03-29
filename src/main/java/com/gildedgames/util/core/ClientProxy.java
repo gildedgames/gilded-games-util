@@ -16,7 +16,7 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.ui.TestTab;
+//import com.gildedgames.util.ui.TestTab;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
 public class ClientProxy extends ServerProxy
@@ -62,7 +62,7 @@ public class ClientProxy extends ServerProxy
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
 
-		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
+		//TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 
 		UtilCore.registerEventListener(new GuiIngame(Minecraft.getMinecraft()));
 	}
@@ -71,6 +71,7 @@ public class ClientProxy extends ServerProxy
 	public void addScheduledTask(Runnable runnable)
 	{
 		Minecraft.getMinecraft().addScheduledTask(runnable);
+
 	}
 
 }

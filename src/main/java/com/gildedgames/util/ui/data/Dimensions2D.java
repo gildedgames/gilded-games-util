@@ -4,6 +4,11 @@ import java.util.List;
 
 public class Dimensions2D
 {
+	
+	/**
+	 * The top-left origin point to orient these dimensions around.
+	 */
+	protected Position2D origin = new Position2D();
 
 	protected Position2D position;
 
@@ -20,7 +25,7 @@ public class Dimensions2D
 
 	public Dimensions2D(Dimensions2D dim)
 	{
-		this(dim.getPosition(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredX(), dim.isCenteredY());
+		this(dim.getPos(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredX(), dim.isCenteredY());
 	}
 
 	private Dimensions2D(Position2D position, float width, float height, float scale, boolean centeredVertically, boolean centeredHorizontally)
@@ -36,63 +41,116 @@ public class Dimensions2D
 		this.centeredY = centeredHorizontally;
 	}
 
+	/**
+	 * The top-left origin point to orient these dimensions around.
+	 */
+	public Position2D getOrigin()
+	{
+		return this.origin;
+	}
+	
+	/**
+	 * The top-left origin point to orient these dimensions around.
+	 */
+	public void setOrigin(Position2D origin)
+	{
+		this.origin = origin;
+	}
+	
 	public float getScale()
 	{
 		return this.scale;
 	}
 
-	private float getScaledX()
+	/**
+	 * Altered by factors such as scale and origin.
+	 */
+	public Position2D getPos()
 	{
-		float offset = this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0;
-
-		return this.position.getX() - offset;
+		return this.origin.withAdded(this.getScaledPos());
 	}
 
-	private float getScaledY()
-	{
-		float offset = this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0;
-
-		return this.position.getY() - offset;
-	}
-
-	public Position2D getPosition()
-	{
-		return new Position2D(this.getScaledX(), this.getScaledY());
-	}
-
-	public Position2D getBasePosition()
+	/**
+	 * Unaltered by factors such as scale and origin.
+	 */
+	public Position2D getBasePos()
 	{
 		return this.position;
 	}
+	
+	/**
+	 * Unaltered by the origin.
+	 */
+	public Position2D getScaledPos()
+	{
+		float offsetX = this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0;
+		float offsetY = this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0;
 
+		return new Position2D(this.position.getX() - offsetX, this.position.getY() - offsetY);
+	}
+
+	/**
+	 * Altered by factors such as scale and origin.
+	 */
 	public float getX()
 	{
-		return this.getScaledX();
+		return this.getPos().getX();
 	}
 
+	/**
+	 * Altered by factors such as scale and origin.
+	 */
 	public float getY()
 	{
-		return this.getScaledY();
+		return this.getPos().getY();
 	}
 
+	/**
+	 * Unaltered by factors such as scale and origin.
+	 */
 	public float getBaseX()
 	{
 		return this.position.getX();
 	}
 
+	/**
+	 * Unaltered by factors such as scale and origin.
+	 */
 	public float getBaseY()
 	{
 		return this.position.getY();
 	}
 
+	/**
+	 * Altered by factors such as scale and origin.
+	 */
 	public float getWidth()
 	{
 		return this.width * this.scale;
 	}
 
+	/**
+	 * Altered by factors such as scale and origin.
+	 */
 	public float getHeight()
 	{
 		return this.height * this.scale;
+	}
+	
+	/**
+	 * Unaltered by factors such as scale and origin.
+	 */
+	public float getBaseWidth()
+	{
+		return this.width;
+	}
+
+	/**
+	 * Unaltered by factors such as scale and origin.
+	 */
+	public float getBaseHeight()
+	{
+		return this.height;
 	}
 
 	public boolean isCenteredX()
@@ -226,7 +284,7 @@ public class Dimensions2D
 	{
 		String link = ", ";
 		
-		return this.getPosition().toString() + link + "Area() Width: '" + this.width + "', Height: '" + this.height + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale + "'";
+		return this.getPos().toString() + link + "Area() Width: '" + this.width + "', Height: '" + this.height + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale + "'";
 	}
 
 }
