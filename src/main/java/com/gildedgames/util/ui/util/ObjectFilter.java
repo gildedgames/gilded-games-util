@@ -4,12 +4,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import scala.actors.threadpool.Arrays;
+
 public class ObjectFilter
 {
 
 	public ObjectFilter()
 	{
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getTypesFrom(Object[] array, Class<? extends T> typeClass)
+	{
+		return this.getTypesFrom(Arrays.asList(array), typeClass);
 	}
 
 	@SuppressWarnings("unchecked")
