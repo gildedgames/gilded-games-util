@@ -33,10 +33,14 @@ public abstract class UIBasic implements UIView, KeyboardListener, MouseListener
 		this.dimensions = dimensions;
 	}
 	
-	@Override
-	public void draw(Graphics2D graphics, InputProvider input)
+	public UIContainer getListeners()
 	{
-		
+		return this.listeners;
+	}
+
+	public UIBasic getPreviousFrame()
+	{
+		return this.previousFrame;
 	}
 
 	@Override
@@ -49,36 +53,6 @@ public abstract class UIBasic implements UIView, KeyboardListener, MouseListener
 	public void setVisible(boolean visible)
 	{
 		this.visible = visible;
-	}
-
-	@Override
-	public boolean onKeyboardInput(KeyboardInputPool pool)
-	{
-		return false;
-	}
-
-	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
-	{
-		
-	}
-
-	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
-	{
-		
-	}
-	
-	@Override
-	public void onInit(UIContainer container, InputProvider input)
-	{
-		
-	}
-	
-	@Override
-	public void onResolutionChange(UIContainer container, InputProvider input)
-	{
-		this.onInit(container, input);
 	}
 
 	@Override
@@ -122,15 +96,41 @@ public abstract class UIBasic implements UIView, KeyboardListener, MouseListener
 	{
 		return false;
 	}
-
-	public UIContainer getListeners()
+	
+	@Override
+	public boolean onKeyboardInput(KeyboardInputPool pool)
 	{
-		return this.listeners;
+		return false;
+	}
+	
+	@Override
+	public void draw(Graphics2D graphics, InputProvider input)
+	{
+		
 	}
 
-	public UIBasic getPreviousFrame()
+	@Override
+	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		return this.previousFrame;
+		
+	}
+
+	@Override
+	public void onMouseScroll(InputProvider input, int scrollDifference)
+	{
+		
+	}
+	
+	@Override
+	public void onInit(UIContainer container, InputProvider input)
+	{
+		
+	}
+	
+	@Override
+	public void onResolutionChange(UIContainer container, InputProvider input)
+	{
+		this.onInit(container, input);
 	}
 
 }
