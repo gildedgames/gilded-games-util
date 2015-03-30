@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -11,7 +13,7 @@ import net.minecraft.world.World;
 public class SpawnAreaPerTick extends SpawnArea
 {
 
-	private boolean isAwake = true;
+	private boolean isAwake = true, shouldRespawn = false;
 
 	private int secondsUpdated = 0;
 
@@ -35,6 +37,16 @@ public class SpawnAreaPerTick extends SpawnArea
 		this.isAwake = true;
 	}
 
+	public boolean shouldRespawn()
+	{
+		return this.shouldRespawn;
+	}
+
+	public void setShouldRespawn(boolean shouldRespawn)
+	{
+		this.shouldRespawn = shouldRespawn;
+	}
+
 	public void onUpdate(int areaSize, World world)
 	{
 		this.secondsUpdated++;
@@ -51,6 +63,11 @@ public class SpawnAreaPerTick extends SpawnArea
 		this.isAwake = false;
 	}
 
+	public boolean noSchedulesLeft()
+	{
+		return this.scheduledSpawns.isEmpty();
+	}
+
 	/**
 	 * Schedules spawning for this area in an upcoming tick
 	 */
@@ -58,12 +75,12 @@ public class SpawnAreaPerTick extends SpawnArea
 	public void schedule(World world, int areaSize, int groupScattering, Random rand)
 	{
 		final int spawningRange = areaSize * 16;
-		final int halfArea = spawningRange / 2;
+		//final int halfArea = spawningRange / 2;
 
 		final int posX = this.areaX * areaSize * 16;
 		final int posZ = this.areaZ * areaSize * 16;
 
-		AxisAlignedBB twobytwo = AxisAlignedBB.getBoundingBox(posX - halfArea, 0, posZ - halfArea, posX + spawningRange + halfArea, world.getActualHeight(), posZ + spawningRange + halfArea);
+		/*AxisAlignedBB twobytwo = AxisAlignedBB.getBoundingBox(posX - halfArea, 0, posZ - halfArea, posX + spawningRange + halfArea, world.getActualHeight(), posZ + spawningRange + halfArea);
 		final List<EntityLivingBase> listOfEntities2x2 = world.getEntitiesWithinAABB(EntityLivingBase.class, twobytwo);
 		final int entitiesIn2x2Area = listOfEntities2x2.size();
 		final int max2b2Entities = this.spawnManager.getMaxAmountOfEntitiesIn2x2Area();
@@ -71,10 +88,25 @@ public class SpawnAreaPerTick extends SpawnArea
 		if (entitiesIn2x2Area > max2b2Entities)
 		{
 			return;
-		}
+		}*/
 
 		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(posX, 0, posZ, posX + spawningRange, world.getActualHeight(), posZ + spawningRange);
-		final List<EntityLivingBase> listOfEntitiesInArea = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
+		IEntitySelector entitySelector = new IEntitySelector()
+		{
+			@Override
+			public boolean isEntityApplicable(Entity entity)
+			{
+				for (SpawnEntry s : SpawnAreaPerTick.this.spawnEntries)
+				{
+					if (s.getEntityClass() == entity.getClass())
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		};
+		final List<EntityLivingBase> listOfEntitiesInArea = world.selectEntitiesWithinAABB(Entity.class, bb, entitySelector);
 
 		final int entitiesInArea = listOfEntitiesInArea.size();
 
@@ -89,7 +121,7 @@ public class SpawnAreaPerTick extends SpawnArea
 		{
 			int entityCount = 0;//Count the amount of entities of this type already spawned
 
-			for (final EntityLivingBase entity : listOfEntitiesInArea)
+			for (final Entity entity : listOfEntitiesInArea)
 			{
 				if (entry.getEntityClass() == entity.getClass())
 				{
@@ -97,14 +129,13 @@ public class SpawnAreaPerTick extends SpawnArea
 				}
 			}
 
-			final boolean spawnMore = entry.shouldSpawnMore(entityCount, rand);
+			//final boolean spawnMore = entry.shouldSpawnMore(entityCount, rand);
 
-			if (spawnMore)
+			//TODO: Right now it does not go to the target amount of entities.
+			//While this is nice in terms of variations, it is maybe not expected.
+			if (entry.shouldSpawnMore(entityCount, rand))
 			{
-				//TODO: Right now it does not go to the target amount of entities.
-				//While this is nice in terms of variations, it is maybe not expected.
 				final int numGroups = entry.getGroupsInArea(rand);
-				int scheduledSpawns = 0;
 
 				for (int i = 0; i < numGroups; ++i)
 				{
@@ -114,10 +145,10 @@ public class SpawnAreaPerTick extends SpawnArea
 						return;
 					}
 
-					if (entitiesIn2x2Area + amountOfSpawns > max2b2Entities)
+					/*if (entitiesIn2x2Area + amountOfSpawns > max2b2Entities)
 					{
 						return;
-					}
+					}*/
 					final int groupSize = entry.getGroupSize(rand);
 
 					final int groupX = posX + rand.nextInt(spawningRange);
@@ -128,16 +159,8 @@ public class SpawnAreaPerTick extends SpawnArea
 						final int scatterX = -groupScattering + rand.nextInt(groupScattering * 2);
 						final int scatterZ = -groupScattering + rand.nextInt(groupScattering * 2);
 
-						if (entitiesIn2x2Area + this.scheduledSpawns.size() < targetEntities)
-						{
-							final ScheduledSpawn scheduledSpawn = new ScheduledSpawn(this.spawnManager, entry, groupX + scatterX, groupZ + scatterZ);
-							this.scheduledSpawns.add(scheduledSpawn);
-							scheduledSpawns++;
-						}
-						else
-						{
-							return;
-						}
+						final ScheduledSpawn scheduledSpawn = new ScheduledSpawn(this.spawnManager, entry, groupX + scatterX, groupZ + scatterZ);
+						this.scheduledSpawns.add(scheduledSpawn);
 					}
 				}
 			}

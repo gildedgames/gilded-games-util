@@ -14,7 +14,7 @@ public class DefaultSpawnSettings implements SpawnSettings
 	@Override
 	public int areaSizePerTick()
 	{
-		return 6;
+		return 2;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class DefaultSpawnSettings implements SpawnSettings
 	@Override
 	public int maxSpawnAttempts()
 	{
-		return 20;
+		return 25;
 	}
 
 	@Override
@@ -38,31 +38,31 @@ public class DefaultSpawnSettings implements SpawnSettings
 	@Override
 	public int ticksBetweenUpdate()
 	{
-		return 30;
+		return 40;
 	}
 
 	@Override
 	public int updatesBetweenRespawn()
 	{
-		return 300;
+		return 400;
 	}
 
 	@Override
-	public int averageAmountOfEntitiesInArea()
+	public float averageAmountOfEntitiesInArea()
 	{
-		return 30;
+		return 4.3f;
 	}
 
 	@Override
-	public int amountOfEntitiesInAreaDeviation()
+	public float amountOfEntitiesInAreaDeviation()
 	{
-		return 10;
+		return 1.5f;
 	}
 
 	@Override
 	public int maxAmountOfEntitiesIn2x2Area()
 	{
-		return 160;
+		return 20;
 	}
 
 }

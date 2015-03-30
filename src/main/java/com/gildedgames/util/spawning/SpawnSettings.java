@@ -18,9 +18,9 @@ public interface SpawnSettings
 	 */
 	int areaSizePerTick();
 
-	int averageAmountOfEntitiesInArea();
+	float averageAmountOfEntitiesInArea();
 
-	int amountOfEntitiesInAreaDeviation();
+	float amountOfEntitiesInAreaDeviation();
 
 	int groupScattering();
 

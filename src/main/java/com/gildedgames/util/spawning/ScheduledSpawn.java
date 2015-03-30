@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -57,11 +58,11 @@ public class ScheduledSpawn
 		if (spawnY > this.entry.getMinimumHeight() && spawnY < this.entry.getMaximumHeight() && this.entry.shouldAttempt(world, this.posX, spawnY, this.posZ))
 		{
 
-			Constructor<? extends EntityLiving> cons;
+			Constructor<? extends Entity> cons;
 			try
 			{
 				cons = this.entry.getEntityClass().getConstructor(World.class);
-				final EntityLiving entity = cons.newInstance(world);//If you ever crash here, make sure to add a constructor with just World in your entity
+				final Entity entity = cons.newInstance(world);//If you ever crash here, make sure to add a constructor with just World in your entity
 				entity.setLocationAndAngles(this.posX, spawnY, this.posZ, 0, 0);
 
 				//Checks all conditions and see if they match with the current entity. If so, evaluate the condition
@@ -74,7 +75,7 @@ public class ScheduledSpawn
 					}
 				}
 
-				if (entity.getCanSpawnHere())
+				if (!(entity instanceof EntityLiving) || ((EntityLiving) entity).getCanSpawnHere())
 				{
 					//TODO: The boundingbox checks for an area that's 4 times the size of the actual area. Intended? if you look at the code, having 10 makes more sense.
 					//Because only then can the condition be fulfilled.
@@ -91,7 +92,11 @@ public class ScheduledSpawn
 					}
 
 					world.spawnEntityInWorld(entity);
-					entity.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random spawn bonus", entity.getRNG().nextGaussian() * 0.05D, 1));
+					if (entity instanceof EntityLiving)
+					{
+						EntityLiving living = (EntityLiving) entity;
+						living.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random spawn bonus", living.getRNG().nextGaussian() * 0.05D, 1));
+					}
 
 					return true;
 				}

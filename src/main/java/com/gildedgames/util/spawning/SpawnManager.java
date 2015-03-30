@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -32,7 +33,7 @@ public class SpawnManager
 
 	private final List<ScheduledSpawn> scheduledSpawns = new ArrayList<ScheduledSpawn>();
 
-	private final static Random random = new Random();
+	protected final static Random random = new Random();
 
 	private final SpawnSettings spawnSettings;
 
@@ -81,7 +82,7 @@ public class SpawnManager
 			if (area.isAwake())
 			{
 				area.onUpdate(this.spawnSettings.areaSize(), world);
-				if (area.getAmountOfUpdates() == this.spawnSettings.updatesBetweenRespawn())
+				if (area.getAmountOfUpdates() % this.spawnSettings.updatesBetweenRespawn() == 0 && area.noSchedulesLeft())
 				{
 					toRemove.add(area);
 				}
@@ -125,6 +126,8 @@ public class SpawnManager
 				{
 					//Shuffle the list to allow for more variation, seeing as the algorithm
 					//has bias towards entries earlier in the list.
+					long randomSeed = world.getSeed() + ChunkCoordIntPair.chunkXZ2Int(areaX, areaZ);
+					Random random = new Random(randomSeed);
 					final List<SpawnEntry> shuffledRegistered = new ArrayList<SpawnEntry>(this.tickSpawningRegister);
 					Collections.shuffle(shuffledRegistered, random);
 

@@ -43,26 +43,22 @@ public class SpawningCore implements ICore
 
 	public static SpawnManager createAndRegisterSpawnManager(int dimensionId, SpawnSettings settings)
 	{
-		SpawnManager old = getSpawnManagerFor(dimensionId);
-		if (old != null)
-		{
-			throw new IllegalStateException("Only one manager can exist per dimension. Please register to the existing manager instead.");
-		}
 		SpawnManager s = new SpawnManager(dimensionId, settings);
 		spawnManagers.add(s);
 		return s;
 	}
 
-	public static SpawnManager getSpawnManagerFor(int dimensionId)
+	public static List<SpawnManager> getSpawnManagersFor(int dimensionId)
 	{
+		List<SpawnManager> selected = new ArrayList<SpawnManager>();
 		for (SpawnManager spawnManager : spawnManagers)
 		{
 			if (spawnManager.getDimensionId() == dimensionId)
 			{
-				return spawnManager;
+				selected.add(spawnManager);
 			}
 		}
-		return null;
+		return selected;
 	}
 
 	@SubscribeEvent
@@ -73,8 +69,8 @@ public class SpawningCore implements ICore
 			World world = event.world;
 			if (!world.isRemote)
 			{
-				SpawnManager spawnManager = getSpawnManagerFor(world.provider.dimensionId);
-				if (spawnManager != null)
+				List<SpawnManager> spawnManagers = getSpawnManagersFor(world.provider.dimensionId);
+				for (SpawnManager spawnManager : spawnManagers)
 				{
 					spawnManager.tickSpawning(world, this.players.getPlayerHooks());//It's kinda ewwy how it uses GroupCore here admittedly
 				}
