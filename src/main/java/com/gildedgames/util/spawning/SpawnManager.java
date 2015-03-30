@@ -31,13 +31,13 @@ public class SpawnManager
 
 	private ChunkMap<SpawnAreaPerTick> spawnAreaPerTick;
 
-	private final List<ScheduledSpawn> scheduledSpawns = new ArrayList<ScheduledSpawn>();
-
 	protected final static Random random = new Random();
 
 	private final SpawnSettings spawnSettings;
 
 	private final int dimensionId;
+
+	private static List<Block> blacklistedBlocks = new ArrayList<Block>();
 
 	private int ticks;
 
@@ -51,7 +51,6 @@ public class SpawnManager
 	{
 		//this.spawnAreaOnGen = null;
 		this.spawnAreaPerTick = null;
-		this.scheduledSpawns.clear();
 	}
 
 	public void tickSpawning(World world, Collection<? extends IPlayerHook> playerHooks)
@@ -154,6 +153,11 @@ public class SpawnManager
 		return this.spawnAreaOnGen;
 	}*/
 
+	protected static void registerBlacklistedBlock(Block block)
+	{
+		blacklistedBlocks.add(block);
+	}
+
 	private ChunkMap<SpawnAreaPerTick> getspawnAreaPerTick()
 	{
 		if (this.spawnAreaPerTick == null)
@@ -215,7 +219,7 @@ public class SpawnManager
 		{
 			final Block l = chunk.getBlock(posX, k, posZ);
 
-			if (l != Blocks.air && l.getMaterial().blocksMovement() && l.getMaterial() != Material.leaves && !l.isFoliage(world, x, k, z))
+			if (l != Blocks.air && l.getMaterial().blocksMovement() && l.getMaterial() != Material.leaves && !l.isFoliage(world, x, k, z) && !blacklistedBlocks.contains(l))
 			{
 				return k + 1;
 			}

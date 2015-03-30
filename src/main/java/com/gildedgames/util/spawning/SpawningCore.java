@@ -3,6 +3,7 @@ package com.gildedgames.util.spawning;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -59,6 +60,14 @@ public class SpawningCore implements ICore
 			}
 		}
 		return selected;
+	}
+
+	/**
+	 * Add a block that entities should not be able to spawn on.
+	 */
+	public static void registerBlacklistedBlock(Block block)
+	{
+		SpawnManager.registerBlacklistedBlock(block);
 	}
 
 	@SubscribeEvent
