@@ -2,6 +2,7 @@ package com.gildedgames.util.menu.client;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -114,7 +115,7 @@ public class MenuClientEvents
 	public void onGuiOpen(GuiOpenEvent event)
 	{
 		GuiScreen gui = event.gui;
-		
+
 		if (gui == null)
 		{
 			return;
@@ -145,7 +146,15 @@ public class MenuClientEvents
 			}
 			else
 			{
-				this.openMenu(ClientProxy.MINECRAFT_MENU);
+				List<IMenu> menus = MenuCore.locate().getRegisteredMenus();
+				if (menus.size() == 1)
+				{
+					this.openMenu(ClientProxy.MINECRAFT_MENU);
+				}
+				else
+				{
+					this.openMenu(menus.get(1));
+				}
 			}
 		}
 		else if (gui != null && menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))
