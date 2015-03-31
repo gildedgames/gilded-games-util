@@ -1,5 +1,7 @@
 package com.gildedgames.util.spawning.util;
 
+import net.minecraft.world.World;
+
 import com.gildedgames.util.spawning.SpawnSettings;
 
 public class DefaultSpawnSettings implements SpawnSettings
@@ -48,19 +50,19 @@ public class DefaultSpawnSettings implements SpawnSettings
 	}
 
 	@Override
-	public float averageAmountOfEntitiesInArea()
+	public float averageAmountOfEntitiesInArea(World world)
 	{
 		return 4.3f;
 	}
 
 	@Override
-	public float amountOfEntitiesInAreaDeviation()
+	public float amountOfEntitiesInAreaDeviation(World world)
 	{
 		return 1.5f;
 	}
 
 	@Override
-	public int maxAmountOfEntitiesIn2x2Area()
+	public int maxAmountOfEntitiesIn2x2Area(World world)
 	{
 		return 20;
 	}

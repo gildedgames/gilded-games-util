@@ -110,7 +110,7 @@ public class SpawnAreaPerTick extends SpawnArea
 
 		final int entitiesInArea = listOfEntitiesInArea.size();
 
-		final int targetEntities = this.spawnManager.getTargetAmountOfEntities(rand);
+		final int targetEntities = this.spawnManager.getTargetAmountOfEntities(world, rand);
 
 		if (entitiesInArea > targetEntities)
 		{

@@ -95,14 +95,14 @@ public class SpawnManager
 		}
 	}
 
-	public int getTargetAmountOfEntities(Random random)
+	public int getTargetAmountOfEntities(World world, Random random)
 	{
-		return (int) Math.round(random.nextGaussian() * this.spawnSettings.amountOfEntitiesInAreaDeviation() + this.spawnSettings.averageAmountOfEntitiesInArea());
+		return (int) Math.round(random.nextGaussian() * this.spawnSettings.amountOfEntitiesInAreaDeviation(world) + this.spawnSettings.averageAmountOfEntitiesInArea(world));
 	}
 
-	public int getMaxAmountOfEntitiesIn2x2Area()
+	public int getMaxAmountOfEntitiesIn2x2Area(World world)
 	{
-		return this.spawnSettings.maxAmountOfEntitiesIn2x2Area();
+		return this.spawnSettings.maxAmountOfEntitiesIn2x2Area(world);
 	}
 
 	private void wakeUpAreas(World world, double posX, double posY, double posZ)
