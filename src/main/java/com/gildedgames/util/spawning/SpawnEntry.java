@@ -2,12 +2,12 @@ package com.gildedgames.util.spawning;
 
 import java.util.Random;
 
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 public class SpawnEntry
 {
-	private final Class<? extends EntityLiving> entityClass;
+	private final Class<? extends Entity> entityClass;
 
 	private final float avgGroupsInArea, groupsInAreaDeviation;
 
@@ -17,12 +17,17 @@ public class SpawnEntry
 
 	private final boolean onGround;
 
-	public SpawnEntry(Class<? extends EntityLiving> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea)
+	public SpawnEntry(Class<? extends Entity> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea)
 	{
-		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, avgGroupsInArea / 2, true);
+		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, true);
 	}
 
-	public SpawnEntry(Class<? extends EntityLiving> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea, float groupsInAreaDeviation, boolean onGround)
+	public SpawnEntry(Class<? extends Entity> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea, boolean onGround)
+	{
+		this(entityClass, minGroupSize, maxGroupSize, avgGroupsInArea, avgGroupsInArea / 2, onGround);
+	}
+
+	public SpawnEntry(Class<? extends Entity> entityClass, int minGroupSize, int maxGroupSize, float avgGroupsInArea, float groupsInAreaDeviation, boolean onGround)
 	{
 		this.entityClass = entityClass;
 		this.minGroupSize = minGroupSize;
@@ -34,7 +39,7 @@ public class SpawnEntry
 		this.entitiesInAreaDeviation = groupsInAreaDeviation / avgGroupsInArea * this.avgEntitiesInArea;
 	}
 
-	public Class<? extends EntityLiving> getEntityClass()
+	public Class<? extends Entity> getEntityClass()
 	{
 		return this.entityClass;
 	}

@@ -3,7 +3,10 @@ package com.gildedgames.util.spawning;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,7 +20,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.spawning.util.DefaultSpawnSettings;
 
@@ -32,26 +34,30 @@ public class SpawningCore implements ICore
 
 	public static SpawnManager createAndRegisterSpawnManager(int dimensionId, SpawnSettings settings)
 	{
-		SpawnManager old = getSpawnManagerFor(dimensionId);
-		if (old != null)
-		{
-			throw new IllegalStateException("Only one manager can exist per dimension. Please register to the existing manager instead.");
-		}
 		SpawnManager s = new SpawnManager(dimensionId, settings);
 		spawnManagers.add(s);
 		return s;
 	}
 
-	public static SpawnManager getSpawnManagerFor(int dimensionId)
+	public static List<SpawnManager> getSpawnManagersFor(int dimensionId)
 	{
+		List<SpawnManager> selected = new ArrayList<SpawnManager>();
 		for (SpawnManager spawnManager : spawnManagers)
 		{
 			if (spawnManager.getDimensionId() == dimensionId)
 			{
-				return spawnManager;
+				selected.add(spawnManager);
 			}
 		}
-		return null;
+		return selected;
+	}
+
+	/**
+	 * Add a block that entities should not be able to spawn on.
+	 */
+	public static void registerBlacklistedBlock(Block block)
+	{
+		SpawnManager.registerBlacklistedBlock(block);
 	}
 
 	@SubscribeEvent
@@ -62,8 +68,8 @@ public class SpawningCore implements ICore
 			World world = event.world;
 			if (!world.isRemote)
 			{
-				SpawnManager spawnManager = getSpawnManagerFor(world.provider.getDimensionId());
-				if (spawnManager != null)
+				List<SpawnManager> spawnManagers = getSpawnManagersFor(world.provider.getDimensionId());
+				for (SpawnManager spawnManager : spawnManagers)
 				{
 					spawnManager.tickSpawning(world, GroupCore.locate().getPlayers().getPlayerHooks());//It's kinda ewwy how it uses GroupCore here admittedly
 				}
@@ -74,19 +80,18 @@ public class SpawningCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		UtilCore.registerEventHandler(this);
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
 	}
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event)
 	{
-
 	}
 
 	@Override
@@ -97,20 +102,28 @@ public class SpawningCore implements ICore
 	@Override
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
+		for (SpawnManager spawnManager : spawnManagers)
+		{
+			spawnManager.clear();
+		}
 	}
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
+
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
+
 	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
+
 	}
+
 }
