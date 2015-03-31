@@ -1,5 +1,7 @@
 package com.gildedgames.util.spawning;
 
+import net.minecraft.world.World;
+
 public interface SpawnSettings
 {
 	/**
@@ -18,15 +20,15 @@ public interface SpawnSettings
 	 */
 	int areaSizePerTick();
 
-	int averageAmountOfEntitiesInArea();
+	float averageAmountOfEntitiesInArea(World world);
 
-	int amountOfEntitiesInAreaDeviation();
+	float amountOfEntitiesInAreaDeviation(World world);
+
+	int maxAmountOfEntitiesIn2x2Area(World world);
 
 	int groupScattering();
 
 	int maxSpawnAttempts();
-
-	int maxAmountOfEntitiesIn2x2Area();
 
 	int spawnDistanceFromPlayer();
 

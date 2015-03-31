@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -31,13 +32,13 @@ public class SpawnManager
 
 	private ChunkMap<SpawnAreaPerTick> spawnAreaPerTick;
 
-	private final List<ScheduledSpawn> scheduledSpawns = new ArrayList<ScheduledSpawn>();
-
-	private final static Random random = new Random();
+	protected final static Random random = new Random();
 
 	private final SpawnSettings spawnSettings;
 
 	private final int dimensionId;
+
+	private static List<Block> blacklistedBlocks = new ArrayList<Block>();
 
 	private int ticks;
 
@@ -51,7 +52,6 @@ public class SpawnManager
 	{
 		//this.spawnAreaOnGen = null;
 		this.spawnAreaPerTick = null;
-		this.scheduledSpawns.clear();
 	}
 
 	public void tickSpawning(World world, Collection<? extends IPlayerHook> playerHooks)
@@ -82,7 +82,7 @@ public class SpawnManager
 			if (area.isAwake())
 			{
 				area.onUpdate(this.spawnSettings.areaSize(), world);
-				if (area.getAmountOfUpdates() == this.spawnSettings.updatesBetweenRespawn())
+				if (area.getAmountOfUpdates() % this.spawnSettings.updatesBetweenRespawn() == 0 && area.noSchedulesLeft())
 				{
 					toRemove.add(area);
 				}
@@ -96,14 +96,14 @@ public class SpawnManager
 		}
 	}
 
-	public int getTargetAmountOfEntities(Random random)
+	public int getTargetAmountOfEntities(World world, Random random)
 	{
-		return (int) Math.round(random.nextGaussian() * this.spawnSettings.amountOfEntitiesInAreaDeviation() + this.spawnSettings.averageAmountOfEntitiesInArea());
+		return (int) Math.round(random.nextGaussian() * this.spawnSettings.amountOfEntitiesInAreaDeviation(world) + this.spawnSettings.averageAmountOfEntitiesInArea(world));
 	}
 
-	public int getMaxAmountOfEntitiesIn2x2Area()
+	public int getMaxAmountOfEntitiesIn2x2Area(World world)
 	{
-		return this.spawnSettings.maxAmountOfEntitiesIn2x2Area();
+		return this.spawnSettings.maxAmountOfEntitiesIn2x2Area(world);
 	}
 
 	private void wakeUpAreas(World world, double posX, double posY, double posZ)
@@ -126,6 +126,8 @@ public class SpawnManager
 				{
 					//Shuffle the list to allow for more variation, seeing as the algorithm
 					//has bias towards entries earlier in the list.
+					long randomSeed = world.getSeed() + ChunkCoordIntPair.chunkXZ2Int(areaX, areaZ);
+					Random random = new Random(randomSeed);
 					final List<SpawnEntry> shuffledRegistered = new ArrayList<SpawnEntry>(this.tickSpawningRegister);
 					Collections.shuffle(shuffledRegistered, random);
 
@@ -148,9 +150,13 @@ public class SpawnManager
 		{
 			this.spawnAreaOnGen = new ChunkMap<SpawnArea>();
 		}
-
 		return this.spawnAreaOnGen;
 	}*/
+
+	protected static void registerBlacklistedBlock(Block block)
+	{
+		blacklistedBlocks.add(block);
+	}
 
 	private ChunkMap<SpawnAreaPerTick> getspawnAreaPerTick()
 	{
@@ -213,7 +219,7 @@ public class SpawnManager
 		{
 			final Block l = chunk.getBlock(posX, k, posZ);
 
-			if (l != Blocks.air && l.getMaterial().blocksMovement() && l.getMaterial() != Material.leaves && !l.isFoliage(world, new BlockPos(x, k, z)))
+			if (l != Blocks.air && l.getMaterial().blocksMovement() && l.getMaterial() != Material.leaves && !l.isFoliage(world, new BlockPos(x, k, z)) && !blacklistedBlocks.contains(l))
 			{
 				return k + 1;
 			}
