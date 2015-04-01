@@ -1,12 +1,12 @@
-package com.gildedgames.util.ui.util.basic;
+package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class UIRectangle extends UIBasic
+public class UIRectangle extends UIBasicAbstract
 {
 
 	protected DrawingData startColor, endColor;

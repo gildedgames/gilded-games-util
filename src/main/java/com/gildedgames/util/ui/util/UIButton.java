@@ -1,7 +1,7 @@
-package com.gildedgames.util.ui.util.basic;
+package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.event.view.MouseEventViewFocus;
@@ -11,7 +11,7 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 
-public class UIButton extends UIBasic
+public class UIButton extends UIBasicAbstract
 {
 	
 	protected final UITexture defaultState, hoveredState, clickedState;

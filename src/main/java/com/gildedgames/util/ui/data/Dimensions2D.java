@@ -12,7 +12,7 @@ public class Dimensions2D
 
 	protected Position2D position;
 
-	protected float width, height;
+	protected int width, height;
 
 	protected boolean centeredX, centeredY;
 
@@ -28,7 +28,7 @@ public class Dimensions2D
 		this(dim.getPos(), dim.getWidth(), dim.getHeight(), dim.getScale(), dim.isCenteredX(), dim.isCenteredY());
 	}
 
-	private Dimensions2D(Position2D position, float width, float height, float scale, boolean centeredVertically, boolean centeredHorizontally)
+	private Dimensions2D(Position2D position, int width, int height, float scale, boolean centeredVertically, boolean centeredHorizontally)
 	{
 		this.position = position;
 
@@ -83,8 +83,8 @@ public class Dimensions2D
 	 */
 	public Position2D getScaledPos()
 	{
-		float offsetX = this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0;
-		float offsetY = this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0;
+		int offsetX = (int) (this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0);
+		int offsetY = (int) (this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0);
 
 		return new Position2D(this.position.getX() - offsetX, this.position.getY() - offsetY);
 	}
@@ -92,7 +92,7 @@ public class Dimensions2D
 	/**
 	 * Altered by factors such as scale and origin.
 	 */
-	public float getX()
+	public int getX()
 	{
 		return this.getPos().getX();
 	}
@@ -100,7 +100,7 @@ public class Dimensions2D
 	/**
 	 * Altered by factors such as scale and origin.
 	 */
-	public float getY()
+	public int getY()
 	{
 		return this.getPos().getY();
 	}
@@ -108,7 +108,7 @@ public class Dimensions2D
 	/**
 	 * Unaltered by factors such as scale and origin.
 	 */
-	public float getBaseX()
+	public int getBaseX()
 	{
 		return this.position.getX();
 	}
@@ -116,7 +116,7 @@ public class Dimensions2D
 	/**
 	 * Unaltered by factors such as scale and origin.
 	 */
-	public float getBaseY()
+	public int getBaseY()
 	{
 		return this.position.getY();
 	}
@@ -124,23 +124,23 @@ public class Dimensions2D
 	/**
 	 * Altered by factors such as scale and origin.
 	 */
-	public float getWidth()
+	public int getWidth()
 	{
-		return this.width * this.scale;
+		return (int) (this.width * this.scale);
 	}
 
 	/**
 	 * Altered by factors such as scale and origin.
 	 */
-	public float getHeight()
+	public int getHeight()
 	{
-		return this.height * this.scale;
+		return (int) (this.height * this.scale);
 	}
 	
 	/**
 	 * Unaltered by factors such as scale and origin.
 	 */
-	public float getBaseWidth()
+	public int getBaseWidth()
 	{
 		return this.width;
 	}
@@ -148,7 +148,7 @@ public class Dimensions2D
 	/**
 	 * Unaltered by factors such as scale and origin.
 	 */
-	public float getBaseHeight()
+	public int getBaseHeight()
 	{
 		return this.height;
 	}
@@ -176,14 +176,14 @@ public class Dimensions2D
 		return this;
 	}
 
-	public Dimensions2D setHeight(float height)
+	public Dimensions2D setHeight(int height)
 	{
 		this.height = height;
 
 		return this;
 	}
 
-	public Dimensions2D setWidth(float width)
+	public Dimensions2D setWidth(int width)
 	{
 		this.width = width;
 
@@ -205,32 +205,32 @@ public class Dimensions2D
 		return this;
 	}
 
-	public Dimensions2D addWidth(float width)
+	public Dimensions2D addWidth(int width)
 	{
 		return this.setWidth(this.width + width);
 	}
 
-	public Dimensions2D addHeight(float height)
+	public Dimensions2D addHeight(int height)
 	{
 		return this.setArea(this.width, this.height + height);
 	}
 
-	public Dimensions2D addArea(float width, float height)
+	public Dimensions2D addArea(int width, int height)
 	{
 		return this.addWidth(width).addHeight(height);
 	}
 
-	public Dimensions2D setArea(float width, float height)
+	public Dimensions2D setArea(int width, int height)
 	{
 		return this.setWidth(width).setHeight(height);
 	}
 
-	public Dimensions2D addX(float x)
+	public Dimensions2D addX(int x)
 	{
 		return this.setPos(this.position.withAdded(x, 0));
 	}
 
-	public Dimensions2D addY(float y)
+	public Dimensions2D addY(int y)
 	{
 		return this.setPos(this.position.withAdded(0, y));
 	}
@@ -240,12 +240,12 @@ public class Dimensions2D
 		return this.addX(pos.getX()).addY(pos.getY());
 	}
 
-	public Dimensions2D setY(float y)
+	public Dimensions2D setY(int y)
 	{
 		return this.setPos(this.position.withY(y));
 	}
 
-	public Dimensions2D setX(float x)
+	public Dimensions2D setX(int x)
 	{
 		return this.setPos(this.position.withX(x));
 	}
@@ -265,11 +265,11 @@ public class Dimensions2D
 			{
 				boolean changed = false;
 
-				float minX = Math.min(result.getX(), dimension.getX());
-				float minY = Math.min(result.getY(), dimension.getY());
+				int minX = Math.min(result.getX(), dimension.getX());
+				int minY = Math.min(result.getY(), dimension.getY());
 
-				float maxX = Math.max(result.getX() + result.getWidth(), dimension.getX() + dimension.getWidth());
-				float maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
+				int maxX = Math.max(result.getX() + result.getWidth(), dimension.getX() + dimension.getWidth());
+				int maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
 
 				result.setPos(new Position2D(minX, minY)).setArea(maxX - minY, maxY - minY);
 

@@ -11,9 +11,9 @@ import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.util.basic.UIButton;
-import com.gildedgames.util.ui.util.basic.UIScrollBar;
-import com.gildedgames.util.ui.util.basic.UITexture;
+import com.gildedgames.util.ui.util.UIButton;
+import com.gildedgames.util.ui.util.UIScrollBar;
+import com.gildedgames.util.ui.util.UITexture;
 import com.gildedgames.util.ui.util.decorators.UIRepeatable;
 import com.gildedgames.util.ui.util.decorators.UIScrollable;
 
@@ -113,7 +113,7 @@ public class UIButtonFactoryMC
 		
 		UIBasic repeated = new UIRepeatable(repeatableArea, new UITexture(texture, spriteDim));
 		
-		float scrollHeight = repeatableArea.getHeight() / 4;
+		int scrollHeight = repeatableArea.getHeight() / 4;
 		
 		Dimensions2D scrollArea = new Dimensions2D().setArea(repeatableArea.getWidth(), scrollHeight);
 		

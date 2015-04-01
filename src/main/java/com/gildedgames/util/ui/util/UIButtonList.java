@@ -1,24 +1,23 @@
-package com.gildedgames.util.ui.util.basic;
+package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import scala.actors.threadpool.Arrays;
 
-import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.ObjectFilter;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
 import com.gildedgames.util.ui.util.transform.ViewPositioner;
 import com.gildedgames.util.ui.util.transform.ViewSorter;
 import com.google.common.collect.ImmutableList;
 
-public class UIButtonList extends UIBasic
+public class UIButtonList extends UIBasicAbstract
 {
 	
 	protected final static ObjectFilter FILTER = new ObjectFilter();

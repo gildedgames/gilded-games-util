@@ -18,8 +18,8 @@ public class UIRepeatable extends UIScissorable
 	{
 		//System.out.println(this.getDimensions());
 		
-		float textureHeight = this.getDimensions().getHeight();
-		float textureWidth = this.getDimensions().getWidth();
+		int textureHeight = this.getDimensions().getHeight();
+		int textureWidth = this.getDimensions().getWidth();
 
 		int heightCountNeeded = (int) (this.getCutoff().getHeight() / textureHeight);
 		int widthCountNeeded = (int) (this.getCutoff().getWidth() / textureWidth);
