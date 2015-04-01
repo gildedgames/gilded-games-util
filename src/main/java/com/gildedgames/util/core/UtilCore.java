@@ -47,7 +47,7 @@ public class UtilCore implements ICore
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
-	public final List<ICore> cores = new ArrayList<ICore>();
+	private final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
 	
@@ -55,12 +55,12 @@ public class UtilCore implements ICore
 
 	public UtilCore()
 	{
-		this.cores.add(PlayerCore.INSTANCE);
-		this.cores.add(WorldCore.INSTANCE);
-		this.cores.add(MenuCore.INSTANCE);
-		this.cores.add(TabCore.INSTANCE);
-		this.cores.add(UniverseCore.INSTANCE);
-		this.cores.add(GroupCore.INSTANCE);
+		this.registerCore(PlayerCore.INSTANCE);
+		this.registerCore(WorldCore.INSTANCE);
+		this.registerCore(MenuCore.INSTANCE);
+		this.registerCore(TabCore.INSTANCE);
+		this.registerCore(UniverseCore.INSTANCE);
+		this.registerCore(GroupCore.INSTANCE);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
@@ -68,7 +68,12 @@ public class UtilCore implements ICore
 		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
 		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
-
+	
+	public void registerCore(ICore core)
+	{
+		this.cores.add(core);
+	}
+	
 	@Override
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

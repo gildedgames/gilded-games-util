@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.gildedgames.util.core.gui.TestTab;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
@@ -60,8 +61,8 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
-
-		//TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
+		
+		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 	}
 
 }

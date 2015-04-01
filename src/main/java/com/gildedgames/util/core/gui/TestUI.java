@@ -1,6 +1,8 @@
-package com.gildedgames.util.ui;
+package com.gildedgames.util.core.gui;
 
 import com.gildedgames.util.core.gui.util.factory.UIButtonFactoryMC;
+import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
