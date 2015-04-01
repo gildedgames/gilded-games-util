@@ -7,17 +7,18 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
+import com.gildedgames.util.ui.util.ObjectFilter;
 
 
-public abstract class UIDecorator<T extends UIElement> extends UIBasic
+public abstract class UIDecorator<T extends UIElement> implements UIBasic
 {
 
+	protected final static ObjectFilter FILTER = new ObjectFilter();
+	
 	private T element;
 	
 	public UIDecorator(T element)
 	{
-		super(null, null);
-		
 		this.element = element;
 	}
 	
@@ -186,7 +187,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public UIContainer getListeners()
 	{
-		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
+		UIBasicAbstract frame = FILTER.getType(this.element, UIBasicAbstract.class);
 		
 		if (frame != null)
 		{
@@ -197,9 +198,9 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	}
 	
 	@Override
-	public UIBasic getPreviousFrame()
+	public UIBasicAbstract getPreviousFrame()
 	{
-		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
+		UIBasicAbstract frame = FILTER.getType(this.element, UIBasicAbstract.class);
 		
 		if (frame != null)
 		{

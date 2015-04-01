@@ -1,20 +1,20 @@
 package com.gildedgames.util.core.gui;
 
 import com.gildedgames.util.core.gui.util.factory.UIButtonFactoryMC;
-import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.basic.UIButtonList;
+import com.gildedgames.util.ui.util.UIButtonList;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
 import com.gildedgames.util.ui.util.transform.ViewPositionerButton;
 
-public class TestUI extends UIBasic
+public class TestUI extends UIBasicAbstract
 {
 
-	public TestUI(UIBasic parent)
+	public TestUI(UIBasicAbstract parent)
 	{
 		super(parent, new Dimensions2D().setArea(50, 50));
 	}

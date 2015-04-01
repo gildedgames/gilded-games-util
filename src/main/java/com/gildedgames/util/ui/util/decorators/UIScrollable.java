@@ -9,7 +9,7 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.basic.UIScrollBar;
+import com.gildedgames.util.ui.util.UIScrollBar;
 
 public class UIScrollable extends UIDecorator<UIView>
 {
@@ -41,7 +41,7 @@ public class UIScrollable extends UIDecorator<UIView>
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		float scrollValue = -this.scrollBar.getScrollPercentage() * (this.getDimensions().getHeight() - this.scrollArea.getHeight());
+		int scrollValue = (int) (-this.scrollBar.getScrollPercentage() * (this.getDimensions().getHeight() - this.scrollArea.getHeight()));
 
 		Position2D shiftedPos = this.scrollArea.getPos().withAdded(this.scrollBar.getDimensions().getWidth(), scrollValue);
 
