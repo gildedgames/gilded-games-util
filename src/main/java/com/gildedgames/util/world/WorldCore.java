@@ -1,5 +1,15 @@
 package com.gildedgames.util.world;
 
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
@@ -9,10 +19,6 @@ import com.gildedgames.util.world.common.WorldEventHandler;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryClient;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryServer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.*;
 
 public class WorldCore implements ICore
 {
@@ -27,7 +33,7 @@ public class WorldCore implements ICore
 	public WorldCore()
 	{
 		WorldServices clientLocator = null;
-		
+
 		if (UtilCore.isServer())
 		{
 			clientLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
@@ -36,9 +42,9 @@ public class WorldCore implements ICore
 		{
 			clientLocator = new WorldServices(true, new WorldMinecraftFactoryClient());
 		}
-		
+
 		WorldServices serverLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
-		
+
 		this.serviceLocator = new SidedObject<WorldServices>(clientLocator, serverLocator);
 	}
 
@@ -51,8 +57,7 @@ public class WorldCore implements ICore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		MinecraftForge.EVENT_BUS.register(this.worldEventHandler);
-		FMLCommonHandler.instance().bus().register(this.worldEventHandler);
+		UtilCore.registerEventHandler(this.worldEventHandler);
 	}
 
 	@Override
