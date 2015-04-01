@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -25,6 +27,7 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
@@ -50,17 +53,18 @@ public class UtilCore implements ICore
 	private final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
-	
+
 	private final MCSyncableDispatcher syncableDispatcher;
 
 	public UtilCore()
 	{
-		this.registerCore(PlayerCore.INSTANCE);
-		this.registerCore(WorldCore.INSTANCE);
-		this.registerCore(MenuCore.INSTANCE);
-		this.registerCore(TabCore.INSTANCE);
-		this.registerCore(UniverseCore.INSTANCE);
-		this.registerCore(GroupCore.INSTANCE);
+		this.cores.add(PlayerCore.INSTANCE);
+		this.cores.add(WorldCore.INSTANCE);
+		this.cores.add(MenuCore.INSTANCE);
+		this.cores.add(TabCore.INSTANCE);
+		this.cores.add(UniverseCore.INSTANCE);
+		this.cores.add(GroupCore.INSTANCE);
+		this.cores.add(new SpawningCore());
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
@@ -181,7 +185,7 @@ public class UtilCore implements ICore
 
 		proxy.serverStopped(event);
 	}
-	
+
 	public MCSyncableDispatcher getDispatcher()
 	{
 		return this.syncableDispatcher;
@@ -250,6 +254,12 @@ public class UtilCore implements ICore
 	public static String getMinecraftDirectory()
 	{
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
+	}
+
+	public static void registerEventHandler(Object o)
+	{
+		MinecraftForge.EVENT_BUS.register(o);
+		FMLCommonHandler.instance().bus().register(o);
 	}
 
 }
