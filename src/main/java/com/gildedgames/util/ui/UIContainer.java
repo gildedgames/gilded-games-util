@@ -2,8 +2,8 @@ package com.gildedgames.util.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class UIContainer implements Iterable<UIElement>
 	
 	protected final static ObjectFilter FILTER = new ObjectFilter();
 
-	protected final Map<UIElement, UIContainer> elementContainerMap = new HashMap<UIElement, UIContainer>();
+	protected final Map<UIElement, UIContainer> elementContainerMap = new LinkedHashMap<UIElement, UIContainer>();
 
 	private UIContainer parent;
 	
@@ -48,6 +48,11 @@ public class UIContainer implements Iterable<UIElement>
 
 	public void clear()
 	{
+		for (UIContainer container : this.elementContainerMap.values())
+		{
+			container.clear();
+		}
+		
 		this.elementContainerMap.clear();
 	}
 
