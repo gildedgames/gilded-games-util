@@ -2,8 +2,8 @@ package com.gildedgames.util.ui.util.decorators;
 
 import net.minecraft.client.Minecraft;
 
-import com.gildedgames.util.ui.UIDecorator;
 import com.gildedgames.util.ui.UIContainer;
+import com.gildedgames.util.ui.UIDecorator;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
@@ -45,7 +45,7 @@ public class UIScrollable extends UIDecorator<UIView>
 
 		Position2D shiftedPos = this.scrollArea.getPos().withAdded(this.scrollBar.getDimensions().getWidth(), scrollValue);
 
-		this.getDimensions().setPos(shiftedPos);
+		//this.getDimensions().setPos(shiftedPos);
 		
 		super.draw(graphics, input);
 	}

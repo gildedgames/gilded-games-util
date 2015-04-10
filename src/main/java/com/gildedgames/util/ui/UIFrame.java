@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui;
 
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -40,10 +41,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	public void onResolutionChange(InputProvider input)
 	{
-		this.parentNode.clear();
-		this.parentNode.add(this.framedElement);
-		
-		this.onResolutionChange(this.parentNode, input);
+		this.onInit(input);
 	}
 	
 	@Override
@@ -55,11 +53,16 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			element.onInit(internal, input);
 			
-			UIView view = FILTER.getType(element, UIView.class);
+			DimensionsHolder origin = FILTER.getType(element, DimensionsHolder.class);
 			
-			if (view != null)
+			for (UIElement internalElement : internal)
 			{
-				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+				DimensionsHolder child = FILTER.getType(internalElement, DimensionsHolder.class);
+				
+				if (child != null && origin != null)
+				{
+					child.getDimensions().setOrigin(origin);
+				}
 			}
 			
 			this.onInit(internal, input);
@@ -75,13 +78,21 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			element.onResolutionChange(internal, input);
 			
-			UIView view = FILTER.getType(element, UIView.class);
+			DimensionsHolder origin = FILTER.getType(element, DimensionsHolder.class);
 			
-			if (view != null)
+			if (origin != null)
 			{
-				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+				for (UIElement internalElement : internal)
+				{
+					DimensionsHolder child = FILTER.getType(internalElement, DimensionsHolder.class);
+					
+					if (child != null)
+					{
+						child.getDimensions().setOrigin(origin);
+					}
+				}
 			}
-			
+
 			this.onResolutionChange(internal, input);
 		}
 	}
@@ -202,13 +213,6 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 		return new Dimensions2D();
 	}
 
-	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		
-	}
-
-	@Override
 	public boolean isFocused()
 	{
 		return true;

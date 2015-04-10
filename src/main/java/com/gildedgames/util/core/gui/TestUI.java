@@ -8,6 +8,8 @@ import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.UIButtonList;
+import com.gildedgames.util.ui.util.UIScrollBar;
+import com.gildedgames.util.ui.util.decorators.UIScrollable;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
 import com.gildedgames.util.ui.util.transform.ViewPositionerButton;
 
@@ -16,7 +18,7 @@ public class TestUI extends UIBasicAbstract
 
 	public TestUI(UIBasicAbstract parent)
 	{
-		super(parent, new Dimensions2D().setArea(50, 50));
+		super(parent, new Dimensions2D());
 	}
 
 	@Override
@@ -28,15 +30,21 @@ public class TestUI extends UIBasicAbstract
 
 		UIButtonFactoryMC factory = new UIButtonFactoryMC();
 
-		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonFactory());
+		UIButtonList list = new UIButtonList(new Position2D(50, 50), 60, new ViewPositionerButton(), new TestButtonFactory());
 
 		//list.add(factory.createButton(new Position2D(), 10, "lol"));
 		
-		Dimensions2D dim = new Dimensions2D().setArea(60, 200).setPos(new Position2D(0, 10));
+		Dimensions2D dim = new Dimensions2D().setArea(60, 200);
 		
-		//container.add(new UIScrollable(dim, list, (UIScrollBar) factory.createScrollBar(new Position2D(0, 0), 200, dim.clone(), false)));
+		UIScrollBar scrollBar = factory.createScrollBar(new Position2D(), 200, dim.clone(), false);
+
+		UIScrollable scrollable = new UIScrollable(dim, list, scrollBar);
+		
+		container.add(scrollable);
+		
+		scrollable.getDimensions().setScale(0.5F).setPos(new Position2D(50, 50));
 	
-		container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
+		//container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
 		
 		//container.add(factory.createButton(new Position2D(), 60, "Button", false));
 		//container.add(factory.createArrowButton(new Position2D(), false));

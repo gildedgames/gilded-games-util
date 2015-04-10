@@ -8,21 +8,29 @@ import com.gildedgames.util.ui.input.InputProvider;
 public class UIRepeatable extends UIScissorable
 {
 
-	public UIRepeatable(Dimensions2D repeatArea, UIView view)
+	public UIRepeatable(UIView view)
 	{
-		super(repeatArea, view);
+		super(view.getDimensions(), view);
 	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		//System.out.println(this.getDimensions());
-		
 		int textureHeight = this.getDimensions().getHeight();
 		int textureWidth = this.getDimensions().getWidth();
+		
+		int heightCountNeeded = 0;
+		int widthCountNeeded = 0;
 
-		int heightCountNeeded = (int) (this.getCutoff().getHeight() / textureHeight);
-		int widthCountNeeded = (int) (this.getCutoff().getWidth() / textureWidth);
+		if (textureHeight != 0)
+		{
+			heightCountNeeded = (int) (this.getCutoff().getHeight() / textureHeight);
+		}
+		
+		if (textureWidth != 0)
+		{
+			widthCountNeeded = (int) (this.getCutoff().getWidth() / textureWidth);
+		}
 
 		Dimensions2D oldDim = this.getDimensions().clone();
 		
@@ -39,7 +47,7 @@ public class UIRepeatable extends UIScissorable
 			this.getDimensions().addY(textureHeight);
 		}
 		
-		this.setDimensions(oldDim);
+		this.getDimensions().set(oldDim);
 	}
 	
 }

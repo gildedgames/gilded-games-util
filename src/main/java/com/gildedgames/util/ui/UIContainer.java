@@ -36,9 +36,9 @@ public class UIContainer implements Iterable<UIElement>
 	
 	public void add(UIElement element)
 	{
-		UIContainer container = new UIContainer(this);
+		UIContainer internal = new UIContainer(this);
 		
-		this.elementContainerMap.put(element, container);
+		this.elementContainerMap.put(element, internal);
 	}
 
 	public void remove(UIElement element)

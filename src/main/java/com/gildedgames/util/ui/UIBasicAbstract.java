@@ -16,7 +16,7 @@ public abstract class UIBasicAbstract implements UIBasic
 
 	private UIContainer listeners = new UIContainer();
 	
-	private UIBasicAbstract previousFrame;
+	private UIBasic previousFrame;
 	
 	private Dimensions2D dimensions;
 	
@@ -25,7 +25,7 @@ public abstract class UIBasicAbstract implements UIBasic
 		this(null, dimensions);
 	}
 
-	public UIBasicAbstract(UIBasicAbstract previousFrame, Dimensions2D dimensions)
+	public UIBasicAbstract(UIBasic previousFrame, Dimensions2D dimensions)
 	{
 		this.previousFrame = previousFrame;
 		this.dimensions = dimensions;
@@ -38,7 +38,7 @@ public abstract class UIBasicAbstract implements UIBasic
 	}
 
 	@Override
-	public UIBasicAbstract getPreviousFrame()
+	public UIBasic getPreviousFrame()
 	{
 		return this.previousFrame;
 	}
@@ -72,13 +72,7 @@ public abstract class UIBasicAbstract implements UIBasic
 	{
 		return this.dimensions;
 	}
-
-	@Override
-	public void setDimensions(Dimensions2D dimensions)
-	{
-		this.dimensions = dimensions;
-	}
-
+	
 	@Override
 	public boolean isFocused()
 	{
@@ -130,7 +124,7 @@ public abstract class UIBasicAbstract implements UIBasic
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		this.onInit(container, input);
+		
 	}
 
 }

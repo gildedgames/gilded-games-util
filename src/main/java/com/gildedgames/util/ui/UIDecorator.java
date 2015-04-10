@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui;
 
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -65,25 +66,14 @@ public abstract class UIDecorator<T extends UIElement> implements UIBasic
 	@Override
 	public Dimensions2D getDimensions()
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		DimensionsHolder holder = FILTER.getType(this.element, DimensionsHolder.class);
 		
-		if (view != null)
+		if (holder != null)
 		{
-			return view.getDimensions();
+			return holder.getDimensions();
 		}
 		
 		return null;
-	}
-
-	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		UIView view = FILTER.getType(this.element, UIView.class);
-		
-		if (view != null)
-		{
-			view.setDimensions(dim);
-		}
 	}
 
 	@Override
@@ -95,9 +85,7 @@ public abstract class UIDecorator<T extends UIElement> implements UIBasic
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		this.onInit(container, input);
-		
-		//this.element.onResolutionChange(container, input);
+		this.element.onResolutionChange(container, input);
 	}
 
 	@Override
@@ -198,7 +186,7 @@ public abstract class UIDecorator<T extends UIElement> implements UIBasic
 	}
 	
 	@Override
-	public UIBasicAbstract getPreviousFrame()
+	public UIBasic getPreviousFrame()
 	{
 		UIBasicAbstract frame = FILTER.getType(this.element, UIBasicAbstract.class);
 		

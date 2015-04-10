@@ -45,7 +45,7 @@ public class UIScrollBar extends UIBasicAbstract
 
 	public UIScrollBar(Dimensions2D barDim, Dimensions2D scrollingArea, UIBasic topArrowButton, UIBasic bottomArrowButton, UITexture baseTexture, UITexture barTexture)
 	{
-		super(null, barDim);
+		super(barDim);
 
 		this.scrollingArea = scrollingArea;
 
@@ -57,7 +57,12 @@ public class UIScrollBar extends UIBasicAbstract
 
 		int maxWidth = Math.max(Math.max(this.topArrowButton.getDimensions().getWidth(), this.bottomArrowButton.getDimensions().getWidth()), this.baseTexture.getDimensions().getWidth());
 
-		this.getDimensions().setWidth(maxWidth);
+		this.getDimensions().setWidth(this.topArrowButton.getDimensions().getWidth());
+	}
+	
+	public Dimensions2D getScrollingArea()
+	{
+		return this.scrollingArea;
 	}
 	
 	public void setScrollingArea(Dimensions2D scrollingArea)
@@ -81,14 +86,13 @@ public class UIScrollBar extends UIBasicAbstract
 		super.onInit(container, input);
 
 		this.topArrowButton.getDimensions().setPos(new Position2D());
+		this.bottomArrowButton.getDimensions().setPos(new Position2D());
+		
+		this.topArrowButton.getDimensions().setCentering(this.getDimensions());
+		this.bottomArrowButton.getDimensions().setCentering(this.getDimensions());
 
 		this.bottomArrowButton.getDimensions().setY(this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight());
 
-		System.out.println(this.bottomArrowButton.getDimensions().getPos());
-		
-		this.topArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
-		this.bottomArrowButton.getDimensions().setCentering(this.getDimensions().isCenteredX(), this.getDimensions().isCenteredY());
-		
 		this.topArrowButton.getListeners().add(new MouseEventView(this)
 		{
 
@@ -128,16 +132,15 @@ public class UIScrollBar extends UIBasicAbstract
 
 		int heightOffset = this.bottomArrowButton.getDimensions().getHeight() + this.topArrowButton.getDimensions().getHeight();
 
-		this.base = new UIRepeatable(new Dimensions2D(), this.baseTexture);
-		this.bar = new UIRepeatable(new Dimensions2D(), this.barTexture);
+		this.bar = new UIRepeatable(this.barTexture);
+		this.base = new UIRepeatable(this.baseTexture);
 		
 		this.bar.getDimensions().addY(this.topArrowButton.getDimensions().getHeight());
-		this.base.setDimensions(this.getDimensions().clone().addHeight(-heightOffset).addY(this.topArrowButton.getDimensions().getHeight() + 1));
-		
-		this.bar.setDimensions(new Dimensions2D().setPos(this.getDimensions().getPos()).setWidth(this.barTexture.getDimensions().getWidth()));
-		
 		this.base.getDimensions().addY(this.topArrowButton.getDimensions().getHeight());
 		
+		this.bar.getDimensions().setArea(this.barTexture.getDimensions().getWidth(), 20);
+		this.base.getDimensions().setArea(this.baseTexture.getDimensions().getWidth(), this.getDimensions().getHeight() - heightOffset);
+
 		container.add(this.base);
 		container.add(this.bar);
 	}
@@ -166,7 +169,7 @@ public class UIScrollBar extends UIBasicAbstract
 
 		if (pool.has(MouseButton.LEFT))
 		{
-			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.getBase()))
+			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.base.getDimensions()))
 			{
 				this.grabbedBar = true;
 				
@@ -193,7 +196,7 @@ public class UIScrollBar extends UIBasicAbstract
 
 		super.draw(graphics, input);
 		
-		//
+		//System.out.println(this.bottomArrowButton.getDimensions().getOrigin().getDimensions());
 	}
 	
 	/**
@@ -201,9 +204,9 @@ public class UIScrollBar extends UIBasicAbstract
 	 */
 	public float getScrollPercentage()
 	{
-		float scrollHeight = this.getBase().getHeight() - this.bar.getDimensions().getHeight();
+		float scrollHeight = this.base.getDimensions().getHeight() - this.bar.getDimensions().getHeight();
 
-		float scrollPosition = this.bar.getDimensions().getY() - this.getBase().getY();
+		float scrollPosition = this.bar.getDimensions().getY() - this.base.getDimensions().getY();
 
 		return scrollPosition / scrollHeight;
 	}
@@ -220,9 +223,9 @@ public class UIScrollBar extends UIBasicAbstract
 
 	private void snapBarToProportions()
 	{
-		int bottomY = this.getBase().getY() + this.getBase().getHeight() - this.bar.getDimensions().getHeight();
+		int bottomY = this.base.getDimensions().getY() + this.base.getDimensions().getHeight() - this.bar.getDimensions().getHeight();
 
-		int topY = Math.max(this.getBase().getY(), this.bar.getDimensions().getY());
+		int topY = Math.max(this.base.getDimensions().getY(), this.bar.getDimensions().getY());
 		
 		int snappedY = Math.min(bottomY, topY);
 
@@ -231,8 +234,11 @@ public class UIScrollBar extends UIBasicAbstract
 
 	private void refreshProportions(InputProvider input)
 	{
-		this.bar.getDimensions().setHeight(this.getContentDimensions().getHeight() / this.getBase().getHeight());
-
+		if (this.getContentDimensions() != null)
+		{
+			this.bar.getDimensions().setHeight(this.getContentDimensions().getHeight() / this.base.getDimensions().getHeight());
+		}
+		
 		if (this.grabbedBar)
 		{
 			this.bar.getDimensions().setY(input.getMouseY() + this.grabbedMouseYOffset);
@@ -240,10 +246,4 @@ public class UIScrollBar extends UIBasicAbstract
 
 		this.snapBarToProportions();
 	}
-
-	private Dimensions2D getBase()
-	{
-		return this.base.getDimensions();
-	}
-
 }

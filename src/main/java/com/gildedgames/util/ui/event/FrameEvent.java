@@ -43,12 +43,6 @@ public class FrameEvent extends UIBasicAbstract
 	}
 
 	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		
-	}
-
-	@Override
 	public void onInit(UIContainer container, InputProvider input)
 	{
 		
