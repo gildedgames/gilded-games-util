@@ -1,4 +1,4 @@
-package com.gildedgames.util.ui.util;
+package com.gildedgames.util.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,19 +9,19 @@ import scala.actors.threadpool.Arrays;
 public class ObjectFilter
 {
 
-	public ObjectFilter()
+	private ObjectFilter()
 	{
-
+		
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> List<T> getTypesFrom(Object[] array, Class<? extends T> typeClass)
+	public static <T> List<T> getTypesFrom(Object[] array, Class<? extends T> typeClass)
 	{
-		return this.getTypesFrom(Arrays.asList(array), typeClass);
+		return getTypesFrom(Arrays.asList(array), typeClass);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> List<T> getTypesFrom(Collection<?> list, Class<? extends T> typeClass)
+	public static <T> List<T> getTypesFrom(Collection<?> list, Class<? extends T> typeClass)
 	{
 		List<T> returnList = new ArrayList<T>();
 
@@ -37,7 +37,7 @@ public class ObjectFilter
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T getType(Object object, Class<? extends T> typeClass)
+	public static <T> T getType(Object object, Class<? extends T> typeClass)
 	{
 		T returnObject = null;
 

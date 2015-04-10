@@ -1,10 +1,10 @@
 package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import scala.actors.threadpool.Arrays;
-
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.UIView;
@@ -19,9 +19,7 @@ import com.google.common.collect.ImmutableList;
 
 public class UIButtonList extends UIBasicAbstract
 {
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
-	
+
 	protected ViewPositioner positioner;
 	
 	protected ViewSorter sorter;
@@ -36,7 +34,7 @@ public class UIButtonList extends UIBasicAbstract
 		
 		this.positioner = positioner;
 		
-		this.contentProviders.addAll(Arrays.asList(contentProviders));
+		this.contentProviders.addAll(Arrays.<ContentFactory>asList(contentProviders));
 	}
 	
 	public void setPositioner(ViewPositioner positioner)
@@ -78,7 +76,7 @@ public class UIButtonList extends UIBasicAbstract
 	{
 		this.positioner.positionList(views, this.getDimensions());
 		
-		for (UIView view : FILTER.getTypesFrom(this.getListeners().values(), UIView.class))
+		for (UIView view : ObjectFilter.getTypesFrom(this.getListeners().values(), UIView.class))
 		{
 			view.getDimensions().setOrigin(this);
 		}
@@ -86,7 +84,7 @@ public class UIButtonList extends UIBasicAbstract
 	
 	private void sortContent()
 	{
-		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().values(), UIView.class);
+		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.getListeners().values(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
 		for (UIView view : filteredViews)
@@ -108,7 +106,7 @@ public class UIButtonList extends UIBasicAbstract
 	
 	private List<UIView> getSortedViews()
 	{
-		List<UIView> filteredViews = FILTER.getTypesFrom(this.getListeners().values(), UIView.class);
+		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.getListeners().values(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 		
 		return sortedViews;

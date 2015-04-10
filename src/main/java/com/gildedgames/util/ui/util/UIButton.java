@@ -1,9 +1,8 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.UIBasicAbstract;
+import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.event.view.MouseEventViewFocus;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;

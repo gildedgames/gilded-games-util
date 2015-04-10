@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -8,13 +9,10 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
-import com.gildedgames.util.ui.util.ObjectFilter;
 
 public class UIFrame implements UIView, KeyboardListener, MouseListener
 {
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
-	
+
 	private UIContainer parentNode = new UIContainer();
 	
 	private UIElement framedElement;
@@ -47,17 +45,17 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public void onInit(UIContainer container, InputProvider input)
 	{
-		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			element.onInit(internal, input);
 			
-			DimensionsHolder origin = FILTER.getType(element, DimensionsHolder.class);
+			DimensionsHolder origin = ObjectFilter.getType(element, DimensionsHolder.class);
 			
 			for (UIElement internalElement : internal)
 			{
-				DimensionsHolder child = FILTER.getType(internalElement, DimensionsHolder.class);
+				DimensionsHolder child = ObjectFilter.getType(internalElement, DimensionsHolder.class);
 				
 				if (child != null && origin != null)
 				{
@@ -72,19 +70,19 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			element.onResolutionChange(internal, input);
 			
-			DimensionsHolder origin = FILTER.getType(element, DimensionsHolder.class);
+			DimensionsHolder origin = ObjectFilter.getType(element, DimensionsHolder.class);
 			
 			if (origin != null)
 			{
 				for (UIElement internalElement : internal)
 				{
-					DimensionsHolder child = FILTER.getType(internalElement, DimensionsHolder.class);
+					DimensionsHolder child = ObjectFilter.getType(internalElement, DimensionsHolder.class);
 					
 					if (child != null)
 					{
@@ -105,7 +103,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseInput(UIContainer container, InputProvider input, MouseInputPool pool)
 	{
-		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
@@ -126,7 +124,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseScroll(UIContainer container, InputProvider input, int scrollDifference)
 	{
-		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
@@ -149,7 +147,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	{
 		boolean success = false;
 		
-		for (KeyboardListener element : FILTER.getTypesFrom(container.values(), KeyboardListener.class))
+		for (KeyboardListener element : ObjectFilter.getTypesFrom(container.values(), KeyboardListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
@@ -170,7 +168,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void draw(UIContainer container, Graphics2D graphics, InputProvider input)
 	{
-		for (UIView element : FILTER.getTypesFrom(container.values(), UIView.class))
+		for (UIView element : ObjectFilter.getTypesFrom(container.values(), UIView.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			

@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.Position2D;
@@ -12,7 +13,6 @@ import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.util.ObjectFilter;
 
 public class UIButtonMC extends UIBasicAbstract
 {
@@ -22,9 +22,7 @@ public class UIButtonMC extends UIBasicAbstract
 	protected String text;
 	
 	protected GuiButton button;
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
-	
+
 	public UIButtonMC(GuiButton button, boolean centered)
 	{
 		super(null, new Dimensions2D().setPos(new Position2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentering(centered));
@@ -88,7 +86,7 @@ public class UIButtonMC extends UIBasicAbstract
 	@Override
 	public boolean query(Object... input)
 	{
-		List<String> strings = FILTER.getTypesFrom(input, String.class);
+		List<String> strings = ObjectFilter.getTypesFrom(input, String.class);
 		
 		for (String string : strings)
 		{

@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.util;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
@@ -57,7 +58,7 @@ public class UIScrollBar extends UIBasicAbstract
 
 		int maxWidth = Math.max(Math.max(this.topArrowButton.getDimensions().getWidth(), this.bottomArrowButton.getDimensions().getWidth()), this.baseTexture.getDimensions().getWidth());
 
-		this.getDimensions().setWidth(this.topArrowButton.getDimensions().getWidth());
+		this.getDimensions().setWidth(maxWidth);
 	}
 	
 	public Dimensions2D getScrollingArea()
@@ -99,7 +100,7 @@ public class UIScrollBar extends UIBasicAbstract
 			@Override
 			public void onMouseInput(InputProvider input, MouseInputPool pool)
 			{
-				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
+				UIScrollBar scrollBar = ObjectFilter.getType(this.view, UIScrollBar.class);
 
 				if (pool.has(MouseButton.LEFT) && input.isHovered(scrollBar.topArrowButton.getDimensions()))
 				{
@@ -116,7 +117,7 @@ public class UIScrollBar extends UIBasicAbstract
 			@Override
 			public void onMouseInput(InputProvider input, MouseInputPool pool)
 			{
-				UIScrollBar scrollBar = new ObjectFilter().getType(this.view, UIScrollBar.class);
+				UIScrollBar scrollBar = ObjectFilter.getType(this.view, UIScrollBar.class);
 				
 				if (input.isHovered(scrollBar.bottomArrowButton.getDimensions()))
 				{

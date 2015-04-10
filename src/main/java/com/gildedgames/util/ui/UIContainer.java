@@ -7,13 +7,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.util.ObjectFilter;
 
 public class UIContainer implements Iterable<UIElement>
 {
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
 
 	protected final Map<UIElement, UIContainer> elementContainerMap = new LinkedHashMap<UIElement, UIContainer>();
 
@@ -78,7 +76,7 @@ public class UIContainer implements Iterable<UIElement>
 
 	public void clear(Class<? extends UIElement> classToRemove)
 	{
-		List objectsToRemove = FILTER.getTypesFrom(this.values(), classToRemove);
+		List<UIElement> objectsToRemove = ObjectFilter.getTypesFrom(this.values(), classToRemove);
 
 		this.elementContainerMap.keySet().removeAll(objectsToRemove);
 	}
@@ -87,7 +85,7 @@ public class UIContainer implements Iterable<UIElement>
 	{
 		List<UIView> views = new ArrayList<UIView>();
 
-		for (UIView element : FILTER.getTypesFrom(this.values(), UIView.class))
+		for (UIView element : ObjectFilter.getTypesFrom(this.values(), UIView.class))
 		{
 			if (element == null)
 			{
