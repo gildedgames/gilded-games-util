@@ -39,10 +39,6 @@ public class UIButton extends UIBasicAbstract
 		container.add(this.defaultState);
 		container.add(this.hoveredState);
 		container.add(this.clickedState);
-		
-		this.defaultState.getDimensions().setPos(new Position2D());
-		this.hoveredState.getDimensions().setPos(new Position2D());
-		this.clickedState.getDimensions().setPos(new Position2D());
 	}
 	
 	@Override

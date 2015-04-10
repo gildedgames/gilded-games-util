@@ -24,14 +24,19 @@ public class UIButtonFactoryMC
 	
 	private static final AssetMinecraft SCROLL_BAR_TEXTURE = new AssetMinecraft(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
 	
-	public UIBasic createButtonWithSound(UIView button)
+	public UIBasic decorateWithPressSound(UIView button)
 	{
 		return new UIPressSoundsMC(button);
 	}
 	
 	public UIBasic createArrowButton()
 	{
-		return this.createArrowButton(new Position2D(0, 0));
+		return this.createArrowButton(new Position2D());
+	}
+	
+	public UIBasic createArrowButton(boolean centered)
+	{
+		return this.createArrowButton(new Position2D(), centered);
 	}
 	
 	public UIBasic createArrowButton(Position2D pos)
@@ -47,9 +52,9 @@ public class UIButtonFactoryMC
 		
 		Dimensions2D dim = new Dimensions2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
 		
-		UIButton button = new UIButton(dim, new UITexture(buttonDefaultSprite, dim), new UITexture(buttonHoveredSprite, dim), new UITexture(buttonClickedSprite, dim));
+		UIButton button = new UIButton(dim, new UITexture(buttonDefaultSprite, dim.clone()), new UITexture(buttonHoveredSprite, dim.clone()), new UITexture(buttonClickedSprite, dim.clone()));
 		
-		return this.createButtonWithSound(button);
+		return this.decorateWithPressSound(button);
 	}
 	
 	public UIBasic createButton(Position2D pos, int width, String text)
@@ -63,7 +68,7 @@ public class UIButtonFactoryMC
 		
 		UIView button = new UIButtonMC(dim, text);
 		
-		return this.createButtonWithSound(button);
+		return this.decorateWithPressSound(button);
 	}
 	
 	public UIBasic createButton(GuiButton button)
@@ -73,34 +78,30 @@ public class UIButtonFactoryMC
 	
 	public UIBasic createButton(GuiButton button, boolean centered)
 	{
-		return this.createButtonWithSound(new UIButtonMC(button, centered));
+		return this.decorateWithPressSound(new UIButtonMC(button, centered));
 	}
 	
-	public UIBasic createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea)
+	public UIScrollBar createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea)
 	{
 		return this.createScrollBar(pos, height, scrollableArea, true);
 	}
 	
-	public UIBasic createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea, boolean centered)
+	public UIScrollBar createScrollBar(Position2D pos, int height, Dimensions2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
 		Sprite upArrow = new Sprite(SCROLL_BAR_TEXTURE, 20, 0, 10, 10, 40, 10);
 		Sprite downArrow = new Sprite(SCROLL_BAR_TEXTURE, 30, 0, 10, 10, 40, 10);
 		
-		Dimensions2D spriteDim = new Dimensions2D().setPos(pos.clone()).setArea(10, 10).setCentering(centered);
+		Dimensions2D spriteDimensions = new Dimensions2D().setArea(10, 10).setPos(pos.clone()).setCentering(centered);
+		Dimensions2D barDimensions = new Dimensions2D().setArea(10, height).setPos(pos.clone()).setCentering(centered);
 		
-		Dimensions2D dim = new Dimensions2D().setArea(10, height).setPos(pos);
+		UIBasic topButton = this.createArrowButton(centered);
+		UIBasic bottomButton = this.createArrowButton(centered);
 		
-		UIBasic topButton = this.createArrowButton();
-		UIBasic bottomButton = this.createArrowButton();
+		UIScrollBar scrollBar = new UIScrollBar(barDimensions, scrollableArea, topButton, bottomButton, new UITexture(base, spriteDimensions.clone()), new UITexture(bar, spriteDimensions.clone()));
 		
-		topButton.getDimensions().setScale(1F);
-		bottomButton.getDimensions().setScale(1F);
-		
-		UIScrollBar scrollBar = new UIScrollBar(dim, new Dimensions2D(), topButton, bottomButton, new UITexture(base, spriteDim), new UITexture(bar, spriteDim));
-		
-		scrollBar.setScrollingArea(scrollableArea.clone().addWidth(scrollBar.getDimensions().getWidth()));
+		//scrollBar.getScrollingArea().addX(scrollBar.getDimensions().getWidth());
 		
 		return scrollBar;
 	}
@@ -111,7 +112,7 @@ public class UIButtonFactoryMC
 		
 		Dimensions2D spriteDim = new Dimensions2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
 		
-		UIBasic repeated = new UIRepeatable(repeatableArea, new UITexture(texture, spriteDim));
+		UIBasic repeated = new UIRepeatable(new UITexture(texture, spriteDim));
 		
 		int scrollHeight = repeatableArea.getHeight() / 4;
 		

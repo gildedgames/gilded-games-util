@@ -41,6 +41,11 @@ public class Position2D
 	
 	public Position2D withAdded(Position2D pos)
 	{
+		if (pos == null)
+		{
+			return this;
+		}
+		
 		return this.withAdded(pos.getX(), pos.getY());
 	}
 	

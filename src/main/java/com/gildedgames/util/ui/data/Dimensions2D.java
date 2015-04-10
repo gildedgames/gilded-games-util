@@ -8,7 +8,7 @@ public class Dimensions2D
 	/**
 	 * The top-left origin point to orient these dimensions around.
 	 */
-	protected Position2D origin = new Position2D();
+	protected DimensionsHolder origin;
 
 	protected Position2D position;
 
@@ -44,7 +44,7 @@ public class Dimensions2D
 	/**
 	 * The top-left origin point to orient these dimensions around.
 	 */
-	public Position2D getOrigin()
+	public DimensionsHolder getOrigin()
 	{
 		return this.origin;
 	}
@@ -52,14 +52,19 @@ public class Dimensions2D
 	/**
 	 * The top-left origin point to orient these dimensions around.
 	 */
-	public void setOrigin(Position2D origin)
+	public void setOrigin(DimensionsHolder origin)
 	{
 		this.origin = origin;
 	}
 	
 	public float getScale()
 	{
-		return this.scale;
+		if (this.getOrigin() == null || this.getOrigin().getDimensions() == null)
+		{
+			return this.scale;
+		}
+		
+		return this.scale * this.getOrigin().getDimensions().getScale();
 	}
 
 	/**
@@ -67,17 +72,14 @@ public class Dimensions2D
 	 */
 	public Position2D getPos()
 	{
-		return this.origin.withAdded(this.getScaledPos());
+		if (this.getOrigin() == null || this.getOrigin().getDimensions() == null)
+		{
+			return this.getScaledPos();
+		}
+		
+		return this.getScaledPos().withAdded(this.getOrigin().getDimensions().getPos());
 	}
 
-	/**
-	 * Unaltered by factors such as scale and origin.
-	 */
-	public Position2D getBasePos()
-	{
-		return this.position;
-	}
-	
 	/**
 	 * Unaltered by the origin.
 	 */
@@ -106,27 +108,11 @@ public class Dimensions2D
 	}
 
 	/**
-	 * Unaltered by factors such as scale and origin.
-	 */
-	public int getBaseX()
-	{
-		return this.position.getX();
-	}
-
-	/**
-	 * Unaltered by factors such as scale and origin.
-	 */
-	public int getBaseY()
-	{
-		return this.position.getY();
-	}
-
-	/**
 	 * Altered by factors such as scale and origin.
 	 */
 	public int getWidth()
 	{
-		return (int) (this.width * this.scale);
+		return (int) (this.width * this.getScale());
 	}
 
 	/**
@@ -134,23 +120,7 @@ public class Dimensions2D
 	 */
 	public int getHeight()
 	{
-		return (int) (this.height * this.scale);
-	}
-	
-	/**
-	 * Unaltered by factors such as scale and origin.
-	 */
-	public int getBaseWidth()
-	{
-		return this.width;
-	}
-
-	/**
-	 * Unaltered by factors such as scale and origin.
-	 */
-	public int getBaseHeight()
-	{
-		return this.height;
+		return (int) (this.height * this.getScale());
 	}
 
 	public boolean isCenteredX()
@@ -161,6 +131,21 @@ public class Dimensions2D
 	public boolean isCenteredY()
 	{
 		return this.centeredY;
+	}
+	
+	public Dimensions2D set(Dimensions2D dim)
+	{
+		this.position = dim.position;
+		
+		this.width = dim.width;
+		this.height = dim.height;
+		
+		this.scale = dim.scale;
+		
+		this.centeredX = dim.centeredX;
+		this.centeredY = dim.centeredY;
+		
+		return this;
 	}
 
 	@Override
@@ -203,6 +188,11 @@ public class Dimensions2D
 		this.centeredY = centeredY;
 
 		return this;
+	}
+	
+	public Dimensions2D setCentering(Dimensions2D copyFrom)
+	{
+		return this.setCentering(copyFrom.isCenteredX(), copyFrom.isCenteredY());
 	}
 
 	public Dimensions2D addWidth(int width)

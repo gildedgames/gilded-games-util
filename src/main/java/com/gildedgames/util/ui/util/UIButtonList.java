@@ -32,7 +32,7 @@ public class UIButtonList extends UIBasicAbstract
 
 	public UIButtonList(Position2D pos, int width, ViewPositioner positioner, ContentFactory... contentProviders)
 	{
-		super(null, new Dimensions2D().setPos(pos).setWidth(width));
+		super(new Dimensions2D().setPos(pos).setWidth(width));
 		
 		this.positioner = positioner;
 		
@@ -80,7 +80,7 @@ public class UIButtonList extends UIBasicAbstract
 		
 		for (UIView view : FILTER.getTypesFrom(this.getListeners().values(), UIView.class))
 		{
-			view.getDimensions().setOrigin(this.getDimensions().getPos());
+			view.getDimensions().setOrigin(this);
 		}
 	}
 	
@@ -127,7 +127,7 @@ public class UIButtonList extends UIBasicAbstract
 
 		this.refresh();
 		
-		this.setDimensions(container.getCombinedDimensions());
+		this.getDimensions().set(container.getCombinedDimensions());
 	}
 	
 	@Override
