@@ -253,8 +253,6 @@ public class Dimensions2D
 		{
 			if (dimension != null)
 			{
-				boolean changed = false;
-
 				int minX = Math.min(result.getX(), dimension.getX());
 				int minY = Math.min(result.getY(), dimension.getY());
 
@@ -262,7 +260,6 @@ public class Dimensions2D
 				int maxY = Math.max(result.getY() + result.getHeight(), dimension.getY() + dimension.getHeight());
 
 				result.setPos(new Position2D(minX, minY)).setArea(maxX - minY, maxY - minY);
-
 			}
 		}
 

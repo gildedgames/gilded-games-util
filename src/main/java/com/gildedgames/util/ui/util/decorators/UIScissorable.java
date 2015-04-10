@@ -1,7 +1,6 @@
 package com.gildedgames.util.ui.util.decorators;
 
 import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
-import net.minecraft.client.renderer.GlStateManager;
 
 import org.lwjgl.opengl.GL11;
 

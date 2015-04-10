@@ -5,13 +5,10 @@ import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.util.ObjectFilter;
 
 public abstract class UIBasicAbstract implements UIBasic
 {
 	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
-
 	private boolean visible = true, enabled = true, focused = false;
 
 	private UIContainer listeners = new UIContainer();
