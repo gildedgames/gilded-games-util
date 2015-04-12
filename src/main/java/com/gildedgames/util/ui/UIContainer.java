@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 
 public class UIContainer implements Iterable<UIElement>
 {
@@ -16,7 +17,7 @@ public class UIContainer implements Iterable<UIElement>
 	protected final Map<UIElement, UIContainer> elementContainerMap = new LinkedHashMap<UIElement, UIContainer>();
 
 	private UIContainer parent;
-	
+
 	public UIContainer()
 	{
 		
@@ -110,7 +111,7 @@ public class UIContainer implements Iterable<UIElement>
 	{
 		for (UIElement element : elements)
 		{
-			this.elementContainerMap.put(element, new UIContainer());
+			this.add(element);
 		}
 	}
 
@@ -123,7 +124,7 @@ public class UIContainer implements Iterable<UIElement>
 	{
 		for (UIElement element : elements)
 		{
-			this.elementContainerMap.remove(element);
+			this.remove(element);
 		}
 	}
 	
