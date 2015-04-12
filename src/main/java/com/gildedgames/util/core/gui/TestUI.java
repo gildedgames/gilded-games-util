@@ -1,6 +1,6 @@
 package com.gildedgames.util.core.gui;
 
-import com.gildedgames.util.core.gui.util.factory.UIButtonFactoryMC;
+import com.gildedgames.util.core.gui.util.UIFactoryUtil;
 import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.data.Dimensions2D;
@@ -26,11 +26,9 @@ public class TestUI extends UIBasicAbstract
 	{
 		super.onInit(container, input);
 
-		Position2D center = new Position2D(input.getScreenWidth() / 2, input.getScreenHeight() / 2);
+		UIFactoryUtil factory = new UIFactoryUtil();
 
-		UIButtonFactoryMC factory = new UIButtonFactoryMC();
-
-		UIButtonList list = new UIButtonList(new Position2D(50, 50), 60, new ViewPositionerButton(), new TestButtonFactory());
+		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonFactory());
 
 		//list.add(factory.createButton(new Position2D(), 10, "lol"));
 		
@@ -42,7 +40,7 @@ public class TestUI extends UIBasicAbstract
 		
 		container.add(scrollable);
 		
-		scrollable.getDimensions().setScale(0.5F).setPos(new Position2D(50, 50));
+		//scrollable.getDimensions().setScale(0.95F).setPos(new Position2D(50, 50));
 	
 		//container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
 		
