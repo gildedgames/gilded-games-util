@@ -52,9 +52,19 @@ public class Dimensions2D
 	/**
 	 * The top-left origin point to orient these dimensions around.
 	 */
-	public void setOrigin(DimensionsHolder origin)
+	public Dimensions2D setOrigin(DimensionsHolder origin)
 	{
 		this.origin = origin;
+	
+		return this;
+	}
+	
+	/**
+	 * @return Returns a clone() of this Dimensions2D object, unaltered by any origin.
+	 */
+	public Dimensions2D relative()
+	{
+		return this.clone().setOrigin(null);
 	}
 	
 	public float getScale()
@@ -83,7 +93,7 @@ public class Dimensions2D
 	/**
 	 * Unaltered by the origin.
 	 */
-	public Position2D getScaledPos()
+	private Position2D getScaledPos()
 	{
 		int offsetX = (int) (this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0);
 		int offsetY = (int) (this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0);
@@ -145,13 +155,19 @@ public class Dimensions2D
 		this.centeredX = dim.centeredX;
 		this.centeredY = dim.centeredY;
 		
+		this.origin = dim.origin;
+		
 		return this;
 	}
 
 	@Override
 	public Dimensions2D clone()
 	{
-		return new Dimensions2D(this.position, this.width, this.height, this.scale, this.centeredX, this.centeredY);
+		Dimensions2D clone = new Dimensions2D(this.position, this.width, this.height, this.scale, this.centeredX, this.centeredY);
+		
+		clone.origin = this.origin;
+		
+		return clone;
 	}
 
 	public Dimensions2D setScale(float scale)
