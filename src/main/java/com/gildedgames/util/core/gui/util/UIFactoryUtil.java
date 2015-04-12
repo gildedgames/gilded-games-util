@@ -1,9 +1,8 @@
-package com.gildedgames.util.core.gui.util.factory;
+package com.gildedgames.util.core.gui.util;
 
 import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.gui.util.AssetMinecraft;
 import com.gildedgames.util.core.gui.util.decorators.UIPressSoundsMC;
 import com.gildedgames.util.core.gui.util.wrappers.UIButtonMC;
 import com.gildedgames.util.ui.UIBasic;
@@ -17,7 +16,7 @@ import com.gildedgames.util.ui.util.UITexture;
 import com.gildedgames.util.ui.util.decorators.UIRepeatable;
 import com.gildedgames.util.ui.util.decorators.UIScrollable;
 
-public class UIButtonFactoryMC
+public class UIFactoryUtil
 {
 	
 	private static final AssetMinecraft HOPPER_TEXTURE = new AssetMinecraft(UtilCore.MOD_ID, "textures/gui/universe_hopper/base.png");
@@ -90,8 +89,6 @@ public class UIButtonFactoryMC
 	{
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
-		Sprite upArrow = new Sprite(SCROLL_BAR_TEXTURE, 20, 0, 10, 10, 40, 10);
-		Sprite downArrow = new Sprite(SCROLL_BAR_TEXTURE, 30, 0, 10, 10, 40, 10);
 		
 		Dimensions2D spriteDimensions = new Dimensions2D().setArea(10, 10).setPos(pos.clone()).setCentering(centered);
 		Dimensions2D barDimensions = new Dimensions2D().setArea(10, height).setPos(pos.clone()).setCentering(centered);
@@ -100,25 +97,8 @@ public class UIButtonFactoryMC
 		UIBasic bottomButton = this.createArrowButton(centered);
 		
 		UIScrollBar scrollBar = new UIScrollBar(barDimensions, scrollableArea, topButton, bottomButton, new UITexture(base, spriteDimensions.clone()), new UITexture(bar, spriteDimensions.clone()));
-		
-		//scrollBar.getScrollingArea().addX(scrollBar.getDimensions().getWidth());
-		
+
 		return scrollBar;
 	}
-	
-	public UIBasic createRepeatedTexture(Position2D pos, Dimensions2D repeatableArea, boolean centered)
-	{
-		Sprite texture = new Sprite(HOPPER_TEXTURE, 0, 174, 20, 20, 256, 256);
-		
-		Dimensions2D spriteDim = new Dimensions2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
-		
-		UIBasic repeated = new UIRepeatable(new UITexture(texture, spriteDim));
-		
-		int scrollHeight = repeatableArea.getHeight() / 4;
-		
-		Dimensions2D scrollArea = new Dimensions2D().setArea(repeatableArea.getWidth(), scrollHeight);
-		
-		return new UIScrollable(scrollArea, repeated, (UIScrollBar) this.createScrollBar(new Position2D(0, 0), (int) scrollHeight, scrollArea.clone(), false));
-	}
-	
+
 }
