@@ -14,7 +14,6 @@ public class ObjectFilter
 		
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static <T> List<T> getTypesFrom(Object[] array, Class<? extends T> typeClass)
 	{
 		return getTypesFrom(Arrays.asList(array), typeClass);
