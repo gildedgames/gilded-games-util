@@ -13,7 +13,14 @@ public class UIRectangle extends UIBasicAbstract
 	
 	public UIRectangle(Dimensions2D dim)
 	{
+		this(dim, false);
+	}
+	
+	public UIRectangle(Dimensions2D dim, boolean shouldRender)
+	{
 		this(dim, new DrawingData());
+		
+		this.setVisible(shouldRender);
 	}
 	
 	public UIRectangle(Dimensions2D dim, DrawingData data)
