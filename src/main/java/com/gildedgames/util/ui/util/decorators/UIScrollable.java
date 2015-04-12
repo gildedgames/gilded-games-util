@@ -36,7 +36,7 @@ public class UIScrollable extends UIDecorator<UIView>
 		
 		this.scrollBar.setContentDimensions(this.getDimensions());
 		
-		this.scrollBar.getDimensions().setScale(0.5F);
+		//this.scrollBar.getDimensions().setScale(0.5F);
 	}
 	
 	@Override
