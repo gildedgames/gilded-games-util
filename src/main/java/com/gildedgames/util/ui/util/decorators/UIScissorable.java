@@ -13,35 +13,30 @@ import com.gildedgames.util.ui.input.InputProvider;
 public class UIScissorable extends UIDecorator<UIElement>
 {
 
-	protected Dimensions2D cutoff;
+	protected Dimensions2D scissoredArea;
 	
-	public UIScissorable(Dimensions2D cutoff, UIElement element)
+	public UIScissorable(Dimensions2D scissoredArea, UIElement element)
 	{
 		super(element);
 		
-		this.cutoff = cutoff;
+		this.scissoredArea = scissoredArea;
 	}
 	
-	public Dimensions2D getCutoff()
+	public Dimensions2D getScissoredArea()
 	{
-		return this.cutoff;
-	}
-	
-	public void setCutoff(Dimensions2D cutoff)
-	{
-		this.cutoff = cutoff;
+		return this.scissoredArea;
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		float yFactor = Math.abs(this.cutoff.getY() - input.getScreenHeight()) - this.cutoff.getHeight();
+		float yFactor = Math.abs(this.getScissoredArea().getY() - input.getScreenHeight()) - this.getScissoredArea().getHeight();
 
-		float cornerX = (this.cutoff.getX() * input.getScaleFactor());
+		float cornerX = (this.getScissoredArea().getX() * input.getScaleFactor());
 		float cornerY = yFactor * input.getScaleFactor();
 
-		float cutWidth = this.cutoff.getWidth() * input.getScaleFactor();
-		float cutHeight = this.cutoff.getHeight() * input.getScaleFactor();
+		float cutWidth = this.getScissoredArea().getWidth() * input.getScaleFactor();
+		float cutHeight = this.getScissoredArea().getHeight() * input.getScaleFactor();
 
 		GL11.glEnable(GL_SCISSOR_TEST);
 		
