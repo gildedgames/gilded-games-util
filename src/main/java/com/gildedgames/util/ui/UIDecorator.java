@@ -173,11 +173,11 @@ public abstract class UIDecorator<T extends UIElement> implements UIBasic
 	@Override
 	public UIContainer getListeners()
 	{
-		UIBasicAbstract frame = ObjectFilter.getType(this.element, UIBasicAbstract.class);
+		UIBasic basic = ObjectFilter.getType(this.element, UIBasic.class);
 		
-		if (frame != null)
+		if (basic != null)
 		{
-			return frame.getListeners();
+			return basic.getListeners();
 		}
 		
 		return null;
@@ -186,11 +186,11 @@ public abstract class UIDecorator<T extends UIElement> implements UIBasic
 	@Override
 	public UIBasic getPreviousFrame()
 	{
-		UIBasicAbstract frame = ObjectFilter.getType(this.element, UIBasicAbstract.class);
+		UIBasic basic = ObjectFilter.getType(this.element, UIBasic.class);
 		
-		if (frame != null)
+		if (basic != null)
 		{
-			return frame.getPreviousFrame();
+			return basic.getPreviousFrame();
 		}
 		
 		return null;

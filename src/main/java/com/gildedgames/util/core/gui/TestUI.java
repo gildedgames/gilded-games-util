@@ -29,8 +29,6 @@ public class TestUI extends UIBasicAbstract
 		UIFactoryUtil factory = new UIFactoryUtil();
 
 		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonFactory());
-
-		//list.add(factory.createButton(new Position2D(), 10, "lol"));
 		
 		Dimensions2D dim = new Dimensions2D().setArea(60, 200);
 		
@@ -38,14 +36,11 @@ public class TestUI extends UIBasicAbstract
 
 		UIScrollable scrollable = new UIScrollable(dim, list, scrollBar);
 		
+		scrollable.getDimensions().setPos(new Position2D(20, 20));
+		
 		container.add(scrollable);
 		
-		//scrollable.getDimensions().setScale(0.95F).setPos(new Position2D(50, 50));
-	
-		//container.add(factory.createRepeatedTexture(new Position2D(), new Dimensions2D().setArea(145, 145), false));
-		
-		//container.add(factory.createButton(new Position2D(), 60, "Button", false));
-		//container.add(factory.createArrowButton(new Position2D(), false));
+		//scrollable.getDimensions().setScale(0.5F).setPos(new Position2D(50, 50));
 	}
 	
 	@Override
