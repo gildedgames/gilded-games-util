@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.DimensionsHolder;
 
 public class UIContainer implements Iterable<UIElement>
 {

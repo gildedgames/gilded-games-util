@@ -131,7 +131,7 @@ public class UIButtonList extends UIBasicAbstract
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.positionContent(this.getSortedViews());
+		//this.positionContent(this.getSortedViews());
 		
 		super.draw(graphics, input);
 	}

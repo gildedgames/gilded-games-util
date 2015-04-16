@@ -45,6 +45,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public void onInit(UIContainer container, InputProvider input)
 	{
+		if (container == null)
+		{
+			return;
+		}
+		
 		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
@@ -63,6 +68,13 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 				}
 			}
 			
+			UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+			
+			if (basic != null)
+			{
+				this.onInit(basic.getListeners(), input);
+			}
+			
 			this.onInit(internal, input);
 		}
 	}
@@ -70,6 +82,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
+		if (container == null)
+		{
+			return;
+		}
+		
 		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
@@ -90,6 +107,13 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 					}
 				}
 			}
+			
+			UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+			
+			if (basic != null)
+			{
+				this.onResolutionChange(basic.getListeners(), input);
+			}
 
 			this.onResolutionChange(internal, input);
 		}
@@ -103,6 +127,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseInput(UIContainer container, InputProvider input, MouseInputPool pool)
 	{
+		if (container == null)
+		{
+			return;
+		}
+		
 		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
@@ -110,6 +139,13 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			if (element.isEnabled())
 			{
 				element.onMouseInput(input, pool);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.onMouseInput(basic.getListeners(), input, pool);
+				}
 				
 				this.onMouseInput(internal, input, pool);
 			}
@@ -124,6 +160,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseScroll(UIContainer container, InputProvider input, int scrollDifference)
 	{
+		if (container == null)
+		{
+			return;
+		}
+		
 		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
@@ -131,6 +172,13 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			if (element.isEnabled())
 			{
 				element.onMouseScroll(input, scrollDifference);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.onMouseScroll(basic.getListeners(), input, scrollDifference);
+				}
 				
 				this.onMouseScroll(internal, input, scrollDifference);
 			}
@@ -145,6 +193,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private boolean onKeyboardInput(UIContainer container, KeyboardInputPool pool)
 	{
+		if (container == null)
+		{
+			return false;
+		}
+		
 		boolean success = false;
 		
 		for (KeyboardListener element : ObjectFilter.getTypesFrom(container.values(), KeyboardListener.class))
@@ -153,7 +206,12 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			if (element.isEnabled())
 			{
-				success = element.onKeyboardInput(pool) || this.onKeyboardInput(internal, pool) || success;
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+
+				success = element.onKeyboardInput(pool)
+						|| this.onKeyboardInput(internal, pool)
+						|| (basic != null && this.onKeyboardInput(basic.getListeners(), pool))
+						|| success;
 			}
 		}
 		
@@ -168,6 +226,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void draw(UIContainer container, Graphics2D graphics, InputProvider input)
 	{
+		if (container == null)
+		{
+			return;
+		}
+		
 		for (UIView element : ObjectFilter.getTypesFrom(container.values(), UIView.class))
 		{
 			UIContainer internal = container.getInternal(element);
@@ -175,6 +238,13 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			if (element.isVisible())
 			{
 				element.draw(graphics, input);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.draw(basic.getListeners(), graphics, input);
+				}
 				
 				this.draw(internal, graphics, input);
 			}

@@ -62,7 +62,7 @@ public class Dimensions2D
 	/**
 	 * @return Returns a clone() of this Dimensions2D object, unaltered by any origin.
 	 */
-	public Dimensions2D relative()
+	public Dimensions2D withoutOrigin()
 	{
 		return this.clone().setOrigin(null);
 	}
@@ -100,7 +100,7 @@ public class Dimensions2D
 
 		return new Position2D(this.position.getX() - offsetX, this.position.getY() - offsetY);
 	}
-
+	
 	/**
 	 * Altered by factors such as scale and origin.
 	 */
