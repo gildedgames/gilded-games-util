@@ -41,7 +41,7 @@ public class ClientProxy extends ServerProxy
 
 		MinecraftForge.EVENT_BUS.register(utilEvents);
 		FMLCommonHandler.instance().bus().register(utilEvents);
-		
+
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 
 		MinecraftForge.EVENT_BUS.register(menuClientEvents);
@@ -61,8 +61,15 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
-		
+
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
+	}
+
+	@Override
+	public void addScheduledTask(Runnable runnable)
+	{
+		Minecraft.getMinecraft().addScheduledTask(runnable);
+
 	}
 
 }

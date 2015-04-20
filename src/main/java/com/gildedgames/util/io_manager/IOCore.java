@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -28,7 +29,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 	private static final IOCore INSTANCE = new IOCore();
 
 	private final List<IOManager> internalManagers = new ArrayList<IOManager>();
-	
+
 	private final SidedObject<List<IOSyncableDispatcher>> syncableDispatchers = new SidedObject<List<IOSyncableDispatcher>>(new ArrayList<IOSyncableDispatcher>(), new ArrayList<IOSyncableDispatcher>());
 
 	protected final IOFileController fileComponent;
@@ -53,7 +54,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 	{
 		return IOCore.INSTANCE;
 	}
-	
+
 	public void dispatchDirtySyncables(SyncSide from)
 	{
 		for (IOSyncableDispatcher<?, ?> dispatcher : this.syncableDispatchers.instance())
@@ -64,7 +65,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 			}
 		}
 	}
-	
+
 	public IOSyncableDispatcher getDispatcherFromID(String id)
 	{
 		for (IOSyncableDispatcher dispatcher : this.syncableDispatchers.instance())
@@ -74,10 +75,10 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 				return dispatcher;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public void registerDispatcher(IOSyncableDispatcher<?, ?> syncableDispatcher)
 	{
 		this.syncableDispatchers.client().add(syncableDispatcher);
@@ -123,6 +124,8 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 				return external;
 			}
 		}
+
+		UtilCore.print("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
 
 		return null;
 	}
