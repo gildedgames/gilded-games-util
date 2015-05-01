@@ -1,26 +1,37 @@
-/eclipse/
-/forge/
-/build/
-/bin/
-/.gradle/
-/gradle/
-/.settings/
+# Compiled Java
+*.class
+
+# Eclipse
 .classpath
 .project
-gradlew
-gradlew.bat
-/target/
-/maven/
-/logs/
-/saves/
-/config/
-/mod-config/
-usernamecache.json
+.settings
+eclipse
+bin
 
+# IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Gradle
+.gradle
+/build/
+/bin/
+
+# Gradle Wrapper
+/gradle/wrapper/dists
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Misc
 *.db
 *.php
 *.iml
 *.txt
-
-/.idea/
 *.log
