@@ -159,13 +159,11 @@ task("uploadJars", dependsOn: "build") {
                         configuration = configurations.deployerJars
 
                         repository(url: "sftp://${sftp_maven}") {
-                            authentication(userName: "${sftp_username}", password: "${sftp_password}")
+                            authentication(userName: "${sftp_username}")
                         }
                     }
                 }
             }
         }    
-    } else {
-        println("!!! WARNING: uploadArchives will be ignored. Please provide $sftp_maven, $sftp_username, and $sftp_password.")
     }
 }
