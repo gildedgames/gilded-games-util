@@ -17,9 +17,9 @@ public class UIScrollable extends UIBasicAbstract
 	
 	public UIScrollable(Dimensions2D scrollArea, UIView scrolledView, UIScrollBar scrollBar)
 	{
-		super(scrolledView.getDimensions());
+		super(Dimensions2D.combine(scrollBar.getDimensions(), scrollArea));
 
-		this.scrolledView = new UIScissorable(scrollArea, scrolledView);
+		this.scrolledView = new UIScissorable(this.getDimensions().clone(), scrolledView);
 		this.scrollBar = scrollBar;
 	}
 	
@@ -37,9 +37,11 @@ public class UIScrollable extends UIBasicAbstract
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		//int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDimensions().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
+		int maxYPos = this.scrolledView.getDimensions().withoutOrigin().getHeight() - this.scrolledView.getScissoredArea().withoutOrigin().getHeight();
 
-		//this.scrolledView.getDimensions().setY(scrollValue);
+		int scrollValue = (int) -(this.scrollBar.getScrollPercentage() * maxYPos);
+
+		this.scrolledView.getDimensions().setY(scrollValue);
 		
 		super.draw(graphics, input);
 	}

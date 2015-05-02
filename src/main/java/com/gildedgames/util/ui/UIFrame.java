@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
+import com.gildedgames.util.ui.util.OriginDecorator;
 
 public class UIFrame implements UIView, KeyboardListener, MouseListener
 {
@@ -64,7 +65,16 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 				
 				if (child != null && origin != null)
 				{
-					child.getDimensions().setOrigin(origin);
+					if (child.getDimensions().getOrigin() == null)
+					{
+						child.getDimensions().setOrigin(origin);
+					}
+					else
+					{
+						OriginDecorator decoratedOrigin = new OriginDecorator(origin, child.getDimensions().getOrigin().getDimensions());
+						
+						child.getDimensions().setOrigin(decoratedOrigin);
+					}
 				}
 			}
 			
@@ -101,9 +111,18 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 				{
 					DimensionsHolder child = ObjectFilter.getType(internalElement, DimensionsHolder.class);
 					
-					if (child != null)
+					if (child != null && origin != null)
 					{
-						child.getDimensions().setOrigin(origin);
+						if (child.getDimensions().getOrigin() == null)
+						{
+							child.getDimensions().setOrigin(origin);
+						}
+						else
+						{
+							OriginDecorator decoratedOrigin = new OriginDecorator(origin, child.getDimensions().getOrigin().getDimensions());
+							
+							child.getDimensions().setOrigin(decoratedOrigin);
+						}
 					}
 				}
 			}
