@@ -125,7 +125,7 @@ public class UIButtonList extends UIBasicAbstract
 
 		this.refresh();
 		
-		this.getDimensions().set(container.getCombinedDimensions());
+		this.getDimensions().set(this.getListeners().getCombinedDimensions());
 	}
 	
 	@Override

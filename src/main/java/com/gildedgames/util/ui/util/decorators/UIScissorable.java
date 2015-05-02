@@ -5,21 +5,22 @@ import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.ui.UIDecorator;
-import com.gildedgames.util.ui.UIElement;
+import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class UIScissorable extends UIDecorator<UIElement>
+public class UIScissorable extends UIDecorator<UIView>
 {
 
 	protected Dimensions2D scissoredArea;
 	
-	public UIScissorable(Dimensions2D scissoredArea, UIElement element)
+	public UIScissorable(Dimensions2D scissoredArea, UIView view)
 	{
-		super(element);
+		super(view);
 		
 		this.scissoredArea = scissoredArea;
+		this.scissoredArea.setOrigin(this);
 	}
 	
 	public Dimensions2D getScissoredArea()

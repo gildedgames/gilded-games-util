@@ -4,7 +4,6 @@ import com.gildedgames.util.ui.UIBasic;
 import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIContainer;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.Position2D;
 import com.gildedgames.util.ui.event.view.MouseEventView;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -85,13 +84,15 @@ public class UIScrollBar extends UIBasicAbstract
 	{
 		super.onInit(container, input);
 
-		this.topArrowButton.getDimensions().setPos(new Position2D());
-		this.bottomArrowButton.getDimensions().setPos(new Position2D());
+		this.topArrowButton.getDimensions().resetPos();
+		this.bottomArrowButton.getDimensions().resetPos();
 		
 		this.topArrowButton.getDimensions().setCentering(this.getDimensions());
 		this.bottomArrowButton.getDimensions().setCentering(this.getDimensions());
 		
-		OriginDecorator totalHeightMinusBottomButton = new OriginDecorator(this, new Dimensions2D().setY(this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight()));
+		final int originHeightValue = this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight();
+		
+		OriginHolder totalHeightMinusBottomButton = new OriginHolder(new Dimensions2D().setHeight(originHeightValue).setY(originHeightValue));
 
 		this.bottomArrowButton.getDimensions().setOrigin(totalHeightMinusBottomButton);
 
@@ -103,7 +104,7 @@ public class UIScrollBar extends UIBasicAbstract
 			{
 				if (pool.has(MouseButton.LEFT) && input.isHovered(UIScrollBar.this.topArrowButton.getDimensions()))
 				{
-					UIScrollBar.this.scrollPercentage -= 0.5F;
+					UIScrollBar.this.scrollPercentage -= UIScrollBar.this.scrollSpeed / 2;
 				}
 			}
 		
@@ -117,7 +118,7 @@ public class UIScrollBar extends UIBasicAbstract
 			{
 				if (pool.has(MouseButton.LEFT) && input.isHovered(UIScrollBar.this.bottomArrowButton.getDimensions()))
 				{
-					UIScrollBar.this.scrollPercentage += 0.5F;
+					UIScrollBar.this.scrollPercentage += UIScrollBar.this.scrollSpeed / 2;
 				}
 			}
 		
@@ -129,12 +130,14 @@ public class UIScrollBar extends UIBasicAbstract
 		this.baseBar = new UIRepeatable(this.baseBarTexture);
 		this.grabbableBar = new UIRepeatable(this.grabbableBarTexture);
 		
-		OriginDecorator bottomOfTopButton = new OriginDecorator(this, new Dimensions2D().setY(this.topArrowButton.getDimensions().withoutOrigin().getHeight()));
+		OriginHolder bottomOfTopButton = new OriginHolder(new Dimensions2D().setY(this.topArrowButton.getDimensions().withoutOrigin().getHeight()));
 		
 		this.baseBar.getDimensions().setOrigin(bottomOfTopButton);
 		this.grabbableBar.getDimensions().setOrigin(bottomOfTopButton);
+
+		final int totalHeightMinusButtons = this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight() - this.topArrowButton.getDimensions().getHeight();
 		
-		this.baseBar.getDimensions().setArea(this.baseBarTexture.getDimensions().withoutOrigin().getWidth(), this.getDimensions().withoutOrigin().getHeight());
+		this.baseBar.getDimensions().setArea(this.baseBarTexture.getDimensions().withoutOrigin().getWidth(), totalHeightMinusButtons);
 		this.grabbableBar.getDimensions().setArea(this.grabbableBarTexture.getDimensions().getWidth(), 20);
 
 		container.add(this.baseBar);
@@ -197,14 +200,14 @@ public class UIScrollBar extends UIBasicAbstract
 		
 		if (this.grabbedBar)
 		{
-			int basePosY = input.getMouseY() - this.baseBar.getDimensions().getY() + this.grabbedMouseYOffset;
+			int basePosY = input.getMouseY() - this.grabbableBar.getDimensions().withoutOrigin().getHeight() + this.grabbedMouseYOffset;
 			
-			this.scrollPercentage = (float)basePosY / (float)this.baseBar.getDimensions().getHeight();
+			this.scrollPercentage = (float)basePosY / (float)this.baseBar.getDimensions().withoutOrigin().getHeight();
 		}
 		
-		this.scrollPercentage = Math.max(0.0F, (Math.min(this.scrollPercentage, 1.0F)));
+		this.scrollPercentage = this.getScrollPercentage();
 		
-		final int grabbableBarY = this.baseBar.getDimensions().getY() + (int)((this.baseBar.getDimensions().getHeight() - this.baseBar.getDimensions().getY()) * this.scrollPercentage);
+		final int grabbableBarY = (int)((this.baseBar.getDimensions().getHeight() - this.grabbableBar.getDimensions().getHeight()) * this.getScrollPercentage());
 		
 		this.grabbableBar.getDimensions().setY(grabbableBarY);
 
@@ -216,7 +219,7 @@ public class UIScrollBar extends UIBasicAbstract
 	 */
 	public float getScrollPercentage()
 	{
-		return this.scrollPercentage;
+		return Math.min(1.0F, Math.max(0.0F, this.scrollPercentage));
 	}
 	
 	public void setContentDimensions(Dimensions2D contentDimensions)
