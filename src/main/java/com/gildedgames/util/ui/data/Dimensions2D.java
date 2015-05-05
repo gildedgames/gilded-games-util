@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.data;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Dimensions2D
@@ -197,6 +198,11 @@ public class Dimensions2D
 
 		return this;
 	}
+	
+	public Dimensions2D resetPos()
+	{
+		return this.setPos(new Position2D());
+	}
 
 	public Dimensions2D setCentering(boolean centeredX, boolean centeredY)
 	{
@@ -259,6 +265,11 @@ public class Dimensions2D
 	public Dimensions2D setCentering(boolean centered)
 	{
 		return this.setCentering(centered, centered);
+	}
+	
+	public static Dimensions2D combine(Dimensions2D... dimensions)
+	{
+		return Dimensions2D.combine(Arrays.asList(dimensions));
 	}
 
 	public static Dimensions2D combine(List<Dimensions2D> dimensions)
