@@ -7,18 +7,17 @@
  * Iceage - Plowing Into the Field of Love
  * Leon Vynehall - Music for the Uninvited
  * Mac Demarco - Salad Days
- * Mick Jenkins - The Water[s]
- * Open Mike Eagle - Dark Comedy
- * Owen Pallett - In Conflict
- * Run The Jewels - Run The Jewels 2
- * Snarky Puppy - We Like It Here
- * Snowmine - Dialects
- * Timber Timbre - Hot Dreams
  * 
+ * Snowmine - Dialects (Indie Pop) 9.0
+ * Mick Jenkins - The Water[s] (Hip Hop) 9.0
+ * Run The Jewels - Run The Jewels 2 (Hardcore Hip Hop) 8.9
+ * Timber Timbre - Hot Dreams (Folk) 8.8
+ * Owen Pallett - In Conflict (Chamber Pop) 8.7
  * St. Vincent - St. Vincent (Art Pop) 8.6
  * Todd Terje - It's Album Time (Nu-Disco) 8.6
  * Casualties of Cool - Casualties of Cool (Ambient Country) 8.5/8.6
  * The War On Drugs - Lost In The Dream (Indie Rock) 8.5
+ * Snarky Puppy - We Like It Here (Fusion Jazz) 8.3
  * Liars - Mess (Alternative Dance) 8.3
  * Isaiah Rashad - Cilvia Demo (Hip Hop) 8.3
  * Kiasmos - Kiasmos (Microhouse) 8.3
@@ -28,6 +27,7 @@
  * Damien Rice - My Favourite Faded Fantasy (Chamber Folk) 8.2
  * Darren Korb - Transistor OST (Downtempo) 8.2
  * Haywyre - Two Fold Pt.1 (Glitch Hop) 8.2
+ * Open Mike Eagle - Dark Comedy (Abstract Hip Hop) 8.1
  * Moody Good - Moody Good (Dubstep) 8.1
  * Disasterpeace, Ian Snyder - The Floor is Jelly OST (Ambient) 8.1
  * Clap! Clap! - Tayi Bebba (Footwork) 8.1
