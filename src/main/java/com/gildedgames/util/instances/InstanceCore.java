@@ -3,8 +3,6 @@ package com.gildedgames.util.instances;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.WorldProvider;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -39,20 +37,16 @@ public class InstanceCore implements ICore
 		return this.locate().getPlayers().get(uuid);
 	}
 
-	/**
-	 * Call in Init()
-	 * @param dimension
-	 * @param providerClass
-	 * @param factory
-	 * @return
-	 */
-	public <T extends Instance> InstanceHandler<T> createInstanceHandler(int dimension, Class<? extends WorldProvider> providerClass, InstanceFactory<T> factory)
+	public <T extends Instance> InstanceHandler<T> createServerInstanceHandler(InstanceFactory<T> factory)
 	{
-		DimensionManager.registerProviderType(dimension, providerClass, true);//TODO: Maybe can be false?
-		DimensionManager.registerDimension(dimension, dimension);
-
-		InstanceHandler<T> handler = new InstanceHandler<T>(dimension, factory);
+		InstanceHandler<T> handler = new InstanceHandler<T>(factory);
 		this.services.server().addHandler(handler);
+		return handler;
+	}
+
+	public <T extends Instance> InstanceHandler<T> createClientInstanceHandler(InstanceFactory<T> factory)
+	{
+		InstanceHandler<T> handler = new InstanceHandler<T>(factory);
 		this.services.client().addHandler(handler);
 		return handler;
 	}
