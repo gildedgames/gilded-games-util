@@ -1,35 +1,32 @@
 package com.gildedgames.util.instances;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Map.Entry;
 
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.WorldServer;
+import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraft.world.Teleporter;
+import net.minecraftforge.common.DimensionManager;
 
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTHelper;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 public class InstanceHandler<T extends Instance> implements NBT
 {
 
-	private final Map<Integer, T> instances = new HashMap<Integer, T>();
-
-	private int maxX = -10000000;
-
-	private int nextFreeId = 0;
-
-	private final int dimensionId;
+	private final BiMap<Integer, T> instances = HashBiMap.create();
 
 	private InstanceFactory<T> factory;
 
-	public InstanceHandler(int dimensionId, InstanceFactory<T> factory)
+	public InstanceHandler(InstanceFactory<T> factory)
 	{
-		this.dimensionId = dimensionId;
 		this.factory = factory;
+		DimensionManager.registerProviderType(factory.providerId(), factory.getProviderType(), false);
 	}
 
 	public T getInstance(int id)
@@ -39,34 +36,31 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 	public T createNew()
 	{
-		WorldServer world = MinecraftServer.getServer().worldServerForDimension(this.dimensionId);
-		T created = this.factory.createInstance(world, this.maxX, this.nextFreeId, this);
-		if (created.getId() != this.nextFreeId)
-		{
-			throw new IllegalStateException("Some instance did not save instance ID correctly. This is a programmers error!");
-		}
-		created.generate();
-		AxisAlignedBB boundingBox = created.getBoundingBox();
-		if (boundingBox.minX < this.maxX)
-		{
-			throw new IllegalStateException("Some instance went under the minX given. This is a programmers error!");
-		}
-		this.maxX = (int) (boundingBox.maxX + this.factory.distanceBetweenInstances());
-		this.instances.put(this.nextFreeId, created);
-		this.nextFreeId++;
-		return created;
+		int dimensionId = DimensionManager.getNextFreeDimId();
+		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
+		T instance = this.factory.createInstance(dimensionId, this);
+		this.instances.put(dimensionId, instance);
+		return instance;
+
+	}
+
+	public int createDimensionFor(T instance)
+	{
+		int dimensionId = DimensionManager.getNextFreeDimId();
+		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
+		this.instances.put(dimensionId, instance);
+		return dimensionId;
 	}
 
 	@Override
 	public void write(NBTTagCompound output)
 	{
-		output.setInteger("nextFreeId", this.nextFreeId);
-		output.setInteger("maxX", this.maxX);
 		NBTTagList tagList = new NBTTagList();
-		for (T instance : this.instances.values())
+		for (Entry<Integer, T> entry : this.instances.entrySet())
 		{
+			T instance = entry.getValue();
 			NBTTagCompound newTag = new NBTTagCompound();
-			newTag.setInteger("id", instance.getId());
+			newTag.setInteger("dimension", entry.getKey());
 			instance.write(newTag);
 			tagList.appendTag(newTag);
 		}
@@ -76,16 +70,25 @@ public class InstanceHandler<T extends Instance> implements NBT
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		this.nextFreeId = input.getInteger("nextFreeId");
-		this.maxX = input.getInteger("maxX");
-		WorldServer world = MinecraftServer.getServer().worldServerForDimension(this.dimensionId);
 		for (NBTTagCompound tag : NBTHelper.getIterator(input, "instances"))
 		{
-			int id = tag.getInteger("id");
-			T instance = this.factory.createInstance(world, -1, id, this);
+			int id = tag.getInteger("dimension");
+			if (DimensionManager.isDimensionRegistered(id))
+			{
+				id = DimensionManager.getNextFreeDimId();
+				//TODO: Relocate contents in old folder "DIM" + id to "DIM" + newId
+			}
+			T instance = this.factory.createInstance(id, this);
 			instance.read(tag);
+			DimensionManager.registerDimension(id, this.factory.providerId());
+
 			this.instances.put(id, instance);
 		}
+	}
+
+	public T getInstanceForDimension(int id)
+	{
+		return this.instances.get(id);
 	}
 
 	public int getInstancesSize()
@@ -96,6 +99,45 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public Collection<T> getInstances()
 	{
 		return this.instances.values();
+	}
+
+	public void teleportPlayerToDimension(T instance, EntityPlayerMP player)
+	{
+		if (this.instances.containsValue(instance))
+		{
+			PlayerInstances hook = InstanceCore.INST.getPlayer(player);
+			if (hook.getInstance() == null)
+			{
+				hook.setOutside(new BlockPosDimension((int) player.posX, (int) player.posY, (int) player.posZ, player.dimension));
+			}
+			int dimId = this.instances.inverse().get(instance);
+
+			Teleporter teleporter = this.factory.getTeleporter(MinecraftServer.getServer().worldServerForDimension(dimId));
+
+			ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
+			scm.transferPlayerToDimension(player, this.instances.inverse().get(instance), teleporter);
+
+			player.timeUntilPortal = player.getPortalCooldown();
+
+			hook.setInstance(instance);
+		}
+	}
+
+	public void teleportPlayerOutsideInstance(EntityPlayerMP player)
+	{
+		PlayerInstances hook = InstanceCore.INST.getPlayer(player);
+		if (hook.getInstance() != null && hook.outside() != null)
+		{
+			BlockPosDimension pos = hook.outside();
+			Teleporter teleporter = new InstanceTeleporter(MinecraftServer.getServer().worldServerForDimension(player.dimension));
+			ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
+			scm.transferPlayerToDimension(player, pos.dimId(), teleporter);
+			player.timeUntilPortal = player.getPortalCooldown();
+			hook.setOutside(null);
+			hook.setInstance(null);
+
+			player.playerNetServerHandler.setPlayerLocation(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
+		}
 	}
 
 }

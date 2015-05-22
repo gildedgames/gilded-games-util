@@ -1,17 +1,12 @@
 package com.gildedgames.util.instances;
 
 import io.netty.buffer.ByteBuf;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
+import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.group.GroupCore;
-import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
@@ -22,11 +17,11 @@ public class PlayerInstances implements IPlayerHook
 
 	private final IPlayerProfile playerProfile;
 
-	private Instance activeInstance;
+	private NBT activeInstance;
 
 	private BlockPosDimension outside;
 
-	private Map<BlockPosDimension, Instance> instanceMap = new HashMap<BlockPosDimension, Instance>();
+	//private Map<BlockPosDimension, Instance> instanceMap = new HashMap<BlockPosDimension, Instance>();
 
 	public PlayerInstances(IPlayerHookPool<PlayerInstances> pool, IPlayerProfile profile)
 	{
@@ -46,11 +41,11 @@ public class PlayerInstances implements IPlayerHook
 		this.outside = NBTHelper.getBlockPosDimension(input, "outside");
 	}
 
-	public Instance instanceFor(BlockPosDimension pos)
+	/*public Instance instanceFor(BlockPosDimension pos)
 	{
 		GroupMember groupMember = GroupCore.getGroupMember(this.playerProfile.getEntity());
 		return null;
-	}
+	}*/
 
 	@Override
 	public IPlayerHookPool<PlayerInstances> getParentPool()
@@ -124,12 +119,12 @@ public class PlayerInstances implements IPlayerHook
 	{
 	}
 
-	public Instance getInstance()
+	public NBT getInstance()
 	{
 		return this.activeInstance;
 	}
 
-	protected void setInstance(Instance i)
+	protected void setInstance(NBT i)
 	{
 		this.activeInstance = i;
 	}
