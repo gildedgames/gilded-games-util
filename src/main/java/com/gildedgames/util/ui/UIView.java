@@ -1,10 +1,10 @@
 package com.gildedgames.util.ui;
 
-import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public interface UIView extends UIElement
+public interface UIView extends UIElement, DimensionsHolder
 {
 
 	void draw(Graphics2D graphics, InputProvider input);
@@ -12,10 +12,6 @@ public interface UIView extends UIElement
 	boolean isVisible();
 
 	void setVisible(boolean visible);
-
-	Dimensions2D getDimensions();
-
-	void setDimensions(Dimensions2D dim);
 	
 	boolean isFocused();
 	

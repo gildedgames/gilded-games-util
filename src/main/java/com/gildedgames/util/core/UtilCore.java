@@ -50,7 +50,7 @@ public class UtilCore implements ICore
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
-	public final List<ICore> cores = new ArrayList<ICore>();
+	private final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
 
@@ -73,6 +73,11 @@ public class UtilCore implements ICore
 		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
 
+	public void registerCore(ICore core)
+	{
+		this.cores.add(core);
+	}
+
 	@Override
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -87,7 +92,7 @@ public class UtilCore implements ICore
 			e.printStackTrace();
 		}
 
-		UtilCore.NETWORK.init();
+		UtilCore.NETWORK.init(UtilCore.MOD_ID);
 
 		for (ICore core : this.cores)
 		{

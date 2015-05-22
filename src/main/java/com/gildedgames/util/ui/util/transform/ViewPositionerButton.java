@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.Position2D;
 
 public class ViewPositionerButton implements ViewPositioner
 {

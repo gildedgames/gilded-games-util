@@ -1,19 +1,19 @@
 package com.gildedgames.util.ui;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
-import com.gildedgames.util.ui.util.ObjectFilter;
+import com.gildedgames.util.ui.util.OriginDecorator;
 
 public class UIFrame implements UIView, KeyboardListener, MouseListener
 {
-	
-	protected final static ObjectFilter FILTER = new ObjectFilter();
-	
+
 	private UIContainer parentNode = new UIContainer();
 	
 	private UIElement framedElement;
@@ -40,26 +40,49 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	public void onResolutionChange(InputProvider input)
 	{
-		this.parentNode.clear();
-		this.parentNode.add(this.framedElement);
-		
-		this.onResolutionChange(this.parentNode, input);
+		this.onInit(input);
 	}
 	
 	@Override
 	public void onInit(UIContainer container, InputProvider input)
 	{
-		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		if (container == null)
+		{
+			return;
+		}
+		
+		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			element.onInit(internal, input);
 			
-			UIView view = FILTER.getType(element, UIView.class);
+			DimensionsHolder origin = ObjectFilter.getType(element, DimensionsHolder.class);
 			
-			if (view != null)
+			for (UIElement internalElement : internal)
 			{
-				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+				DimensionsHolder child = ObjectFilter.getType(internalElement, DimensionsHolder.class);
+				
+				if (child != null && origin != null)
+				{
+					if (child.getDimensions().getOrigin() == null)
+					{
+						child.getDimensions().setOrigin(origin);
+					}
+					else
+					{
+						OriginDecorator decoratedOrigin = new OriginDecorator(origin, child.getDimensions().getOrigin().getDimensions());
+						
+						child.getDimensions().setOrigin(decoratedOrigin);
+					}
+				}
+			}
+			
+			UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+			
+			if (basic != null)
+			{
+				this.onInit(basic.getListeners(), input);
 			}
 			
 			this.onInit(internal, input);
@@ -69,19 +92,48 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		for (UIElement element : FILTER.getTypesFrom(container.values(), UIElement.class))
+		if (container == null)
+		{
+			return;
+		}
+		
+		for (UIElement element : ObjectFilter.getTypesFrom(container.values(), UIElement.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			element.onResolutionChange(internal, input);
 			
-			UIView view = FILTER.getType(element, UIView.class);
+			DimensionsHolder origin = ObjectFilter.getType(element, DimensionsHolder.class);
 			
-			if (view != null)
+			if (origin != null)
 			{
-				view.getDimensions().setOrigin(internal.getParent().getCombinedDimensions().getPos());
+				for (UIElement internalElement : internal)
+				{
+					DimensionsHolder child = ObjectFilter.getType(internalElement, DimensionsHolder.class);
+					
+					if (child != null && origin != null)
+					{
+						if (child.getDimensions().getOrigin() == null)
+						{
+							child.getDimensions().setOrigin(origin);
+						}
+						else
+						{
+							OriginDecorator decoratedOrigin = new OriginDecorator(origin, child.getDimensions().getOrigin().getDimensions());
+							
+							child.getDimensions().setOrigin(decoratedOrigin);
+						}
+					}
+				}
 			}
 			
+			UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+			
+			if (basic != null)
+			{
+				this.onResolutionChange(basic.getListeners(), input);
+			}
+
 			this.onResolutionChange(internal, input);
 		}
 	}
@@ -94,13 +146,25 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseInput(UIContainer container, InputProvider input, MouseInputPool pool)
 	{
-		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		if (container == null)
+		{
+			return;
+		}
+		
+		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			if (element.isEnabled())
 			{
 				element.onMouseInput(input, pool);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.onMouseInput(basic.getListeners(), input, pool);
+				}
 				
 				this.onMouseInput(internal, input, pool);
 			}
@@ -115,13 +179,25 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void onMouseScroll(UIContainer container, InputProvider input, int scrollDifference)
 	{
-		for (MouseListener element : FILTER.getTypesFrom(container.values(), MouseListener.class))
+		if (container == null)
+		{
+			return;
+		}
+		
+		for (MouseListener element : ObjectFilter.getTypesFrom(container.values(), MouseListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			if (element.isEnabled())
 			{
 				element.onMouseScroll(input, scrollDifference);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.onMouseScroll(basic.getListeners(), input, scrollDifference);
+				}
 				
 				this.onMouseScroll(internal, input, scrollDifference);
 			}
@@ -136,15 +212,25 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private boolean onKeyboardInput(UIContainer container, KeyboardInputPool pool)
 	{
+		if (container == null)
+		{
+			return false;
+		}
+		
 		boolean success = false;
 		
-		for (KeyboardListener element : FILTER.getTypesFrom(container.values(), KeyboardListener.class))
+		for (KeyboardListener element : ObjectFilter.getTypesFrom(container.values(), KeyboardListener.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			if (element.isEnabled())
 			{
-				success = element.onKeyboardInput(pool) || this.onKeyboardInput(internal, pool) || success;
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+
+				success = element.onKeyboardInput(pool)
+						|| this.onKeyboardInput(internal, pool)
+						|| (basic != null && this.onKeyboardInput(basic.getListeners(), pool))
+						|| success;
 			}
 		}
 		
@@ -159,13 +245,25 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private void draw(UIContainer container, Graphics2D graphics, InputProvider input)
 	{
-		for (UIView element : FILTER.getTypesFrom(container.values(), UIView.class))
+		if (container == null)
+		{
+			return;
+		}
+		
+		for (UIView element : ObjectFilter.getTypesFrom(container.values(), UIView.class))
 		{
 			UIContainer internal = container.getInternal(element);
 			
 			if (element.isVisible())
 			{
 				element.draw(graphics, input);
+				
+				UIBasic basic = ObjectFilter.getType(element, UIBasic.class);
+				
+				if (basic != null)
+				{
+					this.draw(basic.getListeners(), graphics, input);
+				}
 				
 				this.draw(internal, graphics, input);
 			}
@@ -202,13 +300,6 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 		return new Dimensions2D();
 	}
 
-	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		
-	}
-
-	@Override
 	public boolean isFocused()
 	{
 		return true;

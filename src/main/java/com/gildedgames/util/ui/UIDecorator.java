@@ -1,6 +1,8 @@
 package com.gildedgames.util.ui;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.DimensionsHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -9,15 +11,13 @@ import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 
 
-public abstract class UIDecorator<T extends UIElement> extends UIBasic
+public abstract class UIDecorator<T extends UIElement> implements UIBasic
 {
 
 	private T element;
 	
 	public UIDecorator(T element)
 	{
-		super(null, null);
-		
 		this.element = element;
 	}
 	
@@ -29,7 +29,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -40,7 +40,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public boolean isVisible()
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -53,7 +53,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void setVisible(boolean visible)
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -64,25 +64,14 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public Dimensions2D getDimensions()
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		DimensionsHolder holder = ObjectFilter.getType(this.element, DimensionsHolder.class);
 		
-		if (view != null)
+		if (holder != null)
 		{
-			return view.getDimensions();
+			return holder.getDimensions();
 		}
 		
 		return null;
-	}
-
-	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		UIView view = FILTER.getType(this.element, UIView.class);
-		
-		if (view != null)
-		{
-			view.setDimensions(dim);
-		}
 	}
 
 	@Override
@@ -94,9 +83,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void onResolutionChange(UIContainer container, InputProvider input)
 	{
-		this.onInit(container, input);
-		
-		//this.element.onResolutionChange(container, input);
+		this.element.onResolutionChange(container, input);
 	}
 
 	@Override
@@ -114,7 +101,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool)
 	{
-		KeyboardListener listener = FILTER.getType(this.element, KeyboardListener.class);
+		KeyboardListener listener = ObjectFilter.getType(this.element, KeyboardListener.class);
 		
 		if (listener != null)
 		{
@@ -127,7 +114,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		MouseListener listener = FILTER.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -138,7 +125,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		MouseListener listener = FILTER.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -149,7 +136,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public boolean isFocused()
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -162,7 +149,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public void setFocused(boolean focused)
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -173,7 +160,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public boolean query(Object... input)
 	{
-		UIView view = FILTER.getType(this.element, UIView.class);
+		UIView view = ObjectFilter.getType(this.element, UIView.class);
 		
 		if (view != null)
 		{
@@ -186,11 +173,11 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public UIContainer getListeners()
 	{
-		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
+		UIBasic basic = ObjectFilter.getType(this.element, UIBasic.class);
 		
-		if (frame != null)
+		if (basic != null)
 		{
-			return frame.getListeners();
+			return basic.getListeners();
 		}
 		
 		return null;
@@ -199,11 +186,11 @@ public abstract class UIDecorator<T extends UIElement> extends UIBasic
 	@Override
 	public UIBasic getPreviousFrame()
 	{
-		UIBasic frame = FILTER.getType(this.element, UIBasic.class);
+		UIBasic basic = ObjectFilter.getType(this.element, UIBasic.class);
 		
-		if (frame != null)
+		if (basic != null)
 		{
-			return frame.getPreviousFrame();
+			return basic.getPreviousFrame();
 		}
 		
 		return null;

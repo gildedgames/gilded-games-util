@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
-import com.gildedgames.util.ui.util.basic.UIRectangle;
+import com.gildedgames.util.ui.util.UIRectangle;
 
 public class UIScreenMC extends UIDecorator<UIView>
 {
