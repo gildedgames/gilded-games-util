@@ -1,45 +1,69 @@
 package com.gildedgames.util.ui.util.decorators;
 
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.UIView;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class UIRepeatable extends UIScissorable
+public class UIRepeatable extends UIBasicAbstract
 {
+	
+	protected UIScissorable repeatedView;
 
-	public UIRepeatable(Dimensions2D repeatArea, UIView view)
+	protected Dimensions2D repeatedArea = new Dimensions2D();
+	
+	public UIRepeatable(UIView repeatedView)
 	{
-		super(repeatArea, view);
+		super(new Dimensions2D());
+		
+		this.repeatedView = new UIScissorable(new Dimensions2D(), repeatedView);
+		
+		this.repeatedView.getDimensions().setOrigin(this);
+	}
+	
+	public Dimensions2D getRepeatedArea()
+	{
+		return this.repeatedArea;
 	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		//System.out.println(this.getDimensions());
+		this.repeatedView.getScissoredArea().set(this.getDimensions());
 		
-		float textureHeight = this.getDimensions().getHeight();
-		float textureWidth = this.getDimensions().getWidth();
+		int textureHeight = this.repeatedView.getDimensions().getHeight();
+		int textureWidth = this.repeatedView.getDimensions().getWidth();
+		
+		int heightCountNeeded = 0;
+		int widthCountNeeded = 0;
 
-		int heightCountNeeded = (int) (this.getCutoff().getHeight() / textureHeight);
-		int widthCountNeeded = (int) (this.getCutoff().getWidth() / textureWidth);
+		if (textureHeight != 0)
+		{
+			heightCountNeeded = (int) (this.getDimensions().getHeight() / textureHeight);
+		}
+		
+		if (textureWidth != 0)
+		{
+			widthCountNeeded = (int) (this.getDimensions().getWidth() / textureWidth);
+		}
 
-		Dimensions2D oldDim = this.getDimensions().clone();
+		Dimensions2D oldDim = this.repeatedView.getDimensions().clone();
 		
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
 			for (int widthAmount = 0; widthAmount <= widthCountNeeded; widthAmount++)
 			{
-				super.draw(graphics, input);
+				this.repeatedView.draw(graphics, input);
 				
-				this.getDimensions().addX(textureWidth);
+				this.repeatedView.getDimensions().addX(textureWidth);
 			}
 
-			this.getDimensions().setX(oldDim.getX());
-			this.getDimensions().addY(textureHeight);
+			this.repeatedView.getDimensions().setX(oldDim.getX());
+			this.repeatedView.getDimensions().addY(textureHeight);
 		}
 		
-		this.setDimensions(oldDim);
+		this.repeatedView.getDimensions().set(oldDim);
 	}
 	
 }

@@ -1,14 +1,14 @@
 package com.gildedgames.util.ui.event;
 
 import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIBasic;
+import com.gildedgames.util.ui.UIBasicAbstract;
 import com.gildedgames.util.ui.data.Dimensions2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class FrameEvent extends UIBasic
+public class FrameEvent extends UIBasicAbstract
 {
 
 	private boolean enabled = true;
@@ -40,12 +40,6 @@ public class FrameEvent extends UIBasic
 	public Dimensions2D getDimensions()
 	{
 		return null;
-	}
-
-	@Override
-	public void setDimensions(Dimensions2D dim)
-	{
-		
 	}
 
 	@Override
@@ -115,7 +109,7 @@ public class FrameEvent extends UIBasic
 	}
 	
 	@Override
-	public UIBasic getPreviousFrame()
+	public UIBasicAbstract getPreviousFrame()
 	{
 		return null;
 	}

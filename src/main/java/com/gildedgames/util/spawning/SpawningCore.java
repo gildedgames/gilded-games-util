@@ -25,6 +25,7 @@ import com.gildedgames.util.spawning.util.DefaultSpawnSettings;
 
 public class SpawningCore implements ICore
 {
+	
 	private static List<SpawnManager> spawnManagers = new ArrayList<SpawnManager>();
 
 	public static SpawnManager createAndRegisterSpawnManager(int dimensionId)

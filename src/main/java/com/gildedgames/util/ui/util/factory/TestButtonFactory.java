@@ -3,7 +3,7 @@ package com.gildedgames.util.ui.util.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.core.gui.util.factory.UIButtonFactoryMC;
+import com.gildedgames.util.core.gui.util.UIFactoryUtil;
 import com.gildedgames.util.ui.UIElement;
 import com.gildedgames.util.ui.data.Position2D;
 import com.google.common.collect.ImmutableList;
@@ -16,7 +16,7 @@ public class TestButtonFactory implements ContentFactory
 	{
 		List<UIElement> buttons = new ArrayList<UIElement>();
 		
-		UIButtonFactoryMC factory = new UIButtonFactoryMC();
+		UIFactoryUtil factory = new UIFactoryUtil();
 		
 		for (int count = 0; count < 100; count++)
 		{
