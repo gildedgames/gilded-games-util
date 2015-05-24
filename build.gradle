@@ -22,7 +22,7 @@ group= "com.gildedgames.util" // http://maven.apache.org/guides/mini/guide-namin
 archivesBaseName = "gilded-games-util"
 
 minecraft {
-    version = "1.8-11.14.1.1371"
+    version = "1.8-11.14.1.1412"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -30,7 +30,7 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20150305"
+    mappings = "snapshot_20150522"
 }
 
 processResources
@@ -69,6 +69,9 @@ repositories {
 dependencies {
     compile 'org.apache.commons:commons-lang3:3.1'
     testCompile 'junit:junit:4.11'
+    compile 'org.jgrapht:jgrapht-core:0.9.1'
+    compile 'org.luaj:luaj-jme:3.0.1'
+    compile 'org.luaj:luaj-jse:3.0.1'
 }
 
 task sourceJar(type: Jar) {
