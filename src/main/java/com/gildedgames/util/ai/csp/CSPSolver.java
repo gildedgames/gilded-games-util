@@ -24,7 +24,7 @@ public class CSPSolver
 	public static <VAR> Map<VAR, Object> solve(IConstraintProblem<VAR> problem)
 	{
 		//Initialize
-		Collection<IConstraint<VAR>> constraints = problem.constraints();
+		Collection<? extends IConstraint<VAR>> constraints = problem.constraints();
 		Map<VAR, List<Object>> domains = new HashMap<VAR, List<Object>>(problem.variables().size());
 		Multigraph<VAR, IConstraint<VAR>> graph = new Multigraph<VAR, IConstraint<VAR>>(new EdgeFactory<VAR, IConstraint<VAR>>()
 		{
@@ -92,7 +92,7 @@ public class CSPSolver
 
 	private static <VAR> Map<VAR, Object> backtrack(Map<VAR, Object> assignment, IConstraintProblem<VAR> problem, Map<VAR, List<Object>> domains, Multigraph<VAR, IConstraint<VAR>> graph)
 	{
-		Collection<VAR> vars = problem.variables();
+		Collection<? extends VAR> vars = problem.variables();
 		if (assignment.size() == vars.size())
 		{
 			//Assignment is complete
