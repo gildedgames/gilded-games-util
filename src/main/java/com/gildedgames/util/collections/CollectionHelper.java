@@ -70,4 +70,24 @@ public class CollectionHelper
 		}
 		return expecting;
 	}
+
+	public static <T> int max(Collection<T> collection, Function<T, Integer> size)
+	{
+		int max = Integer.MIN_VALUE;
+		for (T el : collection)
+		{
+			max = Math.max(max, size.apply(el));
+		}
+		return max;
+	}
+
+	public static <T> int min(Collection<T> collection, Function<T, Integer> size)
+	{
+		int min = Integer.MAX_VALUE;
+		for (T el : collection)
+		{
+			min = Math.min(min, size.apply(el));
+		}
+		return min;
+	}
 }
