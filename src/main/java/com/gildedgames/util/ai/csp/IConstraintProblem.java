@@ -6,11 +6,11 @@ import java.util.Map;
 
 public interface IConstraintProblem<VAR>
 {
-	Collection<VAR> variables();
+	Collection<? extends VAR> variables();
 
 	Collection<Object> domain(VAR var);
 
-	Collection<IConstraint<VAR>> constraints();
+	Collection<? extends IConstraint<VAR>> constraints();
 
 	VAR selectNextVar(Collection<VAR> unassigned, Map<VAR, List<Object>> domains);
 
