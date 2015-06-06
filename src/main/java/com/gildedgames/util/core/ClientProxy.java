@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.gui.TestTab;
+import com.gildedgames.util.core.gui.viewing.MinecraftUIWrapperTick;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
@@ -41,6 +42,11 @@ public class ClientProxy extends ServerProxy
 
 		MinecraftForge.EVENT_BUS.register(utilEvents);
 		FMLCommonHandler.instance().bus().register(utilEvents);
+		
+		MinecraftUIWrapperTick viewerEvents = new MinecraftUIWrapperTick();
+		
+		MinecraftForge.EVENT_BUS.register(viewerEvents);
+		FMLCommonHandler.instance().bus().register(viewerEvents);
 
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 

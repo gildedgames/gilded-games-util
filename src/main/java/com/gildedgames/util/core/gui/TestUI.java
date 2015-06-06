@@ -67,54 +67,75 @@
 
 package com.gildedgames.util.core.gui;
 
-import com.gildedgames.util.core.gui.util.UIFactoryUtil;
-import com.gildedgames.util.ui.UIBasicAbstract;
-import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.data.Dimensions2D;
-import com.gildedgames.util.ui.data.Position2D;
+import com.gildedgames.util.core.gui.util.UIFactory;
+import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.TickInfo;
+import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.UIButtonList;
-import com.gildedgames.util.ui.util.UIScrollBar;
-import com.gildedgames.util.ui.util.decorators.UIScrollable;
+import com.gildedgames.util.ui.util.ButtonList;
+import com.gildedgames.util.ui.util.Dim2DModifier;
+import com.gildedgames.util.ui.util.RectangleElement;
+import com.gildedgames.util.ui.util.decorators.ScrollableUI;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
-import com.gildedgames.util.ui.util.transform.ViewPositionerButton;
+import com.gildedgames.util.ui.util.transform.UIViewPositionerButton;
 
-public class TestUI extends UIBasicAbstract
+public class TestUI extends AbstractUI
 {
+	
+	protected RectangleElement rectangle;
+	
+	protected Dim2DModifier dim2Holder, dim3Holder;
+	
+	protected long prevTime, currentTime;
 
-	public TestUI(UIBasicAbstract parent)
+	public TestUI(AbstractUI parent)
 	{
-		super(parent, new Dimensions2D());
+		super(parent, new Dim2D());
 	}
 
 	@Override
-	public void onInit(UIContainer container, InputProvider input)
+	public void onInit(UIElementContainer container, InputProvider input)
 	{
 		super.onInit(container, input);
+		
+		Dim2D dim = new Dim2D().setArea(80, 200);
 
-		UIFactoryUtil factory = new UIFactoryUtil();
+		ButtonList buttonList = new ButtonList(new UIViewPositionerButton(), new TestButtonFactory());
 
-		UIButtonList list = new UIButtonList(new Position2D(), 60, new ViewPositionerButton(), new TestButtonFactory());
+		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		Dimensions2D dim = new Dimensions2D().setArea(60, 200);
+		scrollable.getDimensions().setPos(new Pos2D(20, 0));
 
-		UIScrollBar scrollBar = factory.createScrollBar(new Position2D(), 200, dim.clone(), false);
+		container.setElement("scrollable", scrollable);
 
-		UIScrollable scrollable = new UIScrollable(dim, list, scrollBar);
-
-		scrollable.getDimensions().setPos(new Position2D(20, 20));
-
-		container.add(scrollable);
-
-		//scrollable.getDimensions().setScale(0.5F).setPos(new Position2D(50, 50));
+		/*Dimensions2D dim1 = new Dimensions2D().setArea(50, 50);
+		Dimensions2D dim2 = new Dimensions2D().setPos(new Position2D(20, 30));
+		Dimensions2D dim3 = new Dimensions2D().setPos(new Position2D(0, -10));
+		
+		this.dim2Holder = new Dimensions2DModifier(dim2);
+		this.dim3Holder = new Dimensions2DModifier(dim3);
+		
+		dim1.addModifier(this.dim2Holder);
+		dim1.addModifier(this.dim3Holder);
+		
+		this.rectangle = new RectangleElement(dim1, new DrawingData());
+		
+		container.add(this.rectangle);*/
 	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-
+	}
+	
+	@Override
+	public void tick(InputProvider input, TickInfo tickInfo)
+	{
+		super.tick(input, tickInfo);
 	}
 
 }
