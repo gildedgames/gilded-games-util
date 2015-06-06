@@ -1,56 +1,51 @@
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
+
         maven {
-            name = "forge"
+            name = "ForgeFS"
             url = "http://files.minecraftforge.net/maven"
         }
+
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
     }
+
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
+// Load ForgeGradle
 apply plugin: 'forge'
+group = "com.gildedgames.util"
 
-version = "1.8-1.1"
-group= "com.gildedgames.util" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "gilded-games-util"
+// Define config location.
+ext.configFile = file "build.properties"
 
-minecraft {
-    version = "1.8-11.14.1.1336"
-    runDir = "eclipse"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20150305"
+// Load the config.
+configFile.withReader {
+    def config = new Properties()
+    config.load(it)
+    project.ext.config = new ConfigSlurper().parse config
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+repositories {
+    mavenCentral()
+}
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+configurations {
+    deployerJars
+}
+
+dependencies {
+    compile 'org.apache.commons:commons-lang3:3.1'
+    testCompile 'junit:junit:4.11'
+
+    deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 
 jar {
@@ -60,34 +55,115 @@ jar {
     }
 }
 
-apply plugin: 'maven-publish'
+task buildInfo {
+    if (System.getenv().BUILD_NUMBER == null) {
+        def cmd = "git rev-parse --short HEAD"
+        def proc = cmd.execute()
+        proc.waitFor()
 
-repositories {
-    mavenCentral ()
+        if (proc.exitValue() != 0) {
+            ext.revision = "GITOOPS"
+        } else {
+            ext.revision = proc.text.trim()
+        }
+
+        ext.buildNum = "DEV.${project.buildInfo.revision}"
+    } else {
+        ext.buildNum = "build${System.getenv().BUILD_NUMBER}"
+    }
 }
 
-dependencies {
-    compile 'org.apache.commons:commons-lang3:3.1'
-    testCompile 'junit:junit:4.11'
+ext.artifact_version = 'OOPS'
+
+if (System.getenv().ARTIFACT_VERSION == null) {
+    artifact_version = "${config.mod_version}-${project.buildInfo.buildNum}"
+} else {
+    artifact_version = "${system.getenv().ARTIFACT_VERSION}"
 }
 
-task sourceJar(type: Jar) {
-	from sourceSets.main.allJava
+// Define artifact version.
+version = "${config.minecraft_version}-${artifact_version}"
+
+// Define ForgeGradle variables.
+minecraft {
+    version = config.minecraft_version + "-" + config.forge_version
+    replace "${version}", project.version
+    
+    mappings = "${config.mappings}"
+
+    runDir = "run"
 }
 
-publishing {
-    publications {
-        myPublication(MavenPublication) {
-            from components.java
-			artifact sourceJar {
-				classifier "source"
-			}
+// Defines the sourcesets.
+sourceSets {
+    main {
+        resources {
+            srcDir "resources"
         }
     }
+}
 
-    repositories {
-        maven {
-            url "file:/${project.projectDir}/maven"
-        }
+// Processes src/main/resources
+processResources {
+    inputs.property "version", artifact_version
+    inputs.property "MCversion", config.minecraft_version
+
+    // Expands variables in *.info files and includes them.
+    from (sourceSets.main.resources.srcDirs) {
+        include "**/*.info"
+
+        //expand "version":artifact_version, "MCversion":config.minecraft_version
+    }
+
+    // Include all resources EXCEPT mcmod.info this time. (prevent dupes)
+    from (sourceSets.main.resources.srcDirs) {
+        exclude "**/*.info"
+    }
+}
+
+// Create an unobfuscated compiled jar.
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = "dev"
+}
+
+// Create an jar containing all the sources.
+task sourcesJar(type: Jar, dependsOn: classes) {
+    from sourceSets.main.allJava
+    classifier = "sources"
+}
+
+// Specifies the JARs to create.
+artifacts {
+    archives devJar
+    archives sourcesJar
+}
+
+// Uploads JARs.
+task("uploadJars", dependsOn: "build") {
+    description = "Configures maven."
+
+    if (project.hasProperty("local_maven") || project.hasProperty("sftp_maven")) {
+        apply plugin: 'maven'
+
+        uploadArchives {
+            repositories {
+                if (project.hasProperty("local_maven")) {
+                    mavenDeployer {
+                        repository(url: "file://${local_maven}")
+                    }
+                }
+
+                if (project.hasProperty("sftp_maven")) {
+                    repositories.mavenDeployer {
+                        configuration = configurations.deployerJars
+
+                        repository(url: "sftp://${sftp_maven}") {
+                            authentication(userName: "${sftp_username}")
+                        }
+                    }
+                }
+            }
+        }    
     }
 }
