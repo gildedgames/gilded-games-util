@@ -134,6 +134,8 @@ public class ButtonList extends AbstractUI
 		super.onInit(container, input);
 
 		this.refresh();
+
+		this.getDimensions().set(this.getListeners().getCombinedDimensions());
 	}
 	
 	@Override
