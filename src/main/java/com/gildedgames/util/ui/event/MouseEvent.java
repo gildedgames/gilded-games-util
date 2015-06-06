@@ -14,11 +14,15 @@ public abstract class MouseEvent extends ElementEvent implements MouseListener
 	
 	public MouseEvent(MouseInput... events)
 	{
+		super();
+		
 		this.eventList = Arrays.<MouseInput>asList(events);
 	}
 	
 	public MouseEvent(List<MouseInput> events)
 	{
+		super();
+		
 		this.eventList = events;
 	}
 

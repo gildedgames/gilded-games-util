@@ -1,10 +1,11 @@
 package com.gildedgames.util.core.nbt;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.overhead.IOManager;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTBridge implements IOBridge
 {
@@ -150,6 +151,11 @@ public class NBTBridge implements IOBridge
 	public void setSerializedClass(String key, Class<?> classToWrite)
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
+		
+		if (manager == null)
+		{
+			System.out.println("HELLOOOOOOOOOOOOOOO!!!!! " + classToWrite);
+		}
 
 		int classID = manager.getRegistry().getID(classToWrite);
 

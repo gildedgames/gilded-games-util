@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.input;
 
-import com.gildedgames.util.ui.data.Dimensions2D;
+import com.gildedgames.util.ui.data.Dim2D;
 
 public interface InputProvider
 {
@@ -15,7 +15,7 @@ public interface InputProvider
 	
 	int getMouseY();
 	
-	boolean isHovered(Dimensions2D dim);
+	boolean isHovered(Dim2D dim);
 	
 	InputProvider clone();
 	

@@ -2,7 +2,9 @@ package com.gildedgames.util.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import scala.actors.threadpool.Arrays;
 
@@ -17,6 +19,44 @@ public class ObjectFilter
 	public static <T> List<T> getTypesFrom(Object[] array, Class<? extends T> typeClass)
 	{
 		return getTypesFrom(Arrays.asList(array), typeClass);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T, K> Map<K, T> getTypesFromKeys(Map<?, ?> map, Class<? extends K> keyClass, Class<? extends T> typeClass)
+	{
+		Map<K, T> returnMap = new HashMap<K, T>();
+
+		for (Map.Entry<?, ?> entry : map.entrySet())
+		{
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			
+			if (key != null && typeClass.isAssignableFrom(key.getClass()))
+			{
+				returnMap.put((K)key, (T) value);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T, K> Map<K, T> getTypesFromValues(Map<?, ?> map, Class<? extends K> keyClass, Class<? extends T> typeClass)
+	{
+		Map<K, T> returnMap = new HashMap<K, T>();
+
+		for (Map.Entry<?, ?> entry : map.entrySet())
+		{
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			
+			if (value != null && typeClass.isAssignableFrom(value.getClass()))
+			{
+				returnMap.put((K)key, (T) value);
+			}
+		}
+
+		return returnMap;
 	}
 
 	@SuppressWarnings("unchecked")

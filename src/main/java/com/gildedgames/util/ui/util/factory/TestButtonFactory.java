@@ -1,26 +1,24 @@
 package com.gildedgames.util.ui.util.factory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
-import com.gildedgames.util.core.gui.util.UIFactoryUtil;
-import com.gildedgames.util.ui.UIElement;
-import com.gildedgames.util.ui.data.Position2D;
-import com.google.common.collect.ImmutableList;
+import com.gildedgames.util.core.gui.util.UIFactory;
+import com.gildedgames.util.ui.common.UIElement;
+import com.gildedgames.util.ui.data.ImmutableDim2D;
+import com.gildedgames.util.ui.data.Pos2D;
+import com.google.common.collect.ImmutableMap;
 
 public class TestButtonFactory implements ContentFactory
 {
 
 	@Override
-	public List<UIElement> provideContent(ImmutableList<UIElement> currentContent)
+	public LinkedHashMap<String, UIElement> provideContent(ImmutableMap<String, UIElement> currentContent, ImmutableDim2D contentArea)
 	{
-		List<UIElement> buttons = new ArrayList<UIElement>();
-		
-		UIFactoryUtil factory = new UIFactoryUtil();
-		
+		LinkedHashMap<String, UIElement> buttons = new LinkedHashMap<String, UIElement>();
+
 		for (int count = 0; count < 100; count++)
 		{
-			buttons.add(factory.createButton(new Position2D(), 60, "Button " + (count + 1), false));
+			buttons.put("button" + count, UIFactory.createButton(new Pos2D(), contentArea.getWidth(), "Button " + (count + 1), false));
 		}
 		
 		return buttons;

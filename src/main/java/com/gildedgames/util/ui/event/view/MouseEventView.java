@@ -3,7 +3,7 @@ package com.gildedgames.util.ui.event.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.UIView;
+import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.event.MouseEvent;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInput;

@@ -1,7 +1,10 @@
 package com.gildedgames.util.ui.event;
 
-import com.gildedgames.util.ui.UIContainer;
-import com.gildedgames.util.ui.UIElement;
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.gildedgames.util.ui.common.UIElement;
+import com.gildedgames.util.ui.data.TickInfo;
+import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public abstract class ElementEvent implements UIElement
@@ -10,13 +13,19 @@ public abstract class ElementEvent implements UIElement
 	private boolean enabled = true;
 
 	@Override
-	public void onInit(UIContainer elementcontainer, InputProvider input)
+	public void tick(InputProvider input, TickInfo tickInfo)
+	{
+		
+	}
+
+	@Override
+	public void onInit(UIElementContainer elementcontainer, InputProvider input)
 	{
 		
 	}
 	
 	@Override
-	public void onResolutionChange(UIContainer container, InputProvider input)
+	public void onResolutionChange(UIElementContainer container, InputProvider input)
 	{
 		
 	}
@@ -31,6 +40,18 @@ public abstract class ElementEvent implements UIElement
 	public void setEnabled(boolean enabled)
 	{
 		this.enabled = enabled;
+	}
+	
+	@Override
+	public void write(NBTTagCompound output)
+	{
+		
+	}
+
+	@Override
+	public void read(NBTTagCompound input)
+	{
+		
 	}
 
 }
