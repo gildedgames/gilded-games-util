@@ -1,19 +1,19 @@
 /**Flying Lotus - You're Dead
- * Freddie Gibbs & Madlib - Pinata
- * Busdriver - Perfect Hair
  * D'Angelo - Black Messiah
  * FKA twigs - LP1
- * Hundred Waters - The Moon Rang Like A Bell
  * Iceage - Plowing Into the Field of Love
- * Leon Vynehall - Music for the Uninvited
  * Mac Demarco - Salad Days
  * 
+ * Freddie Gibbs & Madlib - Pinata (Gangsta Rap) 9.2
  * Snowmine - Dialects (Indie Pop) 9.0
  * Mick Jenkins - The Water[s] (Hip Hop) 9.0
+ * Leon Vynehall - Music for the Uninvited (Deep House) 8.9
+ * Busdriver - Perfect Hair (Abstract Hip Hop) 8.9
  * Run The Jewels - Run The Jewels 2 (Hardcore Hip Hop) 8.9
  * Timber Timbre - Hot Dreams (Folk) 8.8
  * Owen Pallett - In Conflict (Chamber Pop) 8.7
  * St. Vincent - St. Vincent (Art Pop) 8.6
+ * Hundred Waters - The Moon Rang Like A Bell (Indie Pop) 8.6
  * Todd Terje - It's Album Time (Nu-Disco) 8.6
  * Casualties of Cool - Casualties of Cool (Ambient Country) 8.5/8.6
  * The War On Drugs - Lost In The Dream (Indie Rock) 8.5
