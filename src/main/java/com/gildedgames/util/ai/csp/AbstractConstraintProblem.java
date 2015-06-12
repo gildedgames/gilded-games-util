@@ -16,7 +16,7 @@ public abstract class AbstractConstraintProblem<VAR> implements IConstraintProbl
 {
 
 	@Override
-	public VAR selectNextVar(Collection<VAR> unassigned, Map<VAR, List<Object>> domains)
+	public VAR selectNextVar(Collection<VAR> unassigned, Map<VAR, List<Object>> domains, VAR lastAssigned)
 	{
 		int bestSize = Integer.MAX_VALUE;
 		VAR bestVar = null;
