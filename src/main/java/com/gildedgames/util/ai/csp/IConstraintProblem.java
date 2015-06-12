@@ -12,7 +12,20 @@ public interface IConstraintProblem<VAR>
 
 	Collection<? extends IConstraint<VAR>> constraints();
 
-	VAR selectNextVar(Collection<VAR> unassigned, Map<VAR, List<Object>> domains);
+	VAR firstVar(Map<VAR, List<Object>> domains);
 
-	List<Object> sortDomain(List<Object> domain);
+	VAR selectNextVar(Collection<VAR> unassigned, Map<VAR, List<Object>> domains, VAR lastAssigned);
+
+	/**
+	 * Sort the remaining values, for example using the least
+	 * constraining value heuristic.
+	 */
+	List<Object> sortValues(List<Object> values);
+
+	/**
+	 * Returns true if this is a valid assignment, and reduces
+	 * the domains of each variable further using explicit 
+	 * constraint propagation.
+	 */
+	boolean allowedAssign(VAR variable, Object value, Map<VAR, List<Object>> values);
 }
