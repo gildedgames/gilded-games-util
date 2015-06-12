@@ -65,9 +65,21 @@ public class CSPSolverTest
 			}
 
 			@Override
-			public List<Object> sortDomain(List<Object> domain)
+			public List<Object> sortValues(List<Object> domain)
 			{
 				return domain;
+			}
+
+			@Override
+			public String firstVar(Map<String, List<Object>> domain)
+			{
+				return "WA";
+			}
+
+			@Override
+			public boolean allowedAssign(String variable, Object value, Map<String, List<Object>> values)
+			{
+				return true;
 			}
 		};
 		Map<String, Object> result = CSPSolver.solve(problem);

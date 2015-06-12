@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.jgrapht.EdgeFactory;
@@ -72,7 +73,7 @@ public class CSPSolver
 				}
 			}
 		}
-		return backtrack(new HashMap<VAR, Object>(problem.variables().size()), problem, domains, graph);
+		return backtrack(problem, domains, graph, null);
 	}
 
 	private static boolean reduceDomain(IConstraint<?> constraint, List<Object> domain, Object[] params, int index)
@@ -90,35 +91,58 @@ public class CSPSolver
 		return !domain.isEmpty();
 	}
 
-	private static <VAR> Map<VAR, Object> backtrack(Map<VAR, Object> assignment, IConstraintProblem<VAR> problem, Map<VAR, List<Object>> domains, Multigraph<VAR, IConstraint<VAR>> graph)
+	private static <VAR> Map<VAR, Object> backtrack(IConstraintProblem<VAR> problem, Map<VAR, List<Object>> domains, Multigraph<VAR, IConstraint<VAR>> graph, VAR lastAssigned)
 	{
 		Collection<? extends VAR> vars = problem.variables();
-		if (assignment.size() == vars.size())
-		{
-			//Assignment is complete
-			return assignment;
-		}
-		List<VAR> unassigned = new ArrayList<VAR>(vars.size() - assignment.size());
+
+		List<VAR> assigned = new ArrayList<VAR>();
+		List<VAR> unassigned = new ArrayList<VAR>();
 		for (VAR var : vars)
 		{
-			if (!assignment.containsKey(var))
+			int domainSize = domains.get(var).size();
+			if (domainSize == 0)
+			{
+				return null;
+			}
+			else if (domainSize == 1)
+			{
+				assigned.add(var);
+			}
+			else
 			{
 				unassigned.add(var);
 			}
 		}
 
-		//Choose next var to assign
-		VAR var = problem.selectNextVar(unassigned, domains);
-		List<IConstraint<VAR>> toCheck = new ArrayList<IConstraint<VAR>>();
-		Set<VAR> keySet = assignment.keySet();
+		if (unassigned.isEmpty())
+		{
+			Map<VAR, Object> result = new HashMap<VAR, Object>(vars.size());
+			for (VAR var : vars)
+			{
+				result.put(var, domains.get(var).get(0));
+			}
+			return result;
+		}
 
-		//Find the constraints this var is in
+		//Choose next var to assign
+		VAR var = null;
+		if (lastAssigned == null)
+		{
+			var = problem.firstVar(domains);
+		}
+		else
+		{
+			var = problem.selectNextVar(unassigned, domains, lastAssigned);
+		}
+		List<IConstraint<VAR>> toCheck = new ArrayList<IConstraint<VAR>>();
+
+		//Find the constraints that have this var in its scope
 		for (IConstraint<VAR> constraint : problem.constraints())
 		{
 			boolean hasAllVars = true;
 			for (VAR inScope : constraint.scope())
 			{
-				if (!inScope.equals(var) && !keySet.contains(inScope))
+				if (!inScope.equals(var) && !assigned.contains(inScope))
 				{
 					hasAllVars = false;
 					break;
@@ -130,7 +154,7 @@ public class CSPSolver
 			}
 		}
 
-		for (Object value : problem.sortDomain(domains.get(var)))
+		for (Object value : problem.sortValues(domains.get(var)))
 		{
 			boolean consistent = true;
 			//Make sure the assignment is consistent
@@ -140,7 +164,7 @@ public class CSPSolver
 				for (int i = 0; i < constraint.scope().size(); i++)
 				{
 					VAR param = constraint.scope().get(i);
-					params[i] = param.equals(var) ? value : assignment.get(param);
+					params[i] = param.equals(var) ? value : domains.get(param).get(0);
 				}
 				if (!constraint.constraint(params))
 				{
@@ -152,23 +176,38 @@ public class CSPSolver
 			{
 				continue;
 			}
-			assignment.put(var, value);
-			Map<VAR, List<Object>> newDomains = new HashMap<VAR, List<Object>>(domains);
+			Map<VAR, List<Object>> newDomains = new HashMap<VAR, List<Object>>(domains.size());
+			for (Entry<VAR, List<Object>> entry : domains.entrySet())
+			{
+				newDomains.put(entry.getKey(), new ArrayList<Object>(entry.getValue()));
+			}
 
+			//Remove everything from the domain except the chosen value.
+			Iterator<Object> iter = newDomains.get(var).iterator();
+			while (iter.hasNext())
+			{
+				if (iter.next() != value)
+				{
+					iter.remove();
+				}
+			}
+
+			//Performs AC1 (forward checking) to reduce the domains.
 			boolean success = true;
 			for (IConstraint<VAR> neighbour : graph.edgesOf(var))
 			{
 				List<VAR> scope = neighbour.scope();
+				//We only use arcs, so we can assume that there are only two vars
 				int otherIndex = scope.get(0).equals(var) ? 1 : 0;
 				VAR other = scope.get(otherIndex);
-				if (assignment.containsKey(other))
+				//If the other one already contains this, 
+				if (assigned.contains(other))
 				{
 					continue;
 				}
-				List<Object> newDomain = new ArrayList<Object>(newDomains.get(other));
+				List<Object> newDomain = newDomains.get(other);
 				Object[] params = new Object[2];
 				params[otherIndex == 0 ? 1 : 0] = value;
-				newDomains.put(other, newDomain);
 				if (!reduceDomain(neighbour, newDomain, params, otherIndex))
 				{
 					success = false;
@@ -178,16 +217,20 @@ public class CSPSolver
 
 			if (!success)
 			{
-				assignment.remove(var);
 				continue;
 			}
 
-			Map<VAR, Object> result = backtrack(assignment, problem, newDomains, graph);
+			//Assign the value and possibly do explicit propagation
+			if (!problem.allowedAssign(var, value, newDomains))
+			{
+				continue;
+			}
+
+			Map<VAR, Object> result = backtrack(problem, newDomains, graph, var);
 			if (result != null)
 			{
 				return result;
 			}
-			assignment.remove(var);
 		}
 		return null;
 	}
