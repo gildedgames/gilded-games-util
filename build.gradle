@@ -21,8 +21,30 @@ version = "1.8-1.1"
 group= "com.gildedgames.util" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "gilded-games-util"
 
+configurations {
+    shade
+    compile.extendsFrom shade
+    testShade
+    testCompile.extendsFrom testShade
+}
+
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral ()
+}
+
+dependencies {
+    shade 'com.googlecode.efficient-java-matrix-library:ejml:0.25'
+    shade 'org.apache.commons:commons-lang3:3.1'
+    testShade 'junit:junit:4.11'
+    shade 'org.jgrapht:jgrapht-core:0.9.1'
+    shade 'org.luaj:luaj-jme:3.0.1'
+    shade 'org.luaj:luaj-jse:3.0.1'
+}
+
 minecraft {
-    version = "1.8-11.14.1.1412"
+    version = "1.8-11.14.3.1449"
     runDir = "eclipse"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -58,20 +80,11 @@ jar {
         attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin',
             'FMLCorePluginContainsFMLMod': 'true'
     }
-}
-
-apply plugin: 'maven-publish'
-
-repositories {
-    mavenCentral ()
-}
-
-dependencies {
-    compile 'org.apache.commons:commons-lang3:3.1'
-    testCompile 'junit:junit:4.11'
-    compile 'org.jgrapht:jgrapht-core:0.9.1'
-    compile 'org.luaj:luaj-jme:3.0.1'
-    compile 'org.luaj:luaj-jse:3.0.1'
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
+    }
 }
 
 task sourceJar(type: Jar) {
