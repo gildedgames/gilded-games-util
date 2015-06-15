@@ -22,7 +22,6 @@ buildscript {
 // Load ForgeGradle
 apply plugin: 'forge'
 group = "com.gildedgames.util"
-
 // Define config location.
 ext.configFile = file "build.properties"
 
@@ -39,11 +38,19 @@ repositories {
 
 configurations {
     deployerJars
+    shade
+    compile.extendsFrom shade
+    testShade
+    testCompile.extendsFrom testShade
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-lang3:3.1'
-    testCompile 'junit:junit:4.11'
+    shade 'com.googlecode.efficient-java-matrix-library:ejml:0.25'
+    shade 'org.apache.commons:commons-lang3:3.1'
+    testShade 'junit:junit:4.11'
+    shade 'org.jgrapht:jgrapht-core:0.9.1'
+    shade 'org.luaj:luaj-jme:3.0.1'
+    shade 'org.luaj:luaj-jse:3.0.1'
 
     deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
@@ -52,6 +59,11 @@ jar {
     manifest {
         attributes 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin',
             'FMLCorePluginContainsFMLMod': 'true'
+    }
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+        }
     }
 }
 
@@ -166,4 +178,3 @@ task("uploadJars", dependsOn: "build") {
             }
         }    
     }
-}
