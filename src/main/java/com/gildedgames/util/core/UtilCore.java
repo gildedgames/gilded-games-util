@@ -23,12 +23,14 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.instances.InstanceCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.testutil.TestCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
 
@@ -65,6 +67,10 @@ public class UtilCore implements ICore
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
 		this.cores.add(new SpawningCore());
+		this.cores.add(InstanceCore.INST);
+
+		//Remove to make sure there is no testing code in
+		this.cores.add(TestCore.INST);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
