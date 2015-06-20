@@ -45,7 +45,7 @@ public class Button extends AbstractUI
 	{
 		super.draw(graphics, input);
 		
-		if (input.isHovered(this.getDimensions()))
+		if (input.isHovered(this.getDim()))
 		{
 			this.hoveredState.setVisible(true);
 		}

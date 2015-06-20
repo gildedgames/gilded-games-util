@@ -20,7 +20,7 @@ public class ScrollableUI extends AbstractUI
 	
 	public ScrollableUI(Dim2D scrollArea, UIView scrolledView, ScrollBar scrollBar)
 	{
-		super(scrolledView.getDimensions());
+		super(scrollArea.clone());
 
 		this.scrolledView = new ScissorableUI(scrollArea, scrolledView);
 		this.scrollBar = scrollBar;
@@ -31,16 +31,16 @@ public class ScrollableUI extends AbstractUI
 	{
 		super.onInit(container, input);
 		
-		this.scrollBar.getDimensions().setHeight(this.scrolledView.getScissoredArea().getHeight());
-		this.scrolledView.getDimensions().setWidth(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDimensions().getWidth());
+		this.scrollBar.getDim().setHeight(this.scrolledView.getScissoredArea().getHeight());
+		this.scrolledView.getDim().setWidth(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDim().getWidth());
 		
-		this.scrollBar.getDimensions().setPos(new Pos2D());
-		this.scrolledView.getDimensions().setPos(new Pos2D(this.scrollBar.getDimensions().getWidth(), 0));
+		this.scrollBar.getDim().setPos(new Pos2D());
+		this.scrolledView.getDim().setPos(new Pos2D(this.scrollBar.getDim().getWidth(), 0));
+
+		this.scrollBar.getDim().setCentering(false);
+		this.scrolledView.getDim().setCentering(false);
 		
-		this.scrollBar.getDimensions().setCentering(false);
-		this.scrolledView.getDimensions().setCentering(false);
-		
-		Dim2DHolder scrollingArea = new Dim2DModifier().addDim(this.scrolledView.getScissoredArea()).addDim(this.scrollBar);
+		Dim2DHolder scrollingArea = new Dim2DModifier().addDim(this.scrolledView.getScissoredArea());
 	
 		this.scrollBar.setScrollingArea(scrollingArea);
 		
@@ -51,9 +51,9 @@ public class ScrollableUI extends AbstractUI
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDimensions().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
+		int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDim().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
 
-		//this.scrolledView.getDimensions().setY(-scrollValue);
+		this.scrolledView.getDim().setY(-scrollValue);
 		
 		super.draw(graphics, input);
 	}

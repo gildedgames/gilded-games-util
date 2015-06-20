@@ -40,7 +40,7 @@ public class TextureElement extends AbstractUI
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		graphics.drawSprite(this.sprite, this.getDimensions(), this.data);
+		graphics.drawSprite(this.sprite, this.getDim(), this.data);
 	}
 
 }

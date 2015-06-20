@@ -37,7 +37,7 @@ public class MinecraftButtonSounds extends UIDecorator<UIView>
 	{
 		UIView view = this.getDecoratedElement();
 		
-		if (input.isHovered(view.getDimensions()) && pool.contains(this.event))
+		if (input.isHovered(view.getDim()) && pool.contains(this.event))
 		{
 			this.playPressSound(this.mc.getSoundHandler());
 		}

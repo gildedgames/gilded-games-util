@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DHolder;
-import com.gildedgames.util.ui.data.Dim2D;
 
 public class Dim2DModifier implements Dim2DHolder
 {
@@ -21,14 +20,14 @@ public class Dim2DModifier implements Dim2DHolder
 	
 	public Dim2DModifier addDim(Dim2DHolder holder)
 	{
-		this.dims.add(holder.getDimensions());
+		this.dims.add(holder.getDim());
 		
 		return this;
 	}
 	
 	public Dim2DModifier removeDim(Dim2DHolder holder)
 	{
-		this.dims.remove(holder.getDimensions());
+		this.dims.remove(holder.getDim());
 		
 		return this;
 	}
@@ -62,7 +61,7 @@ public class Dim2DModifier implements Dim2DHolder
 	}
 
 	@Override
-	public Dim2D getDimensions()
+	public Dim2D getDim()
 	{
 		Dim2D combinedResult = new Dim2D();
 		
@@ -70,15 +69,17 @@ public class Dim2DModifier implements Dim2DHolder
 		{
 			if (dim != null)
 			{
-				combinedResult.set(Dim2D.combine(combinedResult, dim));
+				//combinedResult.set(Dim2D.combine(combinedResult, dim));
+				
+				combinedResult.addPos(dim.getPos());
 			}
 		}
 		
 		for (Dim2DHolder holder : this.holders)
 		{
-			if (holder != null && holder.getDimensions() != null)
+			if (holder != null && holder.getDim() != null)
 			{
-				combinedResult.set(Dim2D.combine(combinedResult, holder.getDimensions()));
+				combinedResult.set(Dim2D.combine(combinedResult, holder.getDim()));
 			}
 		}
 		
@@ -88,7 +89,7 @@ public class Dim2DModifier implements Dim2DHolder
 	@Override
 	public String toString()
 	{
-		return this.getDimensions().toString();
+		return this.getDim().toString();
 	}
 
 }

@@ -51,11 +51,11 @@ public class RectangleElement extends AbstractUI
 	{
 		if (this.endColor == null)
 		{
-			graphics.drawRectangle(this.getDimensions(), this.startColor);
+			graphics.drawRectangle(this.getDim(), this.startColor);
 		}
 		else
 		{
-			graphics.drawGradientRectangle(this.getDimensions(), this.startColor, this.endColor);
+			graphics.drawGradientRectangle(this.getDim(), this.startColor, this.endColor);
 		}
 		
 	}

@@ -181,7 +181,7 @@ public class UIElementContainer implements Iterable<UIElement>, NBT
 			{
 				UIView view = (UIView) element;
 
-				areas.add(view.getDimensions());
+				areas.add(view.getDim());
 				
 				UIElementContainer internal = container.getContainerFor(key);
 				

@@ -58,7 +58,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		/** TO-DO: Figure out why the prevPos and currentPos are the same wtf?! :D **/
 		
+		Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		
 		GlStateManager.translate(x, y, 0);
+
 		GlStateManager.scale(dim.getScale(), dim.getScale(), dim.getScale());
 		
 		GlStateManager.enableBlend();
@@ -67,6 +71,10 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.color(data.getRed(), data.getGreen(), data.getBlue(), data.getAlpha());
 
 		inner.draw();
+		
+		GlStateManager.disableBlend();
+		
+		worldrenderer.setTranslation(0, 0, 0);
 		
 		GlStateManager.popMatrix();
 	}

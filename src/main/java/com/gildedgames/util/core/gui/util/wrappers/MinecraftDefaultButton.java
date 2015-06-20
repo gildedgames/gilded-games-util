@@ -62,11 +62,11 @@ public class MinecraftDefaultButton extends AbstractUI
 		
 		this.button.drawButton(mc, input.getMouseX(), input.getMouseY());
 		
-		this.button.xPosition = (int) this.getDimensions().getX();
-		this.button.yPosition = (int) this.getDimensions().getY();
+		this.button.xPosition = (int) this.getDim().getX();
+		this.button.yPosition = (int) this.getDim().getY();
 		
-		this.button.width = (int) this.getDimensions().getWidth();
-		this.button.height = (int) this.getDimensions().getHeight();
+		this.button.width = (int) this.getDim().getWidth();
+		this.button.height = (int) this.getDim().getHeight();
 	}
 	
 	@Override

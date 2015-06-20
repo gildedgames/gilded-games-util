@@ -30,9 +30,9 @@ public class ScissorableUI extends UIDecorator<UIView>
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.getScissoredArea().setScale(this.getDecoratedElement().getDimensions().getScale());
+		this.getScissoredArea().setScale(this.getDim().getScale());
 		
-		//GL11.glPushMatrix();
+		GL11.glPushMatrix();
 
 		float lowerLeftCornerY = this.getScissoredArea().getY() + this.getScissoredArea().getHeight();
 
@@ -42,15 +42,15 @@ public class ScissorableUI extends UIDecorator<UIView>
 		float cutWidth = this.getScissoredArea().getWidth() * input.getScaleFactor();
 		float cutHeight = this.getScissoredArea().getHeight() * input.getScaleFactor();
 
-		//GL11.glEnable(GL_SCISSOR_TEST);
+		GL11.glEnable(GL_SCISSOR_TEST);
 		
-		//GL11.glScissor((int)cornerX, (int)cornerY, (int)cutWidth, (int)cutHeight);
+		GL11.glScissor((int)cornerX, (int)cornerY, (int)cutWidth, (int)cutHeight);
 
 		super.draw(graphics, input);
 
-		//GL11.glDisable(GL_SCISSOR_TEST);
+		GL11.glDisable(GL_SCISSOR_TEST);
 		
-		//GL11.glPopMatrix();
+		GL11.glPopMatrix();
 	}
 
 }

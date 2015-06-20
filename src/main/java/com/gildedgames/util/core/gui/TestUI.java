@@ -115,7 +115,7 @@ public class TestUI extends AbstractUI
 
 		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		scrollable.getDimensions().setPos(new Pos2D(20, 0));
+		scrollable.getDim().setPos(new Pos2D(0, 0));
 
 		container.setElement("scrollable", scrollable);
 
