@@ -95,8 +95,8 @@ public class UIFactory
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
 		
-		Dim2D spriteDimensions = new Dim2D().setArea(10, 10).setPos(pos.clone()).setCentering(centered);
-		Dim2D barDimensions = new Dim2D().setArea(10, height).setPos(pos.clone()).setCentering(centered);
+		Dim2D spriteDimensions = new Dim2D().setArea(10, 10).setCentering(centered);
+		Dim2D barDimensions = new Dim2D().setArea(10, height).setCentering(centered);
 		
 		BasicUI topButton = UIFactory.createArrowButton(centered);
 		BasicUI bottomButton = UIFactory.createArrowButton(centered);

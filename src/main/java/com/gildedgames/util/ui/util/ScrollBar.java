@@ -6,7 +6,6 @@ import com.gildedgames.util.ui.common.AbstractUI;
 import com.gildedgames.util.ui.common.BasicUI;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DHolder;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.event.view.MouseEventView;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -52,9 +51,9 @@ public class ScrollBar extends AbstractUI
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.getDimensions().withoutModifiers().getWidth(), this.bottomButton.getDimensions().withoutModifiers().getWidth()), this.baseBarTexture.getDimensions().getWidth());
+		int maxWidth = Math.max(Math.max(this.topButton.getDim().withoutModifiers().getWidth(), this.bottomButton.getDim().withoutModifiers().getWidth()), this.baseBarTexture.getDim().getWidth());
 
-		this.getDimensions().setWidth(maxWidth);
+		this.getDim().setWidth(maxWidth);
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -72,15 +71,18 @@ public class ScrollBar extends AbstractUI
 	{
 		super.onInit(container, input);
 
-		this.topButton.getDimensions().setPos(new Pos2D());
-		this.bottomButton.getDimensions().setPos(new Pos2D());
+		this.topButton.getDim().resetPos();
+		this.bottomButton.getDim().resetPos();
 		
-		this.topButton.getDimensions().setCentering(this.getDimensions());
-		this.bottomButton.getDimensions().setCentering(this.getDimensions());
+		this.topButton.getDim().setCentering(this.getDim());
+		this.bottomButton.getDim().setCentering(this.getDim());
 		
-		//Dimensions2DModifier totalHeightMinusBottomButton = new Dimensions2DModifier().addDim(new Dim2D().setY(this.getDimensions().getHeight() - this.bottomArrowButton.getDimensions().getHeight()));
+		this.baseBarTexture.getDim().setCentering(this.getDim());
+		this.grabbableBarTexture.getDim().setCentering(this.getDim());
+		
+		Dim2DModifier totalHeightMinusBottomButton = new Dim2DModifier().addDim(new Dim2D().setY(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()));
 
-		//this.bottomArrowButton.getDimensions().addModifier(totalHeightMinusBottomButton);
+		this.bottomButton.getDim().addModifier(totalHeightMinusBottomButton);
 
 		this.topButton.getListeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
 		
@@ -89,16 +91,13 @@ public class ScrollBar extends AbstractUI
 		container.setElement("topButton", this.topButton);
 		container.setElement("bottomButton", this.bottomButton);
 
-		this.baseBar = new RepeatableUI(this.baseBarTexture);
-		this.grabbableBar = new RepeatableUI(this.grabbableBarTexture);
+		this.baseBar = new RepeatableUI(new Dim2D().setArea(this.baseBarTexture.getDim().getWidth(), this.getDim().withoutModifiers().getHeight()), this.baseBarTexture);
+		this.grabbableBar = new RepeatableUI(new Dim2D().setArea(this.grabbableBarTexture.getDim().getWidth(), 20), this.grabbableBarTexture);
 		
-		Dim2DModifier bottomOfTopButton = new Dim2DModifier().addDim(new Dim2D().setY(this.topButton.getDimensions().withoutModifiers().getHeight()));
+		Dim2DModifier bottomOfTopButton = new Dim2DModifier().addDim(new Dim2D().setY(this.topButton.getDim().withoutModifiers().getHeight()));
 		
-		//this.baseBar.getDimensions().addModifier(bottomOfTopButton);
-		//this.grabbableBar.getDimensions().addModifier(bottomOfTopButton);
-		
-		this.baseBar.getDimensions().setArea(this.baseBarTexture.getDimensions().withoutModifiers().getWidth(), this.getDimensions().withoutModifiers().getHeight());
-		this.grabbableBar.getDimensions().setArea(this.grabbableBarTexture.getDimensions().getWidth(), 20);
+		this.baseBar.getDim().addModifier(bottomOfTopButton);
+		this.grabbableBar.getDim().addModifier(bottomOfTopButton);
 
 		container.setElement("baseBar", this.baseBar);
 		container.setElement("grabbableBar", this.grabbableBar);
@@ -109,7 +108,7 @@ public class ScrollBar extends AbstractUI
 	{
 		super.onMouseScroll(input, scrollDifference);
 
-		if (input.isHovered(this.grabbableBar.getDimensions()) || input.isHovered(this.scrollingArea.getDimensions()))
+		if (input.isHovered(this.grabbableBar.getDim()) || input.isHovered(this.scrollingArea.getDim()))
 		{
 			int scrollFactor = -scrollDifference / 120;
 			
@@ -129,17 +128,17 @@ public class ScrollBar extends AbstractUI
 
 		if (pool.has(MouseButton.LEFT))
 		{
-			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.baseBar.getDimensions()))
+			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.baseBar.getDim()))
 			{
 				this.grabbedBar = true;
 				
-				if (input.isHovered(this.grabbableBar.getDimensions()))
+				if (input.isHovered(this.grabbableBar.getDim()))
 				{
-					this.grabbedMouseYOffset = -(this.grabbableBar.getDimensions().getY() - input.getMouseY());
+					this.grabbedMouseYOffset = -(this.grabbableBar.getDim().getY() - input.getMouseY());
 				}
 				else
 				{
-					this.grabbedMouseYOffset = this.grabbableBar.getDimensions().getHeight() / 2;
+					this.grabbedMouseYOffset = this.grabbableBar.getDim().getHeight() / 2;
 				}
 			}
 			else if (pool.has(ButtonState.RELEASED))
@@ -160,14 +159,14 @@ public class ScrollBar extends AbstractUI
 		
 		if (this.grabbedBar)
 		{
-			int basePosY = input.getMouseY() - this.baseBar.getDimensions().getY() + this.grabbedMouseYOffset;
+			int basePosY = input.getMouseY() - this.baseBar.getDim().getY() + this.grabbedMouseYOffset;
 			
-			this.setScrollPercentage((float)basePosY / (float)this.baseBar.getDimensions().getHeight());
+			this.setScrollPercentage((float)basePosY / (float)this.baseBar.getDim().getHeight());
 		}
 		
-		final int grabbableBarY = this.baseBar.getDimensions().getY() + (int)((this.baseBar.getDimensions().getHeight() - this.baseBar.getDimensions().getY()) * this.getScrollPercentage());
+		final int grabbableBarY = this.baseBar.getDim().getY() + (int)((this.baseBar.getDim().getHeight() - this.baseBar.getDim().getY()) * this.getScrollPercentage());
 		
-		this.grabbableBar.getDimensions().setY(grabbableBarY);
+		this.grabbableBar.getDim().setY(grabbableBarY);
 
 		//System.out.println(this.baseBar.getDimensions().containsModifier(this.grabbableBar));
 		
@@ -201,7 +200,7 @@ public class ScrollBar extends AbstractUI
 	
 	public Dim2D getScrollingArea()
 	{
-		return this.scrollingArea.getDimensions();
+		return this.scrollingArea.getDim();
 	}
 	
 	@Override
@@ -234,7 +233,7 @@ public class ScrollBar extends AbstractUI
 		@Override
 		public void onMouseInput(InputProvider input, MouseInputPool pool)
 		{
-			if (pool.has(MouseButton.LEFT) && input.isHovered(this.scrollBar.topButton.getDimensions()))
+			if (pool.has(MouseButton.LEFT) && input.isHovered(this.scrollBar.topButton.getDim()))
 			{
 				this.scrollBar.increaseScrollPercentage(this.scrollPercentage);
 			}

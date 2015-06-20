@@ -66,13 +66,13 @@ public abstract class UIDecorator<T extends UIElement> implements BasicUI
 	}
 
 	@Override
-	public Dim2D getDimensions()
+	public Dim2D getDim()
 	{
 		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
 		
 		if (holder != null)
 		{
-			return holder.getDimensions();
+			return holder.getDim();
 		}
 		
 		return null;

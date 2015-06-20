@@ -65,17 +65,35 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			UIElementContainer internal = container.getContainerFor(key);
 			
-			element.onInit(internal, input);
-			
 			Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
 			
-			for (UIElement internalElement : internal)
+			/*if (parentModifier != null)
 			{
-				Dim2DHolder child = ObjectFilter.getType(internalElement, Dim2DHolder.class);
+				parentModifier.getDim().clearModifiers();
 				
-				if (child != null && parentModifier != null)
+				for (UIElement internalElement : internal)
 				{
-					child.getDimensions().addModifier(parentModifier);
+					Dim2DHolder child = ObjectFilter.getType(internalElement, Dim2DHolder.class);
+					
+					if (child != null)
+					{
+						child.getDim().clearModifiers();
+					}
+				}
+			}*/
+			
+			element.onInit(internal, input);
+
+			if (parentModifier != null)
+			{
+				for (UIElement internalElement : internal)
+				{
+					Dim2DHolder child = ObjectFilter.getType(internalElement, Dim2DHolder.class);
+					
+					if (child != null)
+					{
+						child.getDim().addModifier(parentModifier);
+					}
 				}
 			}
 			
@@ -105,11 +123,11 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 			
 			UIElementContainer internal = container.getContainerFor(key);
 			
+			Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
+
 			element.onResolutionChange(internal, input);
-			
-			Dim2DHolder modifier = ObjectFilter.getType(element, Dim2DHolder.class);
-			
-			if (modifier != null)
+
+			if (parentModifier != null)
 			{
 				for (UIElement internalElement : internal)
 				{
@@ -117,7 +135,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 					
 					if (child != null)
 					{
-						child.getDimensions().addModifier(modifier);
+						child.getDim().addModifier(parentModifier);
 					}
 				}
 			}
@@ -338,7 +356,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	}
 
 	@Override
-	public Dim2D getDimensions()
+	public Dim2D getDim()
 	{
 		return new Dim2D();
 	}

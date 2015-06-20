@@ -37,7 +37,7 @@ public class FrameEvent extends AbstractUI
 	}
 
 	@Override
-	public Dim2D getDimensions()
+	public Dim2D getDim()
 	{
 		return null;
 	}

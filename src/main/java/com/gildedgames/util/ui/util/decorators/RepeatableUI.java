@@ -11,44 +11,39 @@ public class RepeatableUI extends AbstractUI
 	
 	protected ScissorableUI repeatedView;
 
-	protected Dim2D repeatedArea = new Dim2D();
-	
-	public RepeatableUI(UIView repeatedView)
+	public RepeatableUI(Dim2D repeatArea, UIView repeatedView)
 	{
-		super(new Dim2D());
+		super(repeatArea);
 		
-		this.repeatedView = new ScissorableUI(new Dim2D(), repeatedView);
-		
-		this.repeatedView.getDimensions().addModifier(this);
-	}
-	
-	public Dim2D getRepeatedArea()
-	{
-		return this.repeatedArea;
+		this.repeatedView = new ScissorableUI(repeatArea, repeatedView);
 	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.repeatedView.getScissoredArea().set(this.getDimensions());
+		this.repeatedView.getScissoredArea().set(this.getDim());
 		
-		int textureHeight = this.repeatedView.getDimensions().getHeight();
-		int textureWidth = this.repeatedView.getDimensions().getWidth();
+		this.repeatedView.getDim().clearModifiers();
+		this.repeatedView.getDim().addModifier(this);
+		this.repeatedView.getDim().resetPos();
+		
+		int textureHeight = this.repeatedView.getDim().getHeight();
+		int textureWidth = this.repeatedView.getDim().getWidth();
 		
 		int heightCountNeeded = 0;
 		int widthCountNeeded = 0;
 
 		if (textureHeight != 0)
 		{
-			heightCountNeeded = (int) (this.getDimensions().getHeight() / textureHeight);
+			heightCountNeeded = (int) (this.getDim().getHeight() / textureHeight);
 		}
 		
 		if (textureWidth != 0)
 		{
-			widthCountNeeded = (int) (this.getDimensions().getWidth() / textureWidth);
+			widthCountNeeded = (int) (this.getDim().getWidth() / textureWidth);
 		}
 
-		Dim2D oldDim = this.repeatedView.getDimensions().clone();
+		Dim2D oldDim = this.repeatedView.getDim().clone();
 		
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
@@ -56,14 +51,14 @@ public class RepeatableUI extends AbstractUI
 			{
 				this.repeatedView.draw(graphics, input);
 				
-				this.repeatedView.getDimensions().addX(textureWidth);
+				this.repeatedView.getDim().addX(textureWidth);
 			}
 
-			this.repeatedView.getDimensions().setX(oldDim.getX());
-			this.repeatedView.getDimensions().addY(textureHeight);
+			this.repeatedView.getDim().setX(oldDim.withoutModifiers().getX());
+			this.repeatedView.getDim().addY(textureHeight);
 		}
 		
-		this.repeatedView.getDimensions().set(oldDim);
+		this.repeatedView.getDim().set(oldDim);
 	}
 	
 }

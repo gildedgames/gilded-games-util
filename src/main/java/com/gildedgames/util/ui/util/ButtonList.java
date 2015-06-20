@@ -68,14 +68,14 @@ public class ButtonList extends AbstractUI
 		{
 			if (contentProvider != null)
 			{
-				this.getListeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.getListeners().map()), this.getDimensions().immutable()));
+				this.getListeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.getListeners().map()), this.getDim().immutable()));
 			}
 		}
 	}
 	
 	private void positionContent(List<UIView> views)
 	{
-		this.positioner.positionList(views, this.getDimensions());
+		this.positioner.positionList(views, this.getDim().immutable());
 		
 		int totalContentHeight = 0;
 		
@@ -83,13 +83,13 @@ public class ButtonList extends AbstractUI
 		{
 			if (view != null)
 			{
-				view.getDimensions().addModifier(this);
+				view.getDim().addModifier(this);
 				
-				totalContentHeight += view.getDimensions().getHeight();
+				totalContentHeight += view.getDim().getHeight();
 			}
 		}
 		
-		this.getDimensions().setHeight(totalContentHeight);
+		this.getDim().setHeight(totalContentHeight);
 	}
 	
 	private void sortContent()
@@ -135,7 +135,7 @@ public class ButtonList extends AbstractUI
 
 		this.refresh();
 
-		this.getDimensions().set(this.getListeners().getCombinedDimensions());
+		//this.getDimensions().set(this.getListeners().getCombinedDimensions());
 	}
 	
 	@Override

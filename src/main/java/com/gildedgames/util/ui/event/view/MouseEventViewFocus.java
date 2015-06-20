@@ -36,7 +36,7 @@ public class MouseEventViewFocus extends MouseEvent
 	@Override
 	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		if (input.isHovered(this.view.getDimensions()) && pool.containsAll(this.getEvents()))
+		if (input.isHovered(this.view.getDim()) && pool.containsAll(this.getEvents()))
 		{
 			this.view.setVisible(true);
 		}

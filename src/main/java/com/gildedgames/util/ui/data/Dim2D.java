@@ -49,6 +49,11 @@ public class Dim2D
 		return new ArrayList<Dim2DHolder>(this.modifiers);
 	}
 
+	public void clearModifiers()
+	{
+		this.modifiers.clear();
+	}
+	
 	public void addModifier(Dim2DHolder modifier)
 	{
 		if (this.modifiers.contains(modifier))
@@ -87,13 +92,20 @@ public class Dim2D
 		
 		for (Dim2DHolder modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getDimensions() != null && modifier.getDimensions() != this)
+			if (modifier != null && modifier.getDim() != null && modifier.getDim() != this)
 			{
-				modifiedScale *= modifier.getDimensions().getScale();
+				modifiedScale *= modifier.getDim().getScale();
 			}
 		}
 		
 		return modifiedScale;
+	}
+	
+	public Dim2D resetPos()
+	{
+		this.position = new Pos2D();
+		
+		return this;
 	}
 
 	/**
@@ -129,9 +141,9 @@ public class Dim2D
 		
 		for (Dim2DHolder modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getDimensions() != null && modifier.getDimensions() != this)
+			if (modifier != null && modifier.getDim() != null && modifier.getDim() != this)
 			{
-				modifiedPos = modifiedPos.withAdded(modifier.getDimensions().getPos());
+				modifiedPos = modifiedPos.withAdded(modifier.getDim().getPos());
 			}
 		}
 		

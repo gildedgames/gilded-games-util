@@ -71,7 +71,7 @@ public abstract class AbstractUI implements BasicUI
 	}
 
 	@Override
-	public Dim2D getDimensions()
+	public Dim2D getDim()
 	{
 		return this.dimensions;
 	}
