@@ -178,3 +178,4 @@ task("uploadJars", dependsOn: "build") {
             }
         }    
     }
+}
