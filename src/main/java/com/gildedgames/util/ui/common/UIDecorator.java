@@ -79,6 +79,17 @@ public abstract class UIDecorator<T extends UIElement> implements BasicUI
 	}
 	
 	@Override
+	public void setDim(Dim2D dim)
+	{
+		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
+		
+		if (holder != null)
+		{
+			holder.setDim(dim);
+		}
+	}
+	
+	@Override
 	public void tick(InputProvider input, TickInfo tickInfo)
 	{
 		this.element.tick(input, tickInfo);

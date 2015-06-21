@@ -25,7 +25,7 @@ public class MinecraftDefaultButton extends AbstractUI
 
 	public MinecraftDefaultButton(GuiButton button, boolean centered)
 	{
-		super(null, new Dim2D().setPos(new Pos2D(button.xPosition, button.yPosition)).setArea(button.getButtonWidth(), button.height).setCentering(centered));
+		super(null, Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).commit());
 		
 		this.button = button;
 	}

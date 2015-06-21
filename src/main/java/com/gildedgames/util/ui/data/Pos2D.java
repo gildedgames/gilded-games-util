@@ -16,11 +16,6 @@ public class Pos2D
 		this.y = y;
 	}
 	
-	public Pos2D clone()
-	{
-		return new Pos2D(this.x, this.y);
-	}
-	
 	public Pos2D withAddedX(int x)
 	{
 		return this.withAdded(x, 0);

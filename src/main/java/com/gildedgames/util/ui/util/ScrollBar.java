@@ -51,9 +51,9 @@ public class ScrollBar extends AbstractUI
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.getDim().withoutModifiers().getWidth(), this.bottomButton.getDim().withoutModifiers().getWidth()), this.baseBarTexture.getDim().getWidth());
+		int maxWidth = Math.max(Math.max(Dim2D.build(this.topButton).clearModifiers().commit().getWidth(), Dim2D.build(this.bottomButton).clearModifiers().commit().getWidth()), this.baseBarTexture.getDim().getWidth());
 
-		this.getDim().setWidth(maxWidth);
+		this.setDim(Dim2D.build(this).width(maxWidth).commit());
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -71,18 +71,18 @@ public class ScrollBar extends AbstractUI
 	{
 		super.onInit(container, input);
 
-		this.topButton.getDim().resetPos();
-		this.bottomButton.getDim().resetPos();
+		this.topButton.setDim(Dim2D.build(this.topButton).resetPos().commit());
+		this.bottomButton.setDim(Dim2D.build(this.bottomButton).resetPos().commit());
 		
-		this.topButton.getDim().setCentering(this.getDim());
-		this.bottomButton.getDim().setCentering(this.getDim());
+		this.topButton.setDim(Dim2D.build(this.topButton).center(this.getDim()).commit());
+		this.bottomButton.setDim(Dim2D.build(this.bottomButton).center(this.getDim()).commit());
 		
-		this.baseBarTexture.getDim().setCentering(this.getDim());
-		this.grabbableBarTexture.getDim().setCentering(this.getDim());
+		this.baseBarTexture.setDim(Dim2D.build(this.baseBarTexture).center(this.getDim()).commit());
+		this.grabbableBarTexture.setDim(Dim2D.build(this.grabbableBarTexture).center(this.getDim()).commit());
 		
-		Dim2DModifier totalHeightMinusBottomButton = new Dim2DModifier().addDim(new Dim2D().setY(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()));
+		Dim2DModifier totalHeightMinusBottomButton = new Dim2DModifier().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).commit());
 
-		this.bottomButton.getDim().addModifier(totalHeightMinusBottomButton);
+		this.bottomButton.setDim(Dim2D.build(this.bottomButton).addModifier(totalHeightMinusBottomButton).commit());
 
 		this.topButton.getListeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
 		
@@ -91,13 +91,13 @@ public class ScrollBar extends AbstractUI
 		container.setElement("topButton", this.topButton);
 		container.setElement("bottomButton", this.bottomButton);
 
-		this.baseBar = new RepeatableUI(new Dim2D().setArea(this.baseBarTexture.getDim().getWidth(), this.getDim().withoutModifiers().getHeight()), this.baseBarTexture);
-		this.grabbableBar = new RepeatableUI(new Dim2D().setArea(this.grabbableBarTexture.getDim().getWidth(), 20), this.grabbableBarTexture);
+		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), Dim2D.build(this).clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
+		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).commit(), this.grabbableBarTexture);
 		
-		Dim2DModifier bottomOfTopButton = new Dim2DModifier().addDim(new Dim2D().setY(this.topButton.getDim().withoutModifiers().getHeight()));
+		Dim2DModifier bottomOfTopButton = new Dim2DModifier().addDim(Dim2D.build().y(Dim2D.build(this.topButton).clearModifiers().commit().getHeight()).commit());
 		
-		this.baseBar.getDim().addModifier(bottomOfTopButton);
-		this.grabbableBar.getDim().addModifier(bottomOfTopButton);
+		this.baseBar.setDim(Dim2D.build(this.baseBar).addModifier(bottomOfTopButton).commit());
+		this.grabbableBar.setDim(Dim2D.build(this.grabbableBar).addModifier(bottomOfTopButton).commit());
 
 		container.setElement("baseBar", this.baseBar);
 		container.setElement("grabbableBar", this.grabbableBar);
@@ -166,7 +166,7 @@ public class ScrollBar extends AbstractUI
 		
 		final int grabbableBarY = this.baseBar.getDim().getY() + (int)((this.baseBar.getDim().getHeight() - this.baseBar.getDim().getY()) * this.getScrollPercentage());
 		
-		this.grabbableBar.getDim().setY(grabbableBarY);
+		this.grabbableBar.setDim(Dim2D.build(this.grabbableBar).y(grabbableBarY).commit());
 
 		//System.out.println(this.baseBar.getDimensions().containsModifier(this.grabbableBar));
 		
