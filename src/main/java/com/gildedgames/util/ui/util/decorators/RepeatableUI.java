@@ -21,12 +21,10 @@ public class RepeatableUI extends AbstractUI
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.repeatedView.getScissoredArea().set(this.getDim());
+		this.repeatedView.setScissoredArea(this.getDim());
 		
-		this.repeatedView.getDim().clearModifiers();
-		this.repeatedView.getDim().addModifier(this);
-		this.repeatedView.getDim().resetPos();
-		
+		this.repeatedView.setDim(Dim2D.build(this.repeatedView).clearModifiers().addModifier(this).resetPos().commit());
+
 		int textureHeight = this.repeatedView.getDim().getHeight();
 		int textureWidth = this.repeatedView.getDim().getWidth();
 		
@@ -44,6 +42,7 @@ public class RepeatableUI extends AbstractUI
 		}
 
 		Dim2D oldDim = this.repeatedView.getDim().clone();
+		Dim2D oldDimNoMods = Dim2D.build(oldDim).clearModifiers().commit();
 		
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
@@ -51,14 +50,13 @@ public class RepeatableUI extends AbstractUI
 			{
 				this.repeatedView.draw(graphics, input);
 				
-				this.repeatedView.getDim().addX(textureWidth);
+				this.repeatedView.setDim(Dim2D.build(this.repeatedView).addX(textureWidth).commit());
 			}
 
-			this.repeatedView.getDim().setX(oldDim.withoutModifiers().getX());
-			this.repeatedView.getDim().addY(textureHeight);
+			this.repeatedView.setDim(Dim2D.build(this.repeatedView).x(oldDimNoMods.getX()).addY(textureHeight).commit());
 		}
 		
-		this.repeatedView.getDim().set(oldDim);
+		this.repeatedView.setDim(oldDim);
 	}
 	
 }

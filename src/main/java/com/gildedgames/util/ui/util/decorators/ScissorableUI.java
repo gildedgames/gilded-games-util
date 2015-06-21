@@ -27,10 +27,15 @@ public class ScissorableUI extends UIDecorator<UIView>
 		return this.scissoredArea;
 	}
 	
+	public void setScissoredArea(Dim2D dim)
+	{
+		this.scissoredArea = dim;
+	}
+	
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.getScissoredArea().setScale(this.getDim().getScale());
+		this.setScissoredArea(Dim2D.build(this.getScissoredArea()).scale(this.getDim().getScale()).commit());
 		
 		GL11.glPushMatrix();
 

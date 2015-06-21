@@ -31,15 +31,30 @@ public class ScrollableUI extends AbstractUI
 	{
 		super.onInit(container, input);
 		
-		this.scrollBar.getDim().setHeight(this.scrolledView.getScissoredArea().getHeight());
-		this.scrolledView.getDim().setWidth(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDim().getWidth());
+		this.scrollBar.setDim(Dim2D.build(this.scrolledView)
+								.height(this.scrolledView.getScissoredArea().getHeight())
+								.commit());
 		
-		this.scrollBar.getDim().setPos(new Pos2D());
-		this.scrolledView.getDim().setPos(new Pos2D(this.scrollBar.getDim().getWidth(), 0));
+		this.scrolledView.setDim(Dim2D.build(this.scrolledView)
+									.width(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDim().getWidth())
+									.commit());
+		
+		this.scrollBar.setDim(Dim2D.build(this.scrollBar)
+								.resetPos()
+								.commit());
+		
+		this.scrolledView.setDim(Dim2D.build(this.scrolledView)
+									.pos(new Pos2D(this.scrollBar.getDim().getWidth(), 0))
+									.commit());
 
-		this.scrollBar.getDim().setCentering(false);
-		this.scrolledView.getDim().setCentering(false);
+		this.scrollBar.setDim(Dim2D.build(this.scrollBar)
+								.center(false)
+								.commit());
 		
+		this.scrolledView.setDim(Dim2D.build(this.scrolledView)
+									.center(false)
+									.commit());
+
 		Dim2DHolder scrollingArea = new Dim2DModifier().addDim(this.scrolledView.getScissoredArea());
 	
 		this.scrollBar.setScrollingArea(scrollingArea);
@@ -53,7 +68,7 @@ public class ScrollableUI extends AbstractUI
 	{
 		int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDim().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
 
-		this.scrolledView.getDim().setY(-scrollValue);
+		this.scrolledView.setDim(Dim2D.build(this.scrolledView).y(-scrollValue).commit());
 		
 		super.draw(graphics, input);
 	}

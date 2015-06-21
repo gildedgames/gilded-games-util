@@ -33,7 +33,7 @@ public class ButtonList extends AbstractUI
 
 	public ButtonList(Pos2D pos, int width, UIViewPositioner positioner, ContentFactory... contentProviders)
 	{
-		super(new Dim2D().setPos(pos).setWidth(width));
+		super(Dim2D.build().pos(pos).width(width).commit());
 		
 		this.positioner = positioner;
 		
@@ -68,14 +68,14 @@ public class ButtonList extends AbstractUI
 		{
 			if (contentProvider != null)
 			{
-				this.getListeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.getListeners().map()), this.getDim().immutable()));
+				this.getListeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.getListeners().map()), this.getDim()));
 			}
 		}
 	}
 	
 	private void positionContent(List<UIView> views)
 	{
-		this.positioner.positionList(views, this.getDim().immutable());
+		this.positioner.positionList(views, this.getDim());
 		
 		int totalContentHeight = 0;
 		
@@ -83,13 +83,13 @@ public class ButtonList extends AbstractUI
 		{
 			if (view != null)
 			{
-				view.getDim().addModifier(this);
+				view.setDim(Dim2D.build(view).addModifier(this).commit());
 				
 				totalContentHeight += view.getDim().getHeight();
 			}
 		}
 		
-		this.getDim().setHeight(totalContentHeight);
+		this.setDim(Dim2D.build(this).height(totalContentHeight).commit());
 	}
 	
 	private void sortContent()

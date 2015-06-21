@@ -8,7 +8,6 @@ import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
 import com.gildedgames.util.ui.common.BasicUI;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.Button;
@@ -54,7 +53,7 @@ public class UIFactory
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
 		Sprite buttonClickedSprite = new Sprite(HOPPER_TEXTURE, 40, 174, 20, 20, 256, 256);
 		
-		Dim2D dim = new Dim2D().setPos(pos.clone()).setArea(20, 20).setCentering(centered);
+		Dim2D dim = Dim2D.build().pos(pos).area(20, 20).center(centered).commit();
 		
 		Button button = new Button(dim, new TextureElement(buttonDefaultSprite, dim.clone()), new TextureElement(buttonHoveredSprite, dim.clone()), new TextureElement(buttonClickedSprite, dim.clone()));
 		
@@ -68,7 +67,7 @@ public class UIFactory
 	
 	public static BasicUI createButton(Pos2D pos, int width, String text, boolean centered)
 	{
-		Dim2D dim = new Dim2D().setArea(width, 20).setCentering(centered).setPos(pos.clone());
+		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).commit();
 		
 		UIView button = new MinecraftDefaultButton(dim, text);
 		
@@ -95,8 +94,8 @@ public class UIFactory
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
 		
-		Dim2D spriteDimensions = new Dim2D().setArea(10, 10).setCentering(centered);
-		Dim2D barDimensions = new Dim2D().setArea(10, height).setCentering(centered);
+		Dim2D spriteDimensions = Dim2D.build().area(10, 10).center(centered).commit();
+		Dim2D barDimensions = Dim2D.build().area(10, height).center(centered).commit();
 		
 		BasicUI topButton = UIFactory.createArrowButton(centered);
 		BasicUI bottomButton = UIFactory.createArrowButton(centered);

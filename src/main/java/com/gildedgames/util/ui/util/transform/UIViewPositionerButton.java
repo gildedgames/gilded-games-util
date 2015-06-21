@@ -3,13 +3,14 @@ package com.gildedgames.util.ui.util.transform;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.UIView;
-import com.gildedgames.util.ui.data.ImmutableDim2D;
+import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 
 public class UIViewPositionerButton implements UIViewPositioner
 {
 
 	@Override
-	public List<UIView> positionList(List<UIView> views, ImmutableDim2D listDimensions)
+	public List<UIView> positionList(List<UIView> views, Dim2D listDimensions)
 	{
 		int currentY = 0;
 		
@@ -17,8 +18,7 @@ public class UIViewPositionerButton implements UIViewPositioner
 		{	
 			if (view != null)
 			{
-				view.getDim().setY(currentY);
-				view.getDim().setCentering(false);
+				view.setDim(Dim2D.build(view).y(currentY).center(false).commit());
 			}
 			
 			int viewYPlusHeight = view.getDim().getY() + view.getDim().getHeight();

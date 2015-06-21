@@ -21,7 +21,7 @@ public abstract class AbstractUI implements BasicUI
 	
 	private BasicUI previousFrame;
 	
-	private Dim2D dimensions;
+	private Dim2D dim;
 
 	public AbstractUI(Dim2D dimensions)
 	{
@@ -31,7 +31,7 @@ public abstract class AbstractUI implements BasicUI
 	public AbstractUI(BasicUI previousFrame, Dim2D dimensions)
 	{
 		this.previousFrame = previousFrame;
-		this.dimensions = dimensions;
+		this.dim = dimensions;
 	}
 	
 	@Override
@@ -73,7 +73,13 @@ public abstract class AbstractUI implements BasicUI
 	@Override
 	public Dim2D getDim()
 	{
-		return this.dimensions;
+		return this.dim;
+	}
+	
+	@Override
+	public void setDim(Dim2D dim)
+	{
+		this.dim = dim;
 	}
 	
 	@Override

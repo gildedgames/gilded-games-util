@@ -109,13 +109,13 @@ public class TestUI extends AbstractUI
 	{
 		super.onInit(container, input);
 		
-		Dim2D dim = new Dim2D().setArea(80, 200);
+		Dim2D dim = Dim2D.build().area(80, 200).commit();
 
 		ButtonList buttonList = new ButtonList(new UIViewPositionerButton(), new TestButtonFactory());
 
 		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		scrollable.getDim().setPos(new Pos2D(0, 0));
+		scrollable.setDim(Dim2D.build(scrollable).resetPos().commit());
 
 		container.setElement("scrollable", scrollable);
 
