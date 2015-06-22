@@ -77,7 +77,6 @@ public class UIServices
 		
 		try
 		{
-			frame.onInit(viewer.getInputProvider());
 			IOCore.io().writeFile(load, new NBTFile(load, frame, UIFrame.class), new NBTFactory());
 		}
 		catch (IOException e)
