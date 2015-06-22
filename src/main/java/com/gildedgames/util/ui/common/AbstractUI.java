@@ -22,20 +22,16 @@ public abstract class AbstractUI implements BasicUI
 	private BasicUI previousFrame;
 	
 	private Dim2D dim = Dim2D.buildCommit();
-	
-	private Dim2DBuilder dimBuilder = Dim2D.build(this);
-	
-	private Dim2DModifier dimModifier = new Dim2DModifier(this);
 
-	public AbstractUI(Dim2D dimensions)
+	public AbstractUI(Dim2D dim)
 	{
-		this(null, dimensions);
+		this(null, dim);
 	}
 
-	public AbstractUI(BasicUI previousFrame, Dim2D dimensions)
+	public AbstractUI(BasicUI previousFrame, Dim2D dim)
 	{
 		this.previousFrame = previousFrame;
-		this.dim = dimensions;
+		this.dim = dim;
 	}
 	
 	@Override
@@ -89,13 +85,13 @@ public abstract class AbstractUI implements BasicUI
 	@Override
 	public Dim2DModifier modDim()
 	{
-		return this.dimModifier;
+		return new Dim2DModifier(this);
 	}
 	
 	@Override
 	public Dim2DBuilder copyDim()
 	{
-		return this.dimBuilder;
+		return Dim2D.build(this);
 	}
 	
 	@Override
