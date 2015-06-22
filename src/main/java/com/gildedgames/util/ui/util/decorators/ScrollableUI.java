@@ -3,12 +3,12 @@ package com.gildedgames.util.ui.util.decorators;
 import com.gildedgames.util.ui.common.AbstractUI;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.Dim2DCollection;
 import com.gildedgames.util.ui.util.ScrollBar;
 
 public class ScrollableUI extends AbstractUI
