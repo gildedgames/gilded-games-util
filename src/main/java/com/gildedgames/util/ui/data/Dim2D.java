@@ -266,7 +266,7 @@ public class Dim2D
 
 		protected boolean centeredX, centeredY;
 
-		protected float scale;
+		protected float scale = 1.0F;
 		
 		public Dim2DBuilder()
 		{
