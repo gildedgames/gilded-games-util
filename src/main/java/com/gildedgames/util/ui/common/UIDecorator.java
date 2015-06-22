@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
@@ -98,6 +99,19 @@ public abstract class UIDecorator<T extends UIElement> implements BasicUI
 		if (holder != null)
 		{
 			return holder.modDim();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public Dim2DBuilder copyDim()
+	{
+		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
+		
+		if (holder != null)
+		{
+			return holder.copyDim();
 		}
 		
 		return null;

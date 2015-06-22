@@ -3,6 +3,7 @@ package com.gildedgames.util.ui.common;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIElementContainer;
@@ -21,6 +22,8 @@ public abstract class AbstractUI implements BasicUI
 	private BasicUI previousFrame;
 	
 	private Dim2D dim = Dim2D.buildCommit();
+	
+	private Dim2DBuilder dimBuilder = Dim2D.build(this);
 	
 	private Dim2DModifier dimModifier = new Dim2DModifier(this);
 
@@ -87,6 +90,12 @@ public abstract class AbstractUI implements BasicUI
 	public Dim2DModifier modDim()
 	{
 		return this.dimModifier;
+	}
+	
+	@Override
+	public Dim2DBuilder copyDim()
+	{
+		return this.dimBuilder;
 	}
 	
 	@Override
