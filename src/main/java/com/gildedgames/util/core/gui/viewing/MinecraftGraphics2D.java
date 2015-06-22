@@ -48,7 +48,6 @@ public class MinecraftGraphics2D implements Graphics2D
 		float currentX = dim.getX();
 		float currentY = dim.getY();
 		
-		
 		float partialTicks = UtilEvents.getPartialTicks();
 
 		float x = currentX;//currentX + (currentX - prevX) * partialTicks;
