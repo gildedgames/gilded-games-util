@@ -8,10 +8,10 @@ import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
 import com.gildedgames.util.ui.common.BasicUI;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.Button;
-import com.gildedgames.util.ui.util.Dim2DCollection;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.TextureElement;
 
