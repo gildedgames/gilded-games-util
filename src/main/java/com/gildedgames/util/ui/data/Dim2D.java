@@ -12,7 +12,7 @@ public class Dim2D
 
 	protected final ImmutableList<Dim2DHolder> modifiers;
 
-	protected final Pos2D position;
+	protected final Pos2D pos;
 
 	protected final int width, height;
 
@@ -27,7 +27,7 @@ public class Dim2D
 
 	public Dim2D(Dim2DBuilder builder)
 	{
-		this.position = builder.position;
+		this.pos = builder.position;
 
 		this.width = builder.width;
 		this.height = builder.height;
@@ -70,7 +70,7 @@ public class Dim2D
 	 */
 	public Pos2D getPos()
 	{
-		return this.getModifiedPos(this.position);
+		return this.getModifiedPos(this.pos);
 	}
 
 	/**
@@ -280,7 +280,7 @@ public class Dim2D
 		
 		public Dim2DBuilder(Dim2D dim)
 		{
-			this.position = dim.position;
+			this.position = dim.pos;
 
 			this.width = dim.width;
 			this.height = dim.height;
