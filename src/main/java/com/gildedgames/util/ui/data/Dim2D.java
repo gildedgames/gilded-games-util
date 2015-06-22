@@ -27,7 +27,7 @@ public class Dim2D
 
 	public Dim2D(Dim2DBuilder builder)
 	{
-		this.pos = builder.position;
+		this.pos = builder.pos;
 
 		this.width = builder.width;
 		this.height = builder.height;
@@ -260,7 +260,7 @@ public class Dim2D
 		
 		protected List<Dim2DHolder> modifiers = new ArrayList<Dim2DHolder>();
 
-		protected Pos2D position = new Pos2D();
+		protected Pos2D pos = new Pos2D();
 
 		protected int width, height;
 
@@ -280,7 +280,7 @@ public class Dim2D
 		
 		public Dim2DBuilder(Dim2D dim)
 		{
-			this.position = dim.pos;
+			this.pos = dim.pos;
 
 			this.width = dim.width;
 			this.height = dim.height;
@@ -295,7 +295,7 @@ public class Dim2D
 		
 		public Dim2DBuilder resetPos()
 		{
-			this.position = new Pos2D();
+			this.pos = new Pos2D();
 			
 			return this;
 		}
@@ -323,7 +323,7 @@ public class Dim2D
 
 		public Dim2DBuilder pos(Pos2D position)
 		{
-			this.position = position;
+			this.pos = position;
 
 			return this;
 		}
@@ -359,12 +359,12 @@ public class Dim2D
 
 		public Dim2DBuilder y(int y)
 		{
-			return this.pos(this.position.withY(y));
+			return this.pos(this.pos.withY(y));
 		}
 
 		public Dim2DBuilder x(int x)
 		{
-			return this.pos(this.position.withX(x));
+			return this.pos(this.pos.withX(x));
 		}
 
 		public Dim2DBuilder center(boolean centered)
@@ -396,12 +396,12 @@ public class Dim2D
 
 		public Dim2DBuilder addX(int x)
 		{
-			return this.pos(this.position.withAdded(x, 0));
+			return this.pos(this.pos.withAdded(x, 0));
 		}
 
 		public Dim2DBuilder addY(int y)
 		{
-			return this.pos(this.position.withAdded(0, y));
+			return this.pos(this.pos.withAdded(0, y));
 		}
 
 		public Dim2DBuilder addPos(Pos2D pos)
