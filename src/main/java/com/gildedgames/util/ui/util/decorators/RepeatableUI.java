@@ -23,7 +23,7 @@ public class RepeatableUI extends AbstractUI
 	{
 		this.repeatedView.setScissoredArea(this.getDim());
 		
-		this.repeatedView.setDim(Dim2D.build(this.repeatedView).clearModifiers().addModifier(this).resetPos().commit());
+		this.repeatedView.modDim().clearModifiers().addModifier(this).resetPos().commit();
 
 		int textureHeight = this.repeatedView.getDim().getHeight();
 		int textureWidth = this.repeatedView.getDim().getWidth();
@@ -50,10 +50,10 @@ public class RepeatableUI extends AbstractUI
 			{
 				this.repeatedView.draw(graphics, input);
 				
-				this.repeatedView.setDim(Dim2D.build(this.repeatedView).addX(textureWidth).commit());
+				this.repeatedView.modDim().addX(textureWidth).commit();
 			}
 
-			this.repeatedView.setDim(Dim2D.build(this.repeatedView).x(oldDimNoMods.getX()).addY(textureHeight).commit());
+			this.repeatedView.modDim().x(oldDimNoMods.getX()).addY(textureHeight).commit();
 		}
 		
 		this.repeatedView.setDim(oldDim);
