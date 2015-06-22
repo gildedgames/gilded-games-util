@@ -84,7 +84,7 @@ import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ButtonList;
-import com.gildedgames.util.ui.util.Dim2DModifier;
+import com.gildedgames.util.ui.util.Dim2DCollection;
 import com.gildedgames.util.ui.util.RectangleElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableUI;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
@@ -95,7 +95,7 @@ public class TestUI extends AbstractUI
 	
 	protected RectangleElement rectangle;
 	
-	protected Dim2DModifier dim2Holder, dim3Holder;
+	protected Dim2DCollection dim2Holder, dim3Holder;
 	
 	protected long prevTime, currentTime;
 
@@ -115,7 +115,7 @@ public class TestUI extends AbstractUI
 
 		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		scrollable.setDim(Dim2D.build(scrollable).resetPos().commit());
+		scrollable.modDim().resetPos().commit();
 
 		container.setElement("scrollable", scrollable);
 

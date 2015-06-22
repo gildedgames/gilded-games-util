@@ -71,18 +71,18 @@ public class ScrollBar extends AbstractUI
 	{
 		super.onInit(container, input);
 
-		this.topButton.setDim(Dim2D.build(this.topButton).resetPos().commit());
-		this.bottomButton.setDim(Dim2D.build(this.bottomButton).resetPos().commit());
+		this.topButton.modDim().resetPos().commit();
+		this.bottomButton.modDim().resetPos().commit();
 		
-		this.topButton.setDim(Dim2D.build(this.topButton).center(this.getDim()).commit());
-		this.bottomButton.setDim(Dim2D.build(this.bottomButton).center(this.getDim()).commit());
+		this.topButton.modDim().center(this.getDim()).commit();
+		this.bottomButton.modDim().center(this.getDim()).commit();
 		
-		this.baseBarTexture.setDim(Dim2D.build(this.baseBarTexture).center(this.getDim()).commit());
-		this.grabbableBarTexture.setDim(Dim2D.build(this.grabbableBarTexture).center(this.getDim()).commit());
+		this.baseBarTexture.modDim().center(this.getDim()).commit();
+		this.grabbableBarTexture.modDim().center(this.getDim()).commit();
 		
-		Dim2DModifier totalHeightMinusBottomButton = new Dim2DModifier().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).commit());
+		Dim2DCollection totalHeightMinusBottomButton = new Dim2DCollection().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).commit());
 
-		this.bottomButton.setDim(Dim2D.build(this.bottomButton).addModifier(totalHeightMinusBottomButton).commit());
+		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).commit();
 
 		this.topButton.getListeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
 		
@@ -94,10 +94,10 @@ public class ScrollBar extends AbstractUI
 		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), Dim2D.build(this).clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
 		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).commit(), this.grabbableBarTexture);
 		
-		Dim2DModifier bottomOfTopButton = new Dim2DModifier().addDim(Dim2D.build().y(Dim2D.build(this.topButton).clearModifiers().commit().getHeight()).commit());
+		Dim2DCollection bottomOfTopButton = new Dim2DCollection().addDim(Dim2D.build().y(Dim2D.build(this.topButton).clearModifiers().commit().getHeight()).commit());
 		
-		this.baseBar.setDim(Dim2D.build(this.baseBar).addModifier(bottomOfTopButton).commit());
-		this.grabbableBar.setDim(Dim2D.build(this.grabbableBar).addModifier(bottomOfTopButton).commit());
+		this.baseBar.modDim().addModifier(bottomOfTopButton).commit();
+		this.grabbableBar.modDim().addModifier(bottomOfTopButton).commit();
 
 		container.setElement("baseBar", this.baseBar);
 		container.setElement("grabbableBar", this.grabbableBar);

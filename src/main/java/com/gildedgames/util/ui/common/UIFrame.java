@@ -9,6 +9,7 @@ import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
+import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIElementContainer;
@@ -93,9 +94,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 					
 					if (child != null)
 					{
-						Dim2DBuilder dimBuilder = new Dim2DBuilder(child.getDim()).addModifier(parentModifier);
-						
-						child.setDim(dimBuilder.commit());
+						child.modDim().addModifier(parentModifier).commit();
 					}
 				}
 			}
@@ -138,9 +137,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 					
 					if (child != null)
 					{
-						Dim2DBuilder dimBuilder = new Dim2DBuilder(child.getDim()).addModifier(parentModifier);
-						
-						child.setDim(dimBuilder.commit());
+						child.modDim().addModifier(parentModifier).commit();
 					}
 				}
 			}
@@ -399,6 +396,12 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	public void setDim(Dim2D dim)
 	{
 
+	}
+
+	@Override
+	public Dim2DModifier modDim()
+	{
+		return new Dim2DModifier(this);
 	}
 
 }

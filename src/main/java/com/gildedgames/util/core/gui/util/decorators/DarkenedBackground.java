@@ -45,7 +45,9 @@ public class DarkenedBackground extends UIDecorator<UIView>
 			DrawingData startColor = new DrawingData(new Color(-1072689136, true));
 			DrawingData endColor = new DrawingData(new Color(-804253680, true));
 			
-			container.setElement("darkBackground", new RectangleElement(Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).commit(), startColor, endColor));
+			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).commit();
+			
+			container.setElement("darkBackground", new RectangleElement(dim, startColor, endColor));
 		}
 		
 		super.onInit(container, input);

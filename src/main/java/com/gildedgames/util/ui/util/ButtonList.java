@@ -83,13 +83,13 @@ public class ButtonList extends AbstractUI
 		{
 			if (view != null)
 			{
-				view.setDim(Dim2D.build(view).addModifier(this).commit());
+				view.modDim().addModifier(this).commit();
 				
 				totalContentHeight += view.getDim().getHeight();
 			}
 		}
 		
-		this.setDim(Dim2D.build(this).height(totalContentHeight).commit());
+		this.modDim().height(totalContentHeight).commit();
 	}
 	
 	private void sortContent()

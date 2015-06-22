@@ -10,15 +10,15 @@ import com.google.common.collect.ImmutableList;
 public class Dim2D
 {
 
-	private final ImmutableList<Dim2DHolder> modifiers;
+	protected final ImmutableList<Dim2DHolder> modifiers;
 
-	private final Pos2D position;
+	protected final Pos2D position;
 
-	private final int width, height;
+	protected final int width, height;
 
-	private final boolean centeredX, centeredY;
+	protected final boolean centeredX, centeredY;
 
-	private final float scale;
+	protected final float scale;
 	
 	public Dim2D()
 	{
@@ -434,6 +434,30 @@ public class Dim2D
 		public Dim2D commit()
 		{
 			return new Dim2D(this);
+		}
+		
+	}
+	
+	public static class Dim2DModifier extends Dim2DBuilder
+	{
+		
+		protected Dim2DHolder holder;
+
+		public Dim2DModifier(Dim2DHolder holder)
+		{
+			super(holder);
+			
+			this.holder = holder;
+		}
+		
+		@Override
+		public Dim2D commit()
+		{
+			Dim2D commit = super.commit();
+			
+			this.holder.setDim(commit);
+			
+			return commit;
 		}
 		
 	}

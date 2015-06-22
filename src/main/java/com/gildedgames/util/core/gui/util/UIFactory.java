@@ -11,7 +11,7 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.Button;
-import com.gildedgames.util.ui.util.Dim2DModifier;
+import com.gildedgames.util.ui.util.Dim2DCollection;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.TextureElement;
 
@@ -100,7 +100,7 @@ public class UIFactory
 		BasicUI topButton = UIFactory.createArrowButton(centered);
 		BasicUI bottomButton = UIFactory.createArrowButton(centered);
 		
-		ScrollBar scrollBar = new ScrollBar(barDimensions, new Dim2DModifier().addDim(scrollableArea), topButton, bottomButton, new TextureElement(base, spriteDimensions.clone()), new TextureElement(bar, spriteDimensions.clone()));
+		ScrollBar scrollBar = new ScrollBar(barDimensions, new Dim2DCollection().addDim(scrollableArea), topButton, bottomButton, new TextureElement(base, spriteDimensions.clone()), new TextureElement(bar, spriteDimensions.clone()));
 
 		return scrollBar;
 	}

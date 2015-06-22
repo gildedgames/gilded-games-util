@@ -18,7 +18,7 @@ public class UIViewPositionerButton implements UIViewPositioner
 		{	
 			if (view != null)
 			{
-				view.setDim(Dim2D.build(view).y(currentY).center(false).commit());
+				view.modDim().y(currentY).center(false).commit();
 			}
 			
 			int viewYPlusHeight = view.getDim().getY() + view.getDim().getHeight();
