@@ -8,7 +8,6 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
@@ -360,7 +359,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public Dim2D getDim()
 	{
-		return new Dim2D();
+		return Dim2D.buildEmpty();
 	}
 
 	public boolean isFocused()

@@ -20,7 +20,7 @@ public abstract class AbstractUI implements BasicUI
 	
 	private BasicUI previousFrame;
 	
-	private Dim2D dim = new Dim2D();
+	private Dim2D dim = Dim2D.buildEmpty();
 	
 	private Dim2DModifier dimModifier = new Dim2DModifier(this);
 

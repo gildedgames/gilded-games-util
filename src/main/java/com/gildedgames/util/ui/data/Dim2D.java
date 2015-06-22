@@ -20,7 +20,7 @@ public class Dim2D
 
 	protected final float scale;
 	
-	public Dim2D()
+	private Dim2D()
 	{
 		this(new Dim2DBuilder());
 	}
@@ -145,6 +145,11 @@ public class Dim2D
 	public Dim2D clone()
 	{
 		return new Dim2D(new Dim2DBuilder(this));
+	}
+	
+	public static Dim2D buildEmpty()
+	{
+		return new Dim2D();
 	}
 	
 	public static Dim2DBuilder build()
