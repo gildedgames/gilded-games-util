@@ -359,7 +359,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	@Override
 	public Dim2D getDim()
 	{
-		return Dim2D.buildEmpty();
+		return Dim2D.buildCommit();
 	}
 
 	public boolean isFocused()

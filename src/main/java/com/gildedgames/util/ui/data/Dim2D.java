@@ -147,7 +147,7 @@ public class Dim2D
 		return new Dim2D(new Dim2DBuilder(this));
 	}
 	
-	public static Dim2D buildEmpty()
+	public static Dim2D buildCommit()
 	{
 		return new Dim2D();
 	}

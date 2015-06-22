@@ -107,7 +107,7 @@ public class UIFactory
 	
 	public static ScrollBar createScrollBar()
 	{
-		return UIFactory.createScrollBar(new Pos2D(), 0, Dim2D.buildEmpty());
+		return UIFactory.createScrollBar(new Pos2D(), 0, Dim2D.buildCommit());
 	}
 
 }

@@ -101,7 +101,7 @@ public class TestUI extends AbstractUI
 
 	public TestUI(AbstractUI parent)
 	{
-		super(parent, Dim2D.buildEmpty());
+		super(parent, Dim2D.buildCommit());
 	}
 
 	@Override
