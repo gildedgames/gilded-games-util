@@ -40,7 +40,7 @@ public class UIServices
 	
 	public void open(String uniqueSaveName, UIFrame frame, UIViewer viewer)
 	{
-		this.load(uniqueSaveName, frame, viewer);
+		//this.load(uniqueSaveName, frame, viewer);
 		
 		viewer.open(frame);
 		
@@ -50,7 +50,7 @@ public class UIServices
 	
 	public void close(UIViewer viewer)
 	{
-		this.save(this.currentUniqueSaveName, this.currentFrame, viewer);
+		//this.save(this.currentUniqueSaveName, this.currentFrame, viewer);
 		
 		viewer.close();
 		
