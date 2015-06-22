@@ -105,4 +105,10 @@ public class Dim2DCollection implements Dim2DHolder
 		return null;
 	}
 
+	@Override
+	public Dim2DBuilder copyDim()
+	{
+		return null;
+	}
+
 }

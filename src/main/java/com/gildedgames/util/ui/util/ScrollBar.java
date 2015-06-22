@@ -91,7 +91,7 @@ public class ScrollBar extends AbstractUI
 		container.setElement("topButton", this.topButton);
 		container.setElement("bottomButton", this.bottomButton);
 
-		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), Dim2D.build(this).clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
+		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), this.copyDim().clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
 		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).commit(), this.grabbableBarTexture);
 		
 		Dim2DCollection bottomOfTopButton = new Dim2DCollection().addDim(Dim2D.build().y(Dim2D.build(this.topButton).clearModifiers().commit().getHeight()).commit());
