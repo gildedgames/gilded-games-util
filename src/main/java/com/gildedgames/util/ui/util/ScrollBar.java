@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.ui.common.AbstractUI;
 import com.gildedgames.util.ui.common.BasicUI;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.event.view.MouseEventView;
@@ -51,9 +52,9 @@ public class ScrollBar extends AbstractUI
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(Dim2D.build(this.topButton).clearModifiers().commit().getWidth(), Dim2D.build(this.bottomButton).clearModifiers().commit().getWidth()), this.baseBarTexture.getDim().getWidth());
+		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().commit().getWidth(), this.bottomButton.copyDim().clearModifiers().commit().getWidth()), this.baseBarTexture.getDim().getWidth());
 
-		this.setDim(Dim2D.build(this).width(maxWidth).commit());
+		this.modDim().width(maxWidth).commit();
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
