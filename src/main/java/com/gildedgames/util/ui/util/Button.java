@@ -1,8 +1,7 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.event.view.MouseEventViewFocus;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -10,14 +9,14 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 
-public class Button extends AbstractUI
+public class Button extends UIFrame
 {
 	
 	protected final TextureElement defaultState, hoveredState, clickedState;
 
 	public Button(Dim2D dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
 	{
-		super(null, dim);
+		super(dim);
 		
 		this.defaultState = defaultState;
 		this.hoveredState = hoveredState;
@@ -25,19 +24,19 @@ public class Button extends AbstractUI
 	}
 	
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
-		super.onInit(container, input);
+		super.init(input);
 		
 		this.defaultState.setVisible(true);
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
 		
-		this.clickedState.getListeners().setElement("clickEvent", new MouseEventViewFocus(this.clickedState, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
+		this.clickedState.listeners().setElement("clickEvent", new MouseEventViewFocus(this.clickedState, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
 		
-		container.setElement("defaultState", this.defaultState);
-		container.setElement("hoveredState", this.hoveredState);
-		container.setElement("clickedState", this.clickedState);
+		this.content().setElement("defaultState", this.defaultState);
+		this.content().setElement("hoveredState", this.hoveredState);
+		this.content().setElement("clickedState", this.clickedState);
 	}
 	
 	@Override

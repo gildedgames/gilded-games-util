@@ -10,7 +10,6 @@ import com.gildedgames.util.ui.common.UIDecorator;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.util.RectangleElement;
@@ -38,7 +37,7 @@ public class DarkenedBackground extends UIDecorator<UIView>
 	}
 	
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
 		if (this.shouldDrawBackground())
 		{
@@ -47,10 +46,10 @@ public class DarkenedBackground extends UIDecorator<UIView>
 			
 			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).commit();
 			
-			container.setElement("darkBackground", new RectangleElement(dim, startColor, endColor));
+			this.content().setElement("darkBackground", new RectangleElement(dim, startColor, endColor));
 		}
 		
-		super.onInit(container, input);
+		super.init(input);
 	}
 	
 	@Override

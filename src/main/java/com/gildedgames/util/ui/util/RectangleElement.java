@@ -1,12 +1,12 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class RectangleElement extends AbstractUI
+public class RectangleElement extends UIFrame
 {
 
 	protected DrawingData startColor, endColor;
@@ -30,7 +30,7 @@ public class RectangleElement extends AbstractUI
 	
 	public RectangleElement(Dim2D dim, DrawingData startColor, DrawingData endColor)
 	{
-		super(null, dim);
+		super(dim);
 
 		this.startColor = startColor;
 		this.endColor = endColor;

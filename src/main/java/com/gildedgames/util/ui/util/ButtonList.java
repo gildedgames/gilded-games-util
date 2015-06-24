@@ -5,11 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -17,7 +16,7 @@ import com.gildedgames.util.ui.util.transform.UIViewPositioner;
 import com.gildedgames.util.ui.util.transform.UIViewSorter;
 import com.google.common.collect.ImmutableMap;
 
-public class ButtonList extends AbstractUI
+public class ButtonList extends UIFrame
 {
 
 	protected UIViewPositioner positioner;
@@ -62,13 +61,13 @@ public class ButtonList extends AbstractUI
 	
 	private void clearAndProvideContent()
 	{
-		this.getListeners().clear(UIView.class);
+		this.listeners().clear(UIView.class);
 		
 		for (ContentFactory contentProvider : this.contentProviders)
 		{
 			if (contentProvider != null)
 			{
-				this.getListeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.getListeners().map()), this.getDim()));
+				this.listeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.listeners().map()), this.getDim()));
 			}
 		}
 	}
@@ -94,7 +93,7 @@ public class ButtonList extends AbstractUI
 	
 	private void sortContent()
 	{
-		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.getListeners().values(), UIView.class);
+		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
 		for (UIView view : filteredViews)
@@ -116,7 +115,7 @@ public class ButtonList extends AbstractUI
 	
 	private List<UIView> getSortedViews()
 	{
-		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.getListeners().values(), UIView.class);
+		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), UIView.class);
 		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 		
 		return sortedViews;
@@ -129,9 +128,9 @@ public class ButtonList extends AbstractUI
 	}
 
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
-		super.onInit(container, input);
+		super.init(input);
 
 		this.refresh();
 

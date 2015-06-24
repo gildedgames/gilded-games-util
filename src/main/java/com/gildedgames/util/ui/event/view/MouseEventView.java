@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.event.MouseEvent;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInput;
@@ -42,5 +43,5 @@ public abstract class MouseEventView extends MouseEvent
 	{
 		return this.view;
 	}
-
+	
 }

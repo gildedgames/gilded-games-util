@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class MinecraftDefaultButton extends AbstractUI
+public class MinecraftDefaultButton extends UIFrame
 {
 	
 	protected final static Minecraft mc = Minecraft.getMinecraft();
@@ -25,14 +25,14 @@ public class MinecraftDefaultButton extends AbstractUI
 
 	public MinecraftDefaultButton(GuiButton button, boolean centered)
 	{
-		super(null, Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).commit());
+		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).commit());
 		
 		this.button = button;
 	}
 	
 	public MinecraftDefaultButton(Dim2D dim, String text)
 	{
-		super(null, dim);
+		super(dim);
 		
 		this.text = text;
 		

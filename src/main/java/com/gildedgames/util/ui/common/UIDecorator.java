@@ -8,7 +8,8 @@ import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UIElementContainer;
+import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -17,13 +18,15 @@ import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 
 
-public abstract class UIDecorator<T extends UIElement> implements BasicUI
+public abstract class UIDecorator<T extends UIElement> extends UIFrame
 {
 
 	private T element;
 	
 	public UIDecorator(T element)
 	{
+		super(Dim2D.build().commit());
+		
 		this.element = element;
 	}
 	
@@ -122,17 +125,17 @@ public abstract class UIDecorator<T extends UIElement> implements BasicUI
 	{
 		this.element.tick(input, tickInfo);
 	}
-
-	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
-	{
-		this.element.onInit(container, input);
-	}
 	
 	@Override
-	public void onResolutionChange(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
-		this.element.onResolutionChange(container, input);
+		this.element.init(input);
+	}
+
+	@Override
+	public void onResolutionChange(InputProvider input)
+	{
+		this.element.onResolutionChange(input);
 	}
 
 	@Override
@@ -218,33 +221,26 @@ public abstract class UIDecorator<T extends UIElement> implements BasicUI
 		
 		return false;
 	}
+	
+	@Override
+	public UIContainer seekContent()
+	{
+		return this.element.seekContent();
+	}
 
 	@Override
-	public UIElementContainer getListeners()
+	public UIContainerMutable listeners()
 	{
-		BasicUI basic = ObjectFilter.getType(this.element, BasicUI.class);
+		UIFrame frame = ObjectFilter.getType(this.element, UIFrame.class);
 		
-		if (basic != null)
+		if (frame != null)
 		{
-			return basic.getListeners();
+			return frame.listeners();
 		}
 		
 		return null;
 	}
-	
-	@Override
-	public BasicUI getPreviousFrame()
-	{
-		BasicUI basic = ObjectFilter.getType(this.element, BasicUI.class);
-		
-		if (basic != null)
-		{
-			return basic.getPreviousFrame();
-		}
-		
-		return null;
-	}
-	
+
 	@Override
 	public void write(NBTTagCompound output)
 	{

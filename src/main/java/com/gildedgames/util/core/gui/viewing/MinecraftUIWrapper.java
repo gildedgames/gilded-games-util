@@ -9,8 +9,8 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.ui.common.UIElement;
 import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.KeyboardInput;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -18,6 +18,7 @@ import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.input.MouseMotion;
+import com.gildedgames.util.ui.util.UIViewerHelper;
 
 public final class MinecraftUIWrapper extends GuiScreen
 {
@@ -28,6 +29,8 @@ public final class MinecraftUIWrapper extends GuiScreen
 
 	private final UIFrame frame;
 	
+	private final UIContainerMutable frameHolder = new UIContainerMutable();
+	
 	private boolean hasInit;
 
 	public MinecraftUIWrapper(UIFrame frame)
@@ -35,12 +38,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 		this.frame = frame;
 	}
 	
-	public UIElement getFramedElement()
-	{
-		return this.frame.getFramedElement();
-	}
-	
-	protected UIFrame getFrame()
+	public UIFrame getFrame()
 	{
 		return this.frame;
 	}
@@ -57,16 +55,20 @@ public final class MinecraftUIWrapper extends GuiScreen
 
 		INPUT.setScreen(this.width, this.height);
 		INPUT.setScaleFactor(resolution.getScaleFactor());
+		
+		this.frameHolder.clear();
+		
+		this.frameHolder.setElement("frame", this.frame);
 
 		if (!this.hasInit)
 		{
-			this.frame.onInit(INPUT);
+			UIViewerHelper.processInit(this.frameHolder, INPUT);
 			
 			this.hasInit = true;
 		}
 		else
 		{
-			this.frame.onResolutionChange(INPUT);
+			UIViewerHelper.processResolutionChange(this.frameHolder, INPUT);
 		}
 	}
 
@@ -75,7 +77,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	{
 		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(charTyped, keyTyped, ButtonState.PRESSED));
 		
-		this.frame.onKeyboardInput(pool);
+		UIViewerHelper.processKeyboardInput(this.frameHolder, pool);
 	}
 
 	@Override
@@ -83,7 +85,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
 
-		this.frame.onMouseInput(INPUT, pool);
+		UIViewerHelper.processMouseInput(this.frameHolder, INPUT, pool);
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.RELEASED));
 
-		this.frame.onMouseInput(INPUT, pool);
+		UIViewerHelper.processMouseInput(this.frameHolder, INPUT, pool);
 	}
 	
 	@Override
@@ -99,7 +101,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.DOWN, MouseMotion.MOVING));
 
-		this.frame.onMouseInput(INPUT, pool);
+		UIViewerHelper.processMouseInput(this.frameHolder, INPUT, pool);
 	}
 
 	@Override
@@ -109,10 +111,10 @@ public final class MinecraftUIWrapper extends GuiScreen
 		
 		if (scrollDifference != 0)
 		{
-			this.frame.onMouseScroll(INPUT, scrollDifference);
+			UIViewerHelper.processMouseScroll(this.frameHolder, INPUT, scrollDifference);
 		}
 
-		this.frame.draw(GRAPHICS, INPUT);
+		UIViewerHelper.processDraw(this.frameHolder, GRAPHICS, INPUT);
 	}
 
 	@Override
