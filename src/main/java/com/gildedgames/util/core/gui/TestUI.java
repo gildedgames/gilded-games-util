@@ -34,20 +34,6 @@ public class TestUI extends UIFrame
 		scrollable.modDim().pos(new Pos2D(100, 20)).commit();
 
 		this.content().setElement("scrollable", scrollable);
-
-		/*Dimensions2D dim1 = new Dimensions2D().setArea(50, 50);
-		Dimensions2D dim2 = new Dimensions2D().setPos(new Position2D(20, 30));
-		Dimensions2D dim3 = new Dimensions2D().setPos(new Position2D(0, -10));
-		
-		this.dim2Holder = new Dimensions2DModifier(dim2);
-		this.dim3Holder = new Dimensions2DModifier(dim3);
-		
-		dim1.addModifier(this.dim2Holder);
-		dim1.addModifier(this.dim3Holder);
-		
-		this.rectangle = new RectangleElement(dim1, new DrawingData());
-		
-		container.add(this.rectangle);*/
 	}
 
 	@Override
