@@ -4,43 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
+import com.google.common.collect.ImmutableList;
 
 public class Dim2DCollection implements Dim2DHolder
 {
-	
-	private List<Dim2D> dims = new ArrayList<Dim2D>();
-	
+
 	private List<Dim2DHolder> holders = new ArrayList<Dim2DHolder>();
+	
+	private List<Dim2DSeekable> seekables = new ArrayList<Dim2DSeekable>();
 	
 	public Dim2DCollection()
 	{
 		
 	}
 	
-	public Dim2DCollection addDim(Dim2DHolder holder)
-	{
-		this.dims.add(holder.getDim());
-		
-		return this;
-	}
-	
-	public Dim2DCollection removeDim(Dim2DHolder holder)
-	{
-		this.dims.remove(holder.getDim());
-		
-		return this;
-	}
-	
 	public Dim2DCollection addDim(Dim2D dim)
 	{
-		this.dims.add(dim);
+		this.holders.add(new Dim2DSingle(dim));
 		
 		return this;
 	}
 	
 	public Dim2DCollection removeDim(Dim2D dim)
 	{
-		this.dims.remove(dim);
+		this.holders.remove(new Dim2DSingle(dim));
 		
 		return this;
 	}
@@ -58,25 +45,79 @@ public class Dim2DCollection implements Dim2DHolder
 		
 		return this;
 	}
+	
+	public Dim2DCollection addSeekable(Dim2DSeekable seekable)
+	{
+		this.seekables.add(seekable);
+		
+		return this;
+	}
+	
+	public Dim2DCollection removeSeekable(Dim2DSeekable seekable)
+	{
+		this.seekables.remove(seekable);
+		
+		return this;
+	}
+
+	public ImmutableList<Dim2D> getDims()
+	{
+		List<Dim2D> results = new ArrayList<Dim2D>();
+		
+		for (Dim2DSeekable seekable : this.seekables)
+		{
+			for(Dim2DSeeker seeker : seekable.getDimSeekers())
+			{
+				results.add(seeker.getDim());
+			}
+		}
+		
+		for (Dim2DHolder holder : this.holders)
+		{
+			results.add(holder.getDim());
+		}
+
+		return ImmutableList.copyOf(results);
+	}
+
+	public ImmutableList<Dim2DHolder> getDimHolders()
+	{
+		List<Dim2DHolder> results = new ArrayList<Dim2DHolder>();
+		
+		for (Dim2DSeekable seekable : this.seekables)
+		{
+			for(Dim2DSeeker seeker : seekable.getDimSeekers())
+			{
+				results.add(seeker);
+			}
+		}
+		
+		results.addAll(this.holders);
+
+		return ImmutableList.copyOf(results);
+	}
 
 	@Override
 	public Dim2D getDim()
 	{
 		Dim2DSingle resultHolder = new Dim2DSingle();
 		
-		for (Dim2D dim : this.dims)
-		{
-			if (dim != null)
-			{
-				resultHolder.setDim(Dim2D.combine(resultHolder.getDim(), dim));
-			}
-		}
-		
 		for (Dim2DHolder holder : this.holders)
 		{
 			if (holder != null && holder.getDim() != null)
 			{
 				resultHolder.setDim(Dim2D.combine(resultHolder.getDim(), holder.getDim()));
+			}
+		}
+		
+		for (Dim2DSeekable seekable : this.seekables)
+		{
+			for(Dim2DSeeker seeker : seekable.getDimSeekers())
+			{
+				if (seeker != null && seeker.getDim() != null)
+				{
+					resultHolder.setDim(Dim2D.combine(resultHolder.getDim(), seeker.getDim()));
+				}
 			}
 		}
 		

@@ -100,8 +100,10 @@ public class UIFactory
 		UIFrame topButton = UIFactory.createArrowButton(centered);
 		UIFrame bottomButton = UIFactory.createArrowButton(centered);
 		
-		ScrollBar scrollBar = new ScrollBar(barDimensions, new Dim2DCollection().addDim(scrollableArea), topButton, bottomButton, new TextureElement(base, spriteDimensions.clone()), new TextureElement(bar, spriteDimensions.clone()));
+		ScrollBar scrollBar = new ScrollBar(barDimensions, topButton, bottomButton, new TextureElement(base, spriteDimensions.clone()), new TextureElement(bar, spriteDimensions.clone()));
 
+		scrollBar.setScrollingAreas(new Dim2DCollection().addDim(scrollableArea));
+		
 		return scrollBar;
 	}
 	
