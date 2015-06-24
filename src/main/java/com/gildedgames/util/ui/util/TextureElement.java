@@ -1,13 +1,13 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class TextureElement extends AbstractUI
+public class TextureElement extends UIFrame
 {
 
 	protected final Sprite sprite;
@@ -21,7 +21,7 @@ public class TextureElement extends AbstractUI
 	
 	public TextureElement(Dim2D dim, Sprite sprite, DrawingData data)
 	{
-		super(null, dim);
+		super(dim);
 
 		this.sprite = sprite;
 		this.data = data;

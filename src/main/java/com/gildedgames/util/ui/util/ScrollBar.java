@@ -2,12 +2,11 @@ package com.gildedgames.util.ui.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.ui.common.AbstractUI;
-import com.gildedgames.util.ui.common.BasicUI;
+import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
-import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.event.view.MouseEventView;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -16,10 +15,10 @@ import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.decorators.RepeatableUI;
 
-public class ScrollBar extends AbstractUI
+public class ScrollBar extends UIFrame
 {
 
-	protected BasicUI topButton, bottomButton;
+	protected UIFrame topButton, bottomButton;
 
 	/**
 	 * The two textures used in the scrollbar. They are
@@ -40,7 +39,7 @@ public class ScrollBar extends AbstractUI
 
 	protected int grabbedMouseYOffset;
 
-	public ScrollBar(Dim2D barDim, Dim2DHolder scrollingArea, BasicUI topButton, BasicUI bottomButton, TextureElement baseTexture, TextureElement barTexture)
+	public ScrollBar(Dim2D barDim, Dim2DHolder scrollingArea, UIFrame topButton, UIFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
 	{
 		super(barDim);
 
@@ -68,9 +67,9 @@ public class ScrollBar extends AbstractUI
 	}
 	
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
-		super.onInit(container, input);
+		super.init(input);
 
 		this.topButton.modDim().resetPos().commit();
 		this.bottomButton.modDim().resetPos().commit();
@@ -85,12 +84,12 @@ public class ScrollBar extends AbstractUI
 
 		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).commit();
 
-		this.topButton.getListeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
+		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
 		
-		this.bottomButton.getListeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this, -0.5F));
+		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this, -0.5F));
 
-		container.setElement("topButton", this.topButton);
-		container.setElement("bottomButton", this.bottomButton);
+		this.content().setElement("topButton", this.topButton);
+		this.content().setElement("bottomButton", this.bottomButton);
 
 		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), this.copyDim().clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
 		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).commit(), this.grabbableBarTexture);
@@ -100,8 +99,8 @@ public class ScrollBar extends AbstractUI
 		this.baseBar.modDim().addModifier(bottomOfTopButton).commit();
 		this.grabbableBar.modDim().addModifier(bottomOfTopButton).commit();
 
-		container.setElement("baseBar", this.baseBar);
-		container.setElement("grabbableBar", this.grabbableBar);
+		this.content().setElement("baseBar", this.baseBar);
+		this.content().setElement("grabbableBar", this.grabbableBar);
 	}
 
 	@Override

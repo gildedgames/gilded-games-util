@@ -1,17 +1,16 @@
 package com.gildedgames.util.ui.util.decorators;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.UIElementContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ScrollBar;
 
-public class ScrollableUI extends AbstractUI
+public class ScrollableUI extends UIFrame
 {
 
 	protected ScrollBar scrollBar;
@@ -27,9 +26,9 @@ public class ScrollableUI extends AbstractUI
 	}
 	
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
-		super.onInit(container, input);
+		super.init(input);
 		
 		this.scrollBar.modDim().height(this.scrolledView.getScissoredArea().getHeight()).commit();
 		
@@ -47,8 +46,8 @@ public class ScrollableUI extends AbstractUI
 	
 		this.scrollBar.setScrollingArea(scrollingArea);
 		
-		container.setElement("scrolledView", this.scrolledView);
-		container.setElement("scrollBar", this.scrollBar);
+		this.content().setElement("scrolledView", this.scrolledView);
+		this.content().setElement("scrollBar", this.scrollBar);
 	}
 	
 	@Override

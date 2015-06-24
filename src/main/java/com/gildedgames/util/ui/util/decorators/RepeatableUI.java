@@ -1,12 +1,12 @@
 package com.gildedgames.util.ui.util.decorators;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class RepeatableUI extends AbstractUI
+public class RepeatableUI extends UIFrame
 {
 	
 	protected ScissorableUI repeatedView;

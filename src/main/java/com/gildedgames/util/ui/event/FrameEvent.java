@@ -1,21 +1,21 @@
 package com.gildedgames.util.ui.event;
 
-import com.gildedgames.util.ui.common.AbstractUI;
+import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.UIElementContainer;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class FrameEvent extends AbstractUI
+public class FrameEvent extends UIFrame
 {
 
 	private boolean enabled = true;
 	
 	public FrameEvent()
 	{
-		super(null, null);
+		super(null);
 	}
 
 	@Override
@@ -43,13 +43,13 @@ public class FrameEvent extends AbstractUI
 	}
 
 	@Override
-	public void onInit(UIElementContainer container, InputProvider input)
+	public void init(InputProvider input)
 	{
 		
 	}
 	
 	@Override
-	public void onResolutionChange(UIElementContainer container, InputProvider input)
+	public void onResolutionChange(InputProvider input)
 	{
 		
 	}
@@ -103,13 +103,7 @@ public class FrameEvent extends AbstractUI
 	}
 
 	@Override
-	public UIElementContainer getListeners()
-	{
-		return null;
-	}
-	
-	@Override
-	public AbstractUI getPreviousFrame()
+	public UIContainerMutable listeners()
 	{
 		return null;
 	}
