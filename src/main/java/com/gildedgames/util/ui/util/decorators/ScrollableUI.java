@@ -4,7 +4,6 @@ import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
-import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -21,7 +20,7 @@ public class ScrollableUI extends UIFrame
 	{
 		super(scrollArea.clone());
 
-		this.scrolledView = new ScissorableUI(scrollArea, scrolledView);
+		this.scrolledView = new ScissorableUI(Dim2D.build(scrollArea).addModifier(this).commit(), scrolledView);
 		this.scrollBar = scrollBar;
 	}
 	
@@ -42,9 +41,9 @@ public class ScrollableUI extends UIFrame
 		
 		this.scrolledView.modDim().center(false).commit();
 
-		Dim2DHolder scrollingArea = new Dim2DCollection().addDim(this.scrolledView.getScissoredArea());
+		Dim2DCollection scrollingArea = new Dim2DCollection().addSeekable(this.scrolledView);
 	
-		this.scrollBar.setScrollingArea(scrollingArea);
+		this.scrollBar.setScrollingAreas(scrollingArea);
 		
 		this.content().setElement("scrolledView", this.scrolledView);
 		this.content().setElement("scrollBar", this.scrollBar);

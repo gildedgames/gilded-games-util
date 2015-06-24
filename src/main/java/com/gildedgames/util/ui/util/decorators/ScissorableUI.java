@@ -7,13 +7,18 @@ import org.lwjgl.opengl.GL11;
 import com.gildedgames.util.ui.common.UIDecorator;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2DSeekable;
+import com.gildedgames.util.ui.data.Dim2DSeeker;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.google.common.collect.ImmutableList;
 
-public class ScissorableUI extends UIDecorator<UIView>
+public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 {
 
 	protected Dim2D scissoredArea;
+	
+	private ImmutableList seekers = ImmutableList.<Dim2DSeeker>of(new Seeker(this));
 	
 	public ScissorableUI(Dim2D scissoredArea, UIView element)
 	{
@@ -35,7 +40,11 @@ public class ScissorableUI extends UIDecorator<UIView>
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.setScissoredArea(Dim2D.build(this.getScissoredArea()).scale(this.getDim().getScale()).commit());
+		this.setScissoredArea(Dim2D.build(this.getScissoredArea())
+				//.resetPos()
+				.scale(this.getDim().getScale())
+				//.addModifier(this.getDecoratedElement())
+				.commit());
 		
 		GL11.glPushMatrix();
 
@@ -56,6 +65,39 @@ public class ScissorableUI extends UIDecorator<UIView>
 		GL11.glDisable(GL_SCISSOR_TEST);
 		
 		GL11.glPopMatrix();
+	}
+
+	@Override
+	public ImmutableList<Dim2DSeeker> getDimSeekers()
+	{
+		return this.seekers;
+	}
+	
+	public static class Seeker extends Dim2DSeeker<ScissorableUI>
+	{
+		
+		public Seeker()
+		{
+			
+		}
+		
+		public Seeker(ScissorableUI seekFrom)
+		{
+			super(seekFrom);
+		}
+		
+		@Override
+		public Dim2D getDim()
+		{
+			return this.seekFrom.getScissoredArea();
+		}
+
+		@Override
+		public void setDim(Dim2D dim)
+		{
+			 this.seekFrom.setScissoredArea(dim);
+		}
+		
 	}
 
 }

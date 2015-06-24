@@ -3,7 +3,6 @@ package com.gildedgames.util.ui.util;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.ui.common.UIFrame;
-import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
@@ -14,6 +13,7 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.decorators.RepeatableUI;
+import com.google.common.collect.ImmutableList;
 
 public class ScrollBar extends UIFrame
 {
@@ -28,7 +28,7 @@ public class ScrollBar extends UIFrame
 	
 	protected RepeatableUI baseBar, grabbableBar;
 
-	protected Dim2DHolder scrollingArea;
+	protected Dim2DCollection scrollingAreas;
 	
 	/**
 	 * True if the bar is grabbed.
@@ -39,11 +39,9 @@ public class ScrollBar extends UIFrame
 
 	protected int grabbedMouseYOffset;
 
-	public ScrollBar(Dim2D barDim, Dim2DHolder scrollingArea, UIFrame topButton, UIFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
+	public ScrollBar(Dim2D barDim, UIFrame topButton, UIFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
 	{
 		super(barDim);
-
-		this.scrollingArea = scrollingArea;
 
 		this.topButton = topButton;
 		this.bottomButton = bottomButton;
@@ -108,7 +106,7 @@ public class ScrollBar extends UIFrame
 	{
 		super.onMouseScroll(input, scrollDifference);
 
-		if (input.isHovered(this.grabbableBar.getDim()) || input.isHovered(this.scrollingArea.getDim()))
+		if (input.isHovered(this.grabbableBar.getDim()) || input.isHovered(this.scrollingAreas))
 		{
 			int scrollFactor = -scrollDifference / 120;
 			
@@ -151,7 +149,7 @@ public class ScrollBar extends UIFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		if (this.getScrollingArea() != null)
+		if (this.getScrollingAreas() != null)
 		{
 			/** TODO: Change grabbable bar's height to be proportional to height of content **/ 
 			//this.grabbableBar.getDimensions().setHeight(this.getContentDimensions().getHeight() / this.baseBar.getDimensions().getHeight());
@@ -193,14 +191,14 @@ public class ScrollBar extends UIFrame
 		return this.scrollPercentage;
 	}
 	
-	public void setScrollingArea(Dim2DHolder contentDimensions)
+	public void setScrollingAreas(Dim2DCollection scrollingAreas)
 	{
-		this.scrollingArea = contentDimensions;
+		this.scrollingAreas = scrollingAreas;
 	}
 	
-	public Dim2D getScrollingArea()
+	public ImmutableList<Dim2DHolder> getScrollingAreas()
 	{
-		return this.scrollingArea.getDim();
+		return this.scrollingAreas.getDimHolders();
 	}
 	
 	@Override
