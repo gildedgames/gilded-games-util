@@ -36,7 +36,7 @@ public class ScrollBar extends UIFrame
 	 */
 	private boolean grabbedBar;
 
-	protected float scrollPercentage = 0.0F, scrollSpeed = 0.002F;
+	protected float scrollPercentage = 0.0F, scrollSpeed = 0.02F;
 
 	protected int grabbedMouseYOffset;
 
