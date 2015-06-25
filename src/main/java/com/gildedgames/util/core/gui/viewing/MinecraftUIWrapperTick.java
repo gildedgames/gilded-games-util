@@ -24,7 +24,7 @@ public class MinecraftUIWrapperTick implements TickInfo
 			{
 				MinecraftUIWrapper viewer = (MinecraftUIWrapper)this.mc.currentScreen;
 				
-				viewer.getFrame().tick(MinecraftUIWrapper.INPUT, this);
+				viewer.tick(this);
 			}
 		}
 	}
