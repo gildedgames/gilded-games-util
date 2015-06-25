@@ -17,7 +17,7 @@ public class TestUI extends UIFrame
 
 	public TestUI()
 	{
-		super(Dim2D.buildCommit());
+		super(Dim2D.compile());
 	}
 
 	@Override
@@ -25,13 +25,13 @@ public class TestUI extends UIFrame
 	{
 		super.init(input);
 		
-		Dim2D dim = Dim2D.build().area(80, 200).commit();
+		Dim2D dim = Dim2D.build().area(80, 200).compile();
 
 		ButtonList buttonList = new ButtonList(new UIViewPositionerButton(), new TestButtonFactory());
 
 		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		scrollable.modDim().pos(new Pos2D(100, 20)).commit();
+		scrollable.modDim().pos(new Pos2D(100, 20)).compile();
 
 		this.content().setElement("scrollable", scrollable);
 	}

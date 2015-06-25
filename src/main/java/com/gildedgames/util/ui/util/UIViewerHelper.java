@@ -40,7 +40,7 @@ public final class UIViewerHelper
 					
 					if (dimHolder != null)
 					{
-						dimHolder.modDim().addModifier(parentModifier).commit();
+						dimHolder.modDim().addModifier(parentModifier).compile();
 					}
 				}
 			}

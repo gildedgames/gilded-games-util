@@ -147,7 +147,7 @@ public class Dim2D
 		return new Dim2D(new Dim2DBuilder(this));
 	}
 	
-	public static Dim2D buildCommit()
+	public static Dim2D compile()
 	{
 		return new Dim2D();
 	}
@@ -190,7 +190,7 @@ public class Dim2D
 		{
 			if (dim != null)
 			{
-				Dim2D preview = result.commit();
+				Dim2D preview = result.compile();
 				
 				int minX = Math.min(preview.getX(), dim.getX());
 				int minY = Math.min(preview.getY(), dim.getY());
@@ -244,7 +244,7 @@ public class Dim2D
 			result.centerY(false);
 		}
 
-		return result.commit();
+		return result.compile();
 	}
 
 	@Override
@@ -436,7 +436,7 @@ public class Dim2D
 			return this;
 		}
 		
-		public Dim2D commit()
+		public Dim2D compile()
 		{
 			return new Dim2D(this);
 		}
@@ -454,11 +454,10 @@ public class Dim2D
 			
 			this.holder = holder;
 		}
-		
-		@Override
-		public Dim2D commit()
+
+		public Dim2D compile()
 		{
-			Dim2D commit = super.commit();
+			Dim2D commit = super.compile();
 			
 			this.holder.setDim(commit);
 			

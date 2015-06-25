@@ -32,7 +32,7 @@ public class ButtonList extends UIFrame
 
 	public ButtonList(Pos2D pos, int width, UIViewPositioner positioner, ContentFactory... contentProviders)
 	{
-		super(Dim2D.build().pos(pos).width(width).commit());
+		super(Dim2D.build().pos(pos).width(width).compile());
 		
 		this.positioner = positioner;
 		
@@ -82,13 +82,13 @@ public class ButtonList extends UIFrame
 		{
 			if (view != null)
 			{
-				view.modDim().addModifier(this).commit();
+				view.modDim().addModifier(this).compile();
 				
 				totalContentHeight += view.getDim().getHeight();
 			}
 		}
 		
-		this.modDim().height(totalContentHeight).commit();
+		this.modDim().height(totalContentHeight).compile();
 	}
 	
 	private void sortContent()

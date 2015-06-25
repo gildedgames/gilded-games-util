@@ -53,7 +53,7 @@ public class UIFactory
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
 		Sprite buttonClickedSprite = new Sprite(HOPPER_TEXTURE, 40, 174, 20, 20, 256, 256);
 		
-		Dim2D dim = Dim2D.build().pos(pos).area(20, 20).center(centered).commit();
+		Dim2D dim = Dim2D.build().pos(pos).area(20, 20).center(centered).compile();
 		
 		Button button = new Button(dim, new TextureElement(buttonDefaultSprite, dim.clone()), new TextureElement(buttonHoveredSprite, dim.clone()), new TextureElement(buttonClickedSprite, dim.clone()));
 		
@@ -67,7 +67,7 @@ public class UIFactory
 	
 	public static UIFrame createButton(Pos2D pos, int width, String text, boolean centered)
 	{
-		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).commit();
+		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).compile();
 		
 		UIView button = new MinecraftDefaultButton(dim, text);
 		
@@ -94,8 +94,8 @@ public class UIFactory
 		Sprite bar = new Sprite(SCROLL_BAR_TEXTURE, 0, 0, 10, 10, 40, 10);
 		Sprite base = new Sprite(SCROLL_BAR_TEXTURE, 10, 0, 10, 10, 40, 10);
 		
-		Dim2D spriteDimensions = Dim2D.build().area(10, 10).center(centered).commit();
-		Dim2D barDimensions = Dim2D.build().area(10, height).center(centered).commit();
+		Dim2D spriteDimensions = Dim2D.build().area(10, 10).center(centered).compile();
+		Dim2D barDimensions = Dim2D.build().area(10, height).center(centered).compile();
 		
 		UIFrame topButton = UIFactory.createArrowButton(centered);
 		UIFrame bottomButton = UIFactory.createArrowButton(centered);
@@ -109,7 +109,7 @@ public class UIFactory
 	
 	public static ScrollBar createScrollBar()
 	{
-		return UIFactory.createScrollBar(new Pos2D(), 0, Dim2D.buildCommit());
+		return UIFactory.createScrollBar(new Pos2D(), 0, Dim2D.compile());
 	}
 
 }

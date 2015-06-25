@@ -25,7 +25,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	
 	public UIDecorator(T element)
 	{
-		super(Dim2D.build().commit());
+		super(Dim2D.build().compile());
 		
 		this.element = element;
 	}

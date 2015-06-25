@@ -49,9 +49,9 @@ public class ScrollBar extends UIFrame
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().commit().getWidth(), this.bottomButton.copyDim().clearModifiers().commit().getWidth()), this.baseBarTexture.getDim().getWidth());
+		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().compile().getWidth(), this.bottomButton.copyDim().clearModifiers().compile().getWidth()), this.baseBarTexture.getDim().getWidth());
 
-		this.modDim().width(maxWidth).commit();
+		this.modDim().width(maxWidth).compile();
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -69,18 +69,18 @@ public class ScrollBar extends UIFrame
 	{
 		super.init(input);
 
-		this.topButton.modDim().resetPos().commit();
-		this.bottomButton.modDim().resetPos().commit();
+		this.topButton.modDim().resetPos().compile();
+		this.bottomButton.modDim().resetPos().compile();
 		
-		this.topButton.modDim().center(this.getDim()).commit();
-		this.bottomButton.modDim().center(this.getDim()).commit();
+		this.topButton.modDim().center(this.getDim()).compile();
+		this.bottomButton.modDim().center(this.getDim()).compile();
 		
-		this.baseBarTexture.modDim().center(this.getDim()).commit();
-		this.grabbableBarTexture.modDim().center(this.getDim()).commit();
+		this.baseBarTexture.modDim().center(this.getDim()).compile();
+		this.grabbableBarTexture.modDim().center(this.getDim()).compile();
 		
-		Dim2DCollection totalHeightMinusBottomButton = new Dim2DCollection().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).commit());
+		Dim2DCollection totalHeightMinusBottomButton = new Dim2DCollection().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).compile());
 
-		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).commit();
+		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).compile();
 
 		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
 		
@@ -89,13 +89,13 @@ public class ScrollBar extends UIFrame
 		this.content().setElement("topButton", this.topButton);
 		this.content().setElement("bottomButton", this.bottomButton);
 
-		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), this.copyDim().clearModifiers().commit().getHeight()).commit(), this.baseBarTexture);
-		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).commit(), this.grabbableBarTexture);
+		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), this.copyDim().clearModifiers().compile().getHeight()).compile(), this.baseBarTexture);
+		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
 		
-		Dim2DCollection bottomOfTopButton = new Dim2DCollection().addDim(Dim2D.build().y(this.topButton.copyDim().clearModifiers().commit().getHeight()).commit());
+		Dim2DCollection bottomOfTopButton = new Dim2DCollection().addDim(Dim2D.build().y(this.topButton.copyDim().clearModifiers().compile().getHeight()).compile());
 		
-		this.baseBar.modDim().addModifier(bottomOfTopButton).commit();
-		this.grabbableBar.modDim().addModifier(bottomOfTopButton).commit();
+		this.baseBar.modDim().addModifier(bottomOfTopButton).compile();
+		this.grabbableBar.modDim().addModifier(bottomOfTopButton).compile();
 
 		this.content().setElement("baseBar", this.baseBar);
 		this.content().setElement("grabbableBar", this.grabbableBar);
@@ -132,11 +132,11 @@ public class ScrollBar extends UIFrame
 				
 				if (input.isHovered(this.grabbableBar.getDim()))
 				{
-					this.grabbedMouseYOffset = -(this.grabbableBar.getDim().getY() - input.getMouseY());
+					this.grabbedMouseYOffset = (this.grabbableBar.getDim().getY() - input.getMouseY());
 				}
 				else
 				{
-					this.grabbedMouseYOffset = this.grabbableBar.getDim().getHeight() / 2;
+					this.grabbedMouseYOffset = -(this.grabbableBar.getDim().getHeight() / 2) + 1;
 				}
 			}
 			else if (pool.has(ButtonState.RELEASED))
@@ -159,14 +159,14 @@ public class ScrollBar extends UIFrame
 		{
 			int basePosY = input.getMouseY() - this.baseBar.getDim().getY() + this.grabbedMouseYOffset;
 			
-			this.setScrollPercentage((float)basePosY / (float)this.baseBar.getDim().getHeight());
+			float percent = (float)basePosY / (float)(this.baseBar.getDim().getHeight() - this.grabbableBar.getDim().getHeight());
+			
+			this.setScrollPercentage(percent);
 		}
 		
-		final int grabbableBarY = this.baseBar.getDim().getY() + (int)((this.baseBar.getDim().getHeight() - this.baseBar.getDim().getY()) * this.getScrollPercentage());
-		
-		this.grabbableBar.setDim(Dim2D.build(this.grabbableBar).y(grabbableBarY).commit());
+		int posOnBar = (int)((this.baseBar.getDim().getHeight() - this.grabbableBar.getDim().getHeight()) * this.getScrollPercentage());
 
-		//System.out.println(this.baseBar.getDimensions().containsModifier(this.grabbableBar));
+		this.grabbableBar.modDim().y(posOnBar).compile();
 		
 		super.draw(graphics, input);
 	}
