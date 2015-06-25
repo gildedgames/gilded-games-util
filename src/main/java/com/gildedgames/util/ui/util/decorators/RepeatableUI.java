@@ -23,7 +23,7 @@ public class RepeatableUI extends UIFrame
 	{
 		this.repeatedView.setScissoredArea(this.getDim());
 		
-		this.repeatedView.modDim().clearModifiers().addModifier(this).resetPos().commit();
+		this.repeatedView.modDim().clearModifiers().addModifier(this).resetPos().compile();
 
 		int textureHeight = this.repeatedView.getDim().getHeight();
 		int textureWidth = this.repeatedView.getDim().getWidth();
@@ -42,7 +42,7 @@ public class RepeatableUI extends UIFrame
 		}
 
 		Dim2D oldDim = this.repeatedView.getDim().clone();
-		Dim2D oldDimNoMods = Dim2D.build(oldDim).clearModifiers().commit();
+		Dim2D oldDimNoMods = Dim2D.build(oldDim).clearModifiers().compile();
 		
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
@@ -50,10 +50,10 @@ public class RepeatableUI extends UIFrame
 			{
 				this.repeatedView.draw(graphics, input);
 				
-				this.repeatedView.modDim().addX(textureWidth).commit();
+				this.repeatedView.modDim().addX(textureWidth).compile();
 			}
 
-			this.repeatedView.modDim().x(oldDimNoMods.getX()).addY(textureHeight).commit();
+			this.repeatedView.modDim().x(oldDimNoMods.getX()).addY(textureHeight).compile();
 		}
 		
 		this.repeatedView.setDim(oldDim);

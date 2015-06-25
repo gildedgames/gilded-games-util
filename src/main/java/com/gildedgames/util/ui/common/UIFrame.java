@@ -24,7 +24,7 @@ public class UIFrame implements UIView, KeyboardListener, MouseListener
 	
 	private UIContainerMutable listeners = new UIContainerMutable();
 	
-	private Dim2D dim = Dim2D.buildCommit();
+	private Dim2D dim = Dim2D.compile();
 
 	public UIFrame(Dim2D dim)
 	{

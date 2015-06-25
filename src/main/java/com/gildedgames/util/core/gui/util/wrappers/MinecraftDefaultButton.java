@@ -25,7 +25,7 @@ public class MinecraftDefaultButton extends UIFrame
 
 	public MinecraftDefaultButton(GuiButton button, boolean centered)
 	{
-		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).commit());
+		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).compile());
 		
 		this.button = button;
 	}

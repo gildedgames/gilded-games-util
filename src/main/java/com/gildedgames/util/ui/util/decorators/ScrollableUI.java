@@ -20,7 +20,7 @@ public class ScrollableUI extends UIFrame
 	{
 		super(scrollArea.clone());
 
-		this.scrolledView = new ScissorableUI(Dim2D.build(scrollArea).addModifier(this).commit(), scrolledView);
+		this.scrolledView = new ScissorableUI(Dim2D.build(scrollArea).addModifier(this).compile(), scrolledView);
 		this.scrollBar = scrollBar;
 	}
 	
@@ -29,17 +29,17 @@ public class ScrollableUI extends UIFrame
 	{
 		super.init(input);
 		
-		this.scrollBar.modDim().height(this.scrolledView.getScissoredArea().getHeight()).commit();
+		this.scrollBar.modDim().height(this.scrolledView.getScissoredArea().getHeight()).compile();
 		
-		this.scrolledView.modDim().width(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDim().getWidth()).commit();
+		this.scrolledView.modDim().width(this.scrolledView.getScissoredArea().getWidth() - this.scrollBar.getDim().getWidth()).compile();
 		
-		this.scrollBar.modDim().resetPos().commit();
+		this.scrollBar.modDim().resetPos().compile();
 		
-		this.scrolledView.modDim().pos(new Pos2D(this.scrollBar.getDim().getWidth(), 0)).commit();
+		this.scrolledView.modDim().pos(new Pos2D(this.scrollBar.getDim().getWidth(), 0)).compile();
 
-		this.scrollBar.modDim().center(false).commit();
+		this.scrollBar.modDim().center(false).compile();
 		
-		this.scrolledView.modDim().center(false).commit();
+		this.scrolledView.modDim().center(false).compile();
 
 		Dim2DCollection scrollingArea = new Dim2DCollection().addSeekable(this.scrolledView);
 	
@@ -54,7 +54,7 @@ public class ScrollableUI extends UIFrame
 	{
 		int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDim().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
 
-		this.scrolledView.modDim().y(-scrollValue).commit();
+		this.scrolledView.modDim().y(-scrollValue).compile();
 		
 		super.draw(graphics, input);
 	}
