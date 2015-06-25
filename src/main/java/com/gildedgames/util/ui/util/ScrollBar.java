@@ -6,6 +6,7 @@ import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Dim2DSeeker;
 import com.gildedgames.util.ui.event.view.MouseEventView;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -72,33 +73,59 @@ public class ScrollBar extends UIFrame
 		this.topButton.modDim().resetPos().compile();
 		this.bottomButton.modDim().resetPos().compile();
 		
-		this.topButton.modDim().center(this.getDim()).compile();
-		this.bottomButton.modDim().center(this.getDim()).compile();
+		this.topButton.modDim().center(false).compile();
+		this.bottomButton.modDim().center(false).compile();
 		
-		this.baseBarTexture.modDim().center(this.getDim()).compile();
-		this.grabbableBarTexture.modDim().center(this.getDim()).compile();
+		this.baseBarTexture.modDim().center(false).compile();
+		this.grabbableBarTexture.modDim().center(false).compile();
+
+		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
+		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
+
+		this.baseBar = new RepeatableUI(Dim2D.build()
+				.area(this.baseBarTexture.getDim().getWidth(), this.getDim().getHeight() - this.topButton.getDim().getHeight() - this.bottomButton.getDim().getHeight())
+				.compile(),this.baseBarTexture);
 		
-		Dim2DCollection totalHeightMinusBottomButton = new Dim2DCollection().addDim(Dim2D.build().y(this.getDim().getHeight() - this.bottomButton.getDim().getHeight()).compile());
-
-		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).compile();
-
-		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this, 0.5F));
-		
-		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this, -0.5F));
-
-		this.content().setElement("topButton", this.topButton);
-		this.content().setElement("bottomButton", this.bottomButton);
-
-		this.baseBar = new RepeatableUI(Dim2D.build().area(this.baseBarTexture.getDim().getWidth(), this.copyDim().clearModifiers().compile().getHeight()).compile(), this.baseBarTexture);
 		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
 		
-		Dim2DCollection bottomOfTopButton = new Dim2DCollection().addDim(Dim2D.build().y(this.topButton.copyDim().clearModifiers().compile().getHeight()).compile());
+		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DSeeker()
+		{
+
+			@Override
+			public Dim2D getDim()
+			{
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight() + ScrollBar.this.baseBar.getDim().getHeight()).compile();
+			}
+
+			@Override
+			public void setDim(Dim2D dim) {}
+			
+		};
 		
-		this.baseBar.modDim().addModifier(bottomOfTopButton).compile();
-		this.grabbableBar.modDim().addModifier(bottomOfTopButton).compile();
+		Dim2DSeeker topButtonHeight = new Dim2DSeeker()
+		{
+
+			@Override
+			public Dim2D getDim()
+			{
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight()).compile();
+			}
+
+			@Override
+			public void setDim(Dim2D dim) {}
+			
+		};
+		
+		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).compile();
+	
+		this.baseBar.modDim().addModifier(topButtonHeight).compile();
+		this.grabbableBar.modDim().addModifier(topButtonHeight).compile();
 
 		this.content().setElement("baseBar", this.baseBar);
 		this.content().setElement("grabbableBar", this.grabbableBar);
+		
+		this.content().setElement("topButton", this.topButton);
+		this.content().setElement("bottomButton", this.bottomButton);
 	}
 
 	@Override
@@ -216,14 +243,17 @@ public class ScrollBar extends UIFrame
 	public static class ButtonScrollEvent extends MouseEventView
 	{
 		
+		private Dim2DHolder button;
+		
 		private ScrollBar scrollBar;
 
 		private float scrollPercentage;
 		
-		public ButtonScrollEvent(ScrollBar scrollBar, float scrollPercentage)
+		public ButtonScrollEvent(Dim2DHolder button, ScrollBar scrollBar, float scrollPercentage)
 		{
 			super(scrollBar);
 			
+			this.button = button;
 			this.scrollBar = scrollBar;
 			this.scrollPercentage = scrollPercentage;
 		}
@@ -231,7 +261,7 @@ public class ScrollBar extends UIFrame
 		@Override
 		public void onMouseInput(InputProvider input, MouseInputPool pool)
 		{
-			if (pool.has(MouseButton.LEFT) && input.isHovered(this.scrollBar.topButton.getDim()))
+			if (pool.has(MouseButton.LEFT) && input.isHovered(this.button))
 			{
 				this.scrollBar.increaseScrollPercentage(this.scrollPercentage);
 			}
