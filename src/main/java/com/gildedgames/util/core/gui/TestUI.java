@@ -31,7 +31,7 @@ public class TestUI extends UIFrame
 
 		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
 
-		scrollable.modDim().pos(new Pos2D(100, 20)).compile();
+		scrollable.modDim().pos(new Pos2D(50, 10)).compile();
 
 		this.content().setElement("scrollable", scrollable);
 	}
