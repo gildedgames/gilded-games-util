@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -82,7 +83,7 @@ public class ButtonList extends UIFrame
 		{
 			if (view != null)
 			{
-				view.modDim().addModifier(this).compile();
+				view.modDim().addModifier(this, ModifierType.POS).compile();
 				
 				totalContentHeight += view.getDim().getHeight();
 			}

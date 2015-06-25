@@ -3,6 +3,7 @@ package com.gildedgames.util.ui.util.decorators;
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -23,7 +24,7 @@ public class RepeatableUI extends UIFrame
 	{
 		this.repeatedView.setScissoredArea(this.getDim());
 		
-		this.repeatedView.modDim().clearModifiers().addModifier(this).resetPos().compile();
+		this.repeatedView.modDim().clearModifiers().addModifier(this, ModifierType.POS).resetPos().compile();
 
 		int textureHeight = this.repeatedView.getDim().getHeight();
 		int textureWidth = this.repeatedView.getDim().getWidth();

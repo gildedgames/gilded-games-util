@@ -4,8 +4,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Dim2DGetter;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
 import com.gildedgames.util.ui.event.view.MouseEventView;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -88,7 +90,7 @@ public class ScrollBar extends UIFrame
 		
 		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
 		
-		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DSeeker()
+		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DGetter()
 		{
 
 			@Override
@@ -96,13 +98,10 @@ public class ScrollBar extends UIFrame
 			{
 				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight() + ScrollBar.this.baseBar.getDim().getHeight()).compile();
 			}
-
-			@Override
-			public void setDim(Dim2D dim) {}
 			
 		};
 		
-		Dim2DSeeker topButtonHeight = new Dim2DSeeker()
+		Dim2DSeeker topButtonHeight = new Dim2DGetter()
 		{
 
 			@Override
@@ -110,16 +109,13 @@ public class ScrollBar extends UIFrame
 			{
 				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight()).compile();
 			}
-
-			@Override
-			public void setDim(Dim2D dim) {}
 			
 		};
 		
-		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton).compile();
+		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton, ModifierType.POS).compile();
 	
-		this.baseBar.modDim().addModifier(topButtonHeight).compile();
-		this.grabbableBar.modDim().addModifier(topButtonHeight).compile();
+		this.baseBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
+		this.grabbableBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
 
 		this.content().setElement("baseBar", this.baseBar);
 		this.content().setElement("grabbableBar", this.grabbableBar);

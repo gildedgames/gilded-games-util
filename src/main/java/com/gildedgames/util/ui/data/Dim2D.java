@@ -5,12 +5,15 @@ import java.util.List;
 
 import scala.actors.threadpool.Arrays;
 
+import com.gildedgames.util.core.ObjectFilter;
+import com.gildedgames.util.core.ObjectFilter.FilterCondition;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 public class Dim2D
 {
 
-	protected final ImmutableList<Dim2DHolder> modifiers;
+	protected final ImmutableList<Modifier> modifiers;
 
 	protected final Pos2D pos;
 
@@ -40,7 +43,7 @@ public class Dim2D
 		this.modifiers = ImmutableList.copyOf(builder.modifiers);
 	}
 	
-	public ImmutableList<Dim2DHolder> getModifiers()
+	public ImmutableList<Modifier> getModifiers()
 	{
 		return this.modifiers;
 	}
@@ -54,11 +57,16 @@ public class Dim2D
 	{
 		float modifiedScale = this.scale;
 		
-		for (Dim2DHolder modifier : this.modifiers)
+		for (Modifier modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getDim() != null && modifier.getDim() != this)
+			if (modifier != null && modifier.getTypes().contains(ModifierType.SCALE) || modifier.getTypes().contains(ModifierType.ALL))
 			{
-				modifiedScale *= modifier.getDim().getScale();
+				Dim2DHolder holder = modifier.getHolder();
+				
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedScale *= holder.getDim().getScale();
+				}
 			}
 		}
 		
@@ -88,11 +96,24 @@ public class Dim2D
 	{
 		Pos2D modifiedPos = this.getScaledPos(pos);
 		
-		for (Dim2DHolder modifier : this.modifiers)
+		for (Modifier modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getDim() != null && modifier.getDim() != this)
+			if (modifier != null)
 			{
-				modifiedPos = modifiedPos.withAdded(modifier.getDim().getPos());
+				Dim2DHolder holder = modifier.getHolder();
+				
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
+					{
+						modifiedPos = modifiedPos.withAddedX(holder.getDim().getPos().getX());
+					}
+					
+					if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
+					{
+						modifiedPos = modifiedPos.withAddedY(holder.getDim().getPos().getY());
+					}
+				}
 			}
 		}
 		
@@ -120,7 +141,22 @@ public class Dim2D
 	 */
 	public int getWidth()
 	{
-		return (int) (this.width * this.getScale());
+		int modifiedWidth = this.width;
+		
+		for (Modifier modifier : this.modifiers)
+		{
+			if (modifier != null && modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				Dim2DHolder holder = modifier.getHolder();
+				
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedWidth += holder.getDim().getWidth();
+				}
+			}
+		}
+		
+		return (int) (modifiedWidth * this.getScale());
 	}
 
 	/**
@@ -128,7 +164,22 @@ public class Dim2D
 	 */
 	public int getHeight()
 	{
-		return (int) (this.height * this.getScale());
+		int modifiedHeight = this.height;
+		
+		for (Modifier modifier : this.modifiers)
+		{
+			if (modifier != null && modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				Dim2DHolder holder = modifier.getHolder();
+				
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedHeight += holder.getDim().getHeight();
+				}
+			}
+		}
+		
+		return (int) (modifiedHeight * this.getScale());
 	}
 
 	public boolean isCenteredX()
@@ -145,6 +196,37 @@ public class Dim2D
 	public Dim2D clone()
 	{
 		return new Dim2D(new Dim2DBuilder(this));
+	}
+	
+	public Dim2D withoutModifiers(ModifierType first, ModifierType... rest)
+	{
+		List<ModifierType> types = Lists.asList(first, rest);
+		
+		return Dim2D.build(this).clearModifiers(types.toArray(new ModifierType[types.size()])).compile();
+	}
+	
+	public Dim2D without(InternalModifierType first, InternalModifierType... rest)
+	{
+		List<InternalModifierType> types = Lists.asList(first, rest);
+		
+		Dim2DBuilder builder = Dim2D.build(this);
+		
+		if (types.contains(InternalModifierType.SCALE))
+		{
+			builder.scale(1.0F);
+		}
+		
+		if (types.contains(InternalModifierType.X_CENTERING))
+		{
+			builder.centerX(false);
+		}
+		
+		if (types.contains(InternalModifierType.Y_CENTERING))
+		{
+			builder.centerY(false);
+		}
+		
+		return builder.compile();
 	}
 	
 	public static Dim2D compile()
@@ -258,7 +340,7 @@ public class Dim2D
 	public static class Dim2DBuilder
 	{
 		
-		protected List<Dim2DHolder> modifiers = new ArrayList<Dim2DHolder>();
+		protected List<Modifier> modifiers = new ArrayList<Modifier>();
 
 		protected Pos2D pos = new Pos2D();
 
@@ -290,7 +372,7 @@ public class Dim2D
 			this.centeredX = dim.centeredX;
 			this.centeredY = dim.centeredY;
 
-			this.modifiers = new ArrayList<Dim2DHolder>(dim.modifiers);
+			this.modifiers = new ArrayList<Modifier>(dim.modifiers);
 		}
 		
 		public Dim2DBuilder resetPos()
@@ -412,15 +494,39 @@ public class Dim2D
 		/**
 		 * @return Returns a clone() of this Dim2D object, unaltered by any modifiers.
 		 */
-		public Dim2DBuilder clearModifiers()
+		public Dim2DBuilder clearModifiers(ModifierType... types)
 		{
-			this.modifiers = new ArrayList<Dim2DHolder>();
+			this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.asList(types))
+			{
+
+				@Override
+				public boolean isType(Object object)
+				{
+					if (object instanceof Modifier)
+					{
+						Modifier modifier = (Modifier)object;
+						
+						for (ModifierType type : ObjectFilter.getTypesFrom(this.data(), ModifierType.class))
+						{
+							if (modifier.getTypes().contains(type))
+							{
+								return true;
+							}
+						}
+					}
+					
+					return false;
+				}
+				
+			});
 			
 			return this;
 		}
 
-		public Dim2DBuilder addModifier(Dim2DHolder modifier)
+		public Dim2DBuilder addModifier(Dim2DHolder holder, ModifierType mandatoryType, ModifierType... otherTypes)
 		{
+			Modifier modifier = new Modifier(holder, Lists.asList(mandatoryType, otherTypes));
+			
 			if (!this.modifiers.contains(modifier))
 			{
 				this.modifiers.add(modifier);
@@ -429,8 +535,10 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2DBuilder removeModifier(Dim2DHolder modifier)
+		public Dim2DBuilder removeModifier(Dim2DHolder holder, ModifierType mandatoryType, ModifierType... otherTypes)
 		{
+			Modifier modifier = new Modifier(holder, Lists.asList(mandatoryType, otherTypes));
+			
 			this.modifiers.remove(modifier);
 			
 			return this;
@@ -464,6 +572,48 @@ public class Dim2D
 			return commit;
 		}
 		
+	}
+	
+	public static class Modifier
+	{
+		
+		private Dim2DHolder holder;
+		
+		private ModifierType[] types;
+		
+		private Modifier(Dim2DHolder holder, List<ModifierType> types)
+		{
+			this(holder, types.toArray(new ModifierType[types.size()]));
+		}
+
+		private Modifier(Dim2DHolder holder, ModifierType... types)
+		{
+			this.holder = holder;
+			this.types = types;
+		}
+		
+		public Dim2DHolder getHolder()
+		{
+			return this.holder;
+		}
+
+		public List<ModifierType> getTypes()
+		{
+			return Arrays.asList(this.types);
+		}
+		
+	}
+	
+	public static enum ModifierType
+	{
+		
+		X, Y, POS, HEIGHT, WIDTH, SCALE, ALL;
+		
+	}
+	
+	public static enum InternalModifierType
+	{
+		X_CENTERING, Y_CENTERING, SCALE;
 	}
 
 }

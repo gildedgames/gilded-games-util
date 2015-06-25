@@ -1,11 +1,10 @@
 package com.gildedgames.util.ui.util;
 
-import java.util.Map;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.UIElement;
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
@@ -40,7 +39,7 @@ public final class UIViewerHelper
 					
 					if (dimHolder != null)
 					{
-						dimHolder.modDim().addModifier(parentModifier).compile();
+						dimHolder.modDim().addModifier(parentModifier, ModifierType.POS).compile();
 					}
 				}
 			}
