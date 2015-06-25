@@ -32,6 +32,10 @@ public class Button extends UIFrame
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
 		
+		this.defaultState.modDim().center(false).resetPos().compile();
+		this.hoveredState.modDim().center(false).resetPos().compile();
+		this.clickedState.modDim().center(false).resetPos().compile();
+		
 		this.clickedState.listeners().setElement("clickEvent", new MouseEventViewFocus(this.clickedState, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
 		
 		this.content().setElement("defaultState", this.defaultState);
