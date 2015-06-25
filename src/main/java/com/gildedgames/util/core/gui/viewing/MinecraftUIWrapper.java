@@ -10,6 +10,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.KeyboardInput;
@@ -115,6 +116,11 @@ public final class MinecraftUIWrapper extends GuiScreen
 		}
 
 		UIViewerHelper.processDraw(this.frameHolder, GRAPHICS, INPUT);
+	}
+	
+	public final void tick(TickInfo info)
+	{
+		UIViewerHelper.processTick(this.frameHolder, INPUT, info);
 	}
 
 	@Override
