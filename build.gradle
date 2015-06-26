@@ -67,8 +67,6 @@ dependencies {
     shade 'org.jgrapht:jgrapht-core:0.9.1'
     shade 'org.luaj:luaj-jme:3.0.1'
     shade 'org.luaj:luaj-jse:3.0.1'
-
-    deployerJars 'org.apache.maven.wagon:wagon-ssh:2.2'
 }
 
 jar {
