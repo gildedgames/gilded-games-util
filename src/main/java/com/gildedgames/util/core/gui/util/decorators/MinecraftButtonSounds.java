@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.gildedgames.util.ui.common.UIDecorator;
 import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
@@ -49,5 +50,11 @@ public class MinecraftButtonSounds extends UIDecorator<UIView>
     {
         soundHandlerIn.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
     }
+
+	@Override
+	public UIContainer assembleAllContent()
+	{
+		return this.getDecoratedElement().seekContent();
+	}
 	
 }

@@ -225,8 +225,15 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public UIContainer seekContent()
 	{
-		return this.element.seekContent();
+		return this.assembleAllContent();
 	}
+	
+	public UIContainer seekDecoratorContent()
+	{
+		return super.seekContent();
+	}
+	
+	public abstract UIContainer assembleAllContent();
 
 	@Override
 	public UIContainerMutable listeners()

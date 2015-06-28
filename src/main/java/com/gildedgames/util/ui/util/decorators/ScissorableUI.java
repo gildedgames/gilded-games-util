@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.common.UIView;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DSeekable;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
+import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.google.common.collect.ImmutableList;
@@ -98,6 +99,12 @@ public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 			 this.seekFrom.setScissoredArea(dim);
 		}
 		
+	}
+
+	@Override
+	public UIContainer assembleAllContent()
+	{
+		return this.getDecoratedElement().seekContent();
 	}
 
 }
