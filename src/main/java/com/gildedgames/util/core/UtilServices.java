@@ -1,7 +1,7 @@
 package com.gildedgames.util.core;
 
 import com.gildedgames.util.core.gui.TestUI;
-import com.gildedgames.util.core.gui.util.decorators.DarkenedBackground;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftDecorator;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
@@ -63,7 +63,7 @@ public class UtilServices
 		registry.registerClass(RepeatableUI.class, 10);
 		registry.registerClass(ScissorableUI.class, 11);
 		registry.registerClass(ScrollableUI.class, 12);
-		registry.registerClass(DarkenedBackground.class, 13);
+		registry.registerClass(MinecraftDecorator.class, 13);
 		registry.registerClass(MinecraftButtonSounds.class, 14);
 		registry.registerClass(MinecraftDefaultButton.class, 15);
 		registry.registerClass(UIElement.class, 16);

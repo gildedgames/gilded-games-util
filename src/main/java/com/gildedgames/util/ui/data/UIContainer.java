@@ -46,6 +46,11 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		return new LinkedHashMap<String, UIElement>(this.elements);
 	}
 	
+	public boolean isEmpty()
+	{
+		return this.elements.isEmpty();
+	}
+	
 	public List<UIView> queryAll(Object... input)
 	{
 		List<UIView> views = new ArrayList<UIView>();
@@ -117,7 +122,37 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		
 		return clone;
 	}
+	
+	public UIContainer merge(UIContainer first, UIContainer... rest)
+	{
+		return this.merge(false, first, rest);
+	}
 
+	public UIContainer merge(boolean newContentFirst, UIContainer first, UIContainer... rest)
+	{
+		UIContainer clone = this.clone();
+		UIContainer merged = new UIContainer();
+		
+		if (!newContentFirst)
+		{
+			merged.elements = clone.elements;
+		}
+		
+		merged.elements.putAll(first.elements);
+		
+		for (UIContainer container : rest)
+		{
+			merged.elements.putAll(container.elements);
+		}
+		
+		if (newContentFirst)
+		{
+			merged.elements.putAll(clone.elements);
+		}
+		
+		return merged;
+	}
+	
 	@Override
 	public Iterator<UIElement> iterator()
 	{

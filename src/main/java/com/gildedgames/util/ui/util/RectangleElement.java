@@ -3,6 +3,7 @@ package com.gildedgames.util.ui.util;
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -45,6 +46,12 @@ public class RectangleElement extends UIFrame
 	{
 		this.startColor = data;
 	}
+	
+	@Override
+	public void tick(InputProvider input, TickInfo tickInfo)
+	{
+		super.tick(input, tickInfo);
+	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
@@ -57,7 +64,6 @@ public class RectangleElement extends UIFrame
 		{
 			graphics.drawGradientRectangle(this.getDim(), this.startColor, this.endColor);
 		}
-		
 	}
 
 }

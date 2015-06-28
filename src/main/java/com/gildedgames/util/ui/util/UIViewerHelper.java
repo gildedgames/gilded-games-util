@@ -46,6 +46,8 @@ public final class UIViewerHelper
 			
 			UIFrame frame = ObjectFilter.getType(element, UIFrame.class);
 			
+			UIContainer content = element.seekContent();
+			
 			if (frame != null)
 			{
 				UIViewerHelper.processInit(frame.listeners(), input);
