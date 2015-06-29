@@ -24,7 +24,7 @@ public class UIContainerMutable extends UIContainer
 		this.elements.put(key, element);
 	}
 	
-	public void remove(String key)
+	public void removeElement(String key)
 	{
 		this.elements.remove(key);
 	}
@@ -37,7 +37,7 @@ public class UIContainerMutable extends UIContainer
 		{
 			String key = entry.getKey();
 			
-			this.remove(key);
+			this.removeElement(key);
 		}
 	}
 
