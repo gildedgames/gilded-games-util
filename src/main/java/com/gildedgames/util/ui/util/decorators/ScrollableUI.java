@@ -6,7 +6,6 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DGetter;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -23,7 +22,7 @@ public class ScrollableUI extends UIFrame
 	{
 		super(windowSize);
 
-		this.scrolledView = new ScissorableUI(Dim2D.build(windowSize).addModifier(this, ModifierType.POS, ModifierType.WIDTH, ModifierType.HEIGHT).compile(), scrolledView);
+		this.scrolledView = new ScissorableUI(Dim2D.build().addModifier(this, ModifierType.POS, ModifierType.WIDTH, ModifierType.HEIGHT).compile(), scrolledView);
 		this.scrollBar = scrollBar;
 	}
 	
@@ -32,22 +31,29 @@ public class ScrollableUI extends UIFrame
 	{
 		super.init(input);
 		
-		this.scrollBar.modDim().addModifier(this, ModifierType.HEIGHT).compile();
+		this.scrollBar.modDim().resetPos().addModifier(this, ModifierType.HEIGHT).compile();
 		
-		this.scrolledView.modDim().addModifier(this, ModifierType.HEIGHT).addModifier(new Dim2DGetter()
+		this.scrolledView.modDim().resetPos().addModifier(new Dim2DGetter()
 		{
 
 			@Override
 			public Dim2D getDim()
 			{
-				return Dim2D.build(ScrollableUI.this).addWidth(-ScrollableUI.this.scrollBar.getDim().getWidth()).compile();
+				ScrollBar scrollBar = ScrollableUI.this.scrollBar;
+				
+				float scrollPercentage = scrollBar.getScrollPercentage();
+				
+				int scrolledElementHeight = ScrollableUI.this.scrolledView.getDim().getHeight();
+				int scissoredHeight = ScrollableUI.this.scrolledView.getScissoredArea().getHeight();
+				
+				int scrollValue = (int) -(scrollPercentage * (scrolledElementHeight - scissoredHeight));
+				
+				return Dim2D.build(ScrollableUI.this).x(scrollBar.getDim().getWidth()).y(scrollValue).addWidth(-scrollBar.getDim().getWidth()).compile();
 			}
 			
-		}, ModifierType.WIDTH).compile();
+		}, ModifierType.WIDTH, ModifierType.POS).compile();
 		
 		this.scrollBar.modDim().resetPos().compile();
-		
-		this.scrolledView.modDim().pos(new Pos2D(this.scrollBar.getDim().getWidth(), 0)).compile();
 
 		this.scrollBar.modDim().center(false).compile();
 		this.scrolledView.modDim().center(false).compile();
@@ -63,10 +69,6 @@ public class ScrollableUI extends UIFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		int scrollValue = (int) (this.scrollBar.getScrollPercentage() * (this.scrolledView.getDim().getHeight() - this.scrolledView.getScissoredArea().getHeight()));
-
-		this.scrolledView.modDim().y(-scrollValue).compile();
-		
 		super.draw(graphics, input);
 	}
 	
