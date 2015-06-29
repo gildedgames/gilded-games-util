@@ -55,7 +55,7 @@ public class UIFactory
 		
 		Dim2D dim = Dim2D.build().pos(pos).area(20, 20).center(centered).compile();
 		
-		Button button = new Button(dim, new TextureElement(buttonDefaultSprite, dim.clone()), new TextureElement(buttonHoveredSprite, dim.clone()), new TextureElement(buttonClickedSprite, dim.clone()));
+		Button button = new Button(dim, new TextureElement(buttonDefaultSprite, dim), new TextureElement(buttonHoveredSprite, dim), new TextureElement(buttonClickedSprite, dim));
 		
 		return UIFactory.decorateWithPressSound(button);
 	}
@@ -100,7 +100,7 @@ public class UIFactory
 		UIFrame topButton = UIFactory.createArrowButton(centered);
 		UIFrame bottomButton = UIFactory.createArrowButton(centered);
 		
-		ScrollBar scrollBar = new ScrollBar(barDimensions, topButton, bottomButton, new TextureElement(base, spriteDimensions.clone()), new TextureElement(bar, spriteDimensions.clone()));
+		ScrollBar scrollBar = new ScrollBar(barDimensions, topButton, bottomButton, new TextureElement(base, spriteDimensions), new TextureElement(bar, spriteDimensions));
 
 		scrollBar.setScrollingAreas(new Dim2DCollection().addDim(scrollableArea));
 		

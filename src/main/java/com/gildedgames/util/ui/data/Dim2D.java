@@ -193,9 +193,9 @@ public class Dim2D
 	}
 
 	@Override
-	public Dim2D clone()
+	public Dim2DBuilder clone()
 	{
-		return new Dim2D(new Dim2DBuilder(this));
+		return new Dim2DBuilder(this);
 	}
 	
 	public Dim2D withoutModifiers(ModifierType first, ModifierType... rest)
