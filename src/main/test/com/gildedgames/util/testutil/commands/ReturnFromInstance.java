@@ -22,7 +22,7 @@ public class ReturnFromInstance implements ICommand
 	}
 
 	@Override
-	public String getCommandName()
+	public String getName()
 	{
 		return "ggreturn";
 	}
@@ -34,13 +34,13 @@ public class ReturnFromInstance implements ICommand
 	}
 
 	@Override
-	public List<String> getCommandAliases()
+	public List<String> getAliases()
 	{
 		return this.aliases;
 	}
 
 	@Override
-	public void processCommand(ICommandSender icommandsender, String[] astring)
+	public void execute(ICommandSender icommandsender, String[] astring)
 	{
 		if (icommandsender instanceof EntityPlayerMP)
 		{
@@ -51,7 +51,7 @@ public class ReturnFromInstance implements ICommand
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender icommandsender)
+	public boolean canCommandSenderUse(ICommandSender icommandsender)
 	{
 		return true;
 	}

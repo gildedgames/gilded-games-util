@@ -23,7 +23,7 @@ public class CreateDimension implements ICommand
 	}
 
 	@Override
-	public String getCommandName()
+	public String getName()
 	{
 		return "ggcreate";
 	}
@@ -35,13 +35,13 @@ public class CreateDimension implements ICommand
 	}
 
 	@Override
-	public List<String> getCommandAliases()
+	public List<String> getAliases()
 	{
 		return this.aliases;
 	}
 
 	@Override
-	public void processCommand(ICommandSender icommandsender, String[] astring)
+	public void execute(ICommandSender icommandsender, String[] astring)
 	{
 		if (astring.length == 0)
 		{
@@ -57,7 +57,7 @@ public class CreateDimension implements ICommand
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender icommandsender)
+	public boolean canCommandSenderUse(ICommandSender icommandsender)
 	{
 		return true;
 	}
