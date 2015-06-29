@@ -36,6 +36,16 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		return this.parent;
 	}
 	
+	public UIElement getElement(String key)
+	{
+		return this.elements.get(key);
+	}
+	
+	public <T extends UIElement> T getElement(String key, Class<? extends T> clazz)
+	{
+		return (T) this.elements.get(key);
+	}
+	
 	public ImmutableList<UIElement> elements()
 	{
 		return ImmutableList.copyOf(this.elements.values());
