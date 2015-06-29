@@ -42,7 +42,7 @@ public class RepeatableUI extends UIFrame
 			widthCountNeeded = (int) (this.getDim().getWidth() / textureWidth);
 		}
 
-		Dim2D oldDim = this.repeatedView.getDim().clone();
+		Dim2D oldDim = this.repeatedView.getDim().clone().compile();
 		Dim2D oldDimNoMods = Dim2D.build(oldDim).clearModifiers().compile();
 		
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
