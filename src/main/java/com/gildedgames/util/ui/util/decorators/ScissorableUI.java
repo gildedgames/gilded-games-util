@@ -41,11 +41,7 @@ public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.setScissoredArea(Dim2D.build(this.getScissoredArea())
-				//.resetPos()
-				.scale(this.getDim().getScale())
-				//.addModifier(this.getDecoratedElement())
-				.compile());
+		this.setScissoredArea(Dim2D.build(this.getScissoredArea()).scale(this.getDim().getScale()).compile());
 		
 		GL11.glPushMatrix();
 
