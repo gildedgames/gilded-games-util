@@ -1,8 +1,19 @@
 package com.gildedgames.util.core;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+
 import com.gildedgames.util.core.gui.TestUI;
-import com.gildedgames.util.core.gui.util.decorators.MinecraftDecorator;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftDecorator;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.nbt.NBTFile;
@@ -10,11 +21,11 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIDecorator;
 import com.gildedgames.util.ui.common.UIElement;
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.event.ElementEvent;
 import com.gildedgames.util.ui.event.FrameEvent;
@@ -42,7 +53,7 @@ public class UtilServices
 
 	public UtilServices()
 	{
-		
+
 	}
 
 	private void startIOManager()
@@ -50,7 +61,7 @@ public class UtilServices
 		this.io = new IOManagerDefault(MANAGER_NAME);
 
 		IORegistry registry = this.io.getRegistry();
-		
+
 		registry.registerClass(NBTFile.class, 0);
 		registry.registerClass(WorldHookPool.class, 1);
 		registry.registerClass(MenuConfig.class, 2);
@@ -90,6 +101,37 @@ public class UtilServices
 		}
 
 		return this.io;
+	}
+
+	@SuppressWarnings("resource")
+	public InputStream getStreamFromAsset(AssetLocation asset) throws ZipException, IOException
+	{
+		File source = null;
+
+		String path = "assets//" + asset.getDomain() + "//" + asset.getPath();
+
+		for (ModContainer container : Loader.instance().getActiveModList())
+		{
+			if (container.getModId().equals(asset.getDomain()))
+			{
+				source = container.getSource();
+			}
+		}
+
+		if (source != null)
+		{
+			if (source.isFile())
+			{
+				ZipFile zipfile = new ZipFile(source);
+				ZipEntry zipentry = zipfile.getEntry(path);
+
+				return zipfile.getInputStream(zipentry);
+			}
+
+			return new FileInputStream(new File(source, path));
+		}
+
+		return null;
 	}
 
 }
