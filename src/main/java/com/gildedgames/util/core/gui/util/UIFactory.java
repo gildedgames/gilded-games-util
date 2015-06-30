@@ -7,6 +7,7 @@ import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
 import com.gildedgames.util.ui.common.UIFrame;
 import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -115,6 +116,16 @@ public class UIFactory
 	public static UIFrame createTexture(Sprite sprite, Dim2D dim)
 	{
 		return new TextureElement(sprite, dim);
+	}
+
+	public static UIFrame createTexture(AssetLocation asset, Dim2D dim)
+	{
+		return UIFactory.createTexture(new Sprite(asset), dim);
+	}
+
+	public static UIFrame createTexture(AssetLocation asset)
+	{
+		return UIFactory.createTexture(asset, Dim2D.compile());
 	}
 
 }
