@@ -6,23 +6,23 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.ui.common.UIDecorator;
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.GuiDecorator;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.util.RectangleElement;
 
-public class MinecraftDecorator extends UIDecorator<UIView>
+public class MinecraftGui extends GuiDecorator<Gui>
 {
 
 	private boolean drawBackground = true;
 	
 	private Minecraft mc = Minecraft.getMinecraft();
 
-	public MinecraftDecorator(UIView view)
+	public MinecraftGui(Gui view)
 	{ 
 		super(view);
 	}
@@ -65,7 +65,7 @@ public class MinecraftDecorator extends UIDecorator<UIView>
 	}
 
 	@Override
-	public UIContainer assembleAllContent()
+	public UiContainer assembleAllContent()
 	{
 		return this.getDecoratedElement().seekContent().merge(true, this.seekDecoratorContent());
 	}

@@ -12,16 +12,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class UICore implements ICore
+public class UiCore implements ICore
 {
 
-	public final static UICore INSTANCE = new UICore();
+	public final static UiCore INSTANCE = new UiCore();
 
-	private final SidedObject<UIServices> serviceLocator = new SidedObject<UIServices>(new UIServices(Side.CLIENT), new UIServices(Side.SERVER));
+	private final SidedObject<UiServices> serviceLocator = new SidedObject<UiServices>(new UiServices(Side.CLIENT), new UiServices(Side.SERVER));
 
-	public static UIServices locate()
+	public static UiServices locate()
 	{
-		return UICore.INSTANCE.serviceLocator.instance();
+		return UiCore.INSTANCE.serviceLocator.instance();
 	}
 
 	@Override

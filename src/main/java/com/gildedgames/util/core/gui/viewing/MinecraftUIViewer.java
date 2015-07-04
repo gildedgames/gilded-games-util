@@ -2,11 +2,11 @@ package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
 
-import com.gildedgames.util.ui.common.UIFrame;
-import com.gildedgames.util.ui.common.UIViewer;
+import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.GuiViewer;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class MinecraftUIViewer implements UIViewer
+public class MinecraftUIViewer implements GuiViewer
 {
 	
 	private final static MinecraftUIViewer INSTANCE = new MinecraftUIViewer();
@@ -26,7 +26,7 @@ public class MinecraftUIViewer implements UIViewer
 	}
 
 	@Override
-	public void open(UIFrame frame)
+	public void open(GuiFrame frame)
 	{
 		this.mc.displayGuiScreen(new MinecraftUIWrapper(frame));
 	}

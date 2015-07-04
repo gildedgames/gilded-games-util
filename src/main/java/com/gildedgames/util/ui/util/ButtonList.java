@@ -5,33 +5,33 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.UIFrame;
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
-import com.gildedgames.util.ui.util.transform.UIViewPositioner;
-import com.gildedgames.util.ui.util.transform.UIViewSorter;
+import com.gildedgames.util.ui.util.transform.GuiPositioner;
+import com.gildedgames.util.ui.util.transform.GuiSorter;
 import com.google.common.collect.ImmutableMap;
 
-public class ButtonList extends UIFrame
+public class ButtonList extends GuiFrame
 {
 
-	protected UIViewPositioner positioner;
+	protected GuiPositioner positioner;
 	
-	protected UIViewSorter sorter;
+	protected GuiSorter sorter;
 	
 	protected List<ContentFactory> contentProviders = new ArrayList<ContentFactory>();
 	
-	public ButtonList(UIViewPositioner positioner, ContentFactory... contentProviders)
+	public ButtonList(GuiPositioner positioner, ContentFactory... contentProviders)
 	{
 		this(new Pos2D(), 0, positioner, contentProviders);
 	}
 
-	public ButtonList(Pos2D pos, int width, UIViewPositioner positioner, ContentFactory... contentProviders)
+	public ButtonList(Pos2D pos, int width, GuiPositioner positioner, ContentFactory... contentProviders)
 	{
 		super(Dim2D.build().pos(pos).width(width).compile());
 		
@@ -40,29 +40,29 @@ public class ButtonList extends UIFrame
 		this.contentProviders.addAll(Arrays.<ContentFactory>asList(contentProviders));
 	}
 	
-	public void setPositioner(UIViewPositioner positioner)
+	public void setPositioner(GuiPositioner positioner)
 	{
 		this.positioner = positioner;
 	}
 	
-	public UIViewPositioner getPositioner()
+	public GuiPositioner getPositioner()
 	{
 		return this.positioner;
 	}
 	
-	public void setSorter(UIViewSorter sorter)
+	public void setSorter(GuiSorter sorter)
 	{
 		this.sorter = sorter;
 	}
 	
-	public UIViewSorter getSorter()
+	public GuiSorter getSorter()
 	{
 		return this.sorter;
 	}
 	
 	private void clearAndProvideContent()
 	{
-		this.listeners().clear(UIView.class);
+		this.listeners().clear(Gui.class);
 		
 		for (ContentFactory contentProvider : this.contentProviders)
 		{
@@ -73,13 +73,13 @@ public class ButtonList extends UIFrame
 		}
 	}
 	
-	private void positionContent(List<UIView> views)
+	private void positionContent(List<Gui> views)
 	{
 		this.positioner.positionList(views, this.getDim());
 		
 		int totalContentHeight = 0;
 		
-		for (UIView view : views)
+		for (Gui view : views)
 		{
 			if (view != null)
 			{
@@ -94,15 +94,15 @@ public class ButtonList extends UIFrame
 	
 	private void sortContent()
 	{
-		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), UIView.class);
-		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
+		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), Gui.class);
+		List<Gui> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
-		for (UIView view : filteredViews)
+		for (Gui view : filteredViews)
 		{
 			view.setVisible(false);
 		}
 		
-		for (UIView view : sortedViews)
+		for (Gui view : sortedViews)
 		{
 			view.setVisible(true);
 		}
@@ -114,10 +114,10 @@ public class ButtonList extends UIFrame
 		this.sortContent();
 	}
 	
-	private List<UIView> getSortedViews()
+	private List<Gui> getSortedViews()
 	{
-		List<UIView> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), UIView.class);
-		List<UIView> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
+		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), Gui.class);
+		List<Gui> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 		
 		return sortedViews;
 	}

@@ -2,32 +2,31 @@ package com.gildedgames.util.ui.util.transform;
 
 import java.util.List;
 
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 
-public class UIViewPositionerButton implements UIViewPositioner
+public class GuiPositionerButton implements GuiPositioner
 {
 
 	@Override
-	public List<UIView> positionList(List<UIView> views, Dim2D listDimensions)
+	public List<Gui> positionList(List<Gui> guis, Dim2D listDimensions)
 	{
 		int currentY = 0;
-		
-		for (UIView view : views)
-		{	
+
+		for (Gui view : guis)
+		{
 			if (view != null)
 			{
 				view.modDim().y(currentY).center(false).compile();
 			}
-			
+
 			int viewYPlusHeight = view.getDim().getY() + view.getDim().getHeight();
 			int yDifference = viewYPlusHeight - currentY;
-			
+
 			currentY += yDifference;
 		}
-		
-		return views;
+
+		return guis;
 	}
 
 }

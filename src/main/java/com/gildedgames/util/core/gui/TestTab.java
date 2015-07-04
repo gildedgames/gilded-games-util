@@ -3,33 +3,33 @@ package com.gildedgames.util.core.gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gildedgames.util.core.PaynUI;
-import com.gildedgames.util.core.gui.util.decorators.MinecraftDecorator;
+import com.gildedgames.util.core.PaynGui;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.viewing.MinecraftUIViewer;
 import com.gildedgames.util.core.gui.viewing.MinecraftUIWrapper;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
-import com.gildedgames.util.ui.UICore;
-import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.common.GuiFrame;
 
 public class TestTab extends TabBackpack
 {
-	
-	private UIFrame ui;
-	
+
+	private GuiFrame gui;
+
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		this.ui = new MinecraftDecorator(new PaynUI());
-		
-		UICore.locate().open("test", this.ui, MinecraftUIViewer.instance());
+		this.gui = new MinecraftGui(new PaynGui());
+
+		UiCore.locate().open("test", this.gui, MinecraftUIViewer.instance());
 	}
-	
+
 	@Override
 	public void onClose(EntityPlayer player)
 	{
 		super.onClose(player);
-		
-		UICore.locate().close(MinecraftUIViewer.instance());
+
+		UiCore.locate().close(MinecraftUIViewer.instance());
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class TestTab extends TabBackpack
 	{
 		if (gui instanceof MinecraftUIWrapper)
 		{
-			MinecraftUIWrapper wrapper = (MinecraftUIWrapper)gui;
-			
-			return wrapper.getFrame() != null && wrapper.getFrame().getClass() == this.ui.getClass();
+			MinecraftUIWrapper wrapper = (MinecraftUIWrapper) gui;
+
+			return wrapper.getFrame() != null && wrapper.getFrame().getClass() == this.gui.getClass();
 		}
-		
+
 		return false;
 	}
-	
+
 }

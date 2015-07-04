@@ -2,13 +2,13 @@ package com.gildedgames.util.ui.common;
 
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public interface UIElement extends NBT
+public interface Ui extends NBT
 {
 
-	UIContainer seekContent();
+	UiContainer seekContent();
 	
 	void init(InputProvider input);
 	

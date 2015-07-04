@@ -1,5 +1,9 @@
 package com.gildedgames.util.core.gui.viewing;
 
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -23,11 +27,11 @@ public class MinecraftGraphics2D implements Graphics2D
 {
 
 	protected Minecraft minecraft;
-	
+
 	protected Gui gui = new Gui();
-	
+
 	protected FontRenderer fontRenderer;
-	
+
 	protected float zLevel;
 
 	public MinecraftGraphics2D(Minecraft minecraft)
@@ -40,46 +44,47 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		return new ResourceLocation(resource.getDomain(), resource.getPath());
 	}
-	
+
 	private void draw(Dim2D dim, DrawingData data, DrawInner inner)
 	{
 		GlStateManager.pushMatrix();
-		
+
 		float currentX = dim.getX();
 		float currentY = dim.getY();
-		
+
 		float partialTicks = UtilEvents.getPartialTicks();
 
 		float x = currentX;//currentX + (currentX - prevX) * partialTicks;
 		float y = currentY;//currentY + (currentY - prevY) * partialTicks;
 
 		/** TO-DO: Figure out why the prevPos and currentPos are the same wtf?! :D **/
-		
+
 		Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
 		GlStateManager.translate(x, y, 0);
 
 		GlStateManager.scale(dim.getScale(), dim.getScale(), dim.getScale());
-		
+
 		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
-		GlStateManager.color(data.getRed(), data.getGreen(), data.getBlue(), data.getAlpha());
+
+		GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+
+		GlStateManager.color(1, 1, 1, data.getAlpha());
 
 		inner.draw();
-		
+
 		GlStateManager.disableBlend();
-		
-		worldrenderer.setTranslation(0, 0, 0);
-		
+
 		GlStateManager.popMatrix();
 	}
-	
+
 	@Override
 	public void drawSprite(Sprite sprite, Dim2D dim, DrawingData data)
 	{
-		this.draw(dim, data, new DrawSprite(this, sprite, dim));
+		this.draw(dim, data, new DrawSprite(this, sprite, data, dim));
 	}
 
 	@Override
@@ -87,11 +92,11 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		this.draw(dim, data, new DrawText(this.fontRenderer, text, dim, data));
 	}
-	
+
 	@Override
 	public void drawLine(Pos2D startPos, Pos2D endPos, DrawingData drawingData)
 	{
-		
+
 	}
 
 	@Override
@@ -105,79 +110,110 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		this.draw(dim, startColor, new DrawGradientRectangle(this, dim, startColor, endColor));
 	}
-	
-    protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
-    {
-    	float f = (float)(startColor >> 24 & 255) / 255.0F;
-        float f1 = (float)(startColor >> 16 & 255) / 255.0F;
-        float f2 = (float)(startColor >> 8 & 255) / 255.0F;
-        float f3 = (float)(startColor & 255) / 255.0F;
-        float f4 = (float)(endColor >> 24 & 255) / 255.0F;
-        float f5 = (float)(endColor >> 16 & 255) / 255.0F;
-        float f6 = (float)(endColor >> 8 & 255) / 255.0F;
-        float f7 = (float)(endColor & 255) / 255.0F;
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.shadeModel(7425);
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.startDrawingQuads();
-        worldrenderer.setColorRGBA_F(f1, f2, f3, f);
-        worldrenderer.addVertex((double)right, (double)top, (double)this.zLevel);
-        worldrenderer.addVertex((double)left, (double)top, (double)this.zLevel);
-        worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
-        worldrenderer.addVertex((double)left, (double)bottom, (double)this.zLevel);
-        worldrenderer.addVertex((double)right, (double)bottom, (double)this.zLevel);
-        tessellator.draw();
-        GlStateManager.shadeModel(7424);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
-    }
-	
+
+	protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
+	{
+		float f = (startColor >> 24 & 255) / 255.0F;
+		float f1 = (startColor >> 16 & 255) / 255.0F;
+		float f2 = (startColor >> 8 & 255) / 255.0F;
+		float f3 = (startColor & 255) / 255.0F;
+		float f4 = (endColor >> 24 & 255) / 255.0F;
+		float f5 = (endColor >> 16 & 255) / 255.0F;
+		float f6 = (endColor >> 8 & 255) / 255.0F;
+		float f7 = (endColor & 255) / 255.0F;
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.shadeModel(7425);
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		worldrenderer.startDrawingQuads();
+		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
+		worldrenderer.addVertex(right, top, this.zLevel);
+		worldrenderer.addVertex(left, top, this.zLevel);
+		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
+		worldrenderer.addVertex(left, bottom, this.zLevel);
+		worldrenderer.addVertex(right, bottom, this.zLevel);
+		tessellator.draw();
+		GlStateManager.shadeModel(7424);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableTexture2D();
+	}
+
 	private static interface DrawInner
 	{
 		void draw();
 	}
-	
+
 	private static class DrawSprite implements DrawInner
 	{
-		
+
 		private final MinecraftGraphics2D graphics;
-		
+
 		private final Sprite sprite;
-		
+
 		private final Dim2D dim;
-		
-		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, Dim2D dim)
+
+		private final DrawingData data;
+
+		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, DrawingData data, Dim2D dim)
 		{
 			this.graphics = graphics;
 			this.sprite = sprite;
 			this.dim = dim;
+			this.data = data;
 		}
 
 		@Override
 		public void draw()
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getAsset()));
-			this.graphics.gui.drawModalRectWithCustomSizedTexture(0, 0, (int) this.sprite.getMinU(), (int) this.sprite.getMinV(), (int) (this.sprite.getMaxU() - this.sprite.getMinU()), (int) (this.sprite.getMaxV() - this.sprite.getMinV()), (int) this.sprite.getTextureWidth(), (int) this.sprite.getTextureHeight());
+
+			int x = 0;
+			int y = 0;
+
+			int u = (int) this.sprite.getMinU();
+			int v = (int) this.sprite.getMinV();
+
+			int width = (int) (this.sprite.getMaxU() - this.sprite.getMinU());
+			int height = (int) (this.sprite.getMaxV() - this.sprite.getMinV());
+
+			int textureWidth = (int) this.sprite.getTextureWidth();
+			int textureHeight = (int) this.sprite.getTextureHeight();
+
+			float f4 = 1.0F / textureWidth;
+			float f5 = 1.0F / textureHeight;
+			Tessellator tessellator = Tessellator.getInstance();
+			WorldRenderer renderer = tessellator.getWorldRenderer();
+
+			renderer.startDrawingQuads();
+
+			//renderer.setColorRGBA_F(this.data.getRed(), this.data.getGreen(), this.data.getBlue(), this.data.getAlpha());
+			//renderer.setColorOpaque_F(this.data.getRed(), this.data.getGreen(), this.data.getBlue());
+
+			renderer.addVertexWithUV(x, y + height, 0.0D, u * f4, (v + (float) height) * f5);
+			renderer.addVertexWithUV(x + width, y + height, 0.0D, (u + (float) width) * f4, (v + (float) height) * f5);
+			renderer.addVertexWithUV(x + width, y, 0.0D, (u + (float) width) * f4, v * f5);
+			renderer.addVertexWithUV(x, y, 0.0D, u * f4, v * f5);
+
+			tessellator.draw();
 		}
-		
+
 	}
-	
+
 	private static class DrawText implements DrawInner
 	{
-		
+
 		private final FontRenderer fontRenderer;
-		
+
 		private final Text text;
-		
+
 		private final Dim2D dim;
-		
+
 		private final DrawingData data;
-		
+
 		public DrawText(FontRenderer fontRenderer, Text text, Dim2D dim, DrawingData data)
 		{
 			this.fontRenderer = fontRenderer;
@@ -191,18 +227,18 @@ public class MinecraftGraphics2D implements Graphics2D
 		{
 			this.fontRenderer.drawStringWithShadow(this.text.getData(), 0, 0, this.data.getColor().getRGB());
 		}
-		
+
 	}
 
 	private static class DrawRectangle implements DrawInner
 	{
-		
+
 		private final MinecraftGraphics2D graphics;
-		
+
 		private final Dim2D dim;
-		
+
 		private final DrawingData data;
-		
+
 		public DrawRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData data)
 		{
 			this.graphics = graphics;
@@ -213,20 +249,20 @@ public class MinecraftGraphics2D implements Graphics2D
 		@Override
 		public void draw()
 		{
-			this.graphics.gui.drawRect(0, 0, this.dim.getWidth(), this.dim.getHeight(), this.data.getColor().getRGB());
+			Gui.drawRect(0, 0, this.dim.getWidth(), this.dim.getHeight(), this.data.getColor().getRGB());
 		}
-		
+
 	}
-	
+
 	private static class DrawGradientRectangle implements DrawInner
 	{
-		
+
 		private final MinecraftGraphics2D graphics;
-		
+
 		private final Dim2D dim;
-		
+
 		private final DrawingData startColor, endColor;
-		
+
 		public DrawGradientRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData startColor, DrawingData endColor)
 		{
 			this.graphics = graphics;
@@ -240,7 +276,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		{
 			this.graphics.drawGradientRect(0, 0, this.dim.getWidth(), this.dim.getHeight(), this.startColor.getColor().getRGB(), this.endColor.getColor().getRGB());
 		}
-		
+
 	}
-	
+
 }

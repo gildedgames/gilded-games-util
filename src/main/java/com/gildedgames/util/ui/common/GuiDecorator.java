@@ -8,8 +8,8 @@ import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UIContainer;
-import com.gildedgames.util.ui.data.UIContainerMutable;
+import com.gildedgames.util.ui.data.UiContainer;
+import com.gildedgames.util.ui.data.UiContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -18,12 +18,12 @@ import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 
 
-public abstract class UIDecorator<T extends UIElement> extends UIFrame
+public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 {
 
 	private T element;
 	
-	public UIDecorator(T element)
+	public GuiDecorator(T element)
 	{
 		super(Dim2D.build().compile());
 		
@@ -38,7 +38,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -49,7 +49,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public boolean isVisible()
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -62,7 +62,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public void setVisible(boolean visible)
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -188,7 +188,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public boolean isFocused()
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -201,7 +201,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public void setFocused(boolean focused)
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -212,7 +212,7 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	@Override
 	public boolean query(Object... input)
 	{
-		UIView view = ObjectFilter.getType(this.element, UIView.class);
+		Gui view = ObjectFilter.getType(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -223,22 +223,22 @@ public abstract class UIDecorator<T extends UIElement> extends UIFrame
 	}
 	
 	@Override
-	public UIContainer seekContent()
+	public UiContainer seekContent()
 	{
 		return this.assembleAllContent();
 	}
 	
-	public UIContainer seekDecoratorContent()
+	public UiContainer seekDecoratorContent()
 	{
 		return super.seekContent();
 	}
 	
-	public abstract UIContainer assembleAllContent();
+	public abstract UiContainer assembleAllContent();
 
 	@Override
-	public UIContainerMutable listeners()
+	public UiContainerMutable listeners()
 	{
-		UIFrame frame = ObjectFilter.getType(this.element, UIFrame.class);
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{

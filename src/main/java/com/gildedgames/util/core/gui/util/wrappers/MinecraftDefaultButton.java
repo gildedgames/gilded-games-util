@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class MinecraftDefaultButton extends UIFrame
+public class MinecraftDefaultButton extends GuiFrame
 {
 	
 	protected final static Minecraft mc = Minecraft.getMinecraft();

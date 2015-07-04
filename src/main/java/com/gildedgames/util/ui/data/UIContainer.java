@@ -10,50 +10,50 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.ui.common.UIElement;
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.Ui;
+import com.gildedgames.util.ui.common.Gui;
 import com.google.common.collect.ImmutableList;
 
-public class UIContainer implements Iterable<UIElement>, NBT
+public class UiContainer implements Iterable<Ui>, NBT
 {
 
-	protected Map<String, UIElement> elements = new LinkedHashMap<String, UIElement>();
+	protected Map<String, Ui> elements = new LinkedHashMap<String, Ui>();
 
-	protected UIContainer parent;
+	protected UiContainer parent;
 
-	public UIContainer()
+	public UiContainer()
 	{
 		
 	}
 	
-	protected UIContainer(UIContainer parent)
+	protected UiContainer(UiContainer parent)
 	{
 		this.parent = parent;
 	}
 	
-	public UIContainer getParent()
+	public UiContainer getParent()
 	{
 		return this.parent;
 	}
 	
-	public UIElement getElement(String key)
+	public Ui getElement(String key)
 	{
 		return this.elements.get(key);
 	}
 	
-	public <T extends UIElement> T getElement(String key, Class<? extends T> clazz)
+	public <T extends Ui> T getElement(String key, Class<? extends T> clazz)
 	{
 		return (T) this.elements.get(key);
 	}
 	
-	public ImmutableList<UIElement> elements()
+	public ImmutableList<Ui> elements()
 	{
 		return ImmutableList.copyOf(this.elements.values());
 	}
 	
-	public Map<String, UIElement> map()
+	public Map<String, Ui> map()
 	{
-		return new LinkedHashMap<String, UIElement>(this.elements);
+		return new LinkedHashMap<String, Ui>(this.elements);
 	}
 	
 	public boolean isEmpty()
@@ -61,11 +61,11 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		return this.elements.isEmpty();
 	}
 	
-	public List<UIView> queryAll(Object... input)
+	public List<Gui> queryAll(Object... input)
 	{
-		List<UIView> views = new ArrayList<UIView>();
+		List<Gui> views = new ArrayList<Gui>();
 
-		for (UIView element : ObjectFilter.getTypesFrom(this.elements(), UIView.class))
+		for (Gui element : ObjectFilter.getTypesFrom(this.elements(), Gui.class))
 		{
 			if (element == null)
 			{
@@ -86,7 +86,7 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		return this.map().containsKey(key);
 	}
 
-	public boolean containsElement(UIElement element)
+	public boolean containsElement(Ui element)
 	{
 		return this.map().containsValue(element);
 	}
@@ -105,16 +105,16 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		return Dim2D.combine(areas);
 	}
 	
-	private void addCombinedDimensions(UIContainer container, List<Dim2D> areas)
+	private void addCombinedDimensions(UiContainer container, List<Dim2D> areas)
 	{
-		for (Map.Entry<String, UIElement> entry : container.map().entrySet())
+		for (Map.Entry<String, Ui> entry : container.map().entrySet())
 		{
 			String key = entry.getKey();
-			UIElement element = entry.getValue();
+			Ui element = entry.getValue();
 			
-			if (element instanceof UIView)
+			if (element instanceof Gui)
 			{
-				UIView view = (UIView) element;
+				Gui view = (Gui) element;
 
 				areas.add(view.getDim());
 
@@ -123,25 +123,25 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		}
 	}
 	
-	public UIContainer clone()
+	public UiContainer clone()
 	{
-		UIContainer clone = new UIContainer();
+		UiContainer clone = new UiContainer();
 		
 		clone.parent = this.parent;
-		clone.elements = new LinkedHashMap<String, UIElement>(this.elements);
+		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
 		
 		return clone;
 	}
 	
-	public UIContainer merge(UIContainer first, UIContainer... rest)
+	public UiContainer merge(UiContainer first, UiContainer... rest)
 	{
 		return this.merge(false, first, rest);
 	}
 
-	public UIContainer merge(boolean newContentFirst, UIContainer first, UIContainer... rest)
+	public UiContainer merge(boolean newContentFirst, UiContainer first, UiContainer... rest)
 	{
-		UIContainer clone = this.clone();
-		UIContainer merged = new UIContainer();
+		UiContainer clone = this.clone();
+		UiContainer merged = new UiContainer();
 		
 		if (!newContentFirst)
 		{
@@ -150,7 +150,7 @@ public class UIContainer implements Iterable<UIElement>, NBT
 		
 		merged.elements.putAll(first.elements);
 		
-		for (UIContainer container : rest)
+		for (UiContainer container : rest)
 		{
 			merged.elements.putAll(container.elements);
 		}
@@ -164,7 +164,7 @@ public class UIContainer implements Iterable<UIElement>, NBT
 	}
 	
 	@Override
-	public Iterator<UIElement> iterator()
+	public Iterator<Ui> iterator()
 	{
 		return this.elements().iterator();
 	}

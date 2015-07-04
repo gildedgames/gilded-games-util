@@ -3,58 +3,58 @@ package com.gildedgames.util.ui.event.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.event.MouseEvent;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class MouseEventViewFocus extends MouseEvent
+public class MouseEventGuiFocus extends MouseEvent
 {
-	
-	protected final UIView view;
 
-	public MouseEventViewFocus(UIView view)
+	protected final Gui gui;
+
+	public MouseEventGuiFocus(Gui view)
 	{
 		this(view, new ArrayList<MouseInput>());
 	}
-	
-	public MouseEventViewFocus(UIView view, List<MouseInput> input)
+
+	public MouseEventGuiFocus(Gui view, List<MouseInput> input)
 	{
 		super(input);
-		
-		this.view = view;
+
+		this.gui = view;
 	}
-	
-	public MouseEventViewFocus(UIView view, MouseInput... input)
+
+	public MouseEventGuiFocus(Gui view, MouseInput... input)
 	{
 		super(input);
-		
-		this.view = view;
+
+		this.gui = view;
 	}
 
 	@Override
 	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		if (input.isHovered(this.view.getDim()) && pool.containsAll(this.getEvents()))
+		if (input.isHovered(this.gui.getDim()) && pool.containsAll(this.getEvents()))
 		{
-			this.view.setVisible(true);
+			this.gui.setVisible(true);
 		}
 		else
 		{
-			this.view.setVisible(false);
+			this.gui.setVisible(false);
 		}
 	}
 
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		
+
 	}
-	
-	public UIView getView()
+
+	public Gui getView()
 	{
-		return this.view;
+		return this.gui;
 	}
 
 }

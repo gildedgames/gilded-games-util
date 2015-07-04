@@ -1,54 +1,59 @@
 package com.gildedgames.util.core.gui.util;
 
+import java.awt.Color;
+
 import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
-import com.gildedgames.util.ui.common.UIFrame;
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
+import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.Button;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.TextureElement;
 
-public class UIFactory
+public class GuiFactory
 {
 
 	private static final MinecraftAssetLocation HOPPER_TEXTURE = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/universe_hopper/base.png");
 
 	private static final MinecraftAssetLocation SCROLL_BAR_TEXTURE = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
 
-	private UIFactory()
+	private int factoryThrusters = 50;
+
+	private GuiFactory()
 	{
 
 	}
 
-	public static UIFrame decorateWithPressSound(UIView button)
+	public static GuiFrame decorateWithPressSound(Gui button)
 	{
 		return new MinecraftButtonSounds(button);
 	}
 
-	public static UIFrame createArrowButton()
+	public static GuiFrame createArrowButton()
 	{
-		return UIFactory.createArrowButton(new Pos2D());
+		return GuiFactory.createArrowButton(new Pos2D());
 	}
 
-	public static UIFrame createArrowButton(boolean centered)
+	public static GuiFrame createArrowButton(boolean centered)
 	{
-		return UIFactory.createArrowButton(new Pos2D(), centered);
+		return GuiFactory.createArrowButton(new Pos2D(), centered);
 	}
 
-	public static UIFrame createArrowButton(Pos2D pos)
+	public static GuiFrame createArrowButton(Pos2D pos)
 	{
-		return UIFactory.createArrowButton(pos, true);
+		return GuiFactory.createArrowButton(pos, true);
 	}
 
-	public static UIFrame createArrowButton(Pos2D pos, boolean centered)
+	public static GuiFrame createArrowButton(Pos2D pos, boolean centered)
 	{
 		Sprite buttonDefaultSprite = new Sprite(HOPPER_TEXTURE, 0, 174, 20, 20, 256, 256);
 		Sprite buttonHoveredSprite = new Sprite(HOPPER_TEXTURE, 20, 174, 20, 20, 256, 256);
@@ -58,36 +63,36 @@ public class UIFactory
 
 		Button button = new Button(dim, new TextureElement(buttonDefaultSprite, dim), new TextureElement(buttonHoveredSprite, dim), new TextureElement(buttonClickedSprite, dim));
 
-		return UIFactory.decorateWithPressSound(button);
+		return GuiFactory.decorateWithPressSound(button);
 	}
 
-	public static UIFrame createButton(Pos2D pos, int width, String text)
+	public static GuiFrame createButton(Pos2D pos, int width, String text)
 	{
-		return UIFactory.createButton(pos, width, text, true);
+		return GuiFactory.createButton(pos, width, text, true);
 	}
 
-	public static UIFrame createButton(Pos2D pos, int width, String text, boolean centered)
+	public static GuiFrame createButton(Pos2D pos, int width, String text, boolean centered)
 	{
 		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).compile();
 
-		UIView button = new MinecraftDefaultButton(dim, text);
+		Gui button = new MinecraftDefaultButton(dim, text);
 
-		return UIFactory.decorateWithPressSound(button);
+		return GuiFactory.decorateWithPressSound(button);
 	}
 
-	public static UIFrame createButton(GuiButton button)
+	public static GuiFrame createButton(GuiButton button)
 	{
-		return UIFactory.createButton(button, true);
+		return GuiFactory.createButton(button, true);
 	}
 
-	public static UIFrame createButton(GuiButton button, boolean centered)
+	public static GuiFrame createButton(GuiButton button, boolean centered)
 	{
-		return UIFactory.decorateWithPressSound(new MinecraftDefaultButton(button, centered));
+		return GuiFactory.decorateWithPressSound(new MinecraftDefaultButton(button, centered));
 	}
 
 	public static ScrollBar createScrollBar(Pos2D pos, int height, Dim2D scrollableArea)
 	{
-		return UIFactory.createScrollBar(pos, height, scrollableArea, true);
+		return GuiFactory.createScrollBar(pos, height, scrollableArea, true);
 	}
 
 	public static ScrollBar createScrollBar(Pos2D pos, int height, Dim2D scrollableArea, boolean centered)
@@ -98,8 +103,8 @@ public class UIFactory
 		Dim2D spriteDimensions = Dim2D.build().area(10, 10).center(centered).compile();
 		Dim2D barDimensions = Dim2D.build().area(10, height).center(centered).compile();
 
-		UIFrame topButton = UIFactory.createArrowButton(centered);
-		UIFrame bottomButton = UIFactory.createArrowButton(centered);
+		GuiFrame topButton = GuiFactory.createArrowButton(centered);
+		GuiFrame bottomButton = GuiFactory.createArrowButton(centered);
 
 		ScrollBar scrollBar = new ScrollBar(barDimensions, topButton, bottomButton, new TextureElement(base, spriteDimensions), new TextureElement(bar, spriteDimensions));
 
@@ -110,22 +115,36 @@ public class UIFactory
 
 	public static ScrollBar createScrollBar()
 	{
-		return UIFactory.createScrollBar(new Pos2D(), 0, Dim2D.compile());
+		return GuiFactory.createScrollBar(new Pos2D(), 0, Dim2D.compile());
 	}
 
-	public static UIFrame createTexture(Sprite sprite, Dim2D dim)
+	public static TextureElement createTexture(Sprite sprite, Dim2D dim)
 	{
 		return new TextureElement(sprite, dim);
 	}
 
-	public static UIFrame createTexture(AssetLocation asset, Dim2D dim)
+	public static TextureElement createTexture(AssetLocation asset, Dim2D dim)
 	{
-		return UIFactory.createTexture(new Sprite(asset), dim);
+		return GuiFactory.createTexture(new Sprite(asset), dim);
 	}
 
-	public static UIFrame createTexture(AssetLocation asset)
+	public static TextureElement createTexture(AssetLocation asset)
 	{
-		return UIFactory.createTexture(asset, Dim2D.compile());
+		return GuiFactory.createTexture(asset, Dim2D.compile());
+	}
+
+	public static Button createBatmanButton()
+	{
+		return GuiFactory.createBatmanButton(Dim2D.compile());
+	}
+
+	public static Button createBatmanButton(Dim2D dim)
+	{
+		MinecraftAssetLocation testAsset = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/someFolder/someTexture.png");
+
+		Button button = new Button(dim, GuiFactory.createTexture(testAsset), GuiFactory.createTexture(testAsset).drawingData(new DrawingData(new Color(1.0F, 0.3F, 0.01F, 0.1F))), GuiFactory.createTexture(testAsset).drawingData(new DrawingData(new Color(0xFF33CC))));
+
+		return button;
 	}
 
 }

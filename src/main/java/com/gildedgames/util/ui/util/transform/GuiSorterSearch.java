@@ -3,14 +3,14 @@ package com.gildedgames.util.ui.util.transform;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.Gui;
 
-public class UIViewSorterSearch implements UIViewSorter
+public class GuiSorterSearch implements GuiSorter
 {
 	
 	protected String searchText = "";
 	
-	public UIViewSorterSearch()
+	public GuiSorterSearch()
 	{
 		
 	}
@@ -21,16 +21,16 @@ public class UIViewSorterSearch implements UIViewSorter
 	}
 
 	@Override
-	public List<UIView> sortList(List<UIView> list)
+	public List<Gui> sortList(List<Gui> list)
 	{
 		if (this.searchText == null || this.searchText.isEmpty())
 		{
 			return list;
 		}
 		
-		List<UIView> result = new ArrayList<UIView>();
+		List<Gui> result = new ArrayList<Gui>();
 
-		for (UIView view : list)
+		for (Gui view : list)
 		{
 			if (view != null && view.query(this.searchText))
 			{

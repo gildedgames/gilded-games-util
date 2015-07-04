@@ -7,7 +7,7 @@ import java.util.List;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.listeners.MouseListener;
 
-public abstract class MouseEvent extends ElementEvent implements MouseListener
+public abstract class MouseEvent extends UiEvent implements MouseListener
 {
 
 	private final Collection<MouseInput> eventList;
