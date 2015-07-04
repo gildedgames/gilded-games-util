@@ -10,10 +10,10 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.ui.common.UIFrame;
-import com.gildedgames.util.ui.common.UIViewer;
+import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.GuiViewer;
 
-public class UIServices
+public class UiServices
 {
 
 	private final Side side;
@@ -22,9 +22,9 @@ public class UIServices
 	
 	private String currentUniqueSaveName;
 	
-	private UIFrame currentFrame;
+	private GuiFrame currentFrame;
 
-	public UIServices(Side side)
+	public UiServices(Side side)
 	{
 		this.side = side;
 		
@@ -38,7 +38,7 @@ public class UIServices
 		}
 	}
 	
-	public void open(String uniqueSaveName, UIFrame frame, UIViewer viewer)
+	public void open(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
 		//this.load(uniqueSaveName, frame, viewer);
 		
@@ -48,7 +48,7 @@ public class UIServices
 		this.currentFrame = frame;
 	}
 	
-	public void close(UIViewer viewer)
+	public void close(GuiViewer viewer)
 	{
 		//this.save(this.currentUniqueSaveName, this.currentFrame, viewer);
 		
@@ -57,13 +57,13 @@ public class UIServices
 		this.currentFrame = null;
 	}
 	
-	private void save(String uniqueSaveName, UIFrame frame, UIViewer viewer)
+	private void save(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
 		File save = new File(this.saveLocation, uniqueSaveName + ".dat");
 		
 		try
 		{
-			IOCore.io().readFile(save, new NBTFile(save, frame, UIFrame.class), new NBTFactory());
+			IOCore.io().readFile(save, new NBTFile(save, frame, GuiFrame.class), new NBTFactory());
 		}
 		catch (IOException e)
 		{
@@ -71,13 +71,13 @@ public class UIServices
 		}
 	}
 	
-	private void load(String uniqueSaveName, UIFrame frame, UIViewer viewer)
+	private void load(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
 		File load = new File(this.saveLocation, uniqueSaveName + ".dat");
 		
 		try
 		{
-			IOCore.io().writeFile(load, new NBTFile(load, frame, UIFrame.class), new NBTFactory());
+			IOCore.io().writeFile(load, new NBTFile(load, frame, GuiFrame.class), new NBTFactory());
 		}
 		catch (IOException e)
 		{

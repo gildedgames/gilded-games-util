@@ -2,26 +2,26 @@ package com.gildedgames.util.ui.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Dim2DGetter;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
-import com.gildedgames.util.ui.event.view.MouseEventView;
+import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.util.decorators.RepeatableUI;
+import com.gildedgames.util.ui.util.decorators.RepeatableGui;
 import com.google.common.collect.ImmutableList;
 
-public class ScrollBar extends UIFrame
+public class ScrollBar extends GuiFrame
 {
 
-	protected UIFrame topButton, bottomButton;
+	protected GuiFrame topButton, bottomButton;
 
 	/**
 	 * The two textures used in the scrollbar. They are
@@ -29,7 +29,7 @@ public class ScrollBar extends UIFrame
 	 */
 	protected TextureElement baseBarTexture, grabbableBarTexture;
 	
-	protected RepeatableUI baseBar, grabbableBar;
+	protected RepeatableGui baseBar, grabbableBar;
 
 	protected Dim2DCollection scrollingAreas;
 	
@@ -42,7 +42,7 @@ public class ScrollBar extends UIFrame
 
 	protected int grabbedMouseYOffset;
 
-	public ScrollBar(Dim2D barDim, UIFrame topButton, UIFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
+	public ScrollBar(Dim2D barDim, GuiFrame topButton, GuiFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
 	{
 		super(barDim);
 
@@ -84,11 +84,11 @@ public class ScrollBar extends UIFrame
 		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
 		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
 
-		this.baseBar = new RepeatableUI(Dim2D.build()
+		this.baseBar = new RepeatableGui(Dim2D.build()
 				.area(this.baseBarTexture.getDim().getWidth(), this.getDim().getHeight() - this.topButton.getDim().getHeight() - this.bottomButton.getDim().getHeight())
 				.compile(),this.baseBarTexture);
 		
-		this.grabbableBar = new RepeatableUI(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
+		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
 		
 		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DGetter()
 		{
@@ -236,7 +236,7 @@ public class ScrollBar extends UIFrame
 		this.scrollPercentage = input.getFloat("scrollPercentage");
 	}
 	
-	public static class ButtonScrollEvent extends MouseEventView
+	public static class ButtonScrollEvent extends MouseEventGui
 	{
 		
 		private Dim2DHolder button;

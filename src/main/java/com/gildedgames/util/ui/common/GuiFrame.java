@@ -6,8 +6,8 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UIContainer;
-import com.gildedgames.util.ui.data.UIContainerMutable;
+import com.gildedgames.util.ui.data.UiContainer;
+import com.gildedgames.util.ui.data.UiContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -15,34 +15,34 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 
-public class UIFrame implements UIView, KeyboardListener, MouseListener
+public class GuiFrame implements Gui, KeyboardListener, MouseListener
 {
 	
 	private boolean visible = true, enabled = true, focused = false;
 
-	private UIContainerMutable mainContent = new UIContainerMutable();
+	private UiContainerMutable mainContent = new UiContainerMutable();
 	
-	private UIContainerMutable listeners = new UIContainerMutable();
+	private UiContainerMutable listeners = new UiContainerMutable();
 	
 	private Dim2D dim = Dim2D.compile();
 
-	public UIFrame(Dim2D dim)
+	public GuiFrame(Dim2D dim)
 	{
 		this.dim = dim;
 	}
 	
 	@Override
-	public UIContainer seekContent()
+	public UiContainer seekContent()
 	{
 		return this.mainContent.immutable();
 	}
 
-	public UIContainerMutable listeners()
+	public UiContainerMutable listeners()
 	{
 		return this.listeners;
 	}
 	
-	protected UIContainerMutable content()
+	protected UiContainerMutable content()
 	{
 		return this.mainContent;
 	}

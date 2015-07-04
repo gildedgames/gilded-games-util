@@ -4,45 +4,45 @@ import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.common.UIDecorator;
-import com.gildedgames.util.ui.common.UIView;
+import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DSeekable;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
-import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.google.common.collect.ImmutableList;
 
-public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
+public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 {
 
 	protected Dim2D scissoredArea;
-	
-	private ImmutableList seekers = ImmutableList.<Dim2DSeeker>of(new Seeker(this));
-	
-	public ScissorableUI(Dim2D scissoredArea, UIView element)
+
+	private ImmutableList seekers = ImmutableList.<Dim2DSeeker> of(new Seeker(this));
+
+	public ScissorableGui(Dim2D scissoredArea, Gui gui)
 	{
-		super(element);
-		
+		super(gui);
+
 		this.scissoredArea = scissoredArea;
 	}
-	
+
 	public Dim2D getScissoredArea()
 	{
 		return this.scissoredArea;
 	}
-	
+
 	public void setScissoredArea(Dim2D dim)
 	{
 		this.scissoredArea = dim;
 	}
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		this.setScissoredArea(Dim2D.build(this.getScissoredArea()).scale(this.getDim().getScale()).compile());
-		
+
 		GL11.glPushMatrix();
 
 		float lowerLeftCornerY = this.getScissoredArea().getY() + this.getScissoredArea().getHeight();
@@ -54,13 +54,13 @@ public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 		float cutHeight = this.getScissoredArea().getHeight() * input.getScaleFactor();
 
 		GL11.glEnable(GL_SCISSOR_TEST);
-		
-		GL11.glScissor((int)cornerX, (int)cornerY, (int)cutWidth, (int)cutHeight);
+
+		GL11.glScissor((int) cornerX, (int) cornerY, (int) cutWidth, (int) cutHeight);
 
 		super.draw(graphics, input);
 
 		GL11.glDisable(GL_SCISSOR_TEST);
-		
+
 		GL11.glPopMatrix();
 	}
 
@@ -69,20 +69,20 @@ public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 	{
 		return this.seekers;
 	}
-	
-	public static class Seeker extends Dim2DSeeker<ScissorableUI>
+
+	public static class Seeker extends Dim2DSeeker<ScissorableGui>
 	{
-		
+
 		public Seeker()
 		{
-			
+
 		}
-		
-		public Seeker(ScissorableUI seekFrom)
+
+		public Seeker(ScissorableGui seekFrom)
 		{
 			super(seekFrom);
 		}
-		
+
 		@Override
 		public Dim2D getDim()
 		{
@@ -92,13 +92,13 @@ public class ScissorableUI extends UIDecorator<UIView> implements Dim2DSeekable
 		@Override
 		public void setDim(Dim2D dim)
 		{
-			 this.seekFrom.setScissoredArea(dim);
+			this.seekFrom.setScissoredArea(dim);
 		}
-		
+
 	}
 
 	@Override
-	public UIContainer assembleAllContent()
+	public UiContainer assembleAllContent()
 	{
 		return this.getDecoratedElement().seekContent();
 	}

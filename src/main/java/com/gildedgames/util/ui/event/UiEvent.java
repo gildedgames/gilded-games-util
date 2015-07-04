@@ -2,12 +2,12 @@ package com.gildedgames.util.ui.event;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.ui.common.UIElement;
+import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public abstract class ElementEvent implements UIElement
+public abstract class UiEvent implements Ui
 {
 	
 	private boolean enabled = true;
@@ -19,9 +19,9 @@ public abstract class ElementEvent implements UIElement
 	}
 	
 	@Override
-	public UIContainer seekContent()
+	public UiContainer seekContent()
 	{
-		return new UIContainer();
+		return new UiContainer();
 	}
 	
 	@Override

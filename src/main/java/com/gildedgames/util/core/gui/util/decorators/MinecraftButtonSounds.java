@@ -5,28 +5,28 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.ResourceLocation;
 
-import com.gildedgames.util.ui.common.UIDecorator;
-import com.gildedgames.util.ui.common.UIView;
-import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.common.GuiDecorator;
+import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class MinecraftButtonSounds extends UIDecorator<UIView>
+public class MinecraftButtonSounds extends GuiDecorator<Gui>
 {
 
 	protected Minecraft mc = Minecraft.getMinecraft();
 	
 	protected MouseInput event;
 	
-	public MinecraftButtonSounds(UIView view)
+	public MinecraftButtonSounds(Gui view)
 	{
 		this(view, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED));
 	}
 	
-	public MinecraftButtonSounds(UIView decoratedView, MouseInput event)
+	public MinecraftButtonSounds(Gui decoratedView, MouseInput event)
 	{
 		super(decoratedView);
 		
@@ -36,7 +36,7 @@ public class MinecraftButtonSounds extends UIDecorator<UIView>
 	@Override
 	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		UIView view = this.getDecoratedElement();
+		Gui view = this.getDecoratedElement();
 		
 		if (input.isHovered(view.getDim()) && pool.contains(this.event))
 		{
@@ -52,7 +52,7 @@ public class MinecraftButtonSounds extends UIDecorator<UIView>
     }
 
 	@Override
-	public UIContainer assembleAllContent()
+	public UiContainer assembleAllContent()
 	{
 		return this.getDecoratedElement().seekContent();
 	}

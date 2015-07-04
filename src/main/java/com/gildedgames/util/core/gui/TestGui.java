@@ -1,21 +1,21 @@
 package com.gildedgames.util.core.gui;
 
-import com.gildedgames.util.core.gui.util.UIFactory;
-import com.gildedgames.util.ui.common.UIFrame;
+import com.gildedgames.util.core.gui.util.GuiFactory;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ButtonList;
-import com.gildedgames.util.ui.util.decorators.ScrollableUI;
+import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.ui.util.factory.TestButtonFactory;
-import com.gildedgames.util.ui.util.transform.UIViewPositionerButton;
+import com.gildedgames.util.ui.util.transform.GuiPositionerButton;
 
-public class TestUI extends UIFrame
+public class TestGui extends GuiFrame
 {
 
-	public TestUI()
+	public TestGui()
 	{
 		super(Dim2D.compile());
 	}
@@ -27,9 +27,9 @@ public class TestUI extends UIFrame
 		
 		Dim2D dim = Dim2D.build().area(80, 200).compile();
 
-		ButtonList buttonList = new ButtonList(new UIViewPositionerButton(), new TestButtonFactory());
+		ButtonList buttonList = new ButtonList(new GuiPositionerButton(), new TestButtonFactory());
 
-		ScrollableUI scrollable = new ScrollableUI(dim, buttonList, UIFactory.createScrollBar());
+		ScrollableGui scrollable = new ScrollableGui(dim, buttonList, GuiFactory.createScrollBar());
 
 		scrollable.modDim().pos(new Pos2D(50, 10)).compile();
 

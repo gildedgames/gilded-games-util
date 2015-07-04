@@ -4,22 +4,22 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.UIElement;
+import com.gildedgames.util.ui.common.Ui;
 
-public class UIContainerMutable extends UIContainer
+public class UiContainerMutable extends UiContainer
 {
 	
-	public UIContainerMutable()
+	public UiContainerMutable()
 	{
 		super();
 	}
 	
-	protected UIContainerMutable(UIContainer parent)
+	protected UiContainerMutable(UiContainer parent)
 	{
 		super(parent);
 	}
 	
-	public void setElement(String key, UIElement element)
+	public void setElement(String key, Ui element)
 	{
 		this.elements.put(key, element);
 	}
@@ -29,11 +29,11 @@ public class UIContainerMutable extends UIContainer
 		this.elements.remove(key);
 	}
 
-	public void clear(Class<? extends UIElement> classToRemove)
+	public void clear(Class<? extends Ui> classToRemove)
 	{
-		Map<String, UIElement> objectsToRemove = ObjectFilter.getTypesFromValues(this.elements, String.class, classToRemove);
+		Map<String, Ui> objectsToRemove = ObjectFilter.getTypesFromValues(this.elements, String.class, classToRemove);
 
-		for (Map.Entry<String, UIElement> entry : objectsToRemove.entrySet())
+		for (Map.Entry<String, Ui> entry : objectsToRemove.entrySet())
 		{
 			String key = entry.getKey();
 			
@@ -41,9 +41,9 @@ public class UIContainerMutable extends UIContainer
 		}
 	}
 
-	public void setAllElements(Map<String, UIElement> elements)
+	public void setAllElements(Map<String, Ui> elements)
 	{
-		for (Map.Entry<String, UIElement> entry : elements.entrySet())
+		for (Map.Entry<String, Ui> entry : elements.entrySet())
 		{
 			this.setElement(entry.getKey(), entry.getValue());
 		}
@@ -54,18 +54,18 @@ public class UIContainerMutable extends UIContainer
 		this.elements.clear();
 	}
 	
-	public UIContainer immutable()
+	public UiContainer immutable()
 	{
 		return this.clone();
 	}
 	
 	@Override
-	public UIContainer clone()
+	public UiContainer clone()
 	{
-		UIContainerMutable clone = new UIContainerMutable();
+		UiContainerMutable clone = new UiContainerMutable();
 		
 		clone.parent = this.parent;
-		clone.elements = new LinkedHashMap<String, UIElement>(this.elements);
+		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
 		
 		return clone;
 	}
