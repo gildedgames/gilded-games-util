@@ -1,8 +1,11 @@
 package com.gildedgames.util.core.gui;
 
+import java.awt.Color;
+
 import net.minecraft.init.Blocks;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
@@ -23,10 +26,12 @@ public class TestGui extends GuiFrame
 	public void init(InputProvider input)
 	{
 		super.init(input);
-		
+
 		this.content().setElement("button", new MinecraftButtonItemStack(UtilCore.getItemStack(Blocks.anvil)));
-		
+
 		this.content().getElement("button", GuiFrame.class).modDim().pos(new Pos2D(50, 50)).compile();
+
+		this.content().setElement("text", GuiFactory.textBox(Dim2D.build().pos(100, 100).area(30, 90).compile(), true, GuiFactory.text("asdglakjawehglauhefajeliuvhaliuvhalieuhaliuhgliawugehliawughliawegdlgjawuefhaubh", Color.WHITE)));
 	}
 
 	@Override
@@ -34,7 +39,7 @@ public class TestGui extends GuiFrame
 	{
 		super.draw(graphics, input);
 	}
-	
+
 	@Override
 	public void tick(InputProvider input, TickInfo tickInfo)
 	{

@@ -1,14 +1,17 @@
 package com.gildedgames.util.core.gui.util;
 
 import java.awt.Color;
+import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
-import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
@@ -16,8 +19,12 @@ import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.util.Button;
+import com.gildedgames.util.ui.util.Font;
 import com.gildedgames.util.ui.util.ScrollBar;
+import com.gildedgames.util.ui.util.Text;
+import com.gildedgames.util.ui.util.TextBox;
 import com.gildedgames.util.ui.util.TextureElement;
+import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 
 public class GuiFactory
 {
@@ -147,4 +154,49 @@ public class GuiFactory
 		return button;
 	}
 
+	public static Text text(String text, Color color)
+	{
+		return new Text(text, color, GuiFactory.font());
+	}
+
+	public static Text text(String text, Color color, float scale)
+	{
+		return new Text(text, color, scale, GuiFactory.font());
+	}
+
+	public static GuiFrame textBox(Dim2D dim, boolean hasSlider, Text... text)
+	{
+		TextBox box = new TextBox(dim, text);
+		if (!hasSlider)
+		{
+			return box;
+		}
+		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
+	}
+
+	public static Font font()
+	{
+		final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+		return new Font()
+		{
+
+			@Override
+			public int getWidth(String text)
+			{
+				return fontRenderer.getStringWidth(text);
+			}
+
+			@Override
+			public int getHeight(String text)
+			{
+				return fontRenderer.FONT_HEIGHT;
+			}
+
+			@Override
+			public List<String> splitStringsIntoArea(String text, int width)
+			{
+				return fontRenderer.listFormattedStringToWidth(text, width);
+			}
+		};
+	}
 }

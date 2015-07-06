@@ -21,7 +21,6 @@ import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.graphics.Text;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -88,7 +87,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawText(Text text, Dim2D dim, DrawingData data)
+	public void drawText(String text, Dim2D dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawText(this.fontRenderer, text, dim, data));
 	}
@@ -208,13 +207,13 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final FontRenderer fontRenderer;
 
-		private final Text text;
+		private final String text;
 
 		private final Dim2D dim;
 
 		private final DrawingData data;
 
-		public DrawText(FontRenderer fontRenderer, Text text, Dim2D dim, DrawingData data)
+		public DrawText(FontRenderer fontRenderer, String text, Dim2D dim, DrawingData data)
 		{
 			this.fontRenderer = fontRenderer;
 			this.text = text;
@@ -225,7 +224,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		@Override
 		public void draw()
 		{
-			this.fontRenderer.drawStringWithShadow(this.text.getData(), 0, 0, this.data.getColor().getRGB());
+			this.fontRenderer.drawStringWithShadow(this.text, 0, 0, this.data.getColor().getRGB());
 		}
 
 	}
