@@ -123,6 +123,11 @@ public class GuiFactory
 		return GuiFactory.createScrollBar(new Pos2D(), 0, Dim2D.compile());
 	}
 
+	public static TextureElement createTexture(Sprite sprite)
+	{
+		return new TextureElement(sprite, Dim2D.compile());
+	}
+
 	public static TextureElement createTexture(Sprite sprite, Dim2D dim)
 	{
 		return new TextureElement(sprite, dim);
@@ -150,8 +155,18 @@ public class GuiFactory
 
 	public static GuiFrame textBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
-		TextBox box = new TextBox(dim, text);
-		
+
+		TextBox box = new TextBox(dim, false, text);
+		if (!hasSlider)
+		{
+			return box;
+		}
+		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
+	}
+
+	public static GuiFrame centeredTextBox(Dim2D dim, boolean hasSlider, Text... text)
+	{
+		TextBox box = new TextBox(dim, true, text);
 		if (!hasSlider)
 		{
 			return box;

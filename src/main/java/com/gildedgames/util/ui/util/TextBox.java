@@ -15,10 +15,13 @@ public class TextBox extends GuiFrame
 
 	private final Text[] text;
 
-	public TextBox(Dim2D dim, Text... text)
+	private final boolean centerFormat;
+
+	public TextBox(Dim2D dim, boolean centerFormat, Text... text)
 	{
 		super(dim);
 		this.text = text;
+		this.centerFormat = centerFormat;
 	}
 
 	@Override
@@ -28,7 +31,8 @@ public class TextBox extends GuiFrame
 		
 		int i = 0;
 		int textHeight = 0;
-		
+
+		int halfWidth = this.getDim().getWidth() / 2;
 		for (Text t : this.text)
 		{
 			if (t.text == null || t.text.isEmpty())
@@ -46,8 +50,17 @@ public class TextBox extends GuiFrame
 
 				for (final String s : newStrings)
 				{
-					TextElement textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight));
-					this.content().setElement(String.valueOf(i), textElement);
+					TextElement textElement;
+					if (this.centerFormat)
+					{
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(halfWidth, textHeight), true);
+					}
+					else
+					{
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight), false);
+					}
+					this.content().setElement(String.valueOf(i), this.getDim(), textElement);
+
 					textHeight += 1.1f * t.scaledHeight();
 					i++;
 				}
