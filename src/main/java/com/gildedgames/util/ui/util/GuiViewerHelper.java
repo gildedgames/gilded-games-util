@@ -46,8 +46,6 @@ public final class GuiViewerHelper
 			
 			GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
 			
-			UiContainer content = element.seekContent();
-			
 			if (frame != null)
 			{
 				GuiViewerHelper.processInit(frame.listeners(), input);

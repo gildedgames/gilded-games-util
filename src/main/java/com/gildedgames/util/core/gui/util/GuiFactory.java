@@ -33,8 +33,6 @@ public class GuiFactory
 
 	private static final MinecraftAssetLocation SCROLL_BAR_TEXTURE = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
 
-	private int factoryThrusters = 50;
-
 	private GuiFactory()
 	{
 
@@ -140,20 +138,6 @@ public class GuiFactory
 		return GuiFactory.createTexture(asset, Dim2D.compile());
 	}
 
-	public static Button createBatmanButton()
-	{
-		return GuiFactory.createBatmanButton(Dim2D.compile());
-	}
-
-	public static Button createBatmanButton(Dim2D dim)
-	{
-		MinecraftAssetLocation testAsset = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/someFolder/someTexture.png");
-
-		Button button = new Button(dim, GuiFactory.createTexture(testAsset), GuiFactory.createTexture(testAsset).drawingData(new DrawingData(new Color(1.0F, 0.3F, 0.01F, 0.1F))), GuiFactory.createTexture(testAsset).drawingData(new DrawingData(new Color(0xFF33CC))));
-
-		return button;
-	}
-
 	public static Text text(String text, Color color)
 	{
 		return new Text(text, color, GuiFactory.font());
@@ -167,10 +151,12 @@ public class GuiFactory
 	public static GuiFrame textBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
 		TextBox box = new TextBox(dim, text);
+		
 		if (!hasSlider)
 		{
 			return box;
 		}
+		
 		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
 	}
 

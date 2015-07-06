@@ -25,8 +25,10 @@ public class TextBox extends GuiFrame
 	public void init(InputProvider input)
 	{
 		super.init(input);
+		
 		int i = 0;
 		int textHeight = 0;
+		
 		for (Text t : this.text)
 		{
 			if (t.text == null || t.text.isEmpty())
@@ -45,12 +47,14 @@ public class TextBox extends GuiFrame
 				for (final String s : newStrings)
 				{
 					TextElement textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight));
-					this.content().setElement(String.valueOf(i), new ScissorableGui(this.getDim(), textElement));
+					this.content().setElement(String.valueOf(i), textElement);
 					textHeight += 1.1f * t.scaledHeight();
 					i++;
 				}
 			}
 		}
+		
+		this.modDim().height(textHeight).compile();
 	}
 
 }

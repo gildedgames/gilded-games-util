@@ -334,7 +334,7 @@ public class Dim2D
 	{
 		String link = ", ";
 
-		return this.getPos().toString() + link + "Area() Width: '" + this.width + "', Height: '" + this.height + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale + "'";
+		return this.getPos().toString() + link + "Area() Width: '" + this.getWidth() + "', Height: '" + this.getHeight() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.getScale() + "'";
 	}
 
 	public static class Dim2DBuilder

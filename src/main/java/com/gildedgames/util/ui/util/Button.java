@@ -53,31 +53,21 @@ public class Button extends GuiFrame
 
 		if (input.isHovered(this.getDim()))
 		{
-			this.hoveredState.setVisible(true);
-
 			for (Gui element : ObjectFilter.getTypesFrom(this.content(), Gui.class))
 			{
-				if (element == this.hoveredState)
-				{
-					continue;
-				}
-
 				element.setVisible(false);
 			}
+			
+			this.hoveredState.setVisible(true);
 		}
 		else
 		{
-			this.hoveredState.setVisible(false);
-
 			for (Gui element : ObjectFilter.getTypesFrom(this.content(), Gui.class))
 			{
-				if (element == this.hoveredState)
-				{
-					continue;
-				}
-
 				element.setVisible(true);
 			}
+			
+			this.hoveredState.setVisible(false);
 		}
 	}
 

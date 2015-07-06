@@ -6,8 +6,8 @@ import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DCollection;
-import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Dim2DGetter;
+import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -41,6 +41,8 @@ public class ScrollBar extends GuiFrame
 	protected float scrollPercentage = 0.0F, scrollSpeed = 0.02F;
 
 	protected int grabbedMouseYOffset;
+	
+	protected Dim2DHolder contentArea;
 
 	public ScrollBar(Dim2D barDim, GuiFrame topButton, GuiFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
 	{
@@ -72,12 +74,9 @@ public class ScrollBar extends GuiFrame
 	{
 		super.init(input);
 
-		this.topButton.modDim().resetPos().compile();
-		this.bottomButton.modDim().resetPos().compile();
-		
-		this.topButton.modDim().center(false).compile();
-		this.bottomButton.modDim().center(false).compile();
-		
+		this.topButton.modDim().center(false).resetPos().compile();
+		this.bottomButton.modDim().center(false).resetPos().compile();
+
 		this.baseBarTexture.modDim().center(false).compile();
 		this.grabbableBarTexture.modDim().center(false).compile();
 
@@ -98,7 +97,7 @@ public class ScrollBar extends GuiFrame
 			{
 				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight() + ScrollBar.this.baseBar.getDim().getHeight()).compile();
 			}
-			
+
 		};
 		
 		Dim2DSeeker topButtonHeight = new Dim2DGetter()
@@ -172,10 +171,13 @@ public class ScrollBar extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		if (this.getScrollingAreas() != null)
+		if (this.scrollingAreas	!= null && this.contentArea != null)
 		{
-			/** TODO: Change grabbable bar's height to be proportional to height of content **/ 
-			//this.grabbableBar.getDimensions().setHeight(this.getContentDimensions().getHeight() / this.baseBar.getDimensions().getHeight());
+			int contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().getHeight() - this.scrollingAreas.getDim().getHeight());
+			
+			float baseBarPercentage = (float)contentAndScrollHeightDif / (float)this.contentArea.getDim().getHeight();
+			
+			this.grabbableBar.modDim().height((int)(this.baseBar.getDim().getHeight() * baseBarPercentage)).compile();
 		}
 		
 		if (this.grabbedBar)
@@ -222,6 +224,16 @@ public class ScrollBar extends GuiFrame
 	public ImmutableList<Dim2DHolder> getScrollingAreas()
 	{
 		return this.scrollingAreas.getDimHolders();
+	}
+	
+	public void setContentArea(Dim2DHolder contentArea)
+	{
+		this.contentArea = contentArea;
+	}
+	
+	public Dim2DHolder getContentArea()
+	{
+		return this.contentArea;
 	}
 	
 	@Override
