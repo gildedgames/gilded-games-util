@@ -32,12 +32,6 @@ public abstract class MouseEventGui extends MouseEvent
 		this.gui = view;
 	}
 
-	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
-	{
-
-	}
-
 	public Gui getView()
 	{
 		return this.gui;
