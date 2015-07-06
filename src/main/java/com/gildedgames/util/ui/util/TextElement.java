@@ -10,10 +10,17 @@ public class TextElement extends GuiFrame
 {
 	private final Text text;
 
-	public TextElement(Text text, Pos2D minPos)
+	private final boolean centered;
+
+	public TextElement(Text text, Pos2D pos, boolean centered)
 	{
-		super(Dim2D.build().pos(minPos).width(text.width()).height(text.height()).scale(text.scale).compile());
+		super(Dim2D.build().pos(pos).width(text.width()).height(text.height()).scale(text.scale).centerX(centered).compile());
+		if (centered)
+		{
+			this.setDim(this.getDim().clone().addX(-this.text.scaledWidth() / 2).compile());
+		}
 		this.text = text;
+		this.centered = centered;
 	}
 
 	@Override

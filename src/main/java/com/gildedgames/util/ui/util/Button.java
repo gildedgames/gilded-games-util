@@ -1,8 +1,8 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.event.view.MouseEventGuiFocus;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -16,6 +16,11 @@ public class Button extends GuiFrame
 {
 
 	protected final GuiFrame defaultState, hoveredState, clickedState;
+
+	public Button(Dim2D dim, TextureElement texture)
+	{
+		this(dim, texture, texture, texture);
+	}
 
 	public Button(Dim2D dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
 	{

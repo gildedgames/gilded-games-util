@@ -1,17 +1,21 @@
 package com.gildedgames.util.core.gui;
 
 import java.awt.Color;
+import java.io.File;
 
 import net.minecraft.init.Blocks;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
+import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
+import com.gildedgames.util.core.gui.util.file_system.FileBrowserButton;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
+import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ButtonList;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
@@ -20,6 +24,8 @@ import com.gildedgames.util.ui.util.transform.GuiPositionerButton;
 
 public class TestGui extends GuiFrame
 {
+
+	private static final MinecraftAssetLocation FILE_BROWSER = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/file_browser/file.png");
 
 	public TestGui()
 	{
@@ -46,6 +52,11 @@ public class TestGui extends GuiFrame
 		scrollable.modDim().pos(new Pos2D(50, 10)).compile();
 
 		//this.content().setElement("scrollable", scrollable);
+
+
+		this.content().setElement("fileB",
+				new FileBrowserButton(Dim2D.build().pos(200, 50).compile(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, 31, 31)), "xDYolo", new File("asdf"), "sdf"));
+
 	}
 
 	@Override
