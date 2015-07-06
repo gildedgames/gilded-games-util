@@ -13,7 +13,7 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
 
-public class UiServicesTemp
+public class UiServices
 {
 
 	private final Side side;
@@ -24,7 +24,7 @@ public class UiServicesTemp
 	
 	private GuiFrame currentFrame;
 
-	public UiServicesTemp(Side side)
+	public UiServices(Side side)
 	{
 		this.side = side;
 		
