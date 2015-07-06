@@ -3,12 +3,11 @@ package com.gildedgames.util.core.gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gildedgames.util.core.PaynGui;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.viewing.MinecraftUIViewer;
 import com.gildedgames.util.core.gui.viewing.MinecraftUIWrapper;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiCoreTemp;
 import com.gildedgames.util.ui.common.GuiFrame;
 
 public class TestTab extends TabBackpack
@@ -19,9 +18,9 @@ public class TestTab extends TabBackpack
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		this.gui = new MinecraftGui(new PaynGui());
+		this.gui = new MinecraftGui(new TestGui());
 
-		UiCore.locate().open("test", this.gui, MinecraftUIViewer.instance());
+		UiCoreTemp.locate().open("test", this.gui, MinecraftUIViewer.instance());
 	}
 
 	@Override
@@ -29,7 +28,7 @@ public class TestTab extends TabBackpack
 	{
 		super.onClose(player);
 
-		UiCore.locate().close(MinecraftUIViewer.instance());
+		UiCoreTemp.locate().close(MinecraftUIViewer.instance());
 	}
 
 	@Override

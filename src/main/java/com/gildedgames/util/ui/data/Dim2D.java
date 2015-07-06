@@ -86,8 +86,8 @@ public class Dim2D
 	 */
 	private Pos2D getScaledPos(Pos2D pos)
 	{
-		int offsetX = (int) (this.isCenteredY() ? this.getWidth() * this.getScale() / 2 : 0);
-		int offsetY = (int) (this.isCenteredX() ? this.getHeight() * this.getScale() / 2 : 0);
+		int offsetX = (int) (this.isCenteredX() ? (this.getWidth() * this.getScale()) / 2 : 0);
+		int offsetY = (int) (this.isCenteredY() ? (this.getHeight() * this.getScale()) / 2 : 0);
 
 		return new Pos2D(pos.getX() - offsetX, pos.getY() - offsetY);
 	}
@@ -375,6 +375,31 @@ public class Dim2D
 			this.modifiers = new ArrayList<Modifier>(dim.modifiers);
 		}
 		
+		private Dim2DBuilder(Dim2DBuilder builder)
+		{
+			this.modifiers = builder.modifiers;
+			
+			this.pos = builder.pos;
+			
+			this.width = builder.width;
+			this.height = builder.height;
+			
+			this.centeredX = builder.centeredX;
+			this.centeredY = builder.centeredY;
+			
+			this.scale = builder.scale;
+		}
+		
+		public Dim2DBuildWith buildWith(Dim2DHolder holder)
+		{
+			return new Dim2DBuildWith(this, holder);
+		}
+
+		public Dim2DBuildWith buildWith(Dim2D dim)
+		{
+			return this.buildWith(new Dim2DSingle(dim));
+		}
+		
 		public Dim2DBuilder resetPos()
 		{
 			this.pos = new Pos2D();
@@ -547,6 +572,145 @@ public class Dim2D
 		public Dim2D compile()
 		{
 			return new Dim2D(this);
+		}
+		
+	}
+	
+	public static class Dim2DBuildWith
+	{
+		
+		protected Dim2DBuilder builder;
+		
+		protected Dim2DHolder buildWith;
+		
+		private Dim2DBuildWith(Dim2DBuilder builder, Dim2DHolder buildWith)
+		{
+			this.builder = builder;
+			this.buildWith = buildWith;
+		}
+		
+		public Dim2DBuildWith scale()
+		{
+			this.builder.scale = this.buildWith.getDim().scale;
+
+			return this;
+		}
+
+		public Dim2DBuildWith height()
+		{
+			this.builder.height = this.buildWith.getDim().height;
+
+			return this;
+		}
+		
+		public Dim2DBuildWith width()
+		{
+			this.builder.width = this.buildWith.getDim().width;
+
+			return this;
+		}
+
+		public Dim2DBuildWith pos()
+		{
+			this.builder.pos = this.buildWith.getDim().pos;
+
+			return this;
+		}
+
+		public Dim2DBuildWith center()
+		{
+			this.builder.centerX(this.buildWith.getDim().centeredX).centerY(this.buildWith.getDim().centeredY);
+			
+			return this;
+		}
+
+		public Dim2DBuildWith centerX()
+		{
+			this.builder.centeredX = this.buildWith.getDim().centeredX;
+
+			return this;
+		}
+
+		public Dim2DBuildWith centerY()
+		{
+			this.builder.centeredY = this.buildWith.getDim().centeredY;
+
+			return this;
+		}
+
+		public Dim2DBuildWith area()
+		{
+			this.builder.width(this.buildWith.getDim().width).height(this.buildWith.getDim().height);
+			
+			return this;
+		}
+
+		public Dim2DBuildWith y()
+		{
+			this.builder.pos(this.builder.pos.withY(this.buildWith.getDim().pos.y));
+			
+			return this;
+		}
+
+		public Dim2DBuildWith x()
+		{
+			this.builder.pos(this.builder.pos.withX(this.buildWith.getDim().pos.x));
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith addScale()
+		{
+			this.builder.scale += this.buildWith.getDim().scale;
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith addWidth()
+		{
+			this.builder.width(this.builder.width + this.buildWith.getDim().width);
+			
+			return this;
+		}
+
+		public Dim2DBuildWith addHeight()
+		{
+			this.builder.area(this.builder.width, this.builder.height + this.buildWith.getDim().height);
+			
+			return this;
+		}
+
+		public Dim2DBuildWith addArea()
+		{
+			this.builder.addWidth(this.buildWith.getDim().width).addHeight(this.buildWith.getDim().height);
+			
+			return this;
+		}
+
+		public Dim2DBuildWith addX()
+		{
+			this.builder.pos(this.builder.pos.withAdded(this.buildWith.getDim().pos.x, 0));
+			
+			return this;
+		}
+
+		public Dim2DBuildWith addY()
+		{
+			this.builder.pos(this.builder.pos.withAdded(0, this.buildWith.getDim().pos.y));
+			
+			return this;
+		}
+
+		public Dim2DBuildWith addPos()
+		{
+			this.builder.addX(this.buildWith.getDim().pos.getX()).addY(this.buildWith.getDim().pos.getY());
+			
+			return this;
+		}
+		
+		public Dim2DBuilder build()
+		{
+			return this.builder;
 		}
 		
 	}

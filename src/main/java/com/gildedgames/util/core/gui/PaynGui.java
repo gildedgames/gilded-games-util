@@ -1,4 +1,4 @@
-package com.gildedgames.util.core;
+package com.gildedgames.util.core.gui;
 
 import java.awt.Color;
 

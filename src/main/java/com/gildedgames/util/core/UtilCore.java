@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -78,6 +80,16 @@ public class UtilCore implements ICore
 	public void registerCore(ICore core)
 	{
 		this.cores.add(core);
+	}
+	
+	public static ItemStack getItemStack(Block block)
+	{
+		return UtilCore.getItemStack(block, 1);
+	}
+	
+	public static ItemStack getItemStack(Block block, int amount)
+	{
+		return new ItemStack(block, amount);
 	}
 
 	@Override

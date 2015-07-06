@@ -14,7 +14,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class MinecraftDefaultButton extends GuiFrame
+public class MinecraftButton extends GuiFrame
 {
 	
 	protected final static Minecraft mc = Minecraft.getMinecraft();
@@ -23,20 +23,20 @@ public class MinecraftDefaultButton extends GuiFrame
 	
 	protected GuiButton button;
 
-	public MinecraftDefaultButton(GuiButton button, boolean centered)
+	public MinecraftButton(GuiButton button, boolean centered)
 	{
 		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).compile());
 		
 		this.button = button;
 	}
 	
-	public MinecraftDefaultButton(Dim2D dim, String text)
+	public MinecraftButton(Dim2D dim, String text)
 	{
 		super(dim);
 		
 		this.text = text;
 		
-		this.button = new GuiButton(-1, (int)dim.getX(), (int)dim.getY(), (int)dim.getWidth(), (int)dim.getHeight(), text);
+		this.button = new GuiButton(-1, dim.getX(), dim.getY(), dim.getWidth(), dim.getHeight(), text);
 	}
 	
 	@Override
@@ -62,11 +62,11 @@ public class MinecraftDefaultButton extends GuiFrame
 		
 		this.button.drawButton(mc, input.getMouseX(), input.getMouseY());
 		
-		this.button.xPosition = (int) this.getDim().getX();
-		this.button.yPosition = (int) this.getDim().getY();
+		this.button.xPosition = this.getDim().getX();
+		this.button.yPosition = this.getDim().getY();
 		
-		this.button.width = (int) this.getDim().getWidth();
-		this.button.height = (int) this.getDim().getHeight();
+		this.button.width = this.getDim().getWidth();
+		this.button.height = this.getDim().getHeight();
 	}
 	
 	@Override
