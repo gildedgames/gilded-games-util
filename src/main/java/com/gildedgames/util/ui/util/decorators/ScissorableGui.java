@@ -41,8 +41,6 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.setScissoredArea(Dim2D.build(this.getScissoredArea()).scale(this.getDim().getScale()).compile());
-
 		GL11.glPushMatrix();
 
 		float lowerLeftCornerY = this.getScissoredArea().getY() + this.getScissoredArea().getHeight();

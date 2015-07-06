@@ -22,7 +22,7 @@ public class ScrollableGui extends GuiFrame
 	{
 		super(windowSize);
 
-		this.scrolledGui = new ScissorableGui(Dim2D.build().addModifier(this, ModifierType.POS, ModifierType.WIDTH, ModifierType.HEIGHT).compile(), scrolledGui);
+		this.scrolledGui = new ScissorableGui(Dim2D.build().addModifier(this, ModifierType.ALL).compile(), scrolledGui);
 		this.scrollBar = scrollBar;
 	}
 
@@ -61,6 +61,7 @@ public class ScrollableGui extends GuiFrame
 		Dim2DCollection scrollingArea = new Dim2DCollection().addHolder(this);
 
 		this.scrollBar.setScrollingAreas(scrollingArea);
+		this.scrollBar.setContentArea(this.scrolledGui);
 
 		this.content().setElement("scrolledView", this.scrolledGui);
 		this.content().setElement("scrollBar", this.scrollBar);
