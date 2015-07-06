@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.ModContainer;
 import com.gildedgames.util.core.gui.TestGui;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
-import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
+import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.overhead.IOManager;
@@ -76,7 +76,7 @@ public class UtilServices
 		registry.registerClass(ScrollableGui.class, 12);
 		registry.registerClass(MinecraftGui.class, 13);
 		registry.registerClass(MinecraftButtonSounds.class, 14);
-		registry.registerClass(MinecraftDefaultButton.class, 15);
+		registry.registerClass(MinecraftButton.class, 15);
 		registry.registerClass(Ui.class, 16);
 		registry.registerClass(Gui.class, 17);
 		registry.registerClass(GuiDecorator.class, 18);

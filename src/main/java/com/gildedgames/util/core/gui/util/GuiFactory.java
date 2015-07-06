@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
-import com.gildedgames.util.core.gui.util.wrappers.MinecraftDefaultButton;
+import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.AssetLocation;
@@ -75,7 +75,7 @@ public class GuiFactory
 	{
 		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).compile();
 
-		Gui button = new MinecraftDefaultButton(dim, text);
+		Gui button = new MinecraftButton(dim, text);
 
 		return GuiFactory.decorateWithPressSound(button);
 	}
@@ -87,7 +87,7 @@ public class GuiFactory
 
 	public static GuiFrame createButton(GuiButton button, boolean centered)
 	{
-		return GuiFactory.decorateWithPressSound(new MinecraftDefaultButton(button, centered));
+		return GuiFactory.decorateWithPressSound(new MinecraftButton(button, centered));
 	}
 
 	public static ScrollBar createScrollBar(Pos2D pos, int height, Dim2D scrollableArea)
