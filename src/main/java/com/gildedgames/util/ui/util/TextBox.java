@@ -8,7 +8,6 @@ import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.decorators.ScissorableGui;
 
 public class TextBox extends GuiFrame
 {
@@ -28,7 +27,7 @@ public class TextBox extends GuiFrame
 	public void init(InputProvider input)
 	{
 		super.init(input);
-		
+
 		int i = 0;
 		int textHeight = 0;
 
@@ -59,14 +58,14 @@ public class TextBox extends GuiFrame
 					{
 						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight), false);
 					}
-					this.content().setElement(String.valueOf(i), this.getDim(), textElement);
+					this.content().setElement(String.valueOf(i), textElement);
 
 					textHeight += 1.1f * t.scaledHeight();
 					i++;
 				}
 			}
 		}
-		
+
 		this.modDim().height(textHeight).compile();
 	}
 
