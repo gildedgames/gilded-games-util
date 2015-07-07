@@ -26,16 +26,15 @@ public class MouseEventGuiFocus extends MouseEventGui
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	protected void onTrue(InputProvider input, MouseInputPool pool)
 	{
-		if (input.isHovered(this.gui.getDim()) && this.behaviorsMet(input, pool, this.scrollDifference) && pool.containsAll(this.getEvents()))
-		{
-			this.gui.setVisible(true);
-		}
-		else
-		{
-			this.gui.setVisible(false);
-		}
+		this.gui.setVisible(true);
+	}
+
+	@Override
+	protected void onFalse(InputProvider input, MouseInputPool pool)
+	{
+		this.gui.setVisible(false);
 	}
 
 }

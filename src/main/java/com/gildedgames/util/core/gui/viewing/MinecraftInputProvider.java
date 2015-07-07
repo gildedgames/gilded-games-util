@@ -64,7 +64,7 @@ public class MinecraftInputProvider implements InputProvider
 			return false;
 		}
 
-		return this.getMouseX() >= dim.getX() && this.getMouseY() >= dim.getY() && this.getMouseX() < dim.getX() + dim.getWidth() && this.getMouseY() < dim.getY() + dim.getHeight();
+		return this.getMouseX() >= dim.x() && this.getMouseY() >= dim.y() && this.getMouseX() < dim.x() + dim.width() && this.getMouseY() < dim.y() + dim.height();
 	}
 
 	@Override

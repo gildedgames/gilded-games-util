@@ -28,11 +28,11 @@ public class ScrollBar extends GuiFrame
 	 * repeated to make longer bars.
 	 */
 	protected TextureElement baseBarTexture, grabbableBarTexture;
-	
+
 	protected RepeatableGui baseBar, grabbableBar;
 
 	protected Dim2DCollection scrollingAreas;
-	
+
 	/**
 	 * True if the bar is grabbed.
 	 */
@@ -41,7 +41,7 @@ public class ScrollBar extends GuiFrame
 	protected float scrollPercentage = 0.0F, scrollSpeed = 0.02F;
 
 	protected int grabbedMouseYOffset;
-	
+
 	protected Dim2DHolder contentArea;
 
 	public ScrollBar(Dim2D barDim, GuiFrame topButton, GuiFrame bottomButton, TextureElement baseTexture, TextureElement barTexture)
@@ -50,11 +50,11 @@ public class ScrollBar extends GuiFrame
 
 		this.topButton = topButton;
 		this.bottomButton = bottomButton;
-		
+
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().compile().getWidth(), this.bottomButton.copyDim().clearModifiers().compile().getWidth()), this.baseBarTexture.getDim().getWidth());
+		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().compile().width(), this.bottomButton.copyDim().clearModifiers().compile().width()), this.baseBarTexture.getDim().width());
 
 		this.modDim().width(maxWidth).compile();
 	}
@@ -68,7 +68,7 @@ public class ScrollBar extends GuiFrame
 	{
 		return this.scrollSpeed;
 	}
-	
+
 	@Override
 	public void init(InputProvider input)
 	{
@@ -84,41 +84,41 @@ public class ScrollBar extends GuiFrame
 		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
 
 		this.baseBar = new RepeatableGui(Dim2D.build()
-				.area(this.baseBarTexture.getDim().getWidth(), this.getDim().getHeight() - this.topButton.getDim().getHeight() - this.bottomButton.getDim().getHeight())
-				.compile(),this.baseBarTexture);
-		
-		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.getDim().getWidth(), 20).compile(), this.grabbableBarTexture);
-		
+				.area(this.baseBarTexture.getDim().width(), this.getDim().height() - this.topButton.getDim().height() - this.bottomButton.getDim().height())
+				.compile(), this.baseBarTexture);
+
+		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.getDim().width(), 20).compile(), this.grabbableBarTexture);
+
 		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DGetter()
 		{
 
 			@Override
 			public Dim2D getDim()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight() + ScrollBar.this.baseBar.getDim().getHeight()).compile();
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height() + ScrollBar.this.baseBar.getDim().height()).compile();
 			}
 
 		};
-		
+
 		Dim2DSeeker topButtonHeight = new Dim2DGetter()
 		{
 
 			@Override
 			public Dim2D getDim()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.getDim().getHeight()).compile();
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height()).compile();
 			}
-			
+
 		};
-		
+
 		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton, ModifierType.POS).compile();
-	
+
 		this.baseBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
 		this.grabbableBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
 
 		this.content().setElement("baseBar", this.baseBar);
 		this.content().setElement("grabbableBar", this.grabbableBar);
-		
+
 		this.content().setElement("topButton", this.topButton);
 		this.content().setElement("bottomButton", this.bottomButton);
 	}
@@ -131,7 +131,7 @@ public class ScrollBar extends GuiFrame
 		if (input.isHovered(this.grabbableBar.getDim()) || input.isHovered(this.scrollingAreas))
 		{
 			int scrollFactor = -scrollDifference / 120;
-			
+
 			this.increaseScrollPercentage(scrollFactor * this.scrollSpeed);
 		}
 	}
@@ -151,14 +151,14 @@ public class ScrollBar extends GuiFrame
 			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.baseBar.getDim()))
 			{
 				this.grabbedBar = true;
-				
+
 				if (input.isHovered(this.grabbableBar.getDim()))
 				{
-					this.grabbedMouseYOffset = (this.grabbableBar.getDim().getY() - input.getMouseY());
+					this.grabbedMouseYOffset = this.grabbableBar.getDim().y() - input.getMouseY();
 				}
 				else
 				{
-					this.grabbedMouseYOffset = -(this.grabbableBar.getDim().getHeight() / 2) + 1;
+					this.grabbedMouseYOffset = -(this.grabbableBar.getDim().height() / 2) + 1;
 				}
 			}
 			else if (pool.has(ButtonState.RELEASED))
@@ -171,38 +171,38 @@ public class ScrollBar extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		if (this.scrollingAreas	!= null && this.contentArea != null)
+		if (this.scrollingAreas != null && this.contentArea != null)
 		{
-			int contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().getHeight() - this.scrollingAreas.getDim().getHeight());
-			
-			float baseBarPercentage = (float)contentAndScrollHeightDif / (float)this.contentArea.getDim().getHeight();
-			
-			this.grabbableBar.modDim().height((int)(this.baseBar.getDim().getHeight() * baseBarPercentage)).compile();
+			int contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().height() - this.scrollingAreas.getDim().height());
+
+			float baseBarPercentage = (float) contentAndScrollHeightDif / (float) this.contentArea.getDim().height();
+
+			this.grabbableBar.modDim().height((int) (this.baseBar.getDim().height() * baseBarPercentage)).compile();
 		}
-		
+
 		if (this.grabbedBar)
 		{
-			int basePosY = input.getMouseY() - this.baseBar.getDim().getY() + this.grabbedMouseYOffset;
-			
-			float percent = (float)basePosY / (float)(this.baseBar.getDim().getHeight() - this.grabbableBar.getDim().getHeight());
-			
+			int basePosY = input.getMouseY() - this.baseBar.getDim().y() + this.grabbedMouseYOffset;
+
+			float percent = (float) basePosY / (float) (this.baseBar.getDim().height() - this.grabbableBar.getDim().height());
+
 			this.setScrollPercentage(percent);
 		}
-		
-		int posOnBar = (int)((this.baseBar.getDim().getHeight() - this.grabbableBar.getDim().getHeight()) * this.getScrollPercentage());
+
+		int posOnBar = (int) ((this.baseBar.getDim().height() - this.grabbableBar.getDim().height()) * this.getScrollPercentage());
 
 		this.grabbableBar.modDim().y(posOnBar).compile();
-		
+
 		super.draw(graphics, input);
 	}
-	
+
 	private void setScrollPercentage(float percentage)
 	{
 		this.scrollPercentage = percentage;
-		
-		this.scrollPercentage = Math.max(0.0F, (Math.min(this.scrollPercentage, 1.0F)));
+
+		this.scrollPercentage = Math.max(0.0F, Math.min(this.scrollPercentage, 1.0F));
 	}
-	
+
 	private void increaseScrollPercentage(float percentage)
 	{
 		this.setScrollPercentage(this.getScrollPercentage() + percentage);
@@ -215,27 +215,27 @@ public class ScrollBar extends GuiFrame
 	{
 		return this.scrollPercentage;
 	}
-	
+
 	public void setScrollingAreas(Dim2DCollection scrollingAreas)
 	{
 		this.scrollingAreas = scrollingAreas;
 	}
-	
+
 	public ImmutableList<Dim2DHolder> getScrollingAreas()
 	{
 		return this.scrollingAreas.getDimHolders();
 	}
-	
+
 	public void setContentArea(Dim2DHolder contentArea)
 	{
 		this.contentArea = contentArea;
 	}
-	
+
 	public Dim2DHolder getContentArea()
 	{
 		return this.contentArea;
 	}
-	
+
 	@Override
 	public void write(NBTTagCompound output)
 	{
@@ -247,20 +247,20 @@ public class ScrollBar extends GuiFrame
 	{
 		this.scrollPercentage = input.getFloat("scrollPercentage");
 	}
-	
+
 	public static class ButtonScrollEvent extends MouseEventGui
 	{
-		
+
 		private Dim2DHolder button;
-		
+
 		private ScrollBar scrollBar;
 
 		private float scrollPercentage;
-		
+
 		public ButtonScrollEvent(Dim2DHolder button, ScrollBar scrollBar, float scrollPercentage)
 		{
 			super(scrollBar);
-			
+
 			this.button = button;
 			this.scrollBar = scrollBar;
 			this.scrollPercentage = scrollPercentage;
@@ -275,6 +275,20 @@ public class ScrollBar extends GuiFrame
 			}
 		}
 
+		@Override
+		protected void onTrue(InputProvider input, MouseInputPool pool)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		protected void onFalse(InputProvider input, MouseInputPool pool)
+		{
+			// TODO Auto-generated method stub
+
+		}
+
 	}
-	
+
 }

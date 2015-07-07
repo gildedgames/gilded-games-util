@@ -18,7 +18,7 @@ public class TestButtonFactory implements ContentFactory
 
 		for (int count = 0; count < 100; count++)
 		{
-			buttons.put("button" + count, GuiFactory.createButton(new Pos2D(), contentArea.getWidth(), "Button " + (count + 1), false));
+			buttons.put("button" + count, GuiFactory.createButton(new Pos2D(), contentArea.width(), "Button " + (count + 1), false));
 		}
 
 		return buttons;

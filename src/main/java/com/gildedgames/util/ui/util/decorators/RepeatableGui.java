@@ -26,20 +26,20 @@ public class RepeatableGui extends GuiFrame
 
 		this.repeatedGui.modDim().clearModifiers().addModifier(this, ModifierType.POS).resetPos().compile();
 
-		int textureHeight = this.repeatedGui.getDim().getHeight();
-		int textureWidth = this.repeatedGui.getDim().getWidth();
+		int textureHeight = this.repeatedGui.getDim().height();
+		int textureWidth = this.repeatedGui.getDim().width();
 
 		int heightCountNeeded = 0;
 		int widthCountNeeded = 0;
 
 		if (textureHeight != 0)
 		{
-			heightCountNeeded = this.getDim().getHeight() / textureHeight;
+			heightCountNeeded = this.getDim().height() / textureHeight;
 		}
 
 		if (textureWidth != 0)
 		{
-			widthCountNeeded = this.getDim().getWidth() / textureWidth;
+			widthCountNeeded = this.getDim().width() / textureWidth;
 		}
 
 		Dim2D oldDim = this.repeatedGui.getDim().clone().compile();
@@ -54,7 +54,7 @@ public class RepeatableGui extends GuiFrame
 				this.repeatedGui.modDim().addX(textureWidth).compile();
 			}
 
-			this.repeatedGui.modDim().x(oldDimNoMods.getX()).addY(textureHeight).compile();
+			this.repeatedGui.modDim().x(oldDimNoMods.x()).addY(textureHeight).compile();
 		}
 
 		this.repeatedGui.setDim(oldDim);

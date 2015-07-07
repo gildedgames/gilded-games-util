@@ -25,25 +25,25 @@ public final class MinecraftUIWrapper extends GuiScreen
 {
 
 	protected final static MinecraftGraphics2D GRAPHICS = new MinecraftGraphics2D(Minecraft.getMinecraft());
-	
+
 	protected final static MinecraftInputProvider INPUT = new MinecraftInputProvider(Minecraft.getMinecraft());
 
 	private final GuiFrame frame;
-	
+
 	private final UiContainerMutable frameHolder = new UiContainerMutable();
-	
+
 	private boolean hasInit;
 
 	public MinecraftUIWrapper(GuiFrame frame)
 	{
 		this.frame = frame;
 	}
-	
+
 	public GuiFrame getFrame()
 	{
 		return this.frame;
 	}
-	
+
 	@Override
 	public final void initGui()
 	{
@@ -56,15 +56,15 @@ public final class MinecraftUIWrapper extends GuiScreen
 
 		INPUT.setScreen(this.width, this.height);
 		INPUT.setScaleFactor(resolution.getScaleFactor());
-		
+
 		this.frameHolder.clear();
-		
+
 		this.frameHolder.setElement("frame", this.frame);
 
 		if (!this.hasInit)
 		{
 			GuiViewerHelper.processInit(this.frameHolder, INPUT);
-			
+
 			this.hasInit = true;
 		}
 		else
@@ -77,14 +77,14 @@ public final class MinecraftUIWrapper extends GuiScreen
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
 		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(charTyped, keyTyped, ButtonState.PRESSED));
-		
+
 		GuiViewerHelper.processKeyboardInput(this.frameHolder, pool);
 	}
 
 	@Override
 	protected final void mouseClicked(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.DOWN));
 
 		GuiViewerHelper.processMouseInput(this.frameHolder, INPUT, pool);
 	}
@@ -96,7 +96,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 
 		GuiViewerHelper.processMouseInput(this.frameHolder, INPUT, pool);
 	}
-	
+
 	@Override
 	protected final void mouseClickMove(int mouseX, int mouseY, int mouseButtonIndex, long timeSinceLastClick)
 	{
@@ -109,7 +109,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	public final void drawScreen(int mouseX, int mouseY, float partialTick)
 	{
 		int scrollDifference = Mouse.getDWheel();
-		
+
 		if (scrollDifference != 0)
 		{
 			GuiViewerHelper.processMouseScroll(this.frameHolder, INPUT, scrollDifference);
@@ -117,7 +117,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 
 		GuiViewerHelper.processDraw(this.frameHolder, GRAPHICS, INPUT);
 	}
-	
+
 	public final void tick(TickInfo info)
 	{
 		GuiViewerHelper.processTick(this.frameHolder, INPUT, info);
@@ -132,7 +132,7 @@ public final class MinecraftUIWrapper extends GuiScreen
 	@Override
 	protected final void actionPerformed(GuiButton button) throws IOException
 	{
-		
+
 	}
 
 }

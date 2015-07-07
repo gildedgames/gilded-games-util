@@ -43,12 +43,12 @@ public class ScrollableGui extends GuiFrame
 
 				float scrollPercentage = scrollBar.getScrollPercentage();
 
-				int scrolledElementHeight = ScrollableGui.this.scrolledGui.getDim().getHeight();
-				int scissoredHeight = ScrollableGui.this.scrolledGui.getScissoredArea().getHeight();
+				int scrolledElementHeight = ScrollableGui.this.scrolledGui.getDim().height();
+				int scissoredHeight = ScrollableGui.this.scrolledGui.getScissoredArea().height();
 
 				int scrollValue = (int) -(scrollPercentage * (scrolledElementHeight - scissoredHeight));
 
-				return Dim2D.build().x(scrollBar.getDim().getWidth()).y(scrollValue).addWidth(-scrollBar.getDim().getWidth()).compile();
+				return Dim2D.build().x(scrollBar.getDim().width()).y(scrollValue).addWidth(-scrollBar.getDim().width()).compile();
 			}
 
 		}, ModifierType.WIDTH, ModifierType.POS).compile();
