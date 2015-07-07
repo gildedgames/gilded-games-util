@@ -1,7 +1,5 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
@@ -20,7 +18,7 @@ public class Button extends GuiFrame
 
 	public Button(Dim2D dim, TextureElement texture)
 	{
-		this(dim, texture, texture, texture);
+		this(dim, texture, texture.clone(), texture.clone());
 	}
 
 	public Button(Dim2D dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
