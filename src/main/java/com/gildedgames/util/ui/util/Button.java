@@ -4,6 +4,7 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.event.view.MouseEventGuiFocus;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -25,10 +26,12 @@ public class Button extends GuiFrame
 	public Button(Dim2D dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
 	{
 		super(dim);
+		
+		Dim2D scissor = Dim2D.build().addModifier(this, ModifierType.ALL).compile();
 
-		this.defaultState = new ScissorableGui(dim, defaultState);
-		this.hoveredState = new ScissorableGui(dim, hoveredState);
-		this.clickedState = new ScissorableGui(dim, clickedState);
+		this.defaultState = new ScissorableGui(scissor, defaultState);
+		this.hoveredState = new ScissorableGui(scissor, hoveredState);
+		this.clickedState = new ScissorableGui(scissor, clickedState);
 	}
 
 	@Override
@@ -46,9 +49,9 @@ public class Button extends GuiFrame
 
 		this.clickedState.listeners().setElement("clickEvent", new MouseEventGuiFocus(this.clickedState, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
 
-		this.content().setElement("defaultState", this.defaultState);
 		this.content().setElement("hoveredState", this.hoveredState);
 		this.content().setElement("clickedState", this.clickedState);
+		this.content().setElement("defaultState", this.defaultState);
 	}
 
 	@Override
@@ -58,20 +61,12 @@ public class Button extends GuiFrame
 
 		if (input.isHovered(this.getDim()))
 		{
-			for (Gui element : ObjectFilter.getTypesFrom(this.content(), Gui.class))
-			{
-				element.setVisible(false);
-			}
-			
+			this.defaultState.setVisible(false);
 			this.hoveredState.setVisible(true);
 		}
 		else
 		{
-			for (Gui element : ObjectFilter.getTypesFrom(this.content(), Gui.class))
-			{
-				element.setVisible(true);
-			}
-			
+			this.defaultState.setVisible(true);
 			this.hoveredState.setVisible(false);
 		}
 	}
