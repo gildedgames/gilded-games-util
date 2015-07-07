@@ -8,7 +8,7 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.google.common.collect.ImmutableMap;
 
-public class TestButtonFactory implements ContentFactory
+public class TestButtonFactory2 implements ContentFactory
 {
 
 	@Override
@@ -18,7 +18,7 @@ public class TestButtonFactory implements ContentFactory
 
 		for (int count = 0; count < 100; count++)
 		{
-			buttons.put("button" + count, GuiFactory.createButton(new Pos2D(), contentArea.getWidth(), "Button " + (count + 1), false));
+			buttons.put("button" + count, GuiFactory.createButton(new Pos2D(), 20, String.valueOf(count + 1), false));
 		}
 
 		return buttons;

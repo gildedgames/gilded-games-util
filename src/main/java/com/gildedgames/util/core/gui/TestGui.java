@@ -14,10 +14,10 @@ import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.ButtonList;
+import com.gildedgames.util.ui.util.GuiCollection;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
-import com.gildedgames.util.ui.util.factory.TestButtonFactory;
-import com.gildedgames.util.ui.util.transform.GuiPositionerButton;
+import com.gildedgames.util.ui.util.factory.TestButtonFactory2;
+import com.gildedgames.util.ui.util.transform.GuiPositionerGrid;
 
 public class TestGui extends GuiFrame
 {
@@ -39,17 +39,16 @@ public class TestGui extends GuiFrame
 		//this.content().getElement("button", GuiFrame.class).modDim().pos(new Pos2D(50, 50)).compile();
 
 		this.content().setElement("text", GuiFactory.textBox(Dim2D.build().pos(100, 100).area(30, 90).compile(), true, GuiFactory.text("asdglakjawehglauhefajeliuvhaliuvhalieuhaliuhgliawugehliawughliawegdlgjawuefhaubh", Color.WHITE)));
-	
+
 		Dim2D dim = Dim2D.build().area(80, 200).compile();
 
-		ButtonList buttonList = new ButtonList(new GuiPositionerButton(), new TestButtonFactory());
+		GuiCollection buttonList = new GuiCollection(new Pos2D(0, 0), 140, new GuiPositionerGrid(5, 50), new TestButtonFactory2());
 
 		ScrollableGui scrollable = new ScrollableGui(dim, buttonList, GuiFactory.createScrollBar());
 
 		scrollable.modDim().pos(new Pos2D(50, 10)).compile();
 
-		//this.content().setElement("scrollable", scrollable);
-
+		this.content().setElement("scrollable", scrollable);
 
 		this.content().setElement("fileB",
 				new FileBrowserButton(Dim2D.build().pos(200, 50).compile(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, 31, 31, 256, 256)), "xDYolo", new File("asdf"), "sdf"));

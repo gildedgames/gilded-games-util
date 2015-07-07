@@ -34,7 +34,7 @@ import com.gildedgames.util.ui.event.MouseEvent;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.event.view.MouseEventGuiFocus;
 import com.gildedgames.util.ui.util.Button;
-import com.gildedgames.util.ui.util.ButtonList;
+import com.gildedgames.util.ui.util.GuiCollection;
 import com.gildedgames.util.ui.util.RectangleElement;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.ScrollBar.ButtonScrollEvent;
@@ -68,7 +68,7 @@ public class UtilServices
 		registry.registerClass(MCSyncableDispatcher.class, 3);
 		registry.registerClass(ScrollBar.class, 5);
 		registry.registerClass(Button.class, 6);
-		registry.registerClass(ButtonList.class, 7);
+		registry.registerClass(GuiCollection.class, 7);
 		registry.registerClass(RectangleElement.class, 8);
 		registry.registerClass(TextureElement.class, 9);
 		registry.registerClass(RepeatableGui.class, 10);
