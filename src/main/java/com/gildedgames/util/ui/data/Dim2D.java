@@ -53,7 +53,7 @@ public class Dim2D
 		return this.modifiers.contains(modifier);
 	}
 
-	public float getScale()
+	public float scale()
 	{
 		float modifiedScale = this.scale;
 
@@ -65,7 +65,7 @@ public class Dim2D
 
 				if (holder.getDim() != null && holder.getDim() != this)
 				{
-					modifiedScale *= holder.getDim().getScale();
+					modifiedScale *= holder.getDim().scale();
 				}
 			}
 		}
@@ -76,9 +76,24 @@ public class Dim2D
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public Pos2D getPos()
+	public Pos2D pos()
 	{
 		return this.getModifiedPos(this.pos);
+	}
+
+	public Pos2D maxPos()
+	{
+		return this.pos().withAdded(this.width(), this.height());
+	}
+
+	public int maxX()
+	{
+		return this.x() + this.width();
+	}
+
+	public int maxY()
+	{
+		return this.y() + this.height();
 	}
 
 	/**
@@ -86,8 +101,8 @@ public class Dim2D
 	 */
 	private Pos2D getScaledPos(Pos2D pos)
 	{
-		int offsetX = (int) (this.isCenteredX() ? this.getWidth() * this.getScale() / 2 : 0);
-		int offsetY = (int) (this.isCenteredY() ? this.getHeight() * this.getScale() / 2 : 0);
+		int offsetX = (int) (this.isCenteredX() ? this.width() * this.scale() / 2 : 0);
+		int offsetY = (int) (this.isCenteredY() ? this.height() * this.scale() / 2 : 0);
 
 		return new Pos2D(pos.getX() - offsetX, pos.getY() - offsetY);
 	}
@@ -106,12 +121,12 @@ public class Dim2D
 				{
 					if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.withAddedX(holder.getDim().getPos().getX());
+						modifiedPos = modifiedPos.withAddedX(holder.getDim().pos().getX());
 					}
 
 					if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.withAddedY(holder.getDim().getPos().getY());
+						modifiedPos = modifiedPos.withAddedY(holder.getDim().pos().getY());
 					}
 				}
 			}
@@ -123,23 +138,23 @@ public class Dim2D
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int getX()
+	public int x()
 	{
-		return this.getPos().getX();
+		return this.pos().getX();
 	}
 
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int getY()
+	public int y()
 	{
-		return this.getPos().getY();
+		return this.pos().getY();
 	}
 
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int getWidth()
+	public int width()
 	{
 		int modifiedWidth = this.width;
 
@@ -151,18 +166,18 @@ public class Dim2D
 
 				if (holder.getDim() != null && holder.getDim() != this)
 				{
-					modifiedWidth += holder.getDim().getWidth();
+					modifiedWidth += holder.getDim().width();
 				}
 			}
 		}
 
-		return (int) (modifiedWidth * this.getScale());
+		return (int) (modifiedWidth * this.scale());
 	}
 
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int getHeight()
+	public int height()
 	{
 		int modifiedHeight = this.height;
 
@@ -174,12 +189,12 @@ public class Dim2D
 
 				if (holder.getDim() != null && holder.getDim() != this)
 				{
-					modifiedHeight += holder.getDim().getHeight();
+					modifiedHeight += holder.getDim().height();
 				}
 			}
 		}
 
-		return (int) (modifiedHeight * this.getScale());
+		return (int) (modifiedHeight * this.scale());
 	}
 
 	public boolean isCenteredX()
@@ -274,15 +289,15 @@ public class Dim2D
 			{
 				Dim2D preview = result.compile();
 
-				int minX = Math.min(preview.getX(), dim.getX());
-				int minY = Math.min(preview.getY(), dim.getY());
+				int minX = Math.min(preview.x(), dim.x());
+				int minY = Math.min(preview.y(), dim.y());
 
-				int maxX = Math.max(preview.getX() + preview.getWidth(), dim.getX() + dim.getWidth());
-				int maxY = Math.max(preview.getY() + preview.getHeight(), dim.getY() + dim.getHeight());
+				int maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
+				int maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
 
 				result.pos(new Pos2D(minX, minY)).area(maxX - minY, maxY - minY);
 
-				overallScale += dim.getScale();
+				overallScale += dim.scale();
 
 				validDimensions++;
 
@@ -334,7 +349,7 @@ public class Dim2D
 	{
 		String link = ", ";
 
-		return this.getPos().toString() + link + "Area() Width: '" + this.getWidth() + "', Height: '" + this.getHeight() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.getScale() + "'";
+		return this.pos().toString() + link + "Area() Width: '" + this.width() + "', Height: '" + this.height() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale() + "'";
 	}
 
 	public static class Dim2DBuilder

@@ -24,7 +24,7 @@ public class GuiPositionerList implements GuiPositioner
 		{
 			view.modDim().y(currentY).center(false).compile();
 
-			currentY += view.getDim().getHeight() + this.paddingY;
+			currentY += view.getDim().height() + this.paddingY;
 		}
 
 		return guis;

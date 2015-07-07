@@ -31,7 +31,7 @@ public class TextBox extends GuiFrame
 		int i = 0;
 		int textHeight = 0;
 
-		int halfWidth = this.getDim().getWidth() / 2;
+		int halfWidth = this.getDim().width() / 2;
 		for (Text t : this.text)
 		{
 			if (t.text == null || t.text.isEmpty())
@@ -45,7 +45,7 @@ public class TextBox extends GuiFrame
 
 			for (final String string : stringList)
 			{
-				final List<String> newStrings = t.font.splitStringsIntoArea(string, (int) (this.getDim().getWidth() / t.scale));
+				final List<String> newStrings = t.font.splitStringsIntoArea(string, (int) (this.getDim().width() / t.scale));
 
 				for (final String s : newStrings)
 				{

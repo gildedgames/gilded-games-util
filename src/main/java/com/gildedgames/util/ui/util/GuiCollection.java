@@ -85,7 +85,7 @@ public class GuiCollection extends GuiFrame
 			{
 				view.modDim().addModifier(this, ModifierType.POS).compile();
 
-				totalContentHeight = Math.max(totalContentHeight, view.getDim().getY() + view.getDim().getHeight());
+				totalContentHeight = Math.max(totalContentHeight, view.getDim().y() + view.getDim().height());
 			}
 		}
 

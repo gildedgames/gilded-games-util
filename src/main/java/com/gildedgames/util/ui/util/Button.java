@@ -9,7 +9,6 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
-import com.gildedgames.util.ui.util.decorators.ScissorableGui;
 
 public class Button extends GuiFrame
 {
@@ -24,12 +23,12 @@ public class Button extends GuiFrame
 	public Button(Dim2D dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
 	{
 		super(dim);
-		
+
 		Dim2D scissor = Dim2D.build().addModifier(this, ModifierType.ALL).compile();
 
-		this.defaultState = new ScissorableGui(scissor, defaultState);
-		this.hoveredState = new ScissorableGui(scissor, hoveredState);
-		this.clickedState = new ScissorableGui(scissor, clickedState);
+		this.defaultState = defaultState; //new ScissorableGui(scissor, defaultState);
+		this.hoveredState = hoveredState; //new ScissorableGui(scissor, hoveredState);
+		this.clickedState = clickedState;// new ScissorableGui(scissor, clickedState);
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class MinecraftButton extends GuiFrame
 		
 		this.text = text;
 		
-		this.button = new GuiButton(-1, dim.getX(), dim.getY(), dim.getWidth(), dim.getHeight(), text);
+		this.button = new GuiButton(-1, dim.x(), dim.y(), dim.width(), dim.height(), text);
 	}
 	
 	@Override
@@ -62,11 +62,11 @@ public class MinecraftButton extends GuiFrame
 		
 		this.button.drawButton(mc, input.getMouseX(), input.getMouseY());
 		
-		this.button.xPosition = this.getDim().getX();
-		this.button.yPosition = this.getDim().getY();
+		this.button.xPosition = this.getDim().x();
+		this.button.yPosition = this.getDim().y();
 		
-		this.button.width = this.getDim().getWidth();
-		this.button.height = this.getDim().getHeight();
+		this.button.width = this.getDim().width();
+		this.button.height = this.getDim().height();
 	}
 	
 	@Override

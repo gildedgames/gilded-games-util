@@ -48,8 +48,8 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		GlStateManager.pushMatrix();
 
-		float currentX = dim.getX();
-		float currentY = dim.getY();
+		float currentX = dim.x();
+		float currentY = dim.y();
 
 		float partialTicks = UtilEvents.getPartialTicks();
 
@@ -63,7 +63,7 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		GlStateManager.translate(x, y, 0);
 
-		GlStateManager.scale(dim.getScale(), dim.getScale(), dim.getScale());
+		GlStateManager.scale(dim.scale(), dim.scale(), dim.scale());
 
 		GlStateManager.enableBlend();
 
@@ -220,7 +220,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		@Override
 		public void draw()
 		{
-			Gui.drawRect(0, 0, this.dim.getWidth(), this.dim.getHeight(), this.data.getColor().getRGB());
+			Gui.drawRect(0, 0, this.dim.width(), this.dim.height(), this.data.getColor().getRGB());
 		}
 
 	}
@@ -245,7 +245,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		@Override
 		public void draw()
 		{
-			this.graphics.drawGradientRect(0, 0, this.dim.getWidth(), this.dim.getHeight(), this.startColor.getColor().getRGB(), this.endColor.getColor().getRGB());
+			this.graphics.drawGradientRect(0, 0, this.dim.width(), this.dim.height(), this.startColor.getColor().getRGB(), this.endColor.getColor().getRGB());
 		}
 
 	}

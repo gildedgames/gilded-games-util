@@ -7,6 +7,7 @@ import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.event.MouseEvent;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInput;
+import com.gildedgames.util.ui.input.MouseInputPool;
 
 public abstract class MouseEventGui extends MouseEvent
 {
@@ -36,5 +37,22 @@ public abstract class MouseEventGui extends MouseEvent
 	{
 		return this.gui;
 	}
+
+	@Override
+	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	{
+		if (input.isHovered(this.gui.getDim()) && this.behaviorsMet(input, pool, this.scrollDifference) && pool.containsAll(this.getEvents()))
+		{
+			this.onTrue(input, pool);
+		}
+		else
+		{
+			this.onFalse(input, pool);
+		}
+	}
+
+	protected abstract void onTrue(InputProvider input, MouseInputPool pool);
+
+	protected abstract void onFalse(InputProvider input, MouseInputPool pool);
 
 }

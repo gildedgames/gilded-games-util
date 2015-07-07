@@ -1,6 +1,5 @@
 package com.gildedgames.util.core.gui;
 
-import java.awt.Color;
 import java.io.File;
 
 import com.gildedgames.util.core.UtilCore;
@@ -9,15 +8,10 @@ import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.core.gui.util.file_system.FileBrowserButton;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.GuiCollection;
-import com.gildedgames.util.ui.util.decorators.ScrollableGui;
-import com.gildedgames.util.ui.util.factory.TestButtonFactory2;
-import com.gildedgames.util.ui.util.transform.GuiPositionerGrid;
 
 public class TestGui extends GuiFrame
 {
@@ -38,7 +32,7 @@ public class TestGui extends GuiFrame
 
 		//this.content().getElement("button", GuiFrame.class).modDim().pos(new Pos2D(50, 50)).compile();
 
-		this.content().setElement("text", GuiFactory.textBox(Dim2D.build().pos(100, 100).area(30, 90).compile(), true, GuiFactory.text("asdglakjawehglauhefajeliuvhaliuvhalieuhaliuhgliawugehliawughliawegdlgjawuefhaubh", Color.WHITE)));
+		/*this.content().setElement("text", GuiFactory.textBox(Dim2D.build().pos(100, 100).area(30, 90).compile(), true, GuiFactory.text("asdglakjawehglauhefajeliuvhaliuvhalieuhaliuhgliawugehliawughliawegdlgjawuefhaubh", Color.WHITE)));
 
 		Dim2D dim = Dim2D.build().area(80, 200).compile();
 
@@ -48,7 +42,7 @@ public class TestGui extends GuiFrame
 
 		scrollable.modDim().pos(new Pos2D(50, 10)).compile();
 
-		this.content().setElement("scrollable", scrollable);
+		this.content().setElement("scrollable", scrollable);*/
 
 		this.content().setElement("fileB",
 				new FileBrowserButton(Dim2D.build().pos(200, 50).compile(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, 31, 31, 256, 256)), "xDYolo", new File("asdf"), "sdf"));

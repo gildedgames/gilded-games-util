@@ -45,9 +45,9 @@ public class MinecraftItemStackRender extends GuiFrame
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			
-			int x = this.getDim().getX();
+			int x = this.getDim().x();
 			
-			MC.getRenderItem().renderItemIntoGUI(this.stack, this.getDim().getX(), this.getDim().getY());
+			MC.getRenderItem().renderItemIntoGUI(this.stack, this.getDim().x(), this.getDim().y());
 
 			GL11.glDisable(GL11.GL_LIGHTING);
 			
