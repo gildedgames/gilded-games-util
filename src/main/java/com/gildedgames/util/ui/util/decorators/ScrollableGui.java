@@ -48,7 +48,7 @@ public class ScrollableGui extends GuiFrame
 
 				int scrollValue = (int) -(scrollPercentage * (scrolledElementHeight - scissoredHeight));
 
-				return Dim2D.build(ScrollableGui.this).x(scrollBar.getDim().getWidth()).y(scrollValue).addWidth(-scrollBar.getDim().getWidth()).compile();
+				return Dim2D.build().x(scrollBar.getDim().getWidth()).y(scrollValue).addWidth(-scrollBar.getDim().getWidth()).compile();
 			}
 
 		}, ModifierType.WIDTH, ModifierType.POS).compile();
