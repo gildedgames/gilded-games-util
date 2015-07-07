@@ -16,10 +16,10 @@ public class TextureElement extends GuiFrame
 
 	public TextureElement(Sprite sprite, Dim2D dim)
 	{
-		this(dim, sprite, new DrawingData());
+		this(sprite, dim, new DrawingData());
 	}
 
-	public TextureElement(Dim2D dim, Sprite sprite, DrawingData data)
+	public TextureElement(Sprite sprite, Dim2D dim, DrawingData data)
 	{
 		super(dim);
 
@@ -45,6 +45,11 @@ public class TextureElement extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		graphics.drawSprite(this.sprite, this.getDim(), this.data);
+	}
+	
+	public TextureElement clone()
+	{
+		return new TextureElement(this.sprite, this.getDim(), this.data);
 	}
 
 }

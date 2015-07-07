@@ -3,13 +3,10 @@ package com.gildedgames.util.core.gui;
 import java.awt.Color;
 import java.io.File;
 
-import net.minecraft.init.Blocks;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.core.gui.util.file_system.FileBrowserButton;
-import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -55,7 +52,7 @@ public class TestGui extends GuiFrame
 
 
 		this.content().setElement("fileB",
-				new FileBrowserButton(Dim2D.build().pos(200, 50).compile(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, 31, 31)), "xDYolo", new File("asdf"), "sdf"));
+				new FileBrowserButton(Dim2D.build().pos(200, 50).compile(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, 31, 31, 256, 256)), "xDYolo", new File("asdf"), "sdf"));
 
 	}
 

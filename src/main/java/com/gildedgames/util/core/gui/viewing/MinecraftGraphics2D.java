@@ -169,35 +169,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		public void draw()
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getAsset()));
-
-			int x = 0;
-			int y = 0;
-
-			int u = (int) this.sprite.getMinU();
-			int v = (int) this.sprite.getMinV();
-
-			int width = (int) (this.sprite.getMaxU() - this.sprite.getMinU());
-			int height = (int) (this.sprite.getMaxV() - this.sprite.getMinV());
-
-			int textureWidth = (int) this.sprite.getTextureWidth();
-			int textureHeight = (int) this.sprite.getTextureHeight();
-
-			float f4 = 1.0F / textureWidth;
-			float f5 = 1.0F / textureHeight;
-			Tessellator tessellator = Tessellator.getInstance();
-			WorldRenderer renderer = tessellator.getWorldRenderer();
-
-			renderer.startDrawingQuads();
-
-			//renderer.setColorRGBA_F(this.data.getRed(), this.data.getGreen(), this.data.getBlue(), this.data.getAlpha());
-			//renderer.setColorOpaque_F(this.data.getRed(), this.data.getGreen(), this.data.getBlue());
-
-			renderer.addVertexWithUV(x, y + height, 0.0D, u * f4, (v + (float) height) * f5);
-			renderer.addVertexWithUV(x + width, y + height, 0.0D, (u + (float) width) * f4, (v + (float) height) * f5);
-			renderer.addVertexWithUV(x + width, y, 0.0D, (u + (float) width) * f4, v * f5);
-			renderer.addVertexWithUV(x, y, 0.0D, u * f4, v * f5);
-
-			tessellator.draw();
+			Gui.drawModalRectWithCustomSizedTexture(0, 0, (int) this.sprite.getMinU(), (int) this.sprite.getMinV(), (int) (this.sprite.getMaxU() - this.sprite.getMinU()), (int) (this.sprite.getMaxV() - this.sprite.getMinV()), (int) this.sprite.getTextureWidth(), (int) this.sprite.getTextureHeight());
 		}
 
 	}
