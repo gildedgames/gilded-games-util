@@ -52,9 +52,15 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
     }
 
 	@Override
-	public UiContainer assembleAllContent()
+	protected void preInit(InputProvider input)
 	{
-		return this.getDecoratedElement().seekContent();
+		
+	}
+
+	@Override
+	protected void postInit(InputProvider input)
+	{
+		
 	}
 	
 }

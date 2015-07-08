@@ -35,11 +35,12 @@ public class FileBrowserButton extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
+		this.content().displayDim(this);
 
 		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).compile(), this.texture);
+		
 		button.listeners().setElement("pushDown", new MouseEventGui(this, new MouseInput(MouseButton.LEFT, ButtonState.DOWN))
 		{
 			@Override
@@ -54,9 +55,13 @@ public class FileBrowserButton extends GuiFrame
 				button.modDim().pos(0, 0).compile();
 			}
 		});
+		
 		this.content().setElement("button", button);
+		
 		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.getDim().width() / 2, this.getDim().height() / 2 + 12).centerX(true).width(16).height(12).compile(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
 
 		this.content().setElement("text", textBox);
+		
+		super.initContent(input);
 	}
 }

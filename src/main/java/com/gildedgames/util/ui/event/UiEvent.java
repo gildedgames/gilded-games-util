@@ -29,6 +29,12 @@ public abstract class UiEvent implements Ui
 	{
 		
 	}
+	
+	@Override
+	public void initContent(InputProvider input)
+	{
+		
+	}
 
 	@Override
 	public void onResolutionChange(InputProvider input)

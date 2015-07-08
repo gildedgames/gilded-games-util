@@ -27,9 +27,9 @@ public class ScrollableGui extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
+		super.initContent(input);
 
 		this.scrollBar.modDim().resetPos().addModifier(this, ModifierType.HEIGHT).compile();
 

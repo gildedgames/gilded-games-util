@@ -18,169 +18,139 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 public final class GuiViewerHelper
 {
 
-	public static void processInit(UiContainer container, InputProvider input)
+	public static void processInitPre(InputProvider input, UiContainer... containers)
 	{
-		if (container == null)
+		for (UiContainer container : containers)
 		{
-			return;
-		}
-
-		for (Ui element : container.elements())
-		{
-			Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
-
-			element.init(input);
-
-			if (parentModifier != null)
+			if (container == null)
 			{
-				for (Ui child : element.seekContent())
-				{
-					Dim2DHolder dimHolder = ObjectFilter.getType(child, Dim2DHolder.class);
+				return;
+			}
 
-					if (dimHolder != null)
+			for (Ui element : container.elements())
+			{
+				Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
+
+				element.init(input);
+
+				if (parentModifier != null)
+				{
+					for (Ui child : element.seekContent())
 					{
-						dimHolder.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).compile();
+						Dim2DHolder dimHolder = ObjectFilter.getType(child, Dim2DHolder.class);
+
+						if (dimHolder != null)
+						{
+							dimHolder.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).compile();
+						}
 					}
 				}
 			}
+		}
+	}
 
-			GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
+	public static void processResolutionChange(InputProvider input, UiContainer... containers)
+	{
+		GuiViewerHelper.processInitPre(input, containers);
+	}
 
-			if (frame != null)
+	public static void processMouseInput(InputProvider input, MouseInputPool pool, UiContainer... containers)
+	{
+		for (UiContainer container : containers)
+		{
+			if (container == null)
 			{
-				GuiViewerHelper.processInit(frame.listeners(), input);
+				return;
 			}
 
-			GuiViewerHelper.processInit(element.seekContent(), input);
-		}
-	}
-
-	public static void processResolutionChange(UiContainer container, InputProvider input)
-	{
-		GuiViewerHelper.processInit(container, input);
-	}
-
-	public static void processMouseInput(UiContainer container, InputProvider input, MouseInputPool pool)
-	{
-		if (container == null)
-		{
-			return;
-		}
-
-		for (MouseListener element : ObjectFilter.getTypesFrom(container.elements(), MouseListener.class))
-		{
-			if (element.isEnabled())
+			for (MouseListener element : ObjectFilter.getTypesFrom(container.elements(), MouseListener.class))
 			{
-				element.onMouseInput(input, pool);
-
-				GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
-
-				if (frame != null)
+				if (element.isEnabled())
 				{
-					GuiViewerHelper.processMouseInput(frame.listeners(), input, pool);
+					element.onMouseInput(input, pool);
 				}
-
-				GuiViewerHelper.processMouseInput(element.seekContent(), input, pool);
 			}
 		}
 	}
 
-	public static void processMouseScroll(UiContainer container, InputProvider input, int scrollDifference)
+	public static void processMouseScroll(InputProvider input, int scrollDifference, UiContainer... containers)
 	{
-		if (container == null)
+		for (UiContainer container : containers)
 		{
-			return;
-		}
-
-		for (MouseListener element : ObjectFilter.getTypesFrom(container.elements(), MouseListener.class))
-		{
-			if (element.isEnabled())
+			if (container == null)
 			{
-				element.onMouseScroll(input, scrollDifference);
+				return;
+			}
 
-				GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
-
-				if (frame != null)
+			for (MouseListener element : ObjectFilter.getTypesFrom(container.elements(), MouseListener.class))
+			{
+				if (element.isEnabled())
 				{
-					GuiViewerHelper.processMouseScroll(frame.listeners(), input, scrollDifference);
+					element.onMouseScroll(input, scrollDifference);
 				}
-
-				GuiViewerHelper.processMouseScroll(element.seekContent(), input, scrollDifference);
 			}
 		}
 	}
 
-	public static boolean processKeyboardInput(UiContainer container, KeyboardInputPool pool)
+	public static boolean processKeyboardInput(KeyboardInputPool pool, UiContainer... containers)
 	{
-		if (container == null)
-		{
-			return false;
-		}
-
 		boolean success = false;
-
-		for (KeyboardListener element : ObjectFilter.getTypesFrom(container.elements(), KeyboardListener.class))
+		
+		for (UiContainer container : containers)
 		{
-			if (element.isEnabled())
+			if (container == null)
 			{
-				GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
+				return false;
+			}
 
-				success = element.onKeyboardInput(pool)
-						|| GuiViewerHelper.processKeyboardInput(element.seekContent(), pool)
-						|| frame != null && GuiViewerHelper.processKeyboardInput(frame.listeners(), pool)
-						|| success;
+			for (KeyboardListener element : ObjectFilter.getTypesFrom(container.elements(), KeyboardListener.class))
+			{
+				if (element.isEnabled())
+				{
+					GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
+
+					success = element.onKeyboardInput(pool) || success;
+				}
 			}
 		}
 
 		return success;
 	}
 
-	public static void processDraw(UiContainer container, Graphics2D graphics, InputProvider input)
+	public static void processDraw(Graphics2D graphics, InputProvider input, UiContainer... containers)
 	{
-		if (container == null)
+		for (UiContainer container : containers)
 		{
-			return;
-		}
-
-		for (Gui element : ObjectFilter.getTypesFrom(container.elements(), Gui.class))
-		{
-			if (element.isVisible())
+			if (container == null)
 			{
-				element.draw(graphics, input);
+				return;
+			}
 
-				GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
-
-				if (frame != null)
+			for (Gui element : ObjectFilter.getTypesFrom(container.elements(), Gui.class))
+			{
+				if (element.isVisible())
 				{
-					GuiViewerHelper.processDraw(frame.listeners(), graphics, input);
+					element.draw(graphics, input);
 				}
-
-				GuiViewerHelper.processDraw(element.seekContent(), graphics, input);
 			}
 		}
 	}
 
-	public static void processTick(UiContainer container, InputProvider input, TickInfo tickInfo)
+	public static void processTick(InputProvider input, TickInfo tickInfo, UiContainer... containers)
 	{
-		if (container == null)
+		for (UiContainer container : containers)
 		{
-			return;
-		}
-
-		for (Ui element : container.elements())
-		{
-			if (element.isEnabled())
+			if (container == null)
 			{
-				element.tick(input, tickInfo);
+				return;
+			}
 
-				GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
-
-				if (frame != null)
+			for (Ui element : container.elements())
+			{
+				if (element.isEnabled())
 				{
-					GuiViewerHelper.processTick(frame.listeners(), input, tickInfo);
+					element.tick(input, tickInfo);
 				}
-
-				GuiViewerHelper.processTick(element.seekContent(), input, tickInfo);
 			}
 		}
 	}

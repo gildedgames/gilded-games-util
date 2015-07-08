@@ -129,13 +129,13 @@ public class GuiCollection extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
-
 		this.refresh();
 
 		//this.getDimensions().set(this.getListeners().getCombinedDimensions());
+		
+		super.initContent(input);
 	}
 
 	@Override

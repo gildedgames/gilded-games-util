@@ -14,6 +14,7 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
+import com.gildedgames.util.ui.util.GuiViewerHelper;
 
 public class GuiFrame implements Gui, KeyboardListener, MouseListener
 {
@@ -116,43 +117,51 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	@Override
 	public void init(InputProvider input)
 	{
+		this.initContent(input);
+		
+		GuiViewerHelper.processInitPre(input, this.content(), this.listeners());
+	}
 
+	@Override
+	public void initContent(InputProvider input)
+	{
+		 
 	}
 	
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool)
 	{
-		return false;
+		return GuiViewerHelper.processKeyboardInput(pool, this.content(), this.listeners());
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		
+		GuiViewerHelper.processDraw(graphics, input, this.content(), this.listeners());
 	}
 	
 	@Override
 	public void tick(InputProvider input, TickInfo tickInfo)
 	{
-		
+		GuiViewerHelper.processTick(input, tickInfo, this.content(), this.listeners());
 	}
 
 	@Override
 	public void onMouseInput(InputProvider input, MouseInputPool pool)
 	{
-		
+		GuiViewerHelper.processMouseInput(input, pool, this.content(), this.listeners());
 	}
 
 	@Override
 	public void onMouseScroll(InputProvider input, int scrollDifference)
 	{
-		
+		GuiViewerHelper.processMouseScroll(input, scrollDifference, this.content(), this.listeners());
 	}
 	
 	@Override
 	public void onResolutionChange(InputProvider input)
 	{
-		
+		this.init(input);
 	}
 	
 	@Override

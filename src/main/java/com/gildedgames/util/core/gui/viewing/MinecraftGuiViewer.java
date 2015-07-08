@@ -6,29 +6,29 @@ import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class MinecraftUIViewer implements GuiViewer
+public class MinecraftGuiViewer implements GuiViewer
 {
 	
-	private final static MinecraftUIViewer INSTANCE = new MinecraftUIViewer();
+	private final static MinecraftGuiViewer INSTANCE = new MinecraftGuiViewer();
 	
 	private final static MinecraftInputProvider INPUT = new MinecraftInputProvider(Minecraft.getMinecraft());
 	
 	private Minecraft mc = Minecraft.getMinecraft();
 	
-	private MinecraftUIViewer()
+	private MinecraftGuiViewer()
 	{
 		
 	}
 	
-	public static MinecraftUIViewer instance()
+	public static MinecraftGuiViewer instance()
 	{
-		return MinecraftUIViewer.INSTANCE;
+		return MinecraftGuiViewer.INSTANCE;
 	}
 
 	@Override
 	public void open(GuiFrame frame)
 	{
-		this.mc.displayGuiScreen(new MinecraftUIWrapper(frame));
+		this.mc.displayGuiScreen(new MinecraftGuiWrapper(frame));
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class MinecraftUIViewer implements GuiViewer
 	@Override
 	public InputProvider getInputProvider()
 	{
-		return MinecraftUIViewer.INPUT;
+		return MinecraftGuiViewer.INPUT;
 	}
 
 }

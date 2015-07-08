@@ -27,6 +27,7 @@ public class TextElement extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
+		
 		graphics.drawText(this.text.text, this.getDim(), this.text.drawingData);
 	}
 

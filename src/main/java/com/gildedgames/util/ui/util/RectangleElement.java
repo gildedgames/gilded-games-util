@@ -2,6 +2,8 @@ package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.Dim2D.ModifierType;
+import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -12,27 +14,31 @@ public class RectangleElement extends GuiFrame
 
 	protected DrawingData startColor, endColor;
 	
-	public RectangleElement(Dim2D dim)
+	protected Dim2DHolder holder;
+
+	public RectangleElement(Dim2DHolder holder)
 	{
-		this(dim, false);
+		this(holder, false);
 	}
 	
-	public RectangleElement(Dim2D dim, boolean shouldRender)
+	public RectangleElement(Dim2DHolder holder, boolean shouldRender)
 	{
-		this(dim, new DrawingData());
+		this(holder, new DrawingData());
 		
 		this.setVisible(shouldRender);
 	}
 	
-	public RectangleElement(Dim2D dim, DrawingData data)
+	public RectangleElement(Dim2DHolder holder, DrawingData data)
 	{
-		this(dim, data, null);
+		this(holder, data, null);
 	}
 	
-	public RectangleElement(Dim2D dim, DrawingData startColor, DrawingData endColor)
+	public RectangleElement(Dim2DHolder holder, DrawingData startColor, DrawingData endColor)
 	{
-		super(dim);
+		super(Dim2D.compile());
 
+		this.holder = holder;
+		
 		this.startColor = startColor;
 		this.endColor = endColor;
 	}
@@ -48,6 +54,12 @@ public class RectangleElement extends GuiFrame
 	}
 	
 	@Override
+	public Dim2D getDim()
+	{
+		return this.holder.getDim();
+	}
+	
+	@Override
 	public void tick(InputProvider input, TickInfo tickInfo)
 	{
 		super.tick(input, tickInfo);
@@ -56,6 +68,8 @@ public class RectangleElement extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
+		super.draw(graphics, input);
+		
 		if (this.endColor == null)
 		{
 			graphics.drawRectangle(this.getDim(), this.startColor);

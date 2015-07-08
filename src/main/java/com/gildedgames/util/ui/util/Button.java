@@ -32,10 +32,8 @@ public class Button extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
-
 		this.defaultState.setVisible(true);
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
@@ -49,6 +47,8 @@ public class Button extends GuiFrame
 		this.content().setElement("hoveredState", this.hoveredState);
 		this.content().setElement("clickedState", this.clickedState);
 		this.content().setElement("defaultState", this.defaultState);
+		
+		super.initContent(input);
 	}
 
 	@Override

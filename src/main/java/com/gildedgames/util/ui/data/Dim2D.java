@@ -160,7 +160,7 @@ public class Dim2D
 
 		for (Modifier modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.ALL))
+			if (modifier != null && modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				Dim2DHolder holder = modifier.getHolder();
 
@@ -183,7 +183,7 @@ public class Dim2D
 
 		for (Modifier modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.ALL))
+			if (modifier != null && modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				Dim2DHolder holder = modifier.getHolder();
 
@@ -211,6 +211,11 @@ public class Dim2D
 	public Dim2DBuilder clone()
 	{
 		return new Dim2DBuilder(this);
+	}
+	
+	public Dim2DHolder toHolder()
+	{
+		return new Dim2DSingle(this);
 	}
 
 	public Dim2D withoutModifiers(ModifierType first, ModifierType... rest)
@@ -473,11 +478,6 @@ public class Dim2D
 			this.centeredY = centeredY;
 
 			return this;
-		}
-
-		public Dim2DBuilder center(Dim2D copyFrom)
-		{
-			return this.center(copyFrom.isCenteredX(), copyFrom.isCenteredY());
 		}
 
 		public Dim2DBuilder area(int width, int height)
@@ -767,12 +767,12 @@ public class Dim2D
 
 		private ModifierType[] types;
 
-		private Modifier(Dim2DHolder holder, List<ModifierType> types)
+		public Modifier(Dim2DHolder holder, List<ModifierType> types)
 		{
 			this(holder, types.toArray(new ModifierType[types.size()]));
 		}
 
-		private Modifier(Dim2DHolder holder, ModifierType... types)
+		public Modifier(Dim2DHolder holder, ModifierType... types)
 		{
 			this.holder = holder;
 			this.types = types;
@@ -793,7 +793,7 @@ public class Dim2D
 	public static enum ModifierType
 	{
 
-		X, Y, POS, HEIGHT, WIDTH, SCALE, ALL;
+		X, Y, POS, HEIGHT, WIDTH, AREA, SCALE, ALL;
 
 	}
 
