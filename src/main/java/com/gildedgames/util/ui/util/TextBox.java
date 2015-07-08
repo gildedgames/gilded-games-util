@@ -24,10 +24,8 @@ public class TextBox extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
-
 		int i = 0;
 		int textHeight = 0;
 
@@ -67,6 +65,8 @@ public class TextBox extends GuiFrame
 		}
 
 		this.modDim().height(textHeight).compile();
+		
+		super.initContent(input);
 	}
 
 }

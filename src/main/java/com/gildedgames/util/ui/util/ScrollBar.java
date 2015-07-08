@@ -70,10 +70,8 @@ public class ScrollBar extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
-
 		this.topButton.modDim().center(false).resetPos().compile();
 		this.bottomButton.modDim().center(false).resetPos().compile();
 
@@ -121,6 +119,8 @@ public class ScrollBar extends GuiFrame
 
 		this.content().setElement("topButton", this.topButton);
 		this.content().setElement("bottomButton", this.bottomButton);
+		
+		super.initContent(input);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import com.gildedgames.util.ui.data.TickInfo;
 
-public class MinecraftUIWrapperTick implements TickInfo
+public class MinecraftGuiWrapperTick implements TickInfo
 {
 
 	protected Minecraft mc = Minecraft.getMinecraft();
@@ -20,9 +20,9 @@ public class MinecraftUIWrapperTick implements TickInfo
 		{
 			this.ticks++;
 			
-			if (this.mc.currentScreen instanceof MinecraftUIWrapper)
+			if (this.mc.currentScreen instanceof MinecraftGuiWrapper)
 			{
-				MinecraftUIWrapper viewer = (MinecraftUIWrapper)this.mc.currentScreen;
+				MinecraftGuiWrapper viewer = (MinecraftGuiWrapper)this.mc.currentScreen;
 				
 				viewer.tick(this);
 			}

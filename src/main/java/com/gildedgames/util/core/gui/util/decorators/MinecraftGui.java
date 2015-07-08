@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.UiContainer;
@@ -38,7 +38,7 @@ public class MinecraftGui extends GuiDecorator<Gui>
 	}
 	
 	@Override
-	public void init(InputProvider input)
+	public void preInit(InputProvider input)
 	{
 		if (this.shouldDrawBackground())
 		{
@@ -47,10 +47,14 @@ public class MinecraftGui extends GuiDecorator<Gui>
 			
 			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).compile();
 			
-			this.content().setElement("darkBackground", new RectangleElement(dim, startColor, endColor));
+			this.content().setElement("darkBackground", new RectangleElement(dim.toHolder(), startColor, endColor));
 		}
+	}
+	
+	@Override
+	protected void postInit(InputProvider input)
+	{
 		
-		super.init(input);
 	}
 	
 	@Override
@@ -62,12 +66,6 @@ public class MinecraftGui extends GuiDecorator<Gui>
         }
 		
 		return super.onKeyboardInput(pool);
-	}
-
-	@Override
-	public UiContainer assembleAllContent()
-	{
-		return this.getDecoratedElement().seekContent().merge(true, this.seekDecoratorContent());
 	}
 
 }

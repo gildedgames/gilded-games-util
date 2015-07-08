@@ -13,9 +13,9 @@ public class FileBrowser extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
-		super.init(input);
+		super.initContent(input);
 	}
 
 }

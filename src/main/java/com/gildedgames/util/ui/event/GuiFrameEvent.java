@@ -43,7 +43,7 @@ public class GuiFrameEvent extends GuiFrame
 	}
 
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
 		
 	}

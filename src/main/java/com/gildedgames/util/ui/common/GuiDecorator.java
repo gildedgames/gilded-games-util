@@ -16,6 +16,7 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
+import com.gildedgames.util.ui.util.GuiViewerHelper;
 
 
 public abstract class GuiDecorator<T extends Ui> extends GuiFrame
@@ -127,15 +128,31 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 	
 	@Override
-	public void init(InputProvider input)
+	public final void init(InputProvider input)
 	{
-		this.element.init(input);
+		this.initContent(input);
+		
+		GuiViewerHelper.processInitPre(input, this.content(), this.listeners());
 	}
+	
+	@Override
+	public final void initContent(InputProvider input)
+	{
+		this.preInit(input);
+		
+		this.element.initContent(input);
+		
+		this.postInit(input);
+	}
+	
+	protected abstract void preInit(InputProvider input);
+	
+	protected abstract void postInit(InputProvider input);
 
 	@Override
 	public void onResolutionChange(InputProvider input)
 	{
-		this.element.onResolutionChange(input);
+		this.init(input);
 	}
 
 	@Override
@@ -225,15 +242,21 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UiContainer seekContent()
 	{
-		return this.assembleAllContent();
+		return this.element.seekContent();
 	}
 	
-	public UiContainer seekDecoratorContent()
+	@Override
+	public UiContainerMutable content()
 	{
-		return super.seekContent();
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			return frame.content();
+		}
+		
+		return null;
 	}
-	
-	public abstract UiContainer assembleAllContent();
 
 	@Override
 	public UiContainerMutable listeners()

@@ -25,7 +25,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 	}
 	
 	@Override
-	public void init(InputProvider input)
+	public void initContent(InputProvider input)
 	{
 		this.content().setElement("button", new MinecraftButton(Dim2D.compile(), ""));
 		this.content().setElement("itemStackRender", this.itemStackRender);

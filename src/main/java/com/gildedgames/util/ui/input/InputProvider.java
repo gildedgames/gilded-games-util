@@ -3,6 +3,7 @@ package com.gildedgames.util.ui.input;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Pos2D;
 
 public interface InputProvider
 {
@@ -10,6 +11,8 @@ public interface InputProvider
 	int getScreenWidth();
 	
 	int getScreenHeight();
+	
+	Pos2D getScreenCenter();
 	
 	int getScaleFactor();
 	

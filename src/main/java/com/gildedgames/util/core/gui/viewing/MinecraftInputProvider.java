@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class MinecraftInputProvider implements InputProvider
@@ -130,6 +131,12 @@ public class MinecraftInputProvider implements InputProvider
 		}
 
 		return false;
+	}
+
+	@Override
+	public Pos2D getScreenCenter()
+	{
+		return new Pos2D(this.getScreenWidth() / 2, this.getScreenHeight() / 2);
 	}
 
 }

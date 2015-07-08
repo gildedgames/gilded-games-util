@@ -37,6 +37,18 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	{
 		this.scissoredArea = dim;
 	}
+	
+	@Override
+	protected void preInit(InputProvider input)
+	{
+		
+	}
+
+	@Override
+	protected void postInit(InputProvider input)
+	{
+		
+	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
@@ -93,12 +105,6 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 			this.seekFrom.setScissoredArea(dim);
 		}
 
-	}
-
-	@Override
-	public UiContainer assembleAllContent()
-	{
-		return this.getDecoratedElement().seekContent();
 	}
 
 }

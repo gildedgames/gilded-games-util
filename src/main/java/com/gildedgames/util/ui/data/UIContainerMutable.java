@@ -1,10 +1,12 @@
 package com.gildedgames.util.ui.data;
 
+import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Ui;
+import com.gildedgames.util.ui.util.RectangleElement;
 
 public class UiContainerMutable extends UiContainer
 {
@@ -17,6 +19,11 @@ public class UiContainerMutable extends UiContainer
 	protected UiContainerMutable(UiContainer parent)
 	{
 		super(parent);
+	}
+	
+	public void displayDim(Dim2DHolder holder)
+	{
+		this.elements.put("displayDim", new RectangleElement(holder, new DrawingData(Color.PINK)));
 	}
 
 	public void setElement(String key, Ui element)

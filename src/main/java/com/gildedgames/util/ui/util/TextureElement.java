@@ -44,6 +44,8 @@ public class TextureElement extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
+		super.draw(graphics, input);
+		
 		graphics.drawSprite(this.sprite, this.getDim(), this.data);
 	}
 	
