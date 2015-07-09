@@ -21,12 +21,12 @@ public class MinecraftItemStackRender extends GuiFrame
 
 	public MinecraftItemStackRender(ItemStack stack)
 	{
-		this(Dim2D.compile(), stack);
+		this(Dim2D.flush(), stack);
 	}
 	
 	public MinecraftItemStackRender(Dim2D dim, ItemStack stack)
 	{
-		super(dim.clone().area(20, 20).compile());
+		super(dim.clone().area(20, 20).flush());
 		
 		this.stack = stack;
 	}

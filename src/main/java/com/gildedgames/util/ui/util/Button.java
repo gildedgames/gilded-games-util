@@ -24,7 +24,7 @@ public class Button extends GuiFrame
 	{
 		super(dim);
 
-		Dim2D scissor = Dim2D.build().addModifier(this, ModifierType.ALL).compile();
+		Dim2D scissor = Dim2D.build().addModifier(this, ModifierType.ALL).flush();
 
 		this.defaultState = defaultState; //new ScissorableGui(scissor, defaultState);
 		this.hoveredState = hoveredState; //new ScissorableGui(scissor, hoveredState);
@@ -38,9 +38,9 @@ public class Button extends GuiFrame
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
 
-		this.defaultState.modDim().center(false).resetPos().compile();
-		this.hoveredState.modDim().center(false).resetPos().compile();
-		this.clickedState.modDim().center(false).resetPos().compile();
+		this.defaultState.modDim().center(false).resetPos().flush();
+		this.hoveredState.modDim().center(false).resetPos().flush();
+		this.clickedState.modDim().center(false).resetPos().flush();
 
 		this.clickedState.listeners().setElement("clickEvent", new MouseEventGuiFocus(this.clickedState, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
 

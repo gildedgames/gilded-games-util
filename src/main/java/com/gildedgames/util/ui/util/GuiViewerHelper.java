@@ -41,7 +41,7 @@ public final class GuiViewerHelper
 
 						if (dimHolder != null)
 						{
-							dimHolder.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).compile();
+							dimHolder.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).flush();
 						}
 					}
 				}

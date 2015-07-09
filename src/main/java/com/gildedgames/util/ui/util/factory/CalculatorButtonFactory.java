@@ -13,21 +13,20 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiCalculator;
 import com.google.common.collect.ImmutableMap;
 
-public class TestButtonFactory2 implements ContentFactory
+public class CalculatorButtonFactory implements ContentFactory
 {
+	
+	private GuiCalculator calculator;
 	
 	private int buttonCount;
 	
-	public TestButtonFactory2()
+	public CalculatorButtonFactory(GuiCalculator calculator)
 	{
-		this(1000);
-	}
-	
-	public TestButtonFactory2(int buttonCount)
-	{
-		this.buttonCount = buttonCount;
+		this.calculator = calculator;
+		this.buttonCount = 9;
 	}
 
 	@Override
@@ -38,6 +37,24 @@ public class TestButtonFactory2 implements ContentFactory
 		for (int count = 0; count < this.buttonCount; count++)
 		{
 			GuiFrame button = GuiFactory.createButton(new Pos2D(), 20, String.valueOf(count + 1), false);
+			
+			button.listeners().setElement("type", new MouseEventGui(button, new MouseInput(MouseButton.LEFT, ButtonState.DOWN))
+			{
+
+				@Override
+				protected void onTrue(InputProvider input, MouseInputPool pool)
+				{
+					
+				}
+
+				@Override
+				protected void onFalse(InputProvider input, MouseInputPool pool)
+				{
+					
+				}
+				
+			});
+			
 
 			buttons.put("button" + count, button);
 		}

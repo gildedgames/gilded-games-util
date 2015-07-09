@@ -35,7 +35,7 @@ public class RectangleElement extends GuiFrame
 	
 	public RectangleElement(Dim2DHolder holder, DrawingData startColor, DrawingData endColor)
 	{
-		super(Dim2D.compile());
+		super(Dim2D.flush());
 
 		this.holder = holder;
 		

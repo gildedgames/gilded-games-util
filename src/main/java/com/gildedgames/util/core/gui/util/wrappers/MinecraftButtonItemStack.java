@@ -14,7 +14,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 	
 	public MinecraftButtonItemStack(ItemStack stack)
 	{
-		this(Dim2D.build().area(20, 20).compile(), stack);
+		this(Dim2D.build().area(20, 20).flush(), stack);
 	}
 
 	public MinecraftButtonItemStack(Dim2D dim, ItemStack stack)
@@ -27,16 +27,16 @@ public class MinecraftButtonItemStack extends GuiFrame
 	@Override
 	public void initContent(InputProvider input)
 	{
-		this.content().setElement("button", new MinecraftButton(Dim2D.compile(), ""));
+		this.content().setElement("button", new MinecraftButton(Dim2D.flush(), ""));
 		this.content().setElement("itemStackRender", this.itemStackRender);
 		
-		this.itemStackRender.modDim().center(true).x(this.getDim().width() / 2).y(this.getDim().height() / 2).addX(2).addY(2).compile();
+		this.itemStackRender.modDim().center(true).x(this.getDim().width() / 2).y(this.getDim().height() / 2).addX(2).addY(2).flush();
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		this.content().getElement("button", MinecraftButton.class).modDim().buildWith(this).area().build().compile();
+		this.content().getElement("button", MinecraftButton.class).modDim().buildWith(this).area().build().flush();
 	}
 	
 	public ItemStack getItemStack()

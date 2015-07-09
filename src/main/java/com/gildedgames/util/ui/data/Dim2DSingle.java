@@ -6,7 +6,7 @@ import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 public class Dim2DSingle implements Dim2DHolder
 {
 	
-	private Dim2D dim = Dim2D.compile();
+	private Dim2D dim = Dim2D.flush();
 	
 	public Dim2DSingle()
 	{

@@ -33,7 +33,7 @@ public class GuiCollection extends GuiFrame
 
 	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory... contentProviders)
 	{
-		super(Dim2D.build().pos(pos).width(width).compile());
+		super(Dim2D.build().pos(pos).width(width).flush());
 
 		this.positioner = positioner;
 
@@ -83,13 +83,13 @@ public class GuiCollection extends GuiFrame
 		{
 			if (view != null)
 			{
-				view.modDim().addModifier(this, ModifierType.POS).compile();
+				view.modDim().addModifier(this, ModifierType.POS).flush();
 
 				totalContentHeight = Math.max(totalContentHeight, view.getDim().y() + view.getDim().height());
 			}
 		}
 
-		this.modDim().height(totalContentHeight).compile();
+		this.modDim().height(totalContentHeight).flush();
 	}
 
 	private void sortContent()

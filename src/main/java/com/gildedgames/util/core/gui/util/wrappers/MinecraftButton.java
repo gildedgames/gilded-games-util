@@ -25,7 +25,7 @@ public class MinecraftButton extends GuiFrame
 
 	public MinecraftButton(GuiButton button, boolean centered)
 	{
-		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).compile());
+		super(Dim2D.build().pos(new Pos2D(button.xPosition, button.yPosition)).area(button.getButtonWidth(), button.height).center(centered).flush());
 		
 		this.button = button;
 	}

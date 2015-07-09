@@ -4,6 +4,9 @@ import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_ZERO;
+
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -21,6 +24,8 @@ import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
+import com.gildedgames.util.ui.graphics.Sprite.UV;
+import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -63,7 +68,7 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		GlStateManager.translate(x, y, 0);
 
-		GlStateManager.scale(dim.scale(), dim.scale(), dim.scale());
+		GlStateManager.scale(dim.scale(), dim.scale(), 0);
 
 		GlStateManager.enableBlend();
 
@@ -169,7 +174,21 @@ public class MinecraftGraphics2D implements Graphics2D
 		public void draw()
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getAsset()));
-			Gui.drawModalRectWithCustomSizedTexture(0, 0, (int) this.sprite.getMinU(), (int) this.sprite.getMinV(), (int) (this.sprite.getMaxU() - this.sprite.getMinU()), (int) (this.sprite.getMaxV() - this.sprite.getMinV()), (int) this.sprite.getTextureWidth(), (int) this.sprite.getTextureHeight());
+			
+			if (this.sprite.getBehavior().shouldRecalculateUVs(this.sprite, this.dim.toHolder()))
+			{
+				this.sprite.getBehavior().recalculateUVs(this.sprite, this.dim.toHolder());
+			}
+			
+			List<UVDimPair> uvDimPairs = this.sprite.getBehavior().getDrawnUVsFor(this.sprite, this.dim.toHolder());
+			
+			for (UVDimPair uvDimPair : uvDimPairs)
+			{
+				UV uv = uvDimPair.getUV();
+				Dim2D dim = uvDimPair.getDim();
+				
+				Gui.drawModalRectWithCustomSizedTexture(dim.x(), dim.y(), uv.minU(), uv.minV(), uv.width(), uv.height(), this.sprite.getAssetWidth(), this.sprite.getAssetHeight());
+			}
 		}
 
 	}

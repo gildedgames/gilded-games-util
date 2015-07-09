@@ -39,13 +39,13 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	}
 	
 	@Override
-	protected void preInit(InputProvider input)
+	protected void preInitContent(InputProvider input)
 	{
 		
 	}
 
 	@Override
-	protected void postInit(InputProvider input)
+	protected void postInitContent(InputProvider input)
 	{
 		
 	}

@@ -26,7 +26,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	
 	public GuiDecorator(T element)
 	{
-		super(Dim2D.build().compile());
+		super(Dim2D.build().flush());
 		
 		this.element = element;
 	}
@@ -138,16 +138,16 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public final void initContent(InputProvider input)
 	{
-		this.preInit(input);
+		this.preInitContent(input);
 		
 		this.element.initContent(input);
 		
-		this.postInit(input);
+		this.postInitContent(input);
 	}
 	
-	protected abstract void preInit(InputProvider input);
+	protected abstract void preInitContent(InputProvider input);
 	
-	protected abstract void postInit(InputProvider input);
+	protected abstract void postInitContent(InputProvider input);
 
 	@Override
 	public void onResolutionChange(InputProvider input)
