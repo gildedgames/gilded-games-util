@@ -222,7 +222,7 @@ public class Dim2D
 	{
 		List<ModifierType> types = Lists.asList(first, rest);
 
-		return Dim2D.build(this).clearModifiers(types.toArray(new ModifierType[types.size()])).compile();
+		return Dim2D.build(this).clearModifiers(types.toArray(new ModifierType[types.size()])).flush();
 	}
 
 	public Dim2D without(InternalModifierType first, InternalModifierType... rest)
@@ -246,10 +246,14 @@ public class Dim2D
 			builder.centerY(false);
 		}
 
-		return builder.compile();
+		return builder.flush();
 	}
 
-	public static Dim2D compile()
+	/**
+	 * Creates an empty Dim2D object with default values
+	 * @return
+	 */
+	public static Dim2D flush()
 	{
 		return new Dim2D();
 	}
@@ -292,7 +296,7 @@ public class Dim2D
 		{
 			if (dim != null)
 			{
-				Dim2D preview = result.compile();
+				Dim2D preview = result.flush();
 
 				int minX = Math.min(preview.x(), dim.x());
 				int minY = Math.min(preview.y(), dim.y());
@@ -346,7 +350,7 @@ public class Dim2D
 			result.centerY(false);
 		}
 
-		return result.compile();
+		return result.flush();
 	}
 
 	@Override
@@ -590,7 +594,7 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2D compile()
+		public Dim2D flush()
 		{
 			return new Dim2D(this);
 		}
@@ -733,6 +737,11 @@ public class Dim2D
 		{
 			return this.builder;
 		}
+		
+		public Dim2D flush()
+		{
+			return this.builder.flush();
+		}
 
 	}
 
@@ -749,9 +758,9 @@ public class Dim2D
 		}
 
 		@Override
-		public Dim2D compile()
+		public Dim2D flush()
 		{
-			Dim2D commit = super.compile();
+			Dim2D commit = super.flush();
 
 			this.holder.setDim(commit);
 

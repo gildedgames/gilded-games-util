@@ -64,7 +64,7 @@ public class TextBox extends GuiFrame
 			}
 		}
 
-		this.modDim().height(textHeight).compile();
+		this.modDim().height(textHeight).flush();
 		
 		super.initContent(input);
 	}

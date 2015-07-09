@@ -26,7 +26,7 @@ public class FileBrowserButton extends GuiFrame
 
 	public FileBrowserButton(Dim2D dim, TextureElement texture, String name, File file, String directory)
 	{
-		super(dim.clone().area(16, 23).compile());
+		super(dim.clone().area(16, 23).flush());
 
 		this.texture = texture;
 		this.file = file;
@@ -39,26 +39,26 @@ public class FileBrowserButton extends GuiFrame
 	{
 		this.content().displayDim(this);
 
-		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).compile(), this.texture);
+		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).flush(), this.texture);
 		
 		button.listeners().setElement("pushDown", new MouseEventGui(this, new MouseInput(MouseButton.LEFT, ButtonState.DOWN))
 		{
 			@Override
 			protected void onTrue(InputProvider inputM, MouseInputPool pool)
 			{
-				button.modDim().pos(1, 1).compile();
+				button.modDim().pos(1, 1).flush();
 			}
 
 			@Override
 			protected void onFalse(InputProvider inputM, MouseInputPool pool)
 			{
-				button.modDim().pos(0, 0).compile();
+				button.modDim().pos(0, 0).flush();
 			}
 		});
 		
 		this.content().setElement("button", button);
 		
-		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.getDim().width() / 2, this.getDim().height() / 2 + 12).centerX(true).width(16).height(12).compile(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
+		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.getDim().width() / 2, this.getDim().height() / 2 + 12).centerX(true).width(16).height(12).flush(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
 
 		this.content().setElement("text", textBox);
 		

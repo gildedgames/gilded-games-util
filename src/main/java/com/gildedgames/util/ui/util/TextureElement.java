@@ -25,8 +25,6 @@ public class TextureElement extends GuiFrame
 
 		this.sprite = sprite;
 		this.data = data;
-		
-		this.modDim().area((int)this.sprite.getWidth(), (int)this.sprite.getHeight()).compile();
 	}
 
 	public DrawingData getDrawingData()

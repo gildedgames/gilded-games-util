@@ -1,5 +1,6 @@
 package com.gildedgames.util.core;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,6 +8,8 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
+import javax.imageio.ImageIO;
 
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
@@ -21,16 +24,16 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.ui.common.GuiDecorator;
-import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Gui;
+import com.gildedgames.util.ui.common.GuiDecorator;
+import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.UiContainerMutable;
-import com.gildedgames.util.ui.event.UiEvent;
 import com.gildedgames.util.ui.event.GuiFrameEvent;
 import com.gildedgames.util.ui.event.KeyboardEvent;
 import com.gildedgames.util.ui.event.MouseEvent;
+import com.gildedgames.util.ui.event.UiEvent;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.event.view.MouseEventGuiFocus;
 import com.gildedgames.util.ui.util.Button;
@@ -131,6 +134,24 @@ public class UtilServices
 			return new FileInputStream(new File(source, path));
 		}
 
+		return null;
+	}
+	
+	public BufferedImage getBufferedImage(AssetLocation asset)
+	{
+		try
+		{
+			return ImageIO.read(UtilCore.locate().getStreamFromAsset(asset));
+		}
+		catch (ZipException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 

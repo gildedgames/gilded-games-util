@@ -1,10 +1,6 @@
 package com.gildedgames.util.ui.graphics;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.zip.ZipException;
-
-import javax.imageio.ImageIO;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.ui.data.AssetLocation;
@@ -12,67 +8,50 @@ import com.gildedgames.util.ui.data.AssetLocation;
 public class Sprite
 {
 
-	private final double u, v, width, height, textureWidth, textureHeight;
+	private final int assetWidth, assetHeight;
+	
+	private final UV uv;
 
 	private final AssetLocation asset;
-
+	
+	private final UVBehavior behavior;
+	
 	public Sprite(AssetLocation asset)
 	{
-		this.asset = asset;
-
-		this.u = 0;
-		this.v = 0;
-
-		int width = 0, height = 0, textureWidth = 0, textureHeight = 0;
-
-		try
-		{
-			BufferedImage bufferedImage = ImageIO.read(UtilCore.locate().getStreamFromAsset(asset));
-
-			width = bufferedImage.getWidth();
-			height = bufferedImage.getHeight();
-
-			textureWidth = width;
-			textureHeight = height;
-		}
-		catch (ZipException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-		this.width = width;
-		this.height = height;
-
-		this.textureWidth = textureWidth;
-		this.textureHeight = textureHeight;
+		this(asset, new DefaultUVBehavior());
 	}
 
-	public Sprite(AssetLocation asset, double width, double height)
-	{
-		this(asset, width, height, width, height);
-	}
-
-	public Sprite(AssetLocation asset, double width, double height, double textureWidth, double textureHeight)
-	{
-		this(asset, 0, 0, width, height, textureWidth, textureHeight);
-	}
-
-	public Sprite(AssetLocation asset, double u, double v, double width, double height, double textureWidth, double textureHeight)
+	public Sprite(AssetLocation asset, UVBehavior behavior)
 	{
 		this.asset = asset;
 
-		this.u = u;
-		this.v = v;
+		BufferedImage image = UtilCore.locate().getBufferedImage(asset);
 
-		this.width = width;
-		this.height = height;
+		this.uv = UV.build().width(image.getWidth()).height(image.getHeight()).flush();
 
-		this.textureWidth = textureWidth;
-		this.textureHeight = textureHeight;
+		this.assetWidth = image.getWidth();
+		this.assetHeight = image.getHeight();
+		
+		this.behavior = behavior;
+	}
+	
+	public Sprite(AssetLocation asset, UV uv)
+	{
+		this(asset, uv, new DefaultUVBehavior());
+	}
+
+	public Sprite(AssetLocation asset, UV uv, UVBehavior behavior)
+	{
+		this.asset = asset;
+
+		this.uv = uv;
+		
+		BufferedImage image = UtilCore.locate().getBufferedImage(asset);
+
+		this.assetWidth = image.getWidth();
+		this.assetHeight = image.getHeight();
+		
+		this.behavior = behavior;
 	}
 
 	public AssetLocation getAsset()
@@ -80,44 +59,202 @@ public class Sprite
 		return this.asset;
 	}
 
-	public double getTextureWidth()
+	public int getAssetWidth()
 	{
-		return this.textureWidth;
+		return this.assetWidth;
 	}
 
-	public double getTextureHeight()
+	public int getAssetHeight()
 	{
-		return this.textureHeight;
+		return this.assetHeight;
 	}
 
-	public double getMinU()
+	public UV getUV()
 	{
-		return this.u;
+		return this.uv;
 	}
-
-	public double getMinV()
+	
+	public UVBehavior getBehavior()
 	{
-		return this.v;
+		return this.behavior;
 	}
-
-	public double getMaxU()
+	
+	public static class UV
 	{
-		return this.getMinU() + this.getWidth();
+		
+		private final int minU, minV, width, height;
+		
+		private UV(int minU, int minV, int width, int height)
+		{
+			this.minU = minU;
+			this.minV = minV;
+			
+			this.width = width;
+			this.height = height;
+		}
+		
+		public int minU()
+		{
+			return this.minU;
+		}
+		
+		public int minV()
+		{
+			return this.minV;
+		}
+		
+		public int maxU()
+		{
+			return this.minU + this.width;
+		}
+		
+		public int maxV()
+		{
+			return this.minV + this.height;
+		}
+		
+		public int width()
+		{
+			return this.width;
+		}
+		
+		public int height()
+		{
+			return this.height;
+		}
+		
+		public UVBuilder clone()
+		{
+			return new UVBuilder(this);
+		}
+		
+		public static UVBuilder build()
+		{
+			return new UVBuilder();
+		}
+		
+		public static UV flushEmpty()
+		{
+			return new UV(0, 0, 0, 0);
+		}
+
 	}
-
-	public double getMaxV()
+	
+	public static class UVBuilder
 	{
-		return this.getMinV() + this.getHeight();
-	}
-
-	public double getWidth()
-	{
-		return this.width;
-	}
-
-	public double getHeight()
-	{
-		return this.height;
+		
+		private int minU, minV, width, height;
+		
+		private UVBuilder()
+		{
+			
+		}
+		
+		private UVBuilder(UV uv)
+		{
+			this.minU = uv.minU;
+			this.minV = uv.minV;
+			
+			this.width = uv.width;
+			this.height = uv.height;
+		}
+		
+		public UVBuilder width(int width)
+		{
+			this.width = width;
+			
+			return this;
+		}
+		
+		public UVBuilder height(int height)
+		{
+			this.height = height;
+			
+			return this;
+		}
+		
+		public UVBuilder min(int minU, int minV)
+		{
+			this.minU = minU;
+			this.minV = minV;
+			
+			return this;
+		}
+		
+		public UVBuilder max(int maxU, int maxV)
+		{
+			this.width = maxU - this.minU;
+			this.height = maxV - this.minV;
+			
+			return this;
+		}
+		
+		public UVBuilder area(int width, int height)
+		{
+			return this.width(width).height(height);
+		}
+		
+		public UVBuilder minU(int minU)
+		{
+			this.minU = minU;
+			
+			return this;
+		}
+		
+		public UVBuilder addMinU(int minU)
+		{
+			this.minU += minU;
+			
+			return this;
+		}
+		
+		public UVBuilder minV(int minV)
+		{
+			this.minV = minV;
+			
+			return this;
+		}
+		
+		public UVBuilder addMinV(int minV)
+		{
+			this.minV += minV;
+			
+			return this;
+		}
+		
+		public UVBuilder maxU(int maxU)
+		{
+			this.width = maxU - this.minU;
+			
+			return this;
+		}
+		
+		public UVBuilder addMaxU(int maxU)
+		{
+			this.width += maxU - this.minU;
+			
+			return this;
+		}
+		
+		public UVBuilder maxV(int maxV)
+		{
+			this.height += maxV - this.minV;
+			
+			return this;
+		}
+		
+		public UVBuilder addMaxV(int maxV)
+		{
+			this.height += maxV - minV;
+			
+			return this;
+		}
+		
+		public UV flush()
+		{
+			return new UV(this.minU, this.minV, this.width, this.height);
+		}
+		
 	}
 
 }

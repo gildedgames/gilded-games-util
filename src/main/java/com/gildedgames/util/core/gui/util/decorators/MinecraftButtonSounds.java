@@ -52,13 +52,13 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
     }
 
 	@Override
-	protected void preInit(InputProvider input)
+	protected void preInitContent(InputProvider input)
 	{
 		
 	}
 
 	@Override
-	protected void postInit(InputProvider input)
+	protected void postInitContent(InputProvider input)
 	{
 		
 	}

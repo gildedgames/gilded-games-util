@@ -54,9 +54,9 @@ public class ScrollBar extends GuiFrame
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().compile().width(), this.bottomButton.copyDim().clearModifiers().compile().width()), this.baseBarTexture.getDim().width());
+		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().flush().width(), this.bottomButton.copyDim().clearModifiers().flush().width()), this.baseBarTexture.getDim().width());
 
-		this.modDim().width(maxWidth).compile();
+		this.modDim().width(maxWidth).flush();
 	}
 
 	public void setScrollSpeed(float scrollSpeed)
@@ -72,20 +72,20 @@ public class ScrollBar extends GuiFrame
 	@Override
 	public void initContent(InputProvider input)
 	{
-		this.topButton.modDim().center(false).resetPos().compile();
-		this.bottomButton.modDim().center(false).resetPos().compile();
+		this.topButton.modDim().center(false).resetPos().flush();
+		this.bottomButton.modDim().center(false).resetPos().flush();
 
-		this.baseBarTexture.modDim().center(false).compile();
-		this.grabbableBarTexture.modDim().center(false).compile();
+		this.baseBarTexture.modDim().center(false).flush();
+		this.grabbableBarTexture.modDim().center(false).flush();
 
 		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
 		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
 
 		this.baseBar = new RepeatableGui(Dim2D.build()
 				.area(this.baseBarTexture.getDim().width(), this.getDim().height() - this.topButton.getDim().height() - this.bottomButton.getDim().height())
-				.compile(), this.baseBarTexture);
+				.flush(), this.baseBarTexture);
 
-		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.getDim().width(), 20).compile(), this.grabbableBarTexture);
+		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.getDim().width(), 20).flush(), this.grabbableBarTexture);
 
 		Dim2DSeeker totalHeightMinusBottomButton = new Dim2DGetter()
 		{
@@ -93,7 +93,7 @@ public class ScrollBar extends GuiFrame
 			@Override
 			public Dim2D getDim()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height() + ScrollBar.this.baseBar.getDim().height()).compile();
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height() + ScrollBar.this.baseBar.getDim().height()).flush();
 			}
 
 		};
@@ -104,15 +104,15 @@ public class ScrollBar extends GuiFrame
 			@Override
 			public Dim2D getDim()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height()).compile();
+				return Dim2D.build().y(ScrollBar.this.topButton.getDim().height()).flush();
 			}
 
 		};
 
-		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton, ModifierType.POS).compile();
+		this.bottomButton.modDim().addModifier(totalHeightMinusBottomButton, ModifierType.POS).flush();
 
-		this.baseBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
-		this.grabbableBar.modDim().addModifier(topButtonHeight, ModifierType.POS).compile();
+		this.baseBar.modDim().addModifier(topButtonHeight, ModifierType.POS).flush();
+		this.grabbableBar.modDim().addModifier(topButtonHeight, ModifierType.POS).flush();
 
 		this.content().setElement("baseBar", this.baseBar);
 		this.content().setElement("grabbableBar", this.grabbableBar);
@@ -176,8 +176,10 @@ public class ScrollBar extends GuiFrame
 			int contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().height() - this.scrollingAreas.getDim().height());
 
 			float baseBarPercentage = (float) contentAndScrollHeightDif / (float) this.contentArea.getDim().height();
+			
+			int barHeight = this.baseBar.getDim().height() - (int) (this.baseBar.getDim().height() * baseBarPercentage);
 
-			this.grabbableBar.modDim().height((int) (this.baseBar.getDim().height() * baseBarPercentage)).compile();
+			this.grabbableBar.modDim().height(Math.max(10, barHeight)).flush();
 		}
 
 		if (this.grabbedBar)
@@ -191,7 +193,7 @@ public class ScrollBar extends GuiFrame
 
 		int posOnBar = (int) ((this.baseBar.getDim().height() - this.grabbableBar.getDim().height()) * this.getScrollPercentage());
 
-		this.grabbableBar.modDim().y(posOnBar).compile();
+		this.grabbableBar.modDim().y(posOnBar).flush();
 
 		super.draw(graphics, input);
 	}

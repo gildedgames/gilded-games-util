@@ -7,7 +7,18 @@ import com.gildedgames.util.ui.data.Dim2D;
 
 public class GuiPositionerGrid implements GuiPositioner
 {
+	
 	private final int paddingX, paddingY;
+
+	public GuiPositionerGrid()
+	{
+		this(0);
+	}
+	
+	public GuiPositionerGrid(int padding)
+	{
+		this(padding, padding);
+	}
 
 	public GuiPositionerGrid(int paddingX, int paddingY)
 	{
@@ -23,7 +34,7 @@ public class GuiPositionerGrid implements GuiPositioner
 
 		for (Gui view : guis)
 		{
-			view.modDim().pos(currentX, currentY).center(false).compile();
+			view.modDim().pos(currentX, currentY).center(false).flush();
 
 			currentX += view.getDim().width() + this.paddingX;
 			if (currentX > listDimensions.width())

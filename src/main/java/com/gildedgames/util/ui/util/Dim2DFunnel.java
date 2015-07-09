@@ -19,6 +19,11 @@ public class Dim2DFunnel
 		this.modifiers = modifiers;
 	}
 	
+	public static Dim2DFunnel collect(List<Dim2DHolder> holders)
+	{
+		return Dim2DFunnel.collect(holders.toArray(new Dim2DHolder[holders.size()]));
+	}
+	
 	public static Dim2DFunnel collect(Dim2DHolder... holders)
 	{
 		List<Dim2DModifier> modifiers = new ArrayList<Dim2DModifier>();
@@ -270,7 +275,7 @@ public class Dim2DFunnel
 	{
 		for (Dim2DModifier modifier : this.modifiers)
 		{
-			modifier.compile();
+			modifier.flush();
 		}
 		
 		return this;

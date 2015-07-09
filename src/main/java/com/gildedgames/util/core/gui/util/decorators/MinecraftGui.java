@@ -38,21 +38,21 @@ public class MinecraftGui extends GuiDecorator<Gui>
 	}
 	
 	@Override
-	public void preInit(InputProvider input)
+	public void preInitContent(InputProvider input)
 	{
 		if (this.shouldDrawBackground())
 		{
 			DrawingData startColor = new DrawingData(new Color(-1072689136, true));
 			DrawingData endColor = new DrawingData(new Color(-804253680, true));
 			
-			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).compile();
+			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).flush();
 			
 			this.content().setElement("darkBackground", new RectangleElement(dim.toHolder(), startColor, endColor));
 		}
 	}
 	
 	@Override
-	protected void postInit(InputProvider input)
+	protected void postInitContent(InputProvider input)
 	{
 		
 	}
