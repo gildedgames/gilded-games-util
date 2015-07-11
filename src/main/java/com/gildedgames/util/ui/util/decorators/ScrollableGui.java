@@ -11,6 +11,7 @@ import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ScrollBar;
+import com.gildedgames.util.ui.util.TextureElement;
 
 public class ScrollableGui extends GuiFrame
 {
@@ -18,13 +19,35 @@ public class ScrollableGui extends GuiFrame
 	protected ScrollBar scrollBar;
 
 	protected ScissorableGui scrolledGui;
-
+	
+	protected TextureElement backdrop, backdropEmbedded;
+	
+	protected final int padding;
+	
+	public ScrollableGui(Dim2D windowSize, Gui scrolledGui)
+	{
+		this(windowSize, scrolledGui, GuiFactory.createScrollBar());
+	}
+	
 	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar)
 	{
-		super(windowSize);
+		this(windowSize, scrolledGui, scrollBar, GuiFactory.createPanel(Dim2D.flush()), GuiFactory.createPanelEmbedded(Dim2D.flush()), 7);
+	}
 
-		this.scrolledGui = new ScissorableGui(Dim2D.build().addModifier(this, ModifierType.ALL).flush(), scrolledGui);
+	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding)
+	{
+		super(windowSize);
+		
+		this.padding = padding;
+		
+		int posPadding = this.padding + 1;
+		int areaPadding = -this.padding * 2 - 2;
+
+		this.scrolledGui = new ScissorableGui(Dim2D.build().addModifier(this, ModifierType.ALL).pos(posPadding, posPadding).area(areaPadding, areaPadding).flush(), scrolledGui);
 		this.scrollBar = scrollBar;
+		
+		this.backdrop = backdrop;
+		this.backdropEmbedded = backdropEmbedded;
 	}
 
 	@Override
@@ -49,30 +72,29 @@ public class ScrollableGui extends GuiFrame
 
 				int scrollValue = (int) -(scrollPercentage * (scrolledElementHeight - scissoredHeight));
 
-				return Dim2D.build().x(scrollBar.getDim().width()).y(scrollValue).addWidth(-scrollBar.getDim().width()).flush();
+				return Dim2D.build().x(scrollBar.getDim().withoutModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addWidth(-scrollBar.getDim().width() - (ScrollableGui.this.padding * 2)).flush();
 			}
 
 		}, ModifierType.WIDTH, ModifierType.POS).flush();
 
 		this.scrollBar.modDim().resetPos().flush();
 
-		this.scrollBar.modDim().center(false).flush();
+		this.scrollBar.modDim().center(false).pos(this.padding + 1, this.padding + 1).height(-this.padding * 2 - 2).flush();
 		this.scrolledGui.modDim().center(false).flush();
 
 		Dim2DCollection scrollingArea = new Dim2DCollection().addHolder(this);
 
 		this.scrollBar.setScrollingAreas(scrollingArea);
 		this.scrollBar.setContentArea(this.scrolledGui);
+
+		Dim2D backdropDim = Dim2D.build().buildWith(this).area().build().flush();
+		Dim2D embeddedDim = Dim2D.build().buildWith(this).area().build().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
 		
-		int backdropPadding = 6;
-		int embeddedPadding = 1;
+		this.backdrop.setDim(backdropDim);
+		this.backdropEmbedded.setDim(embeddedDim);
 		
-		Dim2D backdropDim = Dim2D.build().buildWith(this).area().build().addArea(backdropPadding * 2, backdropPadding * 2).pos(-backdropPadding, -backdropPadding).flush();
-		Dim2D embeddedDim = Dim2D.build().buildWith(this).area().build().addArea(embeddedPadding * 2, embeddedPadding * 2).pos(-embeddedPadding, -embeddedPadding).flush();;
-		
-		
-		this.content().setElement("backdrop", GuiFactory.createPanel(backdropDim));
-		this.content().setElement("backdropEmbedded", GuiFactory.createPanelEmbedded(embeddedDim));
+		this.content().setElement("backdrop", this.backdrop);
+		this.content().setElement("backdropEmbedded", this.backdropEmbedded);
 
 		this.content().setElement("scrolledView", this.scrolledGui);
 		this.content().setElement("scrollBar", this.scrollBar);

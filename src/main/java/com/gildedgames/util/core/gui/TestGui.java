@@ -35,9 +35,9 @@ public class TestGui extends GuiFrame
 
 		//this.content().setElement("text", GuiFactory.textBox(Dim2D.build().pos(100, 100).area(30, 90).flush(), true, GuiFactory.text("asdglakjawehglauhefajeliuvhaliuvhalieuhaliuhgliawugehliawughliawegdlgjawuefhaubh", Color.WHITE)));
 
-		Dim2D dim = Dim2D.build().area(70, 101).flush();
+		Dim2D dim = Dim2D.build().area(86, 101).flush();
 
-		GuiCollection buttonList = new GuiCollection(new Pos2D(), 60, new GuiPositionerGrid(), new TestButtonFactory2());
+		GuiCollection buttonList = new GuiCollection(new Pos2D(), 70, new GuiPositionerGrid(), new TestButtonFactory2());
 
 		ScrollableGui scrollable = new ScrollableGui(dim, buttonList, GuiFactory.createScrollBar());
 

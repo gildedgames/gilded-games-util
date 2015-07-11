@@ -22,7 +22,7 @@ public class TestButtonFactory2 implements ContentFactory
 	
 	public TestButtonFactory2()
 	{
-		this(1000);
+		this(28);
 	}
 	
 	public TestButtonFactory2(int buttonCount)
