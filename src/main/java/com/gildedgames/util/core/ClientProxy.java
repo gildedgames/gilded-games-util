@@ -13,6 +13,8 @@ import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
 import com.gildedgames.util.menu.client.util.MenuMinecraft;
+import com.gildedgames.util.minecraft.gamemode.GameModeGuiInjector;
+import com.gildedgames.util.minecraft.gamemode.GameModeTracker;
 import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
@@ -38,27 +40,31 @@ public class ClientProxy extends ServerProxy
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		GameModeGuiInjector gameModeMenu = new GameModeGuiInjector();
+		
+		UtilCore.registerEventHandler(gameModeMenu);
+		
+		GameModeTracker gameModeTracker = new GameModeTracker();
+		
+		UtilCore.registerEventHandler(gameModeTracker);
+		
 		UtilEvents utilEvents = new UtilEvents();
 
-		MinecraftForge.EVENT_BUS.register(utilEvents);
-		FMLCommonHandler.instance().bus().register(utilEvents);
+		UtilCore.registerEventHandler(utilEvents);
 		
 		MinecraftGuiWrapperTick viewerEvents = new MinecraftGuiWrapperTick();
 		
-		MinecraftForge.EVENT_BUS.register(viewerEvents);
-		FMLCommonHandler.instance().bus().register(viewerEvents);
+		UtilCore.registerEventHandler(viewerEvents);
 
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 
-		MinecraftForge.EVENT_BUS.register(menuClientEvents);
-		FMLCommonHandler.instance().bus().register(menuClientEvents);
+		UtilCore.registerEventHandler(menuClientEvents);
 
 		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
 
 		TabClientEvents clientEvents = new TabClientEvents();
 
-		MinecraftForge.EVENT_BUS.register(clientEvents);
-		FMLCommonHandler.instance().bus().register(clientEvents);
+		UtilCore.registerEventHandler(clientEvents);
 
 		TabAPI.setBackpackTab(new TabBackpack());
 
