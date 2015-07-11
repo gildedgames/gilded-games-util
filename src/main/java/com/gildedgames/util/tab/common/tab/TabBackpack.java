@@ -52,7 +52,7 @@ public class TabBackpack implements ITab
 	public void renderIcon(int x, int y)
 	{
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-		Gui.func_146110_a(x, y, 0, 0, sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth());
+		Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth());
 	}
 
 	@Override

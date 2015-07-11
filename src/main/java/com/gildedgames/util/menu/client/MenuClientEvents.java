@@ -186,13 +186,13 @@ public class MenuClientEvents
 					{
 						boolean customButtons = menu.useCustomButtons();
 
-						boolean leftButtonMoused = customButtons ? menu.getLeftButton().isMousedOver(mouseX, mouseY) : this.leftButton.func_146115_a();
+						boolean leftButtonMoused = customButtons ? menu.getLeftButton().isMousedOver(mouseX, mouseY) : this.leftButton.isMouseOver();
 
-						boolean rightButtonMoused = customButtons ? menu.getRightButton().isMousedOver(mouseX, mouseY) : this.rightButton.func_146115_a();
+						boolean rightButtonMoused = customButtons ? menu.getRightButton().isMousedOver(mouseX, mouseY) : this.rightButton.isMouseOver();
 
 						if (Mouse.getEventButtonState() && MenuCore.locate().getRegisteredMenus().size() > 1 && (leftButtonMoused || rightButtonMoused))
 						{
-							this.leftButton.func_146113_a(this.mc.getSoundHandler());
+							this.leftButton.playPressSound(this.mc.getSoundHandler());
 
 							if (leftButtonMoused)
 							{

@@ -86,7 +86,7 @@ public class RenderTabGroup extends Gui
 		this.drawTexturedModalRect(centerX, topY, 194 - width / 2, 0, width / 2, 15);
 		this.drawTexturedModalRect(centerX, topY + 15, 194 - width / 2, 130, width / 2, 5);
 
-		this.drawCenteredString(mc.fontRenderer, StatCollector.translateToLocal(tabGroup.getSelectedTab().getUnlocalizedName()), centerX, topY + 8, 0xFFFFFFFF);
+		this.drawCenteredString(mc.fontRendererObj, StatCollector.translateToLocal(tabGroup.getSelectedTab().getUnlocalizedName()), centerX, topY + 8, 0xFFFFFFFF);
 
 		for (ITab tab : tabGroup.getEnabledTabs())
 		{
@@ -120,7 +120,7 @@ public class RenderTabGroup extends Gui
 
 		if (hoveredTab != null)
 		{
-			this.drawHoveringText(StatCollector.translateToLocal(hoveredTab.getUnlocalizedName()), Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth, scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1, mc.fontRenderer);
+			this.drawHoveringText(StatCollector.translateToLocal(hoveredTab.getUnlocalizedName()), Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth, scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1, mc.fontRendererObj);
 		}
 	}
 	
