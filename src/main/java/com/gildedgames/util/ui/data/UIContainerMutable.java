@@ -26,12 +26,12 @@ public class UiContainerMutable extends UiContainer
 		this.elements.put("displayDim", new RectangleElement(holder, new DrawingData(Color.PINK)));
 	}
 
-	public void setElement(String key, Ui element)
+	public void set(String key, Ui element)
 	{
 		this.elements.put(key, element);
 	}
 
-	public void removeElement(String key)
+	public void remove(String key)
 	{
 		this.elements.remove(key);
 	}
@@ -44,15 +44,15 @@ public class UiContainerMutable extends UiContainer
 		{
 			String key = entry.getKey();
 
-			this.removeElement(key);
+			this.remove(key);
 		}
 	}
 
-	public void setAllElements(Map<String, Ui> elements)
+	public void setAll(Map<String, Ui> elements)
 	{
 		for (Map.Entry<String, Ui> entry : elements.entrySet())
 		{
-			this.setElement(entry.getKey(), entry.getValue());
+			this.set(entry.getKey(), entry.getValue());
 		}
 	}
 

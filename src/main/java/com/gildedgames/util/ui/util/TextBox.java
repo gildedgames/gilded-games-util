@@ -56,7 +56,7 @@ public class TextBox extends GuiFrame
 					{
 						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight), false);
 					}
-					this.content().setElement(String.valueOf(i), textElement);
+					this.content().set(String.valueOf(i), textElement);
 
 					textHeight += 1.1f * t.scaledHeight();
 					i++;

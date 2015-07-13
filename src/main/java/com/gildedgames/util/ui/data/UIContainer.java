@@ -36,12 +36,12 @@ public class UiContainer implements Iterable<Ui>, NBT
 		return this.parent;
 	}
 
-	public Ui getElement(String key)
+	public Ui get(String key)
 	{
 		return this.elements.get(key);
 	}
 
-	public <T extends Ui> T getElement(String key, Class<? extends T> clazz)
+	public <T extends Ui> T get(String key, Class<? extends T> clazz)
 	{
 		return (T) this.elements.get(key);
 	}
@@ -81,12 +81,12 @@ public class UiContainer implements Iterable<Ui>, NBT
 		return views;
 	}
 
-	public boolean containsKey(String key)
+	public boolean contains(String key)
 	{
 		return this.map().containsKey(key);
 	}
 
-	public boolean containsElement(Ui element)
+	public boolean contains(Ui element)
 	{
 		return this.map().containsValue(element);
 	}

@@ -47,7 +47,7 @@ public class MinecraftGui extends GuiDecorator<Gui>
 			
 			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).flush();
 			
-			this.content().setElement("darkBackground", new RectangleElement(dim.toHolder(), startColor, endColor));
+			this.content().set("darkBackground", new RectangleElement(dim.toHolder(), startColor, endColor));
 		}
 	}
 	
