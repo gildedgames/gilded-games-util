@@ -78,8 +78,8 @@ public class ScrollBar extends GuiFrame
 		this.baseBarTexture.modDim().center(false).flush();
 		this.grabbableBarTexture.modDim().center(false).flush();
 
-		this.topButton.listeners().setElement("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
-		this.bottomButton.listeners().setElement("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
+		this.topButton.listeners().set("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
+		this.bottomButton.listeners().set("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
 
 		this.baseBar = new RepeatableGui(Dim2D.build()
 				.area(this.baseBarTexture.getDim().width(), this.getDim().height() - this.topButton.getDim().height() - this.bottomButton.getDim().height())
@@ -114,11 +114,11 @@ public class ScrollBar extends GuiFrame
 		this.baseBar.modDim().addModifier(topButtonHeight, ModifierType.POS).flush();
 		this.grabbableBar.modDim().addModifier(topButtonHeight, ModifierType.POS).flush();
 
-		this.content().setElement("baseBar", this.baseBar);
-		this.content().setElement("grabbableBar", this.grabbableBar);
+		this.content().set("baseBar", this.baseBar);
+		this.content().set("grabbableBar", this.grabbableBar);
 
-		this.content().setElement("topButton", this.topButton);
-		this.content().setElement("bottomButton", this.bottomButton);
+		this.content().set("topButton", this.topButton);
+		this.content().set("bottomButton", this.bottomButton);
 		
 		super.initContent(input);
 	}

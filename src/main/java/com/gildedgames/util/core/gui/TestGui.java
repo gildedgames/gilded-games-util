@@ -43,7 +43,7 @@ public class TestGui extends GuiFrame
 
 		scrollable.modDim().pos(input.getScreenCenter()).center(true).flush();
 
-		this.content().setElement("scrollable", scrollable);
+		this.content().set("scrollable", scrollable);
 		
 		//this.content().setElement("fileB", new FileBrowserButton(Dim2D.build().pos(input.getScreenCenter()).center(true).scale(1.0F).flush(), GuiFactory.createTexture(new Sprite(FILE_BROWSER, UV.build().area(31, 31).flush())), "File.blueprint", new File("asdf"), "sdf"));
 	

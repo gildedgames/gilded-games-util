@@ -41,7 +41,7 @@ public class FileBrowserButton extends GuiFrame
 
 		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).flush(), this.texture);
 		
-		button.listeners().setElement("pushDown", new MouseEventGui(this, new MouseInput(MouseButton.LEFT, ButtonState.DOWN))
+		button.listeners().set("pushDown", new MouseEventGui(this, new MouseInput(MouseButton.LEFT, ButtonState.DOWN))
 		{
 			@Override
 			protected void onTrue(InputProvider inputM, MouseInputPool pool)
@@ -56,11 +56,11 @@ public class FileBrowserButton extends GuiFrame
 			}
 		});
 		
-		this.content().setElement("button", button);
+		this.content().set("button", button);
 		
 		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.getDim().width() / 2, this.getDim().height() / 2 + 12).centerX(true).width(16).height(12).flush(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
 
-		this.content().setElement("text", textBox);
+		this.content().set("text", textBox);
 		
 		super.initContent(input);
 	}

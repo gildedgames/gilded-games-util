@@ -68,7 +68,7 @@ public class GuiCollection extends GuiFrame
 		{
 			if (contentProvider != null)
 			{
-				this.listeners().setAllElements(contentProvider.provideContent(ImmutableMap.copyOf(this.listeners().map()), this.getDim()));
+				this.listeners().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.listeners().map()), this.getDim()));
 			}
 		}
 	}
