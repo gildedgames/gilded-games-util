@@ -7,7 +7,7 @@ import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UiContainer;
+import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -18,9 +18,9 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 public final class GuiViewerHelper
 {
 
-	public static void processInitPre(InputProvider input, UiContainer... containers)
+	public static void processInitPre(InputProvider input, UIContainer... containers)
 	{
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{
@@ -49,14 +49,14 @@ public final class GuiViewerHelper
 		}
 	}
 
-	public static void processResolutionChange(InputProvider input, UiContainer... containers)
+	public static void processResolutionChange(InputProvider input, UIContainer... containers)
 	{
 		GuiViewerHelper.processInitPre(input, containers);
 	}
 
-	public static void processMouseInput(InputProvider input, MouseInputPool pool, UiContainer... containers)
+	public static void processMouseInput(InputProvider input, MouseInputPool pool, UIContainer... containers)
 	{
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{
@@ -73,9 +73,9 @@ public final class GuiViewerHelper
 		}
 	}
 
-	public static void processMouseScroll(InputProvider input, int scrollDifference, UiContainer... containers)
+	public static void processMouseScroll(InputProvider input, int scrollDifference, UIContainer... containers)
 	{
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{
@@ -92,11 +92,11 @@ public final class GuiViewerHelper
 		}
 	}
 
-	public static boolean processKeyboardInput(KeyboardInputPool pool, UiContainer... containers)
+	public static boolean processKeyboardInput(KeyboardInputPool pool, UIContainer... containers)
 	{
 		boolean success = false;
 		
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{
@@ -117,9 +117,9 @@ public final class GuiViewerHelper
 		return success;
 	}
 
-	public static void processDraw(Graphics2D graphics, InputProvider input, UiContainer... containers)
+	public static void processDraw(Graphics2D graphics, InputProvider input, UIContainer... containers)
 	{
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{
@@ -136,9 +136,9 @@ public final class GuiViewerHelper
 		}
 	}
 
-	public static void processTick(InputProvider input, TickInfo tickInfo, UiContainer... containers)
+	public static void processTick(InputProvider input, TickInfo tickInfo, UIContainer... containers)
 	{
-		for (UiContainer container : containers)
+		for (UIContainer container : containers)
 		{
 			if (container == null)
 			{

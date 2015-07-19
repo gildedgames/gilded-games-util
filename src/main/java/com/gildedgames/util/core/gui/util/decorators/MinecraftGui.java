@@ -10,7 +10,6 @@ import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.util.RectangleElement;

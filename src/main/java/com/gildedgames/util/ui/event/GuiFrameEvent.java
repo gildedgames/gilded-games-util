@@ -2,7 +2,7 @@ package com.gildedgames.util.ui.event;
 
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.UiContainerMutable;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -103,7 +103,7 @@ public class GuiFrameEvent extends GuiFrame
 	}
 
 	@Override
-	public UiContainerMutable listeners()
+	public UIContainerMutable listeners()
 	{
 		return null;
 	}
