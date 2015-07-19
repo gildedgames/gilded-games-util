@@ -14,24 +14,24 @@ import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.Ui;
 import com.google.common.collect.ImmutableList;
 
-public class UiContainer implements Iterable<Ui>, NBT
+public class UIContainer implements Iterable<Ui>, NBT
 {
 
 	protected Map<String, Ui> elements = new LinkedHashMap<String, Ui>();
 
-	protected UiContainer parent;
+	protected UIContainer parent;
 
-	public UiContainer()
+	public UIContainer()
 	{
 
 	}
 
-	protected UiContainer(UiContainer parent)
+	protected UIContainer(UIContainer parent)
 	{
 		this.parent = parent;
 	}
 
-	public UiContainer getParent()
+	public UIContainer getParent()
 	{
 		return this.parent;
 	}
@@ -105,7 +105,7 @@ public class UiContainer implements Iterable<Ui>, NBT
 		return Dim2D.combine(areas);
 	}
 
-	private void addCombinedDimensions(UiContainer container, List<Dim2D> areas)
+	private void addCombinedDimensions(UIContainer container, List<Dim2D> areas)
 	{
 		for (Map.Entry<String, Ui> entry : container.map().entrySet())
 		{
@@ -124,9 +124,9 @@ public class UiContainer implements Iterable<Ui>, NBT
 	}
 
 	@Override
-	public UiContainer clone()
+	public UIContainer clone()
 	{
-		UiContainer clone = new UiContainer();
+		UIContainer clone = new UIContainer();
 
 		clone.parent = this.parent;
 		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
@@ -134,15 +134,15 @@ public class UiContainer implements Iterable<Ui>, NBT
 		return clone;
 	}
 
-	public UiContainer merge(UiContainer first, UiContainer... rest)
+	public UIContainer merge(UIContainer first, UIContainer... rest)
 	{
 		return this.merge(false, first, rest);
 	}
 
-	public UiContainer merge(boolean newContentFirst, UiContainer first, UiContainer... rest)
+	public UIContainer merge(boolean newContentFirst, UIContainer first, UIContainer... rest)
 	{
-		UiContainer clone = this.clone();
-		UiContainer merged = new UiContainer();
+		UIContainer clone = this.clone();
+		UIContainer merged = new UIContainer();
 
 		if (!newContentFirst)
 		{
@@ -151,7 +151,7 @@ public class UiContainer implements Iterable<Ui>, NBT
 
 		merged.elements.putAll(first.elements);
 
-		for (UiContainer container : rest)
+		for (UIContainer container : rest)
 		{
 			merged.elements.putAll(container.elements);
 		}

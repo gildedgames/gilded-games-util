@@ -9,7 +9,6 @@ import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DSeekable;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
-import com.gildedgames.util.ui.data.UiContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.google.common.collect.ImmutableList;
