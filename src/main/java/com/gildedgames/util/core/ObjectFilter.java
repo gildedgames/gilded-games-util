@@ -1,12 +1,11 @@
 package com.gildedgames.util.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import scala.actors.threadpool.Arrays;
 
 import com.google.common.collect.Lists;
 
