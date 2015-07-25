@@ -1,9 +1,8 @@
 package com.gildedgames.util.ui.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import scala.actors.threadpool.Arrays;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
@@ -546,7 +545,7 @@ public class Dim2D
 		 */
 		public Dim2DBuilder clearModifiers(ModifierType... types)
 		{
-			this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.asList(types))
+			this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.<Object>asList(types))
 			{
 
 				@Override
