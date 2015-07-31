@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
-import com.gildedgames.util.core.gui.TestGui;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -88,7 +87,6 @@ public class UtilServices
 		registry.registerClass(GuiDecorator.class, 18);
 		registry.registerClass(GuiFrame.class, 19);
 		registry.registerClass(GuiFrame.class, 20);
-		registry.registerClass(TestGui.class, 21);
 		registry.registerClass(UIContainerMutable.class, 22);
 		registry.registerClass(UiEvent.class, 23);
 		registry.registerClass(GuiFrameEvent.class, 24);

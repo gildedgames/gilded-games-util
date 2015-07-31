@@ -5,9 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.core.gui.TestGui;
-import com.gildedgames.util.core.gui.TestTab;
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
@@ -18,7 +15,6 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.ui.UiCore;
 //import com.gildedgames.util.ui.TestTab;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
@@ -71,8 +67,6 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
-
-		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 	}
 
 	@Override
