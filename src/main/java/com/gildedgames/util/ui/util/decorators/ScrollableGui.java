@@ -31,7 +31,7 @@ public class ScrollableGui extends GuiFrame
 	
 	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar)
 	{
-		this(windowSize, scrolledGui, scrollBar, GuiFactory.createPanel(Dim2D.flush()), GuiFactory.createPanelEmbedded(Dim2D.flush()), 7);
+		this(windowSize, scrolledGui, scrollBar, GuiFactory.panel(Dim2D.flush()), GuiFactory.panelEmbedded(Dim2D.flush()), 7);
 	}
 
 	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding)
