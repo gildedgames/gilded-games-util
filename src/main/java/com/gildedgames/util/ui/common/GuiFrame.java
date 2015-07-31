@@ -25,7 +25,12 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	
 	private UIContainerMutable listeners = new UIContainerMutable();
 	
-	private Dim2D dim = Dim2D.flush();
+	private Dim2D dim;
+	
+	public GuiFrame()
+	{
+		this(Dim2D.flush());
+	}
 
 	public GuiFrame(Dim2D dim)
 	{
