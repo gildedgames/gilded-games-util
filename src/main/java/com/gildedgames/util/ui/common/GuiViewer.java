@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.common;
 
+import com.gildedgames.util.ui.data.TickInfo;
+import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public interface GuiViewer
@@ -10,5 +12,9 @@ public interface GuiViewer
 	void close();
 	
 	InputProvider getInputProvider();
+	
+	TickInfo getTickInfo();
+	
+	Graphics2D getGraphics();
 	
 }

@@ -2,6 +2,8 @@ package com.gildedgames.util.ui.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.lwjgl.input.Mouse;
+
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.ModifierType;
@@ -9,6 +11,7 @@ import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DGetter;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
+import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -141,7 +144,7 @@ public class ScrollBar extends GuiFrame
 	{
 		super.onMouseInput(input, pool);
 
-		if (this.grabbedBar && !pool.has(ButtonState.DOWN))
+		if (this.grabbedBar && !pool.has(ButtonState.PRESSED))
 		{
 			this.grabbedBar = false;
 		}
@@ -269,26 +272,26 @@ public class ScrollBar extends GuiFrame
 		}
 
 		@Override
-		public void onMouseInput(InputProvider input, MouseInputPool pool)
+		public void tick(InputProvider input, TickInfo tickInfo)
 		{
-			if (pool.has(MouseButton.LEFT) && input.isHovered(this.button))
+			if (Mouse.isButtonDown(MouseButton.LEFT.getIndex()) && input.isHovered(this.button))
 			{
 				this.scrollBar.increaseScrollPercentage(this.scrollPercentage);
 			}
+			
+			super.tick(input, tickInfo);
 		}
 
 		@Override
 		protected void onTrue(InputProvider input, MouseInputPool pool)
 		{
-			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
 		protected void onFalse(InputProvider input, MouseInputPool pool)
 		{
-			// TODO Auto-generated method stub
-
+			
 		}
 
 	}
