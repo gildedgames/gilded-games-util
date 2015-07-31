@@ -1,20 +1,14 @@
 package com.gildedgames.util.core;
 
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
-import com.gildedgames.util.ui.UiCore;
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.common.GuiViewer;
-import com.gildedgames.util.ui.input.InputProvider;
+
 
 public class UtilEvents
 {
@@ -34,7 +28,7 @@ public class UtilEvents
 			IOCore.io().dispatchDirtySyncables(SyncSide.CLIENT);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void tickStartServer(TickEvent.ServerTickEvent event)
 	{
@@ -43,8 +37,9 @@ public class UtilEvents
 			IOCore.io().dispatchDirtySyncables(SyncSide.SERVER);
 		}
 	}
-	
+
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void renderWorldLast(RenderWorldLastEvent event)
 	{
 		UtilEvents.partialTicks = event.partialTicks;

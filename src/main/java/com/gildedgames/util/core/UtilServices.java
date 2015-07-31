@@ -30,7 +30,7 @@ import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.UiContainerMutable;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.event.GuiFrameEvent;
 import com.gildedgames.util.ui.event.KeyboardEvent;
 import com.gildedgames.util.ui.event.MouseEvent;
@@ -89,7 +89,7 @@ public class UtilServices
 		registry.registerClass(GuiFrame.class, 19);
 		registry.registerClass(GuiFrame.class, 20);
 		registry.registerClass(TestGui.class, 21);
-		registry.registerClass(UiContainerMutable.class, 22);
+		registry.registerClass(UIContainerMutable.class, 22);
 		registry.registerClass(UiEvent.class, 23);
 		registry.registerClass(GuiFrameEvent.class, 24);
 		registry.registerClass(KeyboardEvent.class, 25);
