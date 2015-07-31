@@ -41,17 +41,22 @@ public class GuiFactory
 
 	}
 
-	public static GuiFrame decorateWithPressSound(Gui button)
+	/**
+	 * Decorates with a generic Minecraft press sound upon left-clicking.
+	 * @param button
+	 * @return
+	 */
+	public static GuiFrame pressSound(Gui button)
 	{
 		return new MinecraftButtonSounds(button);
 	}
 	
-	public static GuiFrame createUpArrowButton()
+	public static GuiFrame upArrowButton()
 	{
-		return GuiFactory.createDownArrowButton(Dim2D.flush());
+		return GuiFactory.downArrowButton(Dim2D.flush());
 	}
 
-	public static GuiFrame createUpArrowButton(Dim2D dim)
+	public static GuiFrame upArrowButton(Dim2D dim)
 	{
 		Sprite buttonDefaultSprite = new Sprite(SCROLL_BAR, UV.build().minU(20).area(10, 10).flush());
 		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(30).area(10, 10).flush());
@@ -61,15 +66,15 @@ public class GuiFactory
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
-		return GuiFactory.decorateWithPressSound(button);
+		return GuiFactory.pressSound(button);
 	}
 
-	public static GuiFrame createDownArrowButton()
+	public static GuiFrame downArrowButton()
 	{
-		return GuiFactory.createDownArrowButton(Dim2D.flush());
+		return GuiFactory.downArrowButton(Dim2D.flush());
 	}
 
-	public static GuiFrame createDownArrowButton(Dim2D dim)
+	public static GuiFrame downArrowButton(Dim2D dim)
 	{
 		Sprite buttonDefaultSprite = new Sprite(SCROLL_BAR, UV.build().minU(50).area(10, 10).flush());
 		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(60).area(10, 10).flush());
@@ -79,39 +84,39 @@ public class GuiFactory
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
-		return GuiFactory.decorateWithPressSound(button);
+		return GuiFactory.pressSound(button);
 	}
 
-	public static GuiFrame createButton(Pos2D pos, int width, String text)
+	public static GuiFrame button(Pos2D pos, int width, String text)
 	{
-		return GuiFactory.createButton(pos, width, text, true);
+		return GuiFactory.button(pos, width, text, true);
 	}
 
-	public static GuiFrame createButton(Pos2D pos, int width, String text, boolean centered)
+	public static GuiFrame button(Pos2D pos, int width, String text, boolean centered)
 	{
 		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).flush();
 
 		Gui button = new MinecraftButton(dim, text);
 
-		return GuiFactory.decorateWithPressSound(button);
+		return GuiFactory.pressSound(button);
 	}
 
-	public static GuiFrame createButton(GuiButton button)
+	public static GuiFrame button(GuiButton button)
 	{
-		return GuiFactory.createButton(button, true);
+		return GuiFactory.button(button, true);
 	}
 
-	public static GuiFrame createButton(GuiButton button, boolean centered)
+	public static GuiFrame button(GuiButton button, boolean centered)
 	{
-		return GuiFactory.decorateWithPressSound(new MinecraftButton(button, centered));
+		return GuiFactory.pressSound(new MinecraftButton(button, centered));
 	}
 
-	public static ScrollBar createScrollBar(Pos2D pos, int height, Dim2D scrollableArea)
+	public static ScrollBar scrollBar(Pos2D pos, int height, Dim2D scrollableArea)
 	{
-		return GuiFactory.createScrollBar(pos, height, scrollableArea, true);
+		return GuiFactory.scrollBar(pos, height, scrollableArea, true);
 	}
 
-	public static ScrollBar createScrollBar(Pos2D pos, int height, Dim2D scrollableArea, boolean centered)
+	public static ScrollBar scrollBar(Pos2D pos, int height, Dim2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR, UV.build().min(0, 0).area(10, 10).flush());
 		Sprite base = new Sprite(SCROLL_BAR, UV.build().min(10, 0).area(10, 10).flush());
@@ -119,8 +124,8 @@ public class GuiFactory
 		Dim2D spriteDimensions = Dim2D.build().area(10, 10).center(centered).flush();
 		Dim2D barDimensions = Dim2D.build().area(10, height).center(centered).flush();
 
-		GuiFrame topButton = GuiFactory.createUpArrowButton(Dim2D.build().center(centered).flush());
-		GuiFrame bottomButton = GuiFactory.createDownArrowButton(Dim2D.build().center(centered).flush());
+		GuiFrame topButton = GuiFactory.upArrowButton(Dim2D.build().center(centered).flush());
+		GuiFrame bottomButton = GuiFactory.downArrowButton(Dim2D.build().center(centered).flush());
 
 		ScrollBar scrollBar = new ScrollBar(barDimensions, topButton, bottomButton, new TextureElement(base, spriteDimensions), new TextureElement(bar, spriteDimensions));
 
@@ -129,44 +134,44 @@ public class GuiFactory
 		return scrollBar;
 	}
 	
-	public static TextureElement createPanel(Dim2D dim)
+	public static TextureElement panel(Dim2D dim)
 	{
 		return GuiFactory.createResizableTexture(PANEL, dim, UV.build().area(4, 4).flush(), UV.build().area(4, 20).flush(), UV.build().area(20, 4).flush());
 	}
 	
-	public static TextureElement createPanelEmbedded(Dim2D dim)
+	public static TextureElement panelEmbedded(Dim2D dim)
 	{
 		return GuiFactory.createResizableTexture(PANEL_EMBEDDED, dim, UV.build().area(4, 4).flush(), UV.build().area(4, 20).flush(), UV.build().area(20, 4).flush());
 	}
 
 	public static ScrollBar createScrollBar()
 	{
-		return GuiFactory.createScrollBar(new Pos2D(), 0, Dim2D.flush());
+		return GuiFactory.scrollBar(new Pos2D(), 0, Dim2D.flush());
 	}
 
-	public static TextureElement createTexture(Sprite sprite)
+	public static TextureElement texture(Sprite sprite)
 	{
 		return new TextureElement(sprite, Dim2D.flush());
 	}
 
-	public static TextureElement createTexture(Sprite sprite, Dim2D dim)
+	public static TextureElement texture(Sprite sprite, Dim2D dim)
 	{
 		return new TextureElement(sprite, dim);
 	}
 
-	public static TextureElement createTexture(AssetLocation asset, Dim2D dim)
+	public static TextureElement texture(AssetLocation asset, Dim2D dim)
 	{
-		return GuiFactory.createTexture(new Sprite(asset), dim);
+		return GuiFactory.texture(new Sprite(asset), dim);
 	}
 	
 	public static TextureElement createResizableTexture(AssetLocation asset, Dim2D dim, UV corners, UV verticalSides, UV horizontalSides)
 	{
-		return GuiFactory.createTexture(new Sprite(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);
+		return GuiFactory.texture(new Sprite(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);
 	}
 
 	public static TextureElement createTexture(AssetLocation asset)
 	{
-		return GuiFactory.createTexture(asset, Dim2D.flush());
+		return GuiFactory.texture(asset, Dim2D.flush());
 	}
 
 	public static Text text(String text, Color color)
