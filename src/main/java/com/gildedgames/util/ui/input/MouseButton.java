@@ -29,5 +29,5 @@ public enum MouseButton
 		
 		return NONE;
 	}
-	
+
 }

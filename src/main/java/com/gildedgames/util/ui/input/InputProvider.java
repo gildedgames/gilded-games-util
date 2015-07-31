@@ -8,6 +8,8 @@ import com.gildedgames.util.ui.data.Pos2D;
 public interface InputProvider
 {
 	
+	void refreshResolution();
+	
 	int getScreenWidth();
 	
 	int getScreenHeight();

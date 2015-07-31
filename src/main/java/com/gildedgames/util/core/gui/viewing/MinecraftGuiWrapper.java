@@ -44,14 +44,8 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	public final void initGui()
 	{
 		this.updateScreen();
-
-		final ScaledResolution resolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
-
-		this.width = resolution.getScaledWidth();
-		this.height = resolution.getScaledHeight();
-
-		INPUT.setScreen(this.width, this.height);
-		INPUT.setScaleFactor(resolution.getScaleFactor());
+		
+		INPUT.refreshResolution();
 
 		if (!this.hasInit)
 		{
@@ -76,7 +70,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void mouseClicked(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.DOWN));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
 
 		this.frame.onMouseInput(INPUT, pool);
 	}
@@ -92,7 +86,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void mouseClickMove(int mouseX, int mouseY, int mouseButtonIndex, long timeSinceLastClick)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.DOWN, MouseMotion.MOVING));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED, MouseMotion.MOVING));
 
 		this.frame.onMouseInput(INPUT, pool);
 	}

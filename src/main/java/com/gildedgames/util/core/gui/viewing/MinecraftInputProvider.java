@@ -1,6 +1,7 @@
 package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
@@ -16,10 +17,13 @@ public class MinecraftInputProvider implements InputProvider
 	protected Minecraft mc;
 
 	protected int screenWidth, screenHeight, scaleFactor, xOffset, yOffset;
+	
+	protected ScaledResolution resolution;
 
 	public MinecraftInputProvider(Minecraft mc)
 	{
 		this.mc = mc;
+		this.refreshResolution();
 	}
 
 	public void setScreen(int screenWidth, int screenHeight)
@@ -32,17 +36,27 @@ public class MinecraftInputProvider implements InputProvider
 	{
 		this.scaleFactor = scaleFactor;
 	}
+	
+	@Override
+	public void refreshResolution()
+	{
+		this.resolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+	}
 
 	@Override
 	public int getScreenWidth()
 	{
-		return this.screenWidth;
+		this.refreshResolution();
+		
+		return this.resolution.getScaledWidth();
 	}
 
 	@Override
 	public int getScreenHeight()
 	{
-		return this.screenHeight;
+		this.refreshResolution();
+		
+		return this.resolution.getScaledHeight();
 	}
 
 	@Override
@@ -71,7 +85,7 @@ public class MinecraftInputProvider implements InputProvider
 	@Override
 	public int getScaleFactor()
 	{
-		return this.scaleFactor;
+		return this.resolution.getScaleFactor();
 	}
 
 	@Override
