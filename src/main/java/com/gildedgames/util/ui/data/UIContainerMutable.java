@@ -8,15 +8,14 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.util.RectangleElement;
 
-public class UiContainerMutable extends UiContainer
+public class UIContainerMutable extends UIContainer
 {
-
-	public UiContainerMutable()
+	public UIContainerMutable()
 	{
 		super();
 	}
 
-	protected UiContainerMutable(UiContainer parent)
+	protected UIContainerMutable(UIContainer parent)
 	{
 		super(parent);
 	}
@@ -61,15 +60,15 @@ public class UiContainerMutable extends UiContainer
 		this.elements.clear();
 	}
 
-	public UiContainer immutable()
+	public UIContainer immutable()
 	{
 		return this.clone();
 	}
 
 	@Override
-	public UiContainer clone()
+	public UIContainer clone()
 	{
-		UiContainerMutable clone = new UiContainerMutable();
+		UIContainerMutable clone = new UIContainerMutable();
 
 		clone.parent = this.parent;
 		clone.elements = new LinkedHashMap<String, Ui>(this.elements);

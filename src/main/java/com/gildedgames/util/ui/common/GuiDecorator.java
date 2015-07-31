@@ -8,8 +8,8 @@ import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.data.UiContainer;
-import com.gildedgames.util.ui.data.UiContainerMutable;
+import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -240,13 +240,13 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 	
 	@Override
-	public UiContainer seekContent()
+	public UIContainer seekContent()
 	{
 		return this.element.seekContent();
 	}
 	
 	@Override
-	public UiContainerMutable content()
+	public UIContainerMutable content()
 	{
 		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
@@ -259,7 +259,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public UiContainerMutable listeners()
+	public UIContainerMutable listeners()
 	{
 		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
