@@ -121,8 +121,6 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
     		frame.onKeyboardInput(pool);
         }
-
-        this.mc.dispatchKeypresses();
     }
 
 	@SubscribeEvent
