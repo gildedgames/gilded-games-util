@@ -161,7 +161,9 @@ public class GuiFactory
 
 	public static TextureElement texture(AssetLocation asset, Dim2D dim)
 	{
-		return GuiFactory.texture(new Sprite(asset), dim);
+		Sprite sprite = new Sprite(asset);
+		
+		return GuiFactory.texture(sprite, dim.clone().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
 	}
 	
 	public static TextureElement createResizableTexture(AssetLocation asset, Dim2D dim, UV corners, UV verticalSides, UV horizontalSides)
