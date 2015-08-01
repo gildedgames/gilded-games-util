@@ -41,7 +41,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 		return this.elements.get(key);
 	}
 
-	public <T extends Ui> T get(String key, Class<? extends T> clazz)
+	public <T> T get(String key, Class<? extends T> clazz)
 	{
 		return (T) this.elements.get(key);
 	}
