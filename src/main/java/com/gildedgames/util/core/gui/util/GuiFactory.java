@@ -158,6 +158,11 @@ public class GuiFactory
 	{
 		return new TextureElement(sprite, dim);
 	}
+	
+	public static TextureElement texture(AssetLocation asset)
+	{
+		return GuiFactory.texture(asset, Dim2D.flush());
+	}
 
 	public static TextureElement texture(AssetLocation asset, Dim2D dim)
 	{
