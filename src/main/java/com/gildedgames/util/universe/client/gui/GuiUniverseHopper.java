@@ -84,38 +84,38 @@ public class GuiUniverseHopper extends GuiScreen
 	{
 		switch (button.id)
 		{
-		case 0:
-		{
-			this.universeIndex--;
-
-			if (this.universeIndex < 0)
+			case 0:
 			{
-				this.universeIndex = UniverseAPI.instance().getUniverses().size() - 1;
+				this.universeIndex--;
+		
+				if (this.universeIndex < 0)
+				{
+					this.universeIndex = UniverseAPI.instance().getUniverses().size() - 1;
+				}
+		
+				SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
+				break;
 			}
-
-			SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
-			break;
-		}
-		case 1:
-		{
-			this.universeIndex++;
-
-			if (this.universeIndex >= UniverseAPI.instance().getUniverses().size())
+			case 1:
 			{
-				this.universeIndex = 0;
+				this.universeIndex++;
+		
+				if (this.universeIndex >= UniverseAPI.instance().getUniverses().size())
+				{
+					this.universeIndex = 0;
+				}
+		
+				SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
+				break;
 			}
-
-			SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
-			break;
-		}
-		case 2:
-		{
-			String id = UniverseAPI.instance().getIDFrom(SELECTED_UNIVERSE);
-
-			UtilCore.NETWORK.sendToServer(new MessageTravelUniverse(id));
-
-			break;
-		}
+			case 2:
+			{
+				String id = UniverseAPI.instance().getIDFrom(SELECTED_UNIVERSE);
+		
+				UtilCore.NETWORK.sendToServer(new MessageTravelUniverse(id));
+		
+				break;
+			}
 		}
 	}
 

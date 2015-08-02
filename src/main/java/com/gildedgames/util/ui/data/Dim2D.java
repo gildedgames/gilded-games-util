@@ -82,7 +82,7 @@ public class Dim2D
 
 	public Pos2D maxPos()
 	{
-		return this.pos().withAdded(this.width(), this.height());
+		return this.pos().add(this.width(), this.height());
 	}
 
 	public int maxX()
@@ -120,12 +120,12 @@ public class Dim2D
 				{
 					if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.withAddedX(holder.getDim().pos().getX());
+						modifiedPos = modifiedPos.addX(holder.getDim().pos().getX());
 					}
 
 					if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.withAddedY(holder.getDim().pos().getY());
+						modifiedPos = modifiedPos.addY(holder.getDim().pos().getY());
 					}
 				}
 			}
@@ -490,12 +490,12 @@ public class Dim2D
 
 		public Dim2DBuilder y(int y)
 		{
-			return this.pos(this.pos.withY(y));
+			return this.pos(this.pos.y(y));
 		}
 
 		public Dim2DBuilder x(int x)
 		{
-			return this.pos(this.pos.withX(x));
+			return this.pos(this.pos.x(x));
 		}
 
 		public Dim2DBuilder center(boolean centered)
@@ -527,12 +527,12 @@ public class Dim2D
 
 		public Dim2DBuilder addX(int x)
 		{
-			return this.pos(this.pos.withAdded(x, 0));
+			return this.pos(this.pos.add(x, 0));
 		}
 
 		public Dim2DBuilder addY(int y)
 		{
-			return this.pos(this.pos.withAdded(0, y));
+			return this.pos(this.pos.add(0, y));
 		}
 
 		public Dim2DBuilder addPos(Pos2D pos)
@@ -671,14 +671,14 @@ public class Dim2D
 
 		public Dim2DBuildWith y()
 		{
-			this.builder.pos(this.builder.pos.withY(this.buildWith.getDim().pos.y));
+			this.builder.pos(this.builder.pos.y(this.buildWith.getDim().pos.y));
 
 			return this;
 		}
 
 		public Dim2DBuildWith x()
 		{
-			this.builder.pos(this.builder.pos.withX(this.buildWith.getDim().pos.x));
+			this.builder.pos(this.builder.pos.x(this.buildWith.getDim().pos.x));
 
 			return this;
 		}
@@ -713,14 +713,14 @@ public class Dim2D
 
 		public Dim2DBuildWith addX()
 		{
-			this.builder.pos(this.builder.pos.withAdded(this.buildWith.getDim().pos.x, 0));
+			this.builder.pos(this.builder.pos.add(this.buildWith.getDim().pos.x, 0));
 
 			return this;
 		}
 
 		public Dim2DBuildWith addY()
 		{
-			this.builder.pos(this.builder.pos.withAdded(0, this.buildWith.getDim().pos.y));
+			this.builder.pos(this.builder.pos.add(0, this.buildWith.getDim().pos.y));
 
 			return this;
 		}
