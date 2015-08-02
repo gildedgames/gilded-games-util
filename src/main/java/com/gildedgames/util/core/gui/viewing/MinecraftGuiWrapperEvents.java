@@ -2,16 +2,16 @@ package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiServices.Overlay;
+import com.gildedgames.util.ui.UiServices.RenderOrder;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
 import com.gildedgames.util.ui.data.TickInfo;
@@ -39,10 +39,10 @@ public class MinecraftGuiWrapperEvents implements TickInfo
     {
         if (Mouse.isCreated())
         {
-            for (Pair<GuiFrame, GuiViewer> overlayPair : UiCore.locate().overlays())
-			{
-				GuiFrame frame = overlayPair.getLeft();
-				GuiViewer viewer = overlayPair.getRight();
+        	for (Overlay overlay : UiCore.locate().overlays())
+    		{
+    			GuiFrame frame = overlay.getFrame();
+    			GuiViewer viewer = overlay.getViewer();
 				
 				this.handleMouseInput(frame, viewer);
 			}
@@ -51,9 +51,9 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
         if (Keyboard.isCreated())
         {
-            for (Pair<GuiFrame, GuiViewer> overlayPair : UiCore.locate().overlays())
-			{
-				GuiFrame frame = overlayPair.getLeft();
+        	for (Overlay overlay : UiCore.locate().overlays())
+    		{
+    			GuiFrame frame = overlay.getFrame();
 
 				this.handleKeyboardInput(frame);
 			}
@@ -137,10 +137,11 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				viewer.tick(this);
 			}
 
-			for (Pair<GuiFrame, GuiViewer> overlayPair : UiCore.locate().overlays())
+			for (Overlay overlay : UiCore.locate().overlays())
 			{
-				GuiFrame frame = overlayPair.getLeft();
-				GuiViewer viewer = overlayPair.getRight();
+				GuiFrame frame = overlay.getFrame();
+				GuiViewer viewer = overlay.getViewer();
+				RenderOrder renderOrder = overlay.getRenderOrder();
 				
 				InputProvider input = viewer.getInputProvider();
 				
@@ -160,23 +161,39 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		}
 	}
 	
+	private void renderOverlays(RenderOrder desiredOrder)
+	{
+		for (Overlay overlay : UiCore.locate().overlays())
+		{
+			GuiFrame frame = overlay.getFrame();
+			GuiViewer viewer = overlay.getViewer();
+			RenderOrder renderOrder = overlay.getRenderOrder();
+			
+			if (renderOrder == desiredOrder)
+			{
+				viewer.getInputProvider().refreshResolution();
+				
+				frame.draw(viewer.getGraphics(), viewer.getInputProvider());
+			}
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void renderGameOverlayPre(RenderGameOverlayEvent.Pre event)
+	{
+		this.renderOverlays(RenderOrder.PRE);
+	}
+	
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public void renderGameOverlay(RenderGameOverlayEvent event)
 	{
-		if (event.isCancelable() || event.type != ElementType.TEXT)
-		{
-			return;
-		}
-		
-		for (Pair<GuiFrame, GuiViewer> overlayPair : UiCore.locate().overlays())
-		{
-			GuiFrame frame = overlayPair.getLeft();
-			GuiViewer viewer = overlayPair.getRight();
-			
-			viewer.getInputProvider().refreshResolution();
-			
-			frame.draw(viewer.getGraphics(), viewer.getInputProvider());
-		}
+		this.renderOverlays(RenderOrder.NORMAL);
+	}
+	
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public void renderGameOverlayPost(RenderGameOverlayEvent.Post event)
+	{
+		this.renderOverlays(RenderOrder.POST);
 	}
 
 	@Override

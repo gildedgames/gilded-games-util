@@ -6,10 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.relauncher.Side;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBTFactory;
@@ -30,28 +27,90 @@ public class UiServices
 	
 	private GuiFrame currentFrame;
 	
-	private Map<String, Pair<GuiFrame, GuiViewer>> overlayedFrames = new LinkedHashMap<String, Pair<GuiFrame, GuiViewer>>();
+	private Map<String, Overlay> overlays = new LinkedHashMap<String, Overlay>();
+	
+	public static enum RenderOrder
+	{
+		PRE, NORMAL, POST;
+	}
+	
+	public static class Overlay
+	{
+		
+		private GuiFrame frame;
+		
+		private GuiViewer viewer;
+		
+		private RenderOrder renderOrder;
+		
+		public Overlay(GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)
+		{
+			this.frame = frame;
+			this.viewer = viewer;
+			this.renderOrder = renderOrder;
+		}
+		
+		public GuiFrame getFrame()
+		{
+			return this.frame;
+		}
+		
+		public GuiViewer getViewer()
+		{
+			return this.viewer;
+		}
+		
+		public RenderOrder getRenderOrder()
+		{
+			return this.renderOrder;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return this.frame.hashCode() ^ this.viewer.hashCode() ^ this.renderOrder.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if (!(o instanceof Overlay))
+			{
+				return false;
+			}
+		   
+			Overlay overlay = (Overlay) o;
+		    
+			return this.frame.equals(overlay.getFrame()) && this.viewer.equals(overlay.getViewer()) && this.renderOrder.equals(overlay.getRenderOrder());
+		}
+		
+	}
 
 	public UiServices(Side side)
 	{
 		this.side = side;
 	}
 	
-	public ImmutableList<Pair<GuiFrame, GuiViewer>> overlays()
+	public ImmutableList<Overlay> overlays()
 	{
-		return ImmutableList.copyOf(this.overlayedFrames.values());
+		return ImmutableList.copyOf(this.overlays.values());
 	}
 	
 	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
+		this.overlay(uniqueSaveName, frame, viewer, RenderOrder.NORMAL);
+	}
+	
+	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)
+	{
 		frame.init(viewer.getInputProvider());
 		
-		this.overlayedFrames.put(uniqueSaveName, Pair.of(frame, viewer));
+		this.overlays.put(uniqueSaveName, new Overlay(frame, viewer, renderOrder));
 	}
 	
 	public void remove(String uniqueSaveName)
 	{
-		this.overlayedFrames.remove(uniqueSaveName);
+		this.overlays.remove(uniqueSaveName);
 	}
 	
 	public void open(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)

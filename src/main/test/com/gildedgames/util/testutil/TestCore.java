@@ -1,5 +1,6 @@
 package com.gildedgames.util.testutil;
 
+import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -35,7 +36,7 @@ public class TestCore implements ICore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		DefaultInstancesFactory factory = new DefaultInstancesFactory();
+		DefaultInstancesFactory factory = new DefaultInstancesFactory(5, WorldProviderSurface.class);
 
 		InstanceHandler<DefaultInstance> client = InstanceCore.INST.createClientInstanceHandler(factory);
 		InstanceHandler<DefaultInstance> server = InstanceCore.INST.createServerInstanceHandler(factory);

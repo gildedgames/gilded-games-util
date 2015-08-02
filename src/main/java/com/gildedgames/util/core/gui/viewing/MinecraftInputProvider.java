@@ -147,10 +147,4 @@ public class MinecraftInputProvider implements InputProvider
 		return false;
 	}
 
-	@Override
-	public Pos2D getScreenCenter()
-	{
-		return new Pos2D(this.getScreenWidth() / 2, this.getScreenHeight() / 2);
-	}
-
 }

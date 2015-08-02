@@ -1,5 +1,18 @@
 package com.gildedgames.util.universe;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
@@ -7,11 +20,6 @@ import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
 import com.gildedgames.util.universe.common.util.TeleporterGeneric;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class UniverseCore implements ICore
 {
@@ -42,6 +50,12 @@ public class UniverseCore implements ICore
 	{
 
 	}
+	
+	@Override
+	public void serverStarting(FMLServerStartingEvent event)
+	{
+		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
+	}
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
@@ -69,12 +83,6 @@ public class UniverseCore implements ICore
 
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
 	{
 
 	}

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,8 +29,6 @@ import com.gildedgames.util.instances.InstanceCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.minecraft.gamemode.GameMode;
-import com.gildedgames.util.minecraft.gamemode.GameModeTracker;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;

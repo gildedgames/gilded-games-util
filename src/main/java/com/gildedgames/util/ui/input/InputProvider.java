@@ -13,9 +13,7 @@ public interface InputProvider
 	int getScreenWidth();
 	
 	int getScreenHeight();
-	
-	Pos2D getScreenCenter();
-	
+
 	int getScaleFactor();
 	
 	int getMouseX();

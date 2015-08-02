@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -65,22 +66,16 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
 		GlStateManager.translate(x, y, 0);
 
 		GlStateManager.scale(dim.scale(), dim.scale(), 0);
 
-		GlStateManager.enableBlend();
-
-		GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-
-		GlStateManager.color(1, 1, 1, data.getAlpha());
+        GlStateManager.enableBlend();
 
 		inner.draw();
-
-		GlStateManager.disableBlend();
 
 		GlStateManager.popMatrix();
 	}

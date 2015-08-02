@@ -16,17 +16,42 @@ public class Pos2D
 		this.y = y;
 	}
 	
-	public Pos2D withAddedX(int x)
+	public Pos2D addX(int x)
 	{
-		return this.withAdded(x, 0);
+		return this.add(x, 0);
 	}
 	
-	public Pos2D withAddedY(int y)
+	public Pos2D addY(int y)
 	{
-		return this.withAdded(0, y);
+		return this.add(0, y);
 	}
 	
-	public Pos2D withAdded(int x, int y)
+	public Pos2D subtractX(int x)
+	{
+		return this.subtract(x, 0);
+	}
+	
+	public Pos2D subtractY(int y)
+	{
+		return this.subtract(0, y);
+	}
+	
+	public Pos2D subtract(int x, int y)
+	{
+		return this.add(-x, -y);
+	}
+	
+	public Pos2D subtract(Pos2D pos)
+	{
+		if (pos == null)
+		{
+			return this;
+		}
+		
+		return this.add(-pos.x, -pos.y);
+	}
+
+	public Pos2D add(int x, int y)
 	{
 		int newX = this.x + x;
 		int newY = this.y + y;
@@ -34,22 +59,22 @@ public class Pos2D
 		return new Pos2D(newX, newY);
 	}
 	
-	public Pos2D withAdded(Pos2D pos)
+	public Pos2D add(Pos2D pos)
 	{
 		if (pos == null)
 		{
 			return this;
 		}
 		
-		return this.withAdded(pos.getX(), pos.getY());
+		return this.add(pos.x, pos.y);
 	}
 	
-	public Pos2D withX(int x)
+	public Pos2D x(int x)
 	{
 		return new Pos2D(x, this.y);
 	}
 	
-	public Pos2D withY(int y)
+	public Pos2D y(int y)
 	{
 		return new Pos2D(this.x, y);
 	}
