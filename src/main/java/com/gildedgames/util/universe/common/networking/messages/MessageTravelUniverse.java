@@ -1,25 +1,23 @@
 package com.gildedgames.util.universe.common.networking.messages;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+
+import com.gildedgames.util.core.CustomPacket;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.util.IUniverse;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.fml.relauncher.Side;
 
-public class MessageTravelUniverse implements IMessage
+public class MessageTravelUniverse extends CustomPacket<MessageTravelUniverse>
 {
 
 	private String universeID;
 
 	public MessageTravelUniverse()
 	{
-		
+
 	}
-	
+
 	public MessageTravelUniverse(IUniverse universe)
 	{
 		this.universeID = UniverseAPI.instance().getIDFrom(universe);
@@ -41,28 +39,22 @@ public class MessageTravelUniverse implements IMessage
 	{
 		ByteBufUtils.writeUTF8String(buf, this.universeID);
 	}
-	
-	public static class Handler implements IMessageHandler<MessageTravelUniverse, IMessage>
+
+	@Override
+	public void handleClientSide(MessageTravelUniverse message, EntityPlayer player)
 	{
-	        
-        @Override
-        public IMessage onMessage(MessageTravelUniverse message, MessageContext ctx)
-        {
-        	if (ctx.side == Side.SERVER)
-        	{
-        		IUniverse universe = UniverseAPI.instance().getFromID(message.universeID);
-        		
-        		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-        		
-        		if (universe != null)
-        		{
-        			UniverseAPI.instance().travelTo(universe, player);
-        		}
-        	}
 
-            return null;
-        }
+	}
 
+	@Override
+	public void handleServerSide(MessageTravelUniverse message, EntityPlayer player)
+	{
+		IUniverse universe = UniverseAPI.instance().getFromID(message.universeID);
+
+		if (universe != null)
+		{
+			UniverseAPI.instance().travelTo(universe, player);
+		}
 	}
 
 }
