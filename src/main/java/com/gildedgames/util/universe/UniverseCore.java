@@ -38,7 +38,7 @@ public class UniverseCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilCore.NETWORK.registerMessage(MessageTravelUniverse.Handler.class, MessageTravelUniverse.class, Side.SERVER);
+		UtilCore.NETWORK.registerMessage(MessageTravelUniverse.class, MessageTravelUniverse.class, Side.SERVER);
 
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
 
@@ -50,7 +50,7 @@ public class UniverseCore implements ICore
 	{
 
 	}
-	
+
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
