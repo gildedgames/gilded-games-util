@@ -21,6 +21,11 @@ public class Dim2D
 	protected final boolean centeredX, centeredY;
 
 	protected final float scale;
+	
+	/**
+	 * In degrees.
+	 */
+	protected final float rotation;
 
 	private Dim2D()
 	{
@@ -38,6 +43,8 @@ public class Dim2D
 
 		this.centeredX = builder.centeredX;
 		this.centeredY = builder.centeredY;
+		
+		this.rotation = builder.rotation;
 
 		this.modifiers = ImmutableList.copyOf(builder.modifiers);
 	}
@@ -50,6 +57,26 @@ public class Dim2D
 	public boolean containsModifier(Dim2DHolder modifier)
 	{
 		return this.modifiers.contains(modifier);
+	}
+	
+	public float rotation()
+	{
+		float modifiedRotation = this.rotation;
+
+		for (Modifier modifier : this.modifiers)
+		{
+			if (modifier != null && modifier.getTypes().contains(ModifierType.ROTATION) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				Dim2DHolder holder = modifier.getHolder();
+
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedRotation += holder.getDim().rotation();
+				}
+			}
+		}
+		
+		return this.rotation;
 	}
 
 	public float scale()
@@ -235,12 +262,12 @@ public class Dim2D
 			builder.scale(1.0F);
 		}
 
-		if (types.contains(InternalModifierType.X_CENTERING))
+		if (types.contains(InternalModifierType.X_CENTERING) || types.contains(InternalModifierType.CENTERING))
 		{
 			builder.centerX(false);
 		}
 
-		if (types.contains(InternalModifierType.Y_CENTERING))
+		if (types.contains(InternalModifierType.Y_CENTERING) || types.contains(InternalModifierType.CENTERING))
 		{
 			builder.centerY(false);
 		}
@@ -372,10 +399,12 @@ public class Dim2D
 		protected boolean centeredX, centeredY;
 
 		protected float scale = 1.0F;
+		
+		protected float rotation;
 
 		public Dim2DBuilder()
 		{
-
+			
 		}
 
 		public Dim2DBuilder(Dim2DHolder holder)
@@ -394,6 +423,8 @@ public class Dim2D
 
 			this.centeredX = dim.centeredX;
 			this.centeredY = dim.centeredY;
+			
+			this.rotation = dim.rotation;
 
 			this.modifiers = new ArrayList<Modifier>(dim.modifiers);
 		}
@@ -409,6 +440,8 @@ public class Dim2D
 
 			this.centeredX = builder.centeredX;
 			this.centeredY = builder.centeredY;
+			
+			this.rotation = builder.rotation;
 
 			this.scale = builder.scale;
 		}
@@ -421,6 +454,27 @@ public class Dim2D
 		public Dim2DBuildWith buildWith(Dim2D dim)
 		{
 			return this.buildWith(new Dim2DSingle(dim));
+		}
+		
+		public Dim2DBuilder rotation(float degrees)
+		{
+			this.rotation = degrees;
+			
+			return this;
+		}
+		
+		public Dim2DBuilder rotateCW(float degrees)
+		{
+			this.rotation += degrees;
+			
+			return this;
+		}
+		
+		public Dim2DBuilder rotateCCW(float degrees)
+		{
+			this.rotation -= degrees;
+			
+			return this;
 		}
 
 		public Dim2DBuilder resetPos()
@@ -612,6 +666,27 @@ public class Dim2D
 			this.builder = builder;
 			this.buildWith = buildWith;
 		}
+		
+		public Dim2DBuildWith rotation()
+		{
+			this.builder.rotation = this.buildWith.getDim().rotation;
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith rotateCW()
+		{
+			this.builder.rotation += this.buildWith.getDim().rotation;
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith rotateCCW()
+		{
+			this.builder.rotation -= this.buildWith.getDim().rotation;
+			
+			return this;
+		}
 
 		public Dim2DBuildWith scale()
 		{
@@ -801,13 +876,13 @@ public class Dim2D
 	public static enum ModifierType
 	{
 
-		X, Y, POS, HEIGHT, WIDTH, AREA, SCALE, ALL;
+		X, Y, POS, HEIGHT, WIDTH, AREA, SCALE, ROTATION, ALL;
 
 	}
 
 	public static enum InternalModifierType
 	{
-		X_CENTERING, Y_CENTERING, SCALE;
+		CENTERING, X_CENTERING, Y_CENTERING, SCALE;
 	}
 
 }

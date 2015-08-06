@@ -70,7 +70,7 @@ public class MinecraftButton extends GuiFrame
 	}
 	
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		if (pool.contains(ButtonState.PRESSED))
 		{

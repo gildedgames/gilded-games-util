@@ -127,9 +127,9 @@ public class ScrollBar extends GuiFrame
 	}
 
 	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
+	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
-		super.onMouseScroll(input, scrollDifference);
+		super.onMouseScroll(scrollDifference, input);
 
 		if (input.isHovered(this.grabbableBar.getDim()) || input.isHovered(this.scrollingAreas))
 		{
@@ -140,9 +140,9 @@ public class ScrollBar extends GuiFrame
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		super.onMouseInput(input, pool);
+		super.onMouseInput(pool, input);
 
 		if (this.grabbedBar && !pool.has(ButtonState.PRESSED))
 		{
@@ -272,14 +272,14 @@ public class ScrollBar extends GuiFrame
 		}
 
 		@Override
-		public void tick(InputProvider input, TickInfo tickInfo)
+		public void tick(TickInfo tickInfo, InputProvider input)
 		{
 			if (Mouse.isButtonDown(MouseButton.LEFT.getIndex()) && input.isHovered(this.button))
 			{
 				this.scrollBar.increaseScrollPercentage(this.scrollPercentage);
 			}
 			
-			super.tick(input, tickInfo);
+			super.tick(tickInfo, input);
 		}
 
 		@Override

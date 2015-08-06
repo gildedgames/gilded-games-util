@@ -13,7 +13,7 @@ public abstract class UiEvent implements Ui
 	private boolean enabled = true;
 
 	@Override
-	public void tick(InputProvider input, TickInfo tickInfo)
+	public void tick(TickInfo tickInfo, InputProvider input)
 	{
 		
 	}

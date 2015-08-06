@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
@@ -113,14 +114,52 @@ public class UiServices
 		this.overlays.remove(uniqueSaveName);
 	}
 	
+	public boolean hasGuiScreen()
+	{
+		return Minecraft.getMinecraft().currentScreen != null;
+	}
+	
+	public GuiFrame currentFrame()
+	{
+		return this.currentFrame;
+	}
+	
+	public String currentFrameName()
+	{
+		return this.currentUniqueSaveName;
+	}
+	
+	public void open(String uniqueSaveName, GuiFrame frame)
+	{
+		this.open(uniqueSaveName, frame, MinecraftGuiViewer.instance());
+	}
+	
+	public void close()
+	{
+		this.close(MinecraftGuiViewer.instance());
+	}
+	
+	public void close(String uniqueSaveName)
+	{
+		this.close(uniqueSaveName, MinecraftGuiViewer.instance());
+	}
+	
 	public void open(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
 		//this.load(uniqueSaveName, frame, viewer);
-		
+
 		viewer.open(frame);
 		
 		this.currentUniqueSaveName = uniqueSaveName;
 		this.currentFrame = frame;
+	}
+	
+	public void close(String uniqueSaveName, GuiViewer viewer)
+	{
+		if (this.currentUniqueSaveName != null && this.currentUniqueSaveName.equals(uniqueSaveName))
+		{
+			this.close(viewer);
+		}
 	}
 	
 	public void close(GuiViewer viewer)
@@ -130,6 +169,7 @@ public class UiServices
 		viewer.close();
 		
 		this.currentFrame = null;
+		this.currentUniqueSaveName = null;
 	}
 	
 	private void refreshSaveLocation()

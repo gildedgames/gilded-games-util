@@ -17,8 +17,8 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 
 public final class GuiViewerHelper
 {
-
-	public static void processInitPre(InputProvider input, UIContainer... containers)
+	
+	public static void processInitPre(Dim2DHolder parent, InputProvider input, UIContainer... containers)
 	{
 		for (UIContainer container : containers)
 		{
@@ -31,6 +31,13 @@ public final class GuiViewerHelper
 			{
 				Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
 
+				if (element instanceof Dim2DHolder)
+				{
+					Dim2DHolder elementDimHolder = (Dim2DHolder)element;
+					
+					elementDimHolder.modDim().addModifier(parent, ModifierType.POS, ModifierType.SCALE).flush();
+				}
+				
 				element.init(input);
 
 				if (parentModifier != null)
@@ -49,9 +56,9 @@ public final class GuiViewerHelper
 		}
 	}
 
-	public static void processResolutionChange(InputProvider input, UIContainer... containers)
+	public static void processResolutionChange(Dim2DHolder parent, InputProvider input, UIContainer... containers)
 	{
-		GuiViewerHelper.processInitPre(input, containers);
+		GuiViewerHelper.processInitPre(parent, input, containers);
 	}
 
 	public static void processMouseInput(InputProvider input, MouseInputPool pool, UIContainer... containers)
@@ -67,7 +74,7 @@ public final class GuiViewerHelper
 			{
 				if (element.isEnabled())
 				{
-					element.onMouseInput(input, pool);
+					element.onMouseInput(pool, input);
 				}
 			}
 		}
@@ -86,13 +93,13 @@ public final class GuiViewerHelper
 			{
 				if (element.isEnabled())
 				{
-					element.onMouseScroll(input, scrollDifference);
+					element.onMouseScroll(scrollDifference, input);
 				}
 			}
 		}
 	}
 
-	public static boolean processKeyboardInput(KeyboardInputPool pool, UIContainer... containers)
+	public static boolean processKeyboardInput(KeyboardInputPool pool, InputProvider input, UIContainer... containers)
 	{
 		boolean success = false;
 		
@@ -109,7 +116,7 @@ public final class GuiViewerHelper
 				{
 					GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
 
-					success = element.onKeyboardInput(pool) || success;
+					success = element.onKeyboardInput(pool, input) || success;
 				}
 			}
 		}
@@ -149,7 +156,7 @@ public final class GuiViewerHelper
 			{
 				if (element.isEnabled())
 				{
-					element.tick(input, tickInfo);
+					element.tick(tickInfo, input);
 				}
 			}
 		}
