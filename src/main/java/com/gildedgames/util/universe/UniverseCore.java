@@ -18,7 +18,7 @@ import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
+import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
 import com.gildedgames.util.universe.common.util.TeleporterGeneric;
 
 public class UniverseCore implements ICore
@@ -38,7 +38,7 @@ public class UniverseCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilCore.NETWORK.registerMessage(MessageTravelUniverse.class, MessageTravelUniverse.class, Side.SERVER);
+		UtilCore.NETWORK.registerMessage(TravelUniversePacket.class, TravelUniversePacket.class, Side.SERVER);
 
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
 

@@ -35,7 +35,7 @@ public abstract class MouseEvent extends UiEvent implements MouseListener
 	}
 	
 	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
+	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
 		this.scrollDifference = scrollDifference;
 	}

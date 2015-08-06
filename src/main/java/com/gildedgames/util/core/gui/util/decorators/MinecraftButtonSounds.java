@@ -33,7 +33,7 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
 	}
 	
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		Gui view = this.getDecoratedElement();
 		
@@ -42,7 +42,7 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
 			this.playPressSound(this.mc.getSoundHandler());
 		}
 		
-		super.onMouseInput(input, pool);
+		super.onMouseInput(pool, input);
 	}
 	
 	public void playPressSound(SoundHandler soundHandlerIn)

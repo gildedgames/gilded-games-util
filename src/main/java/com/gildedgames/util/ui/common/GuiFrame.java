@@ -124,7 +124,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		this.initContent(input);
 		
-		GuiViewerHelper.processInitPre(input, this.content(), this.listeners());
+		GuiViewerHelper.processInitPre(this, input, this.content(), this.listeners()); 
 	}
 
 	@Override
@@ -134,9 +134,9 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	}
 	
 	@Override
-	public boolean onKeyboardInput(KeyboardInputPool pool)
+	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
-		return GuiViewerHelper.processKeyboardInput(pool, this.content(), this.listeners());
+		return GuiViewerHelper.processKeyboardInput(pool, input, this.content(), this.listeners());
 	}
 	
 	@Override
@@ -146,19 +146,19 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	}
 	
 	@Override
-	public void tick(InputProvider input, TickInfo tickInfo)
+	public void tick(TickInfo tickInfo, InputProvider input)
 	{
 		GuiViewerHelper.processTick(input, tickInfo, this.content(), this.listeners());
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		GuiViewerHelper.processMouseInput(input, pool, this.content(), this.listeners());
 	}
 
 	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
+	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
 		GuiViewerHelper.processMouseScroll(input, scrollDifference, this.content(), this.listeners());
 	}

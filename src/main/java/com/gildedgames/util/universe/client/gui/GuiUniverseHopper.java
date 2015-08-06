@@ -3,9 +3,10 @@ package com.gildedgames.util.universe.client.gui;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
+import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
 import com.gildedgames.util.universe.common.util.IUniverse;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -13,6 +14,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -112,7 +114,7 @@ public class GuiUniverseHopper extends GuiScreen
 			{
 				String id = UniverseAPI.instance().getIDFrom(SELECTED_UNIVERSE);
 		
-				UtilCore.NETWORK.sendToServer(new MessageTravelUniverse(id));
+				UtilCore.NETWORK.sendToServer(new TravelUniversePacket(id));
 		
 				break;
 			}

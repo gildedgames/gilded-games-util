@@ -67,19 +67,19 @@ public class GuiFrameEvent extends GuiFrame
 	}
 
 	@Override
-	public boolean onKeyboardInput(KeyboardInputPool pool)
+	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		return false;
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 
 	}
 
 	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
+	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
 		
 	}

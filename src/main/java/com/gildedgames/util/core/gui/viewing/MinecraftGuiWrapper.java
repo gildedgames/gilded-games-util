@@ -5,7 +5,6 @@ import java.io.IOException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
@@ -64,7 +63,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	{
 		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(charTyped, keyTyped, ButtonState.PRESSED));
 
-		this.frame.onKeyboardInput(pool);
+		this.frame.onKeyboardInput(pool, INPUT);
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
 
-		this.frame.onMouseInput(INPUT, pool);
+		this.frame.onMouseInput(pool, INPUT);
 	}
 
 	@Override
@@ -80,7 +79,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.RELEASED));
 
-		this.frame.onMouseInput(INPUT, pool);
+		this.frame.onMouseInput(pool, INPUT);
 	}
 
 	@Override
@@ -88,7 +87,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	{
 		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED, MouseMotion.MOVING));
 
-		this.frame.onMouseInput(INPUT, pool);
+		this.frame.onMouseInput(pool, INPUT);
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 
 		if (scrollDifference != 0)
 		{
-			this.frame.onMouseScroll(INPUT, scrollDifference);
+			this.frame.onMouseScroll(scrollDifference, INPUT);
 		}
 
 		this.frame.draw(GRAPHICS, INPUT);
@@ -106,7 +105,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 
 	public final void tick(TickInfo info)
 	{
-		this.frame.tick(INPUT, info);
+		this.frame.tick(info, INPUT);
 	}
 
 	@Override

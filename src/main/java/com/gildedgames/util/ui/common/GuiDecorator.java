@@ -122,9 +122,9 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 	
 	@Override
-	public void tick(InputProvider input, TickInfo tickInfo)
+	public void tick(TickInfo tickInfo, InputProvider input)
 	{
-		this.element.tick(input, tickInfo);
+		this.element.tick(tickInfo, input);
 	}
 	
 	@Override
@@ -132,7 +132,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	{
 		this.initContent(input);
 		
-		GuiViewerHelper.processInitPre(input, this.content(), this.listeners());
+		GuiViewerHelper.processInitPre(this, input, this.content(), this.listeners());
 	}
 	
 	@Override
@@ -168,37 +168,37 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public boolean onKeyboardInput(KeyboardInputPool pool)
+	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		KeyboardListener listener = ObjectFilter.getType(this.element, KeyboardListener.class);
 		
 		if (listener != null)
 		{
-			return listener.onKeyboardInput(pool);
+			return listener.onKeyboardInput(pool, input);
 		}
 		
 		return false;
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
-			listener.onMouseInput(input, pool);
+			listener.onMouseInput(pool, input);
 		}
 	}
 
 	@Override
-	public void onMouseScroll(InputProvider input, int scrollDifference)
+	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
 		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
-			listener.onMouseScroll(input, scrollDifference);
+			listener.onMouseScroll(scrollDifference, input);
 		}
 	}
 

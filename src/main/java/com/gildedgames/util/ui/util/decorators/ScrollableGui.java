@@ -107,9 +107,9 @@ public class ScrollableGui extends GuiFrame
 	}
 
 	@Override
-	public void tick(InputProvider input, TickInfo tickInfo)
+	public void tick(TickInfo tickInfo, InputProvider input)
 	{
-		super.tick(input, tickInfo);
+		super.tick(tickInfo, input);
 	}
 
 }

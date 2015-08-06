@@ -54,8 +54,9 @@ public class MinecraftGuiWrapperEvents implements TickInfo
         	for (Overlay overlay : UiCore.locate().overlays())
     		{
     			GuiFrame frame = overlay.getFrame();
+    			GuiViewer viewer = overlay.getViewer();
 
-				this.handleKeyboardInput(frame);
+				this.handleKeyboardInput(frame, viewer);
 			}
         }
     }
@@ -78,7 +79,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
             
             MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED));
 
-    		frame.onMouseInput(viewer.getInputProvider(), pool);
+    		frame.onMouseInput(pool, viewer.getInputProvider());
         }
         else if (button != -1)
         {
@@ -91,7 +92,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
             
             MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.RELEASED));
 
-    		frame.onMouseInput(viewer.getInputProvider(), pool);
+    		frame.onMouseInput(pool, viewer.getInputProvider());
         }
         else if (this.eventButton != -1 && this.lastMouseEvent > 0L)
         {
@@ -99,27 +100,27 @@ public class MinecraftGuiWrapperEvents implements TickInfo
             
             MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED, MouseMotion.MOVING));
 
-    		frame.onMouseInput(viewer.getInputProvider(), pool);
+    		frame.onMouseInput(pool, viewer.getInputProvider());
         }
         
         int scrollDifference = Mouse.getDWheel();
 
 		if (scrollDifference != 0)
 		{
-			frame.onMouseScroll(viewer.getInputProvider(), scrollDifference);
+			frame.onMouseScroll(scrollDifference, viewer.getInputProvider());
 		}
     }
 
     /**
      * Handles keyboard input.
      */
-    public void handleKeyboardInput(GuiFrame frame)
+    public void handleKeyboardInput(GuiFrame frame, GuiViewer viewer)
     {
         if (Keyboard.getEventKeyState())
         {
         	KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(Keyboard.getEventCharacter(), Keyboard.getEventKey(), ButtonState.PRESSED));
 
-    		frame.onKeyboardInput(pool);
+    		frame.onKeyboardInput(pool, viewer.getInputProvider());
         }
     }
 
@@ -154,7 +155,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 					frame.onResolutionChange(input);
 				}
 				
-				frame.tick(viewer.getInputProvider(), viewer.getTickInfo());
+				frame.tick(viewer.getTickInfo(), viewer.getInputProvider());
 			}
 			
 			this.handleInput();

@@ -24,6 +24,6 @@ public interface Ui extends NBT
 	 * Will not be called if this element is disabled with isEnabled()
 	 * @param input
 	 */
-	void tick(InputProvider input, TickInfo tickInfo);
+	void tick(TickInfo tickInfo, InputProvider input);
 	
 }

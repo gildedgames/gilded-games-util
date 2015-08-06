@@ -7,8 +7,8 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 public interface MouseListener extends Ui
 {
 
-	void onMouseInput(InputProvider input, MouseInputPool pool);
+	void onMouseInput(MouseInputPool pool, InputProvider input);
 
-	void onMouseScroll(InputProvider input, int scrollDifference);
+	void onMouseScroll(int scrollDifference, InputProvider input);
 
 }

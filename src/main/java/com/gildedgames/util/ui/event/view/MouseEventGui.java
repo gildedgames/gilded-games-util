@@ -39,7 +39,7 @@ public abstract class MouseEventGui extends MouseEvent
 	}
 
 	@Override
-	public void onMouseInput(InputProvider input, MouseInputPool pool)
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		if (input.isHovered(this.gui.getDim()) && this.behaviorsMet(input, pool, this.scrollDifference) && pool.containsAll(this.getEvents()))
 		{

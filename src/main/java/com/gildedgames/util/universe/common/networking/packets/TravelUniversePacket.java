@@ -1,4 +1,4 @@
-package com.gildedgames.util.universe.common.networking.messages;
+package com.gildedgames.util.universe.common.networking.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,22 +8,22 @@ import com.gildedgames.util.core.CustomPacket;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.util.IUniverse;
 
-public class MessageTravelUniverse extends CustomPacket<MessageTravelUniverse>
+public class TravelUniversePacket extends CustomPacket<TravelUniversePacket>
 {
 
 	private String universeID;
 
-	public MessageTravelUniverse()
+	public TravelUniversePacket()
 	{
 
 	}
 
-	public MessageTravelUniverse(IUniverse universe)
+	public TravelUniversePacket(IUniverse universe)
 	{
 		this.universeID = UniverseAPI.instance().getIDFrom(universe);
 	}
 
-	public MessageTravelUniverse(String universeID)
+	public TravelUniversePacket(String universeID)
 	{
 		this.universeID = universeID;
 	}
@@ -41,13 +41,13 @@ public class MessageTravelUniverse extends CustomPacket<MessageTravelUniverse>
 	}
 
 	@Override
-	public void handleClientSide(MessageTravelUniverse message, EntityPlayer player)
+	public void handleClientSide(TravelUniversePacket message, EntityPlayer player)
 	{
 
 	}
 
 	@Override
-	public void handleServerSide(MessageTravelUniverse message, EntityPlayer player)
+	public void handleServerSide(TravelUniversePacket message, EntityPlayer player)
 	{
 		IUniverse universe = UniverseAPI.instance().getFromID(message.universeID);
 

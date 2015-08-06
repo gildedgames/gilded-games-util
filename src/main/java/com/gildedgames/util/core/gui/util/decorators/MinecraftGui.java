@@ -57,14 +57,14 @@ public class MinecraftGui extends GuiDecorator<Gui>
 	}
 	
 	@Override
-	public boolean onKeyboardInput(KeyboardInputPool pool)
+	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
         {
 			Minecraft.getMinecraft().displayGuiScreen(null);
         }
 		
-		return super.onKeyboardInput(pool);
+		return super.onKeyboardInput(pool, input);
 	}
 
 }
