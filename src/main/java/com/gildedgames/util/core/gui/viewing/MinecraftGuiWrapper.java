@@ -61,7 +61,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
-		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(charTyped, keyTyped, ButtonState.PRESSED));
+		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(keyTyped, ButtonState.PRESSED));
 
 		this.frame.onKeyboardInput(pool, INPUT);
 	}

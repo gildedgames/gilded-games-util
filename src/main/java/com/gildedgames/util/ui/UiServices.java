@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.UtilCore;
@@ -117,6 +118,11 @@ public class UiServices
 	public boolean hasGuiScreen()
 	{
 		return Minecraft.getMinecraft().currentScreen != null;
+	}
+	
+	public GuiScreen getGuiScreen()
+	{
+		return Minecraft.getMinecraft().currentScreen;
 	}
 	
 	public GuiFrame currentFrame()
