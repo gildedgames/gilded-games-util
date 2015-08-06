@@ -5,19 +5,12 @@ public class KeyboardInput extends ButtonInput
 {
 
 	protected int key;
-	
-	protected char character;
-	
-	public KeyboardInput(char character, int key, ButtonState state)
+
+	public KeyboardInput(int key, ButtonState state)
 	{
 		super(state);
 
 		this.key = key;
-	}
-	
-	public char getChar()
-	{
-		return this.character;
 	}
 	
 	public int getKey()

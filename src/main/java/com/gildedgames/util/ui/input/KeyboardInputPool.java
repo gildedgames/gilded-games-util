@@ -71,7 +71,7 @@ public class KeyboardInputPool implements Iterable<KeyboardInput>
 		
 		for (KeyboardInput event : this)
 		{
-			if (event != null && event.getChar() == character)
+			if (event != null && (char)event.getKey() == character)
 			{
 				events.add(event);
 			}
@@ -112,7 +112,7 @@ public class KeyboardInputPool implements Iterable<KeyboardInput>
 	{
 		for (KeyboardInput event : this)
 		{
-			if (event != null && event.getChar() == character)
+			if (event != null && (char)event.getKey() == character)
 			{
 				return true;
 			}

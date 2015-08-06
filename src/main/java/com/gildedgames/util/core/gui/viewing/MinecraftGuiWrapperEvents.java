@@ -118,7 +118,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
     {
         if (Keyboard.getEventKeyState())
         {
-        	KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(Keyboard.getEventCharacter(), Keyboard.getEventKey(), ButtonState.PRESSED));
+        	KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(Keyboard.getEventKey(), ButtonState.PRESSED));
 
     		frame.onKeyboardInput(pool, viewer.getInputProvider());
         }
