@@ -146,7 +146,7 @@ public class GuiFactory
 
 	public static ScrollBar createScrollBar()
 	{
-		return GuiFactory.scrollBar(new Pos2D(), 0, Dim2D.flush());
+		return GuiFactory.scrollBar(Pos2D.flush(), 0, Dim2D.flush());
 	}
 
 	public static TextureElement texture(Sprite sprite)

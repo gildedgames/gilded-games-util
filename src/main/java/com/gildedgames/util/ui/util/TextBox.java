@@ -50,11 +50,11 @@ public class TextBox extends GuiFrame
 					TextElement textElement;
 					if (this.centerFormat)
 					{
-						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(halfWidth, textHeight), true);
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(halfWidth, textHeight), true);
 					}
 					else
 					{
-						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), new Pos2D(0, textHeight), false);
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(0, textHeight), false);
 					}
 					this.content().set(String.valueOf(i), textElement);
 
