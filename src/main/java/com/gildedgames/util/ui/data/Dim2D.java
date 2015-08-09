@@ -15,17 +15,14 @@ public class Dim2D
 	protected final ImmutableList<Modifier> modifiers;
 
 	protected final Pos2D pos;
+	
+	protected final Rotation2D rotation;
 
 	protected final int width, height;
 
 	protected final boolean centeredX, centeredY;
 
 	protected final float scale;
-	
-	/**
-	 * In degrees.
-	 */
-	protected final float rotation;
 
 	private Dim2D()
 	{
@@ -59,9 +56,9 @@ public class Dim2D
 		return this.modifiers.contains(modifier);
 	}
 	
-	public float rotation()
+	public Rotation2D rotation()
 	{
-		float modifiedRotation = this.rotation;
+		Rotation2D modifiedRotation = this.rotation;
 
 		for (Modifier modifier : this.modifiers)
 		{
@@ -71,12 +68,22 @@ public class Dim2D
 
 				if (holder.getDim() != null && holder.getDim() != this)
 				{
-					modifiedRotation += holder.getDim().rotation();
+					modifiedRotation = modifiedRotation.buildWith(holder.getDim().rotation()).addDegrees().flush();
 				}
 			}
 		}
 		
-		return this.rotation;
+		return modifiedRotation;
+	}
+	
+	public float degrees()
+	{
+		return this.rotation().degrees();
+	}
+	
+	public Pos2D origin()
+	{
+		return this.rotation.origin();
 	}
 
 	public float scale()
@@ -109,7 +116,7 @@ public class Dim2D
 
 	public Pos2D maxPos()
 	{
-		return this.pos().add(this.width(), this.height());
+		return this.pos().clone().add(this.width(), this.height()).flush();
 	}
 
 	public int maxX()
@@ -130,7 +137,7 @@ public class Dim2D
 		int offsetX = (int) (this.isCenteredX() ? this.width() * this.scale() / 2 : 0);
 		int offsetY = (int) (this.isCenteredY() ? this.height() * this.scale() / 2 : 0);
 
-		return new Pos2D(pos.getX() - offsetX, pos.getY() - offsetY);
+		return Pos2D.flush(pos.x() - offsetX, pos.y() - offsetY);
 	}
 
 	private Pos2D getModifiedPos(Pos2D pos)
@@ -147,12 +154,12 @@ public class Dim2D
 				{
 					if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.addX(holder.getDim().pos().getX());
+						modifiedPos = modifiedPos.clone().addX(holder.getDim().pos().x()).flush();
 					}
 
 					if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
 					{
-						modifiedPos = modifiedPos.addY(holder.getDim().pos().getY());
+						modifiedPos = modifiedPos.clone().addY(holder.getDim().pos().y()).flush();
 					}
 				}
 			}
@@ -166,7 +173,7 @@ public class Dim2D
 	 */
 	public int x()
 	{
-		return this.pos().getX();
+		return this.pos().x();
 	}
 
 	/**
@@ -174,7 +181,7 @@ public class Dim2D
 	 */
 	public int y()
 	{
-		return this.pos().getY();
+		return this.pos().y();
 	}
 
 	/**
@@ -330,7 +337,7 @@ public class Dim2D
 				int maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
 				int maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
 
-				result.pos(new Pos2D(minX, minY)).area(maxX - minY, maxY - minY);
+				result.pos(Pos2D.flush(minX, minY)).area(maxX - minY, maxY - minY);
 
 				overallScale += dim.scale();
 
@@ -392,7 +399,7 @@ public class Dim2D
 
 		protected List<Modifier> modifiers = new ArrayList<Modifier>();
 
-		protected Pos2D pos = new Pos2D();
+		protected Pos2D pos = Pos2D.flush();
 
 		protected int width, height;
 
@@ -400,7 +407,7 @@ public class Dim2D
 
 		protected float scale = 1.0F;
 		
-		protected float rotation;
+		protected Rotation2D rotation = Rotation2D.flush();
 
 		public Dim2DBuilder()
 		{
@@ -456,30 +463,58 @@ public class Dim2D
 			return this.buildWith(new Dim2DSingle(dim));
 		}
 		
-		public Dim2DBuilder rotation(float degrees)
+		public Dim2DBuilder degrees(float degrees)
 		{
-			this.rotation = degrees;
+			this.rotation = this.rotation.clone().degrees(degrees).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuilder origin(Pos2D origin)
+		{
+			this.rotation = this.rotation.clone().origin(origin).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuilder origin(int x, int y)
+		{
+			this.rotation = this.rotation.clone().origin(x, y).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuilder originX(int x)
+		{
+			this.rotation = this.rotation.clone().originX(x).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuilder originY(int y)
+		{
+			this.rotation = this.rotation.clone().originY(y).flush();
 			
 			return this;
 		}
 		
 		public Dim2DBuilder rotateCW(float degrees)
 		{
-			this.rotation += degrees;
+			this.rotation = this.rotation.clone().addDegrees(degrees).flush();
 			
 			return this;
 		}
 		
 		public Dim2DBuilder rotateCCW(float degrees)
 		{
-			this.rotation -= degrees;
+			this.rotation = this.rotation.clone().subtractDegrees(degrees).flush();
 			
 			return this;
 		}
 
 		public Dim2DBuilder resetPos()
 		{
-			this.pos = new Pos2D();
+			this.pos = Pos2D.flush();
 
 			return this;
 		}
@@ -514,7 +549,7 @@ public class Dim2D
 
 		public Dim2DBuilder pos(int x, int y)
 		{
-			this.pos = new Pos2D(x, y);
+			this.pos = Pos2D.flush(x, y);
 			return this;
 		}
 
@@ -544,12 +579,12 @@ public class Dim2D
 
 		public Dim2DBuilder y(int y)
 		{
-			return this.pos(this.pos.y(y));
+			return this.pos(this.pos.clone().y(y).flush());
 		}
 
 		public Dim2DBuilder x(int x)
 		{
-			return this.pos(this.pos.x(x));
+			return this.pos(this.pos.clone().x(x).flush());
 		}
 
 		public Dim2DBuilder center(boolean centered)
@@ -581,17 +616,17 @@ public class Dim2D
 
 		public Dim2DBuilder addX(int x)
 		{
-			return this.pos(this.pos.add(x, 0));
+			return this.pos(this.pos.clone().addX(x).flush());
 		}
 
 		public Dim2DBuilder addY(int y)
 		{
-			return this.pos(this.pos.add(0, y));
+			return this.pos(this.pos.clone().addY(y).flush());
 		}
 
 		public Dim2DBuilder addPos(Pos2D pos)
 		{
-			return this.addX(pos.getX()).addY(pos.getY());
+			return this.addX(pos.x()).addY(pos.y());
 		}
 
 		/**
@@ -667,23 +702,44 @@ public class Dim2D
 			this.buildWith = buildWith;
 		}
 		
-		public Dim2DBuildWith rotation()
+		public Dim2DBuildWith degrees()
 		{
-			this.builder.rotation = this.buildWith.getDim().rotation;
+			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).degrees().flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith origin()
+		{
+			this.builder.rotation = this.builder.rotation.clone().origin(this.buildWith.getDim().rotation.origin()).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith originX()
+		{
+			this.builder.rotation = this.builder.rotation.clone().originX(this.buildWith.getDim().rotation.origin().x()).flush();
+			
+			return this;
+		}
+		
+		public Dim2DBuildWith originY()
+		{
+			this.builder.rotation = this.builder.rotation.clone().originY(this.buildWith.getDim().rotation.origin().y()).flush();
 			
 			return this;
 		}
 		
 		public Dim2DBuildWith rotateCW()
 		{
-			this.builder.rotation += this.buildWith.getDim().rotation;
+			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).addDegrees().flush();
 			
 			return this;
 		}
 		
 		public Dim2DBuildWith rotateCCW()
 		{
-			this.builder.rotation -= this.buildWith.getDim().rotation;
+			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).subtractDegrees().flush();
 			
 			return this;
 		}
@@ -746,14 +802,14 @@ public class Dim2D
 
 		public Dim2DBuildWith y()
 		{
-			this.builder.pos(this.builder.pos.y(this.buildWith.getDim().pos.y));
+			this.builder.pos(this.builder.pos.clone().y(this.buildWith.getDim().pos.y()).flush());
 
 			return this;
 		}
 
 		public Dim2DBuildWith x()
 		{
-			this.builder.pos(this.builder.pos.x(this.buildWith.getDim().pos.x));
+			this.builder.pos(this.builder.pos.clone().x(this.buildWith.getDim().pos.x()).flush());
 
 			return this;
 		}
@@ -788,21 +844,21 @@ public class Dim2D
 
 		public Dim2DBuildWith addX()
 		{
-			this.builder.pos(this.builder.pos.add(this.buildWith.getDim().pos.x, 0));
+			this.builder.pos(this.builder.pos.clone().addX(this.buildWith.getDim().pos.x()).flush());
 
 			return this;
 		}
 
 		public Dim2DBuildWith addY()
 		{
-			this.builder.pos(this.builder.pos.add(0, this.buildWith.getDim().pos.y));
+			this.builder.pos(this.builder.pos.clone().addY(this.buildWith.getDim().pos.y()).flush());
 
 			return this;
 		}
 
 		public Dim2DBuildWith addPos()
 		{
-			this.builder.addX(this.buildWith.getDim().pos.getX()).addY(this.buildWith.getDim().pos.getY());
+			this.builder.addX(this.buildWith.getDim().pos.x()).addY(this.buildWith.getDim().pos.y());
 
 			return this;
 		}

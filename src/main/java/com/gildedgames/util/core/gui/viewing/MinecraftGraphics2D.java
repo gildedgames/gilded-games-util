@@ -70,11 +70,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		GlStateManager.scale(dim.scale(), dim.scale(), 0);
 		
-		GlStateManager.translate(dim.width() / 2, dim.height() / 2, 0);
+		GlStateManager.translate((dim.width() / 2) + dim.rotation().originX(), (dim.height() / 2) + dim.rotation().originY(), 0);
 		
-		GlStateManager.rotate(dim.rotation(), 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(dim.rotation().degrees(), 0.0F, 0.0F, 1.0F);
 		
-		GlStateManager.translate(-dim.width() / 2, -dim.height() / 2, 0);
+		GlStateManager.translate(-(dim.width() / 2) - dim.rotation().originX(), -(dim.height() / 2) - dim.rotation().originY(), 0);
 		
 		GlStateManager.color(1, 1, 1, data.getAlpha());
 

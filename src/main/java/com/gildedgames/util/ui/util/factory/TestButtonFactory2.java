@@ -37,7 +37,7 @@ public class TestButtonFactory2 implements ContentFactory
 
 		for (int count = 0; count < this.buttonCount; count++)
 		{
-			GuiFrame button = GuiFactory.button(new Pos2D(), 20, String.valueOf(count + 1), false);
+			GuiFrame button = GuiFactory.button(Pos2D.flush(), 20, String.valueOf(count + 1), false);
 
 			buttons.put("button" + count, button);
 		}

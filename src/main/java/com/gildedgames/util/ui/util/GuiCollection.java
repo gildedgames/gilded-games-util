@@ -28,7 +28,7 @@ public class GuiCollection extends GuiFrame
 
 	public GuiCollection(GuiPositioner positioner, ContentFactory... contentProviders)
 	{
-		this(new Pos2D(), 0, positioner, contentProviders);
+		this(Pos2D.flush(), 0, positioner, contentProviders);
 	}
 
 	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory... contentProviders)

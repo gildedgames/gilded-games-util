@@ -8,47 +8,47 @@ public class ScreenUtil
 
 	public static Pos2D getCenter(InputProvider input)
 	{
-		return new Pos2D(input.getScreenWidth() / 2, input.getScreenHeight() / 2);
+		return Pos2D.flush(input.getScreenWidth() / 2, input.getScreenHeight() / 2);
 	}
 	
 	public static Pos2D getBottomCenter(InputProvider input)
 	{
-		return ScreenUtil.getCenter(input).addY(input.getScreenHeight() / 2);
+		return ScreenUtil.getCenter(input).clone().addY(input.getScreenHeight() / 2).flush();
 	}
 	
 	public static Pos2D getBottomRight(InputProvider input)
 	{
-		return ScreenUtil.getBottomCenter(input).addX(input.getScreenWidth() / 2);
+		return ScreenUtil.getBottomCenter(input).clone().addX(input.getScreenWidth() / 2).flush();
 	}
 	
 	public static Pos2D getBottomLeft(InputProvider input)
 	{
-		return ScreenUtil.getBottomRight(input).addX(-input.getScreenWidth());
+		return ScreenUtil.getBottomRight(input).clone().addX(-input.getScreenWidth()).flush();
 	}
 	
 	public static Pos2D getCenterLeft(InputProvider input)
 	{
-		return ScreenUtil.getCenter(input).addX(-input.getScreenWidth() / 2);
+		return ScreenUtil.getCenter(input).clone().addX(-input.getScreenWidth() / 2).flush();
 	}
 	
 	public static Pos2D getCenterRight(InputProvider input)
 	{
-		return ScreenUtil.getCenterLeft(input).addX(input.getScreenWidth());
+		return ScreenUtil.getCenterLeft(input).clone().addX(input.getScreenWidth()).flush();
 	}
 	
 	public static Pos2D getTopCenter(InputProvider input)
 	{
-		return ScreenUtil.getCenter(input).addY(-input.getScreenHeight() / 2);
+		return ScreenUtil.getCenter(input).clone().addY(-input.getScreenHeight() / 2).flush();
 	}
 	
 	public static Pos2D getTopLeft(InputProvider input)
 	{
-		return ScreenUtil.getTopCenter(input).addX(-input.getScreenWidth() / 2);
+		return ScreenUtil.getTopCenter(input).clone().addX(-input.getScreenWidth() / 2).flush();
 	}
 	
 	public static Pos2D getTopRight(InputProvider input)
 	{
-		return ScreenUtil.getTopLeft(input).addX(input.getScreenWidth());
+		return ScreenUtil.getTopLeft(input).clone().addX(input.getScreenWidth()).flush();
 	}
 	
 }
