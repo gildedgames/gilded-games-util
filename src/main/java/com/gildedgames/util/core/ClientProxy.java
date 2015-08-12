@@ -1,9 +1,15 @@
 package com.gildedgames.util.core;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
+
+import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
@@ -26,6 +32,8 @@ public class ClientProxy extends ServerProxy
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
 
 	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
+	
+	public static KeyBinding keyBindHopUniverse = new KeyBinding(StatCollector.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
 
 	@Override
 	public EntityPlayer getPlayer()
@@ -67,6 +75,12 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
+	}
+	
+	@Override
+	public void init(FMLInitializationEvent event)
+	{
+		ClientRegistry.registerKeyBinding(keyBindHopUniverse);
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
@@ -124,6 +125,8 @@ public class UtilCore implements ICore
 		{
 			core.init(event);
 		}
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new UtilGuiHandler());
 
 		proxy.init(event);
 	}
