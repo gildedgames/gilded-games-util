@@ -498,14 +498,14 @@ public class Dim2D
 			return this;
 		}
 		
-		public Dim2DBuilder rotateCW(float degrees)
+		public Dim2DBuilder addDegrees(float degrees)
 		{
 			this.rotation = this.rotation.clone().addDegrees(degrees).flush();
 			
 			return this;
 		}
 		
-		public Dim2DBuilder rotateCCW(float degrees)
+		public Dim2DBuilder subtractDegrees(float degrees)
 		{
 			this.rotation = this.rotation.clone().subtractDegrees(degrees).flush();
 			
