@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.gildedgames.util.core.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.universe.common.UniverseAPI;
@@ -36,8 +36,6 @@ public class GuiUniverseHopper extends GuiScreen
 	private TravelButton travelButton;
 
 	private final PlayerUniverse usingPlayer = UniverseCore.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer);
-	
-	private int ticksSinceOpen;
 
 	public GuiUniverseHopper()
 	{
@@ -133,8 +131,6 @@ public class GuiUniverseHopper extends GuiScreen
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
-		this.ticksSinceOpen++;
-		
 		this.travelButton.enabled = SELECTED_UNIVERSE != this.usingPlayer.getUniverse();
 
 		this.drawDefaultBackground();
@@ -166,10 +162,17 @@ public class GuiUniverseHopper extends GuiScreen
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException
 	{
-		if ((keyCode == Keyboard.KEY_H && this.ticksSinceOpen > 20) || keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
+		if (keyCode == ClientProxy.keyBindHopUniverse.getKeyCode() || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			this.mc.thePlayer.closeScreen();
+			this.mc.displayGuiScreen((GuiScreen)null);
+
+            if (this.mc.currentScreen == null)
+            {
+                this.mc.setIngameFocus();
+            }
 		}
+		
+		super.keyTyped(typedChar, keyCode);
 	}
 
 	@Override
