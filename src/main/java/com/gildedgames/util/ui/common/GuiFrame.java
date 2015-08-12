@@ -134,6 +134,12 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	}
 	
 	@Override
+	public void onClose(InputProvider input)
+	{
+		GuiViewerHelper.processClose(input, this.content(), this.listeners());
+	}
+	
+	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		return GuiViewerHelper.processKeyboardInput(pool, input, this.content(), this.listeners());

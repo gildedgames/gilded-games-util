@@ -193,18 +193,20 @@ public class GuiFactory
 
 	public static GuiFrame textBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
-
 		TextBox box = new TextBox(dim, false, text);
+		
 		if (!hasSlider)
 		{
 			return box;
 		}
+		
 		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
 	}
 
 	public static GuiFrame centeredTextBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
 		TextBox box = new TextBox(dim, true, text);
+		
 		if (!hasSlider)
 		{
 			return box;
