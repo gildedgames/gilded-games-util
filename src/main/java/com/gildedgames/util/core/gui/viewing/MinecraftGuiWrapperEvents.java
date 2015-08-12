@@ -10,6 +10,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilGuiHandler;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.UiServices.Overlay;
 import com.gildedgames.util.ui.UiServices.RenderOrder;

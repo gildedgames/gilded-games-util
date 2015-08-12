@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +17,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
+import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilGuiHandler;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
@@ -55,28 +59,6 @@ public class PlayerUniverse implements IPlayerHook
 		if (this.universeInstances.get(minecraftUniverse) == null)
 		{
 			this.universeInstances.put(minecraftUniverse, this.player);
-		}
-
-		if (!this.player.worldObj.isRemote)
-		{
-			//TODO: This is empty :D
-			/*EntityPlayerMP playerMP = (EntityPlayerMP)this.player;
-
-			ServerConfigurationManager scm = playerMP.mcServer.getConfigurationManager();
-			
-			EntityPlayerMP newPlayer = (EntityPlayerMP)this.universeInstances.get(this.universeID);
-			
-			if (this.player.dimension != newPlayer.dimension)
-			{
-				UniverseCore.teleportToDimension(playerMP, newPlayer.dimension);
-			}
-			
-			this.player.clonePlayer(newPlayer, true);
-
-			playerMP.playerNetServerHandler.setPlayerLocation(newPlayer.posX, newPlayer.posY, newPlayer.posZ, newPlayer.rotationYaw, newPlayer.rotationPitch);
-			playerMP.theItemInWorldManager.setWorld((WorldServer) newPlayer.worldObj);
-			scm.updateTimeAndWeatherForPlayer(playerMP, (WorldServer) newPlayer.worldObj);
-			scm.syncPlayerInventory(playerMP);*/
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.gildedgames.util.core;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -26,6 +27,11 @@ public class UtilEvents
 		if (event.phase == TickEvent.Phase.START)
 		{
 			IOCore.io().dispatchDirtySyncables(SyncSide.CLIENT);
+			
+			if (ClientProxy.keyBindHopUniverse.isKeyDown())
+			{
+				Minecraft.getMinecraft().thePlayer.openGui(UtilCore.instance, UtilGuiHandler.hopUniverseID, Minecraft.getMinecraft().theWorld, 0, 0, 0);
+			}
 		}
 	}
 
