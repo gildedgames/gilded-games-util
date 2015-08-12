@@ -12,15 +12,21 @@ import com.gildedgames.util.ui.input.InputProvider;
 public class TextBox extends GuiFrame
 {
 
-	private final Text[] text;
+	private Text[] text;
 
-	private final boolean centerFormat;
+	private boolean centerFormat;
 
 	public TextBox(Dim2D dim, boolean centerFormat, Text... text)
 	{
 		super(dim);
+		
 		this.text = text;
 		this.centerFormat = centerFormat;
+	}
+	
+	public void setText(Text... text)
+	{
+		this.text = text;
 	}
 
 	@Override
@@ -30,12 +36,14 @@ public class TextBox extends GuiFrame
 		int textHeight = 0;
 
 		int halfWidth = this.getDim().width() / 2;
+		
 		for (Text t : this.text)
 		{
 			if (t.text == null || t.text.isEmpty())
 			{
 				continue;
 			}
+			
 			final String[] strings = t.text.split("/n");
 
 			final List<String> stringList = new ArrayList<String>(strings.length);
@@ -48,6 +56,7 @@ public class TextBox extends GuiFrame
 				for (final String s : newStrings)
 				{
 					TextElement textElement;
+					
 					if (this.centerFormat)
 					{
 						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(halfWidth, textHeight), true);
@@ -56,6 +65,7 @@ public class TextBox extends GuiFrame
 					{
 						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(0, textHeight), false);
 					}
+					
 					this.content().set(String.valueOf(i), textElement);
 
 					textHeight += 1.1f * t.scaledHeight();

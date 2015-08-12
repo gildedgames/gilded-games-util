@@ -39,7 +39,7 @@ public class MinecraftGuiViewer implements GuiViewer
 	}
 
 	@Override
-	public void close()
+	public void close(GuiFrame frame)
 	{
 		this.mc.displayGuiScreen(null);
 	}

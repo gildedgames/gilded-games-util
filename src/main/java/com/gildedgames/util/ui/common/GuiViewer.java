@@ -9,7 +9,7 @@ public interface GuiViewer
 
 	void open(GuiFrame frame);
 	
-	void close();
+	void close(GuiFrame frame);
 	
 	InputProvider getInputProvider();
 	

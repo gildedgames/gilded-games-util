@@ -1,6 +1,7 @@
 package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,6 +35,8 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	private int width, height, scaleFactor, touchValue, eventButton;
 	
 	private long lastMouseEvent;
+	
+	private World world;
 	
     public void handleInput()
     {
@@ -146,11 +149,18 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				
 				InputProvider input = viewer.getInputProvider();
 				
-				if (this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
+				if (this.world != Minecraft.getMinecraft().theWorld || this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
 				{
+					viewer.getInputProvider().refreshResolution();
+					
 					this.width = input.getScreenWidth();
 					this.height = input.getScreenHeight();
 					this.scaleFactor = input.getScaleFactor();
+					
+					if (this.world != Minecraft.getMinecraft().theWorld)
+					{
+						this.world = Minecraft.getMinecraft().theWorld;
+					}
 					
 					frame.onResolutionChange(input);
 				}

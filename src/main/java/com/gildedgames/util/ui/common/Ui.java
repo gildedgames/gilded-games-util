@@ -14,6 +14,8 @@ public interface Ui extends NBT
 	
 	void initContent(InputProvider input);
 	
+	void onClose(InputProvider input);
+	
 	void onResolutionChange(InputProvider input);
 	
 	boolean isEnabled();

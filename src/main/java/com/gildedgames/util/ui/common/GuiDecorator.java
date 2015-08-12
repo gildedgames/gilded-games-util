@@ -145,6 +145,26 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 		this.postInitContent(input);
 	}
 	
+	@Override
+	public final void onClose(InputProvider input)
+	{
+		this.preClose(input);
+		
+		this.element.onClose(input);
+		
+		this.postClose(input);
+	}
+	
+	protected void preClose(InputProvider input)
+	{
+		
+	}
+	
+	protected void postClose(InputProvider input)
+	{
+		
+	}
+	
 	protected abstract void preInitContent(InputProvider input);
 	
 	protected abstract void postInitContent(InputProvider input);

@@ -60,6 +60,25 @@ public final class GuiViewerHelper
 	{
 		GuiViewerHelper.processInitPre(parent, input, containers);
 	}
+	
+	public static void processClose(InputProvider input, UIContainer... containers)
+	{
+		for (UIContainer container : containers)
+		{
+			if (container == null)
+			{
+				return;
+			}
+
+			for (Ui element : container.elements())
+			{
+				if (element.isEnabled())
+				{
+					element.onClose(input);
+				}
+			}
+		}
+	}
 
 	public static void processMouseInput(InputProvider input, MouseInputPool pool, UIContainer... containers)
 	{
