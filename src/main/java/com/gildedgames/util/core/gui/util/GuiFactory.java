@@ -87,12 +87,12 @@ public class GuiFactory
 		return GuiFactory.pressSound(button);
 	}
 
-	public static GuiFrame button(Pos2D pos, int width, String text)
+	public static GuiFrame button(Pos2D pos, double width, String text)
 	{
 		return GuiFactory.button(pos, width, text, true);
 	}
 
-	public static GuiFrame button(Pos2D pos, int width, String text, boolean centered)
+	public static GuiFrame button(Pos2D pos, double width, String text, boolean centered)
 	{
 		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).flush();
 
@@ -111,12 +111,12 @@ public class GuiFactory
 		return GuiFactory.pressSound(new MinecraftButton(button, centered));
 	}
 
-	public static ScrollBar scrollBar(Pos2D pos, int height, Dim2D scrollableArea)
+	public static ScrollBar scrollBar(Pos2D pos, double height, Dim2D scrollableArea)
 	{
 		return GuiFactory.scrollBar(pos, height, scrollableArea, true);
 	}
 
-	public static ScrollBar scrollBar(Pos2D pos, int height, Dim2D scrollableArea, boolean centered)
+	public static ScrollBar scrollBar(Pos2D pos, double height, Dim2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR, UV.build().min(0, 0).area(10, 10).flush());
 		Sprite base = new Sprite(SCROLL_BAR, UV.build().min(10, 0).area(10, 10).flush());
@@ -218,25 +218,26 @@ public class GuiFactory
 	public static Font font()
 	{
 		final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
+		
 		return new Font()
 		{
 
 			@Override
-			public int getWidth(String text)
+			public double getWidth(String text)
 			{
 				return fontRenderer.getStringWidth(text);
 			}
 
 			@Override
-			public int getHeight(String text)
+			public double getHeight(String text)
 			{
 				return fontRenderer.FONT_HEIGHT;
 			}
 
 			@Override
-			public List<String> splitStringsIntoArea(String text, int width)
+			public List<String> splitStringsIntoArea(String text, double width)
 			{
-				return fontRenderer.listFormattedStringToWidth(text, width);
+				return fontRenderer.listFormattedStringToWidth(text, (int)width);
 			}
 		};
 	}
