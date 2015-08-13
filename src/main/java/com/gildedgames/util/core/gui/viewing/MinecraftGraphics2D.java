@@ -53,13 +53,13 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		GlStateManager.pushMatrix();
 
-		float currentX = dim.x();
-		float currentY = dim.y();
+		double currentX = dim.x();
+		double currentY = dim.y();
 
 		float partialTicks = UtilEvents.getPartialTicks();
 
-		float x = currentX;//currentX + (currentX - prevX) * partialTicks;
-		float y = currentY;//currentY + (currentY - prevY) * partialTicks;
+		double x = currentX;//currentX + (currentX - prevX) * partialTicks;
+		double y = currentY;//currentY + (currentY - prevY) * partialTicks;
 
 		/** TO-DO: Figure out why the prevPos and currentPos are the same wtf?! :D **/
 
@@ -118,7 +118,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		this.draw(dim, startColor, new DrawGradientRectangle(this, dim, startColor, endColor));
 	}
 
-	protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)
+	protected void drawGradientRect(double left, double top, double right, double bottom, int startColor, int endColor)
 	{
 		float f = (startColor >> 24 & 255) / 255.0F;
 		float f1 = (startColor >> 16 & 255) / 255.0F;
@@ -148,6 +148,58 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.enableAlpha();
 		GlStateManager.enableTexture2D();
 	}
+	
+    private void drawModalRectWithCustomSizedTexture(double x, double y, double u, double v, double width, double height, double textureWidth, double textureHeight)
+    {
+        double f4 = 1.0D / textureWidth;
+        double f5 = 1.0D / textureHeight;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.startDrawingQuads();
+        worldrenderer.addVertexWithUV((double)x, (double)(y + height), 0.0D, (double)(u * f4), (double)((v + (float)height) * f5));
+        worldrenderer.addVertexWithUV((double)(x + width), (double)(y + height), 0.0D, (double)((u + (float)width) * f4), (double)((v + (float)height) * f5));
+        worldrenderer.addVertexWithUV((double)(x + width), (double)y, 0.0D, (double)((u + (float)width) * f4), (double)(v * f5));
+        worldrenderer.addVertexWithUV((double)x, (double)y, 0.0D, (double)(u * f4), (double)(v * f5));
+        tessellator.draw();
+    }
+    
+    private void drawRect(double left, double top, double right, double bottom, int color)
+    {
+        double j1;
+
+        if (left < right)
+        {
+            j1 = left;
+            left = right;
+            right = j1;
+        }
+
+        if (top < bottom)
+        {
+            j1 = top;
+            top = bottom;
+            bottom = j1;
+        }
+
+        float f3 = (float)(color >> 24 & 255) / 255.0F;
+        float f = (float)(color >> 16 & 255) / 255.0F;
+        float f1 = (float)(color >> 8 & 255) / 255.0F;
+        float f2 = (float)(color & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.color(f, f1, f2, f3);
+        worldrenderer.startDrawingQuads();
+        worldrenderer.addVertex((double)left, (double)bottom, 0.0D);
+        worldrenderer.addVertex((double)right, (double)bottom, 0.0D);
+        worldrenderer.addVertex((double)right, (double)top, 0.0D);
+        worldrenderer.addVertex((double)left, (double)top, 0.0D);
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
 
 	private static interface DrawInner
 	{
@@ -190,7 +242,7 @@ public class MinecraftGraphics2D implements Graphics2D
 				UV uv = uvDimPair.getUV();
 				Dim2D dim = uvDimPair.getDim();
 				
-				Gui.drawModalRectWithCustomSizedTexture(dim.x(), dim.y(), uv.minU(), uv.minV(), uv.width(), uv.height(), this.sprite.getAssetWidth(), this.sprite.getAssetHeight());
+				this.graphics.drawModalRectWithCustomSizedTexture(dim.x(), dim.y(), uv.minU(), uv.minV(), uv.width(), uv.height(), this.sprite.getAssetWidth(), this.sprite.getAssetHeight());
 			}
 		}
 
@@ -242,7 +294,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		@Override
 		public void draw()
 		{
-			Gui.drawRect(0, 0, this.dim.width(), this.dim.height(), this.data.getColor().getRGB());
+			this.graphics.drawRect(0, 0, this.dim.width(), this.dim.height(), this.data.getColor().getRGB());
 		}
 
 	}

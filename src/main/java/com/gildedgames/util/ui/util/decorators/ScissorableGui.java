@@ -54,13 +54,13 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	{
 		GL11.glPushMatrix();
 
-		float lowerLeftCornerY = this.getScissoredArea().y() + this.getScissoredArea().height();
+		double lowerLeftCornerY = this.getScissoredArea().y() + this.getScissoredArea().height();
 
-		float cornerX = (this.getScissoredArea().x() * input.getScaleFactor());
-		float cornerY = (input.getScreenHeight() - lowerLeftCornerY) * input.getScaleFactor();
+		double cornerX = (this.getScissoredArea().x() * input.getScaleFactor());
+		double cornerY = (input.getScreenHeight() - lowerLeftCornerY) * input.getScaleFactor();
 
-		float cutWidth = this.getScissoredArea().width() * input.getScaleFactor();
-		float cutHeight = this.getScissoredArea().height() * input.getScaleFactor();
+		double cutWidth = this.getScissoredArea().width() * input.getScaleFactor();
+		double cutHeight = this.getScissoredArea().height() * input.getScaleFactor();
 
 		GL11.glEnable(GL_SCISSOR_TEST);
 
