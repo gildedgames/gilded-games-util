@@ -239,6 +239,16 @@ public class Dim2D
 	{
 		return this.centeredY;
 	}
+	
+	public boolean intersects(Pos2D pos)
+	{
+		return this.intersects(Dim2D.build().pos(pos).flush());
+	}
+	
+	public boolean intersects(Dim2D dim)
+	{
+		return dim.maxX() >= this.x() && dim.maxY() >= this.y() && dim.x() < this.maxX() && dim.y() < this.maxY();
+	}
 
 	@Override
 	public Dim2DBuilder clone()
