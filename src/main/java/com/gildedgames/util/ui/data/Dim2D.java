@@ -18,7 +18,7 @@ public class Dim2D
 	
 	protected final Rotation2D rotation;
 
-	protected final int width, height;
+	protected final double width, height;
 
 	protected final boolean centeredX, centeredY;
 
@@ -119,12 +119,12 @@ public class Dim2D
 		return this.pos().clone().add(this.width(), this.height()).flush();
 	}
 
-	public int maxX()
+	public double maxX()
 	{
 		return this.x() + this.width();
 	}
 
-	public int maxY()
+	public double maxY()
 	{
 		return this.y() + this.height();
 	}
@@ -134,8 +134,8 @@ public class Dim2D
 	 */
 	private Pos2D getScaledPos(Pos2D pos)
 	{
-		int offsetX = (int) (this.isCenteredX() ? this.width() * this.scale() / 2 : 0);
-		int offsetY = (int) (this.isCenteredY() ? this.height() * this.scale() / 2 : 0);
+		double offsetX = this.isCenteredX() ? this.width() * this.scale() / 2 : 0;
+		double offsetY = this.isCenteredY() ? this.height() * this.scale() / 2 : 0;
 
 		return Pos2D.flush(pos.x() - offsetX, pos.y() - offsetY);
 	}
@@ -171,7 +171,7 @@ public class Dim2D
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int x()
+	public double x()
 	{
 		return this.pos().x();
 	}
@@ -179,7 +179,7 @@ public class Dim2D
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int y()
+	public double y()
 	{
 		return this.pos().y();
 	}
@@ -187,9 +187,9 @@ public class Dim2D
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int width()
+	public double width()
 	{
-		int modifiedWidth = this.width;
+		double modifiedWidth = this.width;
 
 		for (Modifier modifier : this.modifiers)
 		{
@@ -204,15 +204,15 @@ public class Dim2D
 			}
 		}
 
-		return (int) (modifiedWidth * this.scale());
+		return modifiedWidth * this.scale();
 	}
 
 	/**
 	 * Altered by factors such as scale and modifiers.
 	 */
-	public int height()
+	public double height()
 	{
-		int modifiedHeight = this.height;
+		double modifiedHeight = this.height;
 
 		for (Modifier modifier : this.modifiers)
 		{
@@ -227,7 +227,7 @@ public class Dim2D
 			}
 		}
 
-		return (int) (modifiedHeight * this.scale());
+		return modifiedHeight * this.scale();
 	}
 
 	public boolean isCenteredX()
@@ -341,11 +341,11 @@ public class Dim2D
 			{
 				Dim2D preview = result.flush();
 
-				int minX = Math.min(preview.x(), dim.x());
-				int minY = Math.min(preview.y(), dim.y());
+				double minX = Math.min(preview.x(), dim.x());
+				double minY = Math.min(preview.y(), dim.y());
 
-				int maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
-				int maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
+				double maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
+				double maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
 
 				result.pos(Pos2D.flush(minX, minY)).area(maxX - minY, maxY - minY);
 
@@ -411,7 +411,7 @@ public class Dim2D
 
 		protected Pos2D pos = Pos2D.flush();
 
-		protected int width, height;
+		protected double width, height;
 
 		protected boolean centeredX, centeredY;
 
@@ -487,21 +487,21 @@ public class Dim2D
 			return this;
 		}
 		
-		public Dim2DBuilder origin(int x, int y)
+		public Dim2DBuilder origin(double x, double y)
 		{
 			this.rotation = this.rotation.clone().origin(x, y).flush();
 			
 			return this;
 		}
 		
-		public Dim2DBuilder originX(int x)
+		public Dim2DBuilder originX(double x)
 		{
 			this.rotation = this.rotation.clone().originX(x).flush();
 			
 			return this;
 		}
 		
-		public Dim2DBuilder originY(int y)
+		public Dim2DBuilder originY(double y)
 		{
 			this.rotation = this.rotation.clone().originY(y).flush();
 			
@@ -536,14 +536,14 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2DBuilder height(int height)
+		public Dim2DBuilder height(double height)
 		{
 			this.height = height;
 
 			return this;
 		}
 
-		public Dim2DBuilder width(int width)
+		public Dim2DBuilder width(double width)
 		{
 			this.width = width;
 
@@ -557,7 +557,7 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2DBuilder pos(int x, int y)
+		public Dim2DBuilder pos(double x, double y)
 		{
 			this.pos = Pos2D.flush(x, y);
 			return this;
@@ -582,17 +582,17 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2DBuilder area(int width, int height)
+		public Dim2DBuilder area(double width, double height)
 		{
 			return this.width(width).height(height);
 		}
 
-		public Dim2DBuilder y(int y)
+		public Dim2DBuilder y(double y)
 		{
 			return this.pos(this.pos.clone().y(y).flush());
 		}
 
-		public Dim2DBuilder x(int x)
+		public Dim2DBuilder x(double x)
 		{
 			return this.pos(this.pos.clone().x(x).flush());
 		}
@@ -609,27 +609,27 @@ public class Dim2D
 			return this;
 		}
 
-		public Dim2DBuilder addWidth(int width)
+		public Dim2DBuilder addWidth(double width)
 		{
 			return this.width(this.width + width);
 		}
 
-		public Dim2DBuilder addHeight(int height)
+		public Dim2DBuilder addHeight(double height)
 		{
 			return this.area(this.width, this.height + height);
 		}
 
-		public Dim2DBuilder addArea(int width, int height)
+		public Dim2DBuilder addArea(double width, double height)
 		{
 			return this.addWidth(width).addHeight(height);
 		}
 
-		public Dim2DBuilder addX(int x)
+		public Dim2DBuilder addX(double x)
 		{
 			return this.pos(this.pos.clone().addX(x).flush());
 		}
 
-		public Dim2DBuilder addY(int y)
+		public Dim2DBuilder addY(double y)
 		{
 			return this.pos(this.pos.clone().addY(y).flush());
 		}

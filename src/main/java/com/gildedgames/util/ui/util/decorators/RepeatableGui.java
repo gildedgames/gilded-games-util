@@ -26,11 +26,11 @@ public class RepeatableGui extends GuiFrame
 
 		this.repeatedGui.modDim().clearModifiers().addModifier(this, ModifierType.POS).resetPos().flush();
 
-		int textureHeight = this.repeatedGui.getDim().height();
-		int textureWidth = this.repeatedGui.getDim().width();
+		double textureHeight = this.repeatedGui.getDim().height();
+		double textureWidth = this.repeatedGui.getDim().width();
 
-		int heightCountNeeded = 0;
-		int widthCountNeeded = 0;
+		double heightCountNeeded = 0;
+		double widthCountNeeded = 0;
 
 		if (textureHeight != 0)
 		{

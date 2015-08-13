@@ -50,22 +50,22 @@ public class Text
 		return this.font;
 	}
 
-	public int width()
+	public double width()
 	{
 		return this.font.getWidth(this.text);
 	}
 
-	public int height()
+	public double height()
 	{
 		return this.font.getHeight(this.text);
 	}
 
-	public int scaledWidth()
+	public double scaledWidth()
 	{
 		return (int) (this.width() * this.scale);
 	}
 
-	public int scaledHeight()
+	public double scaledHeight()
 	{
 		return (int) (this.height() * this.scale);
 	}

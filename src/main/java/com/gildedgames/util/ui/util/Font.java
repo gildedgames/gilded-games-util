@@ -4,10 +4,11 @@ import java.util.List;
 
 public interface Font
 {
-	int getWidth(String text);
+	
+	double getWidth(String text);
 
-	int getHeight(String text);
+	double getHeight(String text);
 
-	List<String> splitStringsIntoArea(String text, int width);
+	List<String> splitStringsIntoArea(String text, double width);
 
 }

@@ -43,7 +43,7 @@ public class ScrollBar extends GuiFrame
 
 	protected float scrollPercentage = 0.0F, scrollSpeed = 0.02F;
 
-	protected int grabbedMouseYOffset;
+	protected double grabbedMouseYOffset;
 
 	protected Dim2DHolder contentArea;
 
@@ -57,7 +57,7 @@ public class ScrollBar extends GuiFrame
 		this.baseBarTexture = baseTexture;
 		this.grabbableBarTexture = barTexture;
 
-		int maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().flush().width(), this.bottomButton.copyDim().clearModifiers().flush().width()), this.baseBarTexture.getDim().width());
+		double maxWidth = Math.max(Math.max(this.topButton.copyDim().clearModifiers().flush().width(), this.bottomButton.copyDim().clearModifiers().flush().width()), this.baseBarTexture.getDim().width());
 
 		this.modDim().width(maxWidth).flush();
 	}
@@ -176,18 +176,18 @@ public class ScrollBar extends GuiFrame
 	{
 		if (this.scrollingAreas != null && this.contentArea != null)
 		{
-			int contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().height() - this.scrollingAreas.getDim().height());
+			double contentAndScrollHeightDif = Math.abs(this.contentArea.getDim().height() - this.scrollingAreas.getDim().height());
 
 			float baseBarPercentage = (float) contentAndScrollHeightDif / (float) this.contentArea.getDim().height();
 			
-			int barHeight = this.baseBar.getDim().height() - (int) (this.baseBar.getDim().height() * baseBarPercentage);
+			double barHeight = this.baseBar.getDim().height() - (int) (this.baseBar.getDim().height() * baseBarPercentage);
 
 			this.grabbableBar.modDim().height(Math.max(10, barHeight)).flush();
 		}
 
 		if (this.grabbedBar)
 		{
-			int basePosY = input.getMouseY() - this.baseBar.getDim().y() + this.grabbedMouseYOffset;
+			double basePosY = input.getMouseY() - this.baseBar.getDim().y() + this.grabbedMouseYOffset;
 
 			float percent = (float) basePosY / (float) (this.baseBar.getDim().height() - this.grabbableBar.getDim().height());
 
