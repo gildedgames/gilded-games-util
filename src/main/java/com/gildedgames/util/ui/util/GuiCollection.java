@@ -77,7 +77,7 @@ public class GuiCollection extends GuiFrame
 	{
 		this.positioner.positionList(views, this.getDim());
 
-		int totalContentHeight = 0;
+		double totalContentHeight = 0;
 
 		for (Gui view : views)
 		{

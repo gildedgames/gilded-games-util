@@ -24,12 +24,12 @@ public class Rotation2D
 		return this.origin;
 	}
 	
-	public int originX()
+	public double originX()
 	{
 		return this.origin.x();
 	}
 	
-	public int originY()
+	public double originY()
 	{
 		return this.origin.y();
 	}
@@ -105,21 +105,21 @@ public class Rotation2D
 			return this;
 		}
 		
-		public Rotation2DBuilder origin(int x, int y)
+		public Rotation2DBuilder origin(double x, double y)
 		{
 			this.origin = this.origin.clone().x(x).y(y).flush();
 			
 			return this;
 		} 
 		
-		public Rotation2DBuilder originX(int x)
+		public Rotation2DBuilder originX(double x)
 		{
 			this.origin = this.origin.clone().x(x).flush();
 			
 			return this;
 		}
 		
-		public Rotation2DBuilder originY(int y)
+		public Rotation2DBuilder originY(double y)
 		{
 			this.origin = this.origin.clone().y(y).flush();
 			

@@ -8,7 +8,7 @@ import com.gildedgames.util.ui.data.AssetLocation;
 public class Sprite
 {
 
-	private final int assetWidth, assetHeight;
+	private final double assetWidth, assetHeight;
 	
 	private final UV uv;
 
@@ -59,12 +59,12 @@ public class Sprite
 		return this.asset;
 	}
 
-	public int getAssetWidth()
+	public double getAssetWidth()
 	{
 		return this.assetWidth;
 	}
 
-	public int getAssetHeight()
+	public double getAssetHeight()
 	{
 		return this.assetHeight;
 	}
@@ -82,9 +82,9 @@ public class Sprite
 	public static class UV
 	{
 		
-		private final int minU, minV, width, height;
+		private final double minU, minV, width, height;
 		
-		private UV(int minU, int minV, int width, int height)
+		private UV(double minU, double minV, double width, double height)
 		{
 			this.minU = minU;
 			this.minV = minV;
@@ -93,32 +93,32 @@ public class Sprite
 			this.height = height;
 		}
 		
-		public int minU()
+		public double minU()
 		{
 			return this.minU;
 		}
 		
-		public int minV()
+		public double minV()
 		{
 			return this.minV;
 		}
 		
-		public int maxU()
+		public double maxU()
 		{
 			return this.minU + this.width;
 		}
 		
-		public int maxV()
+		public double maxV()
 		{
 			return this.minV + this.height;
 		}
 		
-		public int width()
+		public double width()
 		{
 			return this.width;
 		}
 		
-		public int height()
+		public double height()
 		{
 			return this.height;
 		}
@@ -143,7 +143,7 @@ public class Sprite
 	public static class UVBuilder
 	{
 		
-		private int minU, minV, width, height;
+		private double minU, minV, width, height;
 		
 		private UVBuilder()
 		{
@@ -159,21 +159,21 @@ public class Sprite
 			this.height = uv.height;
 		}
 		
-		public UVBuilder width(int width)
+		public UVBuilder width(double width)
 		{
 			this.width = width;
 			
 			return this;
 		}
 		
-		public UVBuilder height(int height)
+		public UVBuilder height(double height)
 		{
 			this.height = height;
 			
 			return this;
 		}
 		
-		public UVBuilder min(int minU, int minV)
+		public UVBuilder min(double minU, double minV)
 		{
 			this.minU = minU;
 			this.minV = minV;
@@ -181,7 +181,7 @@ public class Sprite
 			return this;
 		}
 		
-		public UVBuilder max(int maxU, int maxV)
+		public UVBuilder max(double maxU, double maxV)
 		{
 			this.width = maxU - this.minU;
 			this.height = maxV - this.minV;
@@ -189,61 +189,61 @@ public class Sprite
 			return this;
 		}
 		
-		public UVBuilder area(int width, int height)
+		public UVBuilder area(double width, double height)
 		{
 			return this.width(width).height(height);
 		}
 		
-		public UVBuilder minU(int minU)
+		public UVBuilder minU(double minU)
 		{
 			this.minU = minU;
 			
 			return this;
 		}
 		
-		public UVBuilder addMinU(int minU)
+		public UVBuilder addMinU(double minU)
 		{
 			this.minU += minU;
 			
 			return this;
 		}
 		
-		public UVBuilder minV(int minV)
+		public UVBuilder minV(double minV)
 		{
 			this.minV = minV;
 			
 			return this;
 		}
 		
-		public UVBuilder addMinV(int minV)
+		public UVBuilder addMinV(double minV)
 		{
 			this.minV += minV;
 			
 			return this;
 		}
 		
-		public UVBuilder maxU(int maxU)
+		public UVBuilder maxU(double maxU)
 		{
 			this.width = maxU - this.minU;
 			
 			return this;
 		}
 		
-		public UVBuilder addMaxU(int maxU)
+		public UVBuilder addMaxU(double maxU)
 		{
 			this.width += maxU - this.minU;
 			
 			return this;
 		}
 		
-		public UVBuilder maxV(int maxV)
+		public UVBuilder maxV(double maxV)
 		{
 			this.height += maxV - this.minV;
 			
 			return this;
 		}
 		
-		public UVBuilder addMaxV(int maxV)
+		public UVBuilder addMaxV(double maxV)
 		{
 			this.height += maxV - minV;
 			
