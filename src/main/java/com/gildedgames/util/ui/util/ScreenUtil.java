@@ -10,8 +10,8 @@ public class ScreenUtil
 	
 	public static Pos2D convertToOpenGL(InputProvider input, Pos2D pos)
 	{
-		float heightScaleFactor = Display.getHeight() / input.getScreenHeight();
-		float widthScaleFactor = Display.getWidth() / input.getScreenWidth();
+		double heightScaleFactor = Display.getHeight() / input.getScreenHeight();
+		double widthScaleFactor = Display.getWidth() / input.getScreenWidth();
 		
 		return Pos2D.flush((int)(pos.x() * widthScaleFactor), (int)(pos.y() * heightScaleFactor));
 	}

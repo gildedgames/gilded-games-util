@@ -60,7 +60,7 @@ public class MinecraftButton extends GuiFrame
 	{
 		super.draw(graphics, input);
 		
-		this.button.drawButton(mc, input.getMouseX(), input.getMouseY());
+		this.button.drawButton(mc, (int)input.getMouseX(), (int)input.getMouseY());
 		
 		this.button.xPosition = (int) this.getDim().x();
 		this.button.yPosition = (int) this.getDim().y();
@@ -74,12 +74,12 @@ public class MinecraftButton extends GuiFrame
 	{
 		if (pool.contains(ButtonState.PRESSED))
 		{
-			this.button.mousePressed(mc, input.getMouseX(), input.getMouseY());
+			this.button.mousePressed(mc, (int)input.getMouseX(), (int)input.getMouseY());
 		}
 		
 		if (pool.contains(ButtonState.RELEASED))
 		{
-			this.button.mouseReleased(input.getMouseX(), input.getMouseY());
+			this.button.mouseReleased((int)input.getMouseX(), (int)input.getMouseY());
 		}
 	}
 	

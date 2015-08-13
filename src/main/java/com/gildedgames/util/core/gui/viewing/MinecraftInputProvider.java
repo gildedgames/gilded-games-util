@@ -16,7 +16,7 @@ public class MinecraftInputProvider implements InputProvider
 
 	protected Minecraft mc;
 
-	protected int screenWidth, screenHeight, scaleFactor, xOffset, yOffset;
+	protected double screenWidth, screenHeight, scaleFactor, xOffset, yOffset;
 	
 	protected ScaledResolution resolution;
 
@@ -26,13 +26,13 @@ public class MinecraftInputProvider implements InputProvider
 		this.refreshResolution();
 	}
 
-	public void setScreen(int screenWidth, int screenHeight)
+	public void setScreen(double screenWidth, double screenHeight)
 	{
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 	}
 
-	public void setScaleFactor(int scaleFactor)
+	public void setScaleFactor(double scaleFactor)
 	{
 		this.scaleFactor = scaleFactor;
 	}
@@ -44,7 +44,7 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public int getScreenWidth()
+	public double getScreenWidth()
 	{
 		this.refreshResolution();
 		
@@ -52,7 +52,7 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public int getScreenHeight()
+	public double getScreenHeight()
 	{
 		this.refreshResolution();
 		
@@ -60,13 +60,13 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public int getMouseX()
+	public double getMouseX()
 	{
 		return (Mouse.getX() * this.getScreenWidth() / this.mc.displayWidth) - this.xOffset;
 	}
 
 	@Override
-	public int getMouseY()
+	public double getMouseY()
 	{
 		return (this.getScreenHeight() - Mouse.getY() * this.getScreenHeight() / this.mc.displayHeight - 1) - this.yOffset;
 	}
@@ -83,13 +83,13 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public int getScaleFactor()
+	public double getScaleFactor()
 	{
 		return this.resolution.getScaleFactor();
 	}
 
 	@Override
-	public InputProvider copyWithMouseXOffset(int xOffset)
+	public InputProvider copyWithMouseXOffset(double xOffset)
 	{
 		MinecraftInputProvider input = (MinecraftInputProvider) this.clone();
 
@@ -99,7 +99,7 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public InputProvider copyWithMouseYOffset(int yOffset)
+	public InputProvider copyWithMouseYOffset(double yOffset)
 	{
 		MinecraftInputProvider input = (MinecraftInputProvider) this.clone();
 
