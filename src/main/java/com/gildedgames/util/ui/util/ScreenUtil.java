@@ -1,10 +1,20 @@
 package com.gildedgames.util.ui.util;
 
+import org.lwjgl.opengl.Display;
+
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class ScreenUtil
 {
+	
+	public static Pos2D convertToOpenGL(InputProvider input, Pos2D pos)
+	{
+		float heightScaleFactor = Display.getHeight() / input.getScreenHeight();
+		float widthScaleFactor = Display.getWidth() / input.getScreenWidth();
+		
+		return Pos2D.flush((int)(pos.x() * widthScaleFactor), (int)(pos.y() * heightScaleFactor));
+	}
 
 	public static Pos2D getCenter(InputProvider input)
 	{
