@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.input;
 
+import org.lwjgl.input.Mouse;
+
 public enum MouseButton
 {
 
@@ -28,6 +30,11 @@ public enum MouseButton
 		}
 		
 		return NONE;
+	}
+	
+	public boolean isDown()
+	{
+		return Mouse.isButtonDown(this.index);
 	}
 
 }

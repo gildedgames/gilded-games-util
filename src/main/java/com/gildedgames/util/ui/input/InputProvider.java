@@ -3,22 +3,21 @@ package com.gildedgames.util.ui.input;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
-import com.gildedgames.util.ui.data.Pos2D;
 
 public interface InputProvider
 {
 	
 	void refreshResolution();
 	
-	int getScreenWidth();
+	double getScreenWidth();
 	
-	int getScreenHeight();
+	double getScreenHeight();
 
-	int getScaleFactor();
+	double getScaleFactor();
 	
-	int getMouseX();
+	double getMouseX();
 	
-	int getMouseY();
+	double getMouseY();
 	
 	boolean isHovered(Dim2D dim);
 	
@@ -28,8 +27,8 @@ public interface InputProvider
 	
 	InputProvider clone();
 	
-	InputProvider copyWithMouseXOffset(int xOffset);
+	InputProvider copyWithMouseXOffset(double xOffset);
 	
-	InputProvider copyWithMouseYOffset(int yOffset);
+	InputProvider copyWithMouseYOffset(double yOffset);
 	
 }

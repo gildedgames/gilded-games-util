@@ -35,7 +35,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	
 	protected int ticks;
 	
-	private int width, height, scaleFactor, touchValue, eventButton;
+	private double width, height, scaleFactor, touchValue, eventButton;
 	
 	private long lastMouseEvent;
 	
@@ -69,8 +69,8 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	
     public void handleMouseInput(GuiFrame frame, GuiViewer viewer)
     {
-        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+    	double i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        double j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
         int button = Mouse.getEventButton();
 
         if (Mouse.getEventButtonState())
