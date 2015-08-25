@@ -40,6 +40,7 @@ public class ThreadedWorld extends WorldClient implements Runnable
 	}
 
 	private final Thread thread;
+	private boolean delayedStart = false;
 
 	public final ArrayList queue = new ArrayList();
 
@@ -50,6 +51,10 @@ public class ThreadedWorld extends WorldClient implements Runnable
 		super(par1NetClientHandler, par2WorldSettings, par3, par4, new DummyProfiler(par5Profiler));
 
 		this.thread = new Thread(this);
+		if (this.delayedStart)
+		{
+			this.thread.start();
+		}
 		((DummyProfiler) this.theProfiler).threadToIgnore = this.thread.getId();
 	}
 
@@ -58,7 +63,14 @@ public class ThreadedWorld extends WorldClient implements Runnable
 	{
 		if (this.worldAccesses.isEmpty())
 		{
-			this.thread.start();
+			if (this.thread != null)
+			{
+				this.thread.start();
+			}
+			else
+			{
+				this.delayedStart = true;
+			}
 		}
 
 		super.addWorldAccess(par1IWorldAccess);
