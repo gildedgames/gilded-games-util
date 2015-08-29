@@ -60,7 +60,7 @@ dependencies {
     shade 'org.jgrapht:jgrapht-core:0.9.1'
     shade 'org.luaj:luaj-jme:3.0.1'
 
-    test 'junit:junit:4.11'
+    testCompile 'junit:junit:4.11'
 }
 
 jar {
