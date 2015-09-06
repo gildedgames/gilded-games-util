@@ -111,7 +111,10 @@ uploadArchives {
                     authentication(userName: secrets["username"], password: secrets["password"])
                 }
 
-                pom.version = project.version + "_" + System.getenv().BUILD_NUMBER
+                def jenkinsBuildNum = System.getenv().BUILD_NUMBER
+
+                pom.version = project.version + (jenkinsBuildNum != null ? "_" + jenkinsBuildNum : "")
+                pom.artifactId = "util"
             }
         }
     }
