@@ -1,19 +1,5 @@
 package com.gildedgames.util.core;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-
-import javax.imageio.ImageIO;
-
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -23,7 +9,6 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.minecraft.gamemode.GameModeInjector;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -46,6 +31,18 @@ import com.gildedgames.util.ui.util.decorators.RepeatableGui;
 import com.gildedgames.util.ui.util.decorators.ScissorableGui;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.world.common.WorldHookPool;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 public class UtilServices
 {
@@ -53,8 +50,6 @@ public class UtilServices
 	private IOManager io;
 
 	private static final String MANAGER_NAME = "GildedGamesUtil";
-	
-	private GameModeInjector gameModeManager;
 
 	public UtilServices()
 	{
@@ -105,16 +100,6 @@ public class UtilServices
 		}
 
 		return this.io;
-	}
-	
-	public GameModeInjector getGameModeInjector()
-	{
-		if (this.gameModeManager == null)
-		{
-			this.gameModeManager = new GameModeInjector();
-		}
-		
-		return this.gameModeManager;
 	}
 
 	@SuppressWarnings("resource")

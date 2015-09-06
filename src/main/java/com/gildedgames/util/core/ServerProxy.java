@@ -1,5 +1,7 @@
 package com.gildedgames.util.core;
 
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapperEvents;
+import com.gildedgames.util.ui.data.TickInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -9,11 +11,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapperEvents;
-import com.gildedgames.util.minecraft.gamemode.GameModeGuiInjector;
-import com.gildedgames.util.minecraft.gamemode.GameModeTracker;
-import com.gildedgames.util.ui.data.TickInfo;
 
 public class ServerProxy implements ICore
 {

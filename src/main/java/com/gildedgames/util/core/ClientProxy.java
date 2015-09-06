@@ -1,5 +1,14 @@
 package com.gildedgames.util.core;
 
+import com.gildedgames.util.menu.MenuCore;
+import com.gildedgames.util.menu.client.IMenu;
+import com.gildedgames.util.menu.client.MenuClientEvents;
+import com.gildedgames.util.menu.client.util.MenuMinecraft;
+import com.gildedgames.util.tab.client.TabClientEvents;
+import com.gildedgames.util.tab.common.TabAPI;
+import com.gildedgames.util.tab.common.tab.TabBackpack;
+import com.gildedgames.util.tab.common.util.ITab;
+import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,21 +17,9 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.menu.client.IMenu;
-import com.gildedgames.util.menu.client.MenuClientEvents;
-import com.gildedgames.util.menu.client.util.MenuMinecraft;
-import com.gildedgames.util.minecraft.gamemode.GameModeGuiInjector;
-import com.gildedgames.util.minecraft.gamemode.GameModeTracker;
-import com.gildedgames.util.tab.client.TabClientEvents;
-import com.gildedgames.util.tab.common.TabAPI;
-import com.gildedgames.util.tab.common.tab.TabBackpack;
-import com.gildedgames.util.tab.common.util.ITab;
 //import com.gildedgames.util.ui.TestTab;
-import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
 public class ClientProxy extends ServerProxy
 {
@@ -44,14 +41,6 @@ public class ClientProxy extends ServerProxy
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		GameModeGuiInjector gameModeMenu = new GameModeGuiInjector();
-		
-		UtilCore.registerEventHandler(gameModeMenu);
-		
-		GameModeTracker gameModeTracker = new GameModeTracker();
-		
-		UtilCore.registerEventHandler(gameModeTracker);
-		
 		UtilEvents utilEvents = new UtilEvents();
 
 		UtilCore.registerEventHandler(utilEvents);
