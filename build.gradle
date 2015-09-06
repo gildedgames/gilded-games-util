@@ -18,9 +18,10 @@ buildscript {
 }
 
 apply plugin: "forge"
+apply plugin: "maven-publish"
 
-version = "1.8-1.0"
-group= "com.gildedgames.util"
+version = "1.8-r1"
+group = "com.gildedgames.util"
 archivesBaseName = "GildedGamesUtil"
 
 minecraft {
@@ -52,6 +53,8 @@ processResources {
 configurations {
     shade
     compile.extendsFrom shade
+
+    deployerJars
 }
 
 dependencies {
@@ -61,6 +64,8 @@ dependencies {
     shade 'org.luaj:luaj-jme:3.0.1'
 
     testCompile 'junit:junit:4.11'
+
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
 }
 
 jar {
@@ -74,3 +79,36 @@ jar {
         }
     }
 }
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+
+    classifier "sources"
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+
+    classifier = "dev"
+}
+
+
+artifacts {
+    archives devJar
+    archives sourceJar
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        configuration = configurations.deployerJars
+
+        ext.secrets = new Properties()
+        secrets.load(new FileInputStream("secrets.properties"))
+        
+        repository (url: secrets["upload_url"]) {
+            authentication(userName: secrets["username"], password: secrets["password"])
+        }
+
+        pom.version = project.version + "_" + System.getenv().BUILD_NUMBER
+    }
+}    
