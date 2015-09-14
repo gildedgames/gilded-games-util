@@ -26,7 +26,6 @@ import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.minecraft.gamemode.GameModeInjector;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -56,8 +55,6 @@ public class UtilServices
 	private IOManager io;
 
 	private static final String MANAGER_NAME = "GildedGamesUtil";
-	
-	private GameModeInjector gameModeManager;
 
 	public UtilServices()
 	{
@@ -109,17 +106,7 @@ public class UtilServices
 
 		return this.io;
 	}
-	
-	public GameModeInjector getGameModeInjector()
-	{
-		if (this.gameModeManager == null)
-		{
-			this.gameModeManager = new GameModeInjector();
-		}
-		
-		return this.gameModeManager;
-	}
-	
+
 	public IResource getResourceFrom(AssetLocation asset)
 	{
 		ResourceLocation resource = new ResourceLocation(asset.getDomain(), asset.getPath());
