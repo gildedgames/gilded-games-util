@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,13 +12,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import com.gildedgames.util.core.ClientProxy;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.UtilGuiHandler;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
@@ -42,11 +39,21 @@ public class PlayerUniverse implements IPlayerHook
 	private final Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
 
 	private final IPlayerHookPool<PlayerUniverse> pool;
+	
+	private PlayerUniverse()
+	{
+		this(null, null);
+	}
 
 	public PlayerUniverse(IPlayerHookPool<PlayerUniverse> pool, IPlayerProfile profile)
 	{
 		this.profile = profile;
 		this.pool = pool;
+	}
+	
+	public static PlayerUniverse createEventHandler()
+	{
+		return new PlayerUniverse();
 	}
 
 	@Override
@@ -61,35 +68,16 @@ public class PlayerUniverse implements IPlayerHook
 			this.universeInstances.put(minecraftUniverse, this.player);
 		}
 	}
-
-	@Override
-	public boolean onLivingAttack(DamageSource source)
+	
+	@SubscribeEvent
+	public void onLivingUpdate(LivingUpdateEvent event)
 	{
-		return true;
-	}
-
-	@Override
-	public void onUpdate()
-	{
-		this.player = this.getProfile().getEntity();
-	}
-
-	@Override
-	public void onDeath()
-	{
-
-	}
-
-	@Override
-	public void onChangedDimension()
-	{
-
-	}
-
-	@Override
-	public void onRespawn()
-	{
-
+		if (event.entity instanceof EntityPlayer)
+		{
+			PlayerUniverse player = UniverseCore.locate().getPlayer((EntityPlayer) event.entity);
+			
+			player.player = player.getProfile().getEntity();
+		}
 	}
 
 	@Override

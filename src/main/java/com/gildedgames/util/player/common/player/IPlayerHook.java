@@ -12,22 +12,10 @@ public interface IPlayerHook extends NBT, IOSyncable<ByteBuf, ByteBuf>
 {
 
 	@SuppressWarnings("rawtypes")
-	IPlayerHookPool getParentPool();//Why are self referential type parameters not possible ;__;
+	IPlayerHookPool getParentPool();
 
 	void entityInit(EntityPlayer player);
 
 	IPlayerProfile getProfile();
-
-	//void setProfile(IPlayerProfile profile);
-
-	void onUpdate();
-
-	boolean onLivingAttack(DamageSource source);
-
-	void onDeath();
-
-	void onChangedDimension();
-
-	void onRespawn();
 
 }

@@ -71,36 +71,6 @@ public class GroupMember implements IPlayerHook
 	{
 		return this.profile;
 	}
-
-	@Override
-	public void onChangedDimension()
-	{
-
-	}
-
-	@Override
-	public void onDeath()
-	{
-
-	}
-
-	@Override
-	public boolean onLivingAttack(DamageSource arg0)
-	{
-		return true;
-	}
-
-	@Override
-	public void onRespawn()
-	{
-
-	}
-
-	@Override
-	public void onUpdate()
-	{
-
-	}
 	
 	@Override
 	public void syncTo(ByteBuf output, SyncSide to)

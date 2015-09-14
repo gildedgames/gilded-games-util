@@ -1,18 +1,19 @@
 package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.UtilGuiHandler;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.UiServices.Overlay;
 import com.gildedgames.util.ui.UiServices.RenderOrder;
@@ -39,7 +40,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	
 	private long lastMouseEvent;
 	
-	private World world;
+	private boolean worldStarted;
 	
     public void handleInput()
     {
@@ -152,18 +153,13 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				
 				InputProvider input = viewer.getInputProvider();
 				
-				if (this.world != Minecraft.getMinecraft().theWorld || this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
+				if (this.worldStarted || this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
 				{
 					viewer.getInputProvider().refreshResolution();
 					
 					this.width = input.getScreenWidth();
 					this.height = input.getScreenHeight();
 					this.scaleFactor = input.getScaleFactor();
-					
-					if (this.world != Minecraft.getMinecraft().theWorld)
-					{
-						this.world = Minecraft.getMinecraft().theWorld;
-					}
 					
 					frame.onResolutionChange(input);
 				}
@@ -177,6 +173,13 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	
 	private void renderOverlays(RenderOrder desiredOrder)
 	{
+		if (!this.worldStarted)
+		{
+			this.worldStarted = true;
+			
+			UiCore.locate().createRegisteredOverlays();
+		}
+		
 		for (Overlay overlay : UiCore.locate().overlays())
 		{
 			GuiFrame frame = overlay.getFrame();
@@ -190,6 +193,17 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				frame.draw(viewer.getGraphics(), viewer.getInputProvider());
 			}
 		}
+	}
+	
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onGuiOpen(GuiOpenEvent event)
+	{
+		if (event.gui instanceof GuiMainMenu)
+        {
+			this.worldStarted = false;
+			
+			UiCore.locate().destroyRegisteredOverlays();
+        }
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -215,5 +229,5 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		return this.ticks;
 	}
-	
+
 }

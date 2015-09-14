@@ -35,7 +35,7 @@ public class GuiFactory
 	private static final MinecraftAssetLocation PANEL = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePane.png");
 	
 	private static final MinecraftAssetLocation PANEL_EMBEDDED = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePaneEmbedded.png");
-	
+
 	private GuiFactory()
 	{
 
@@ -162,6 +162,13 @@ public class GuiFactory
 	public static TextureElement texture(AssetLocation asset)
 	{
 		return GuiFactory.texture(asset, Dim2D.flush());
+	}
+	
+	public static TextureElement texture(AssetLocation asset, UV uv)
+	{
+		Sprite sprite = new Sprite(asset, uv);
+		
+		return GuiFactory.texture(sprite, Dim2D.build().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
 	}
 
 	public static TextureElement texture(AssetLocation asset, Dim2D dim)

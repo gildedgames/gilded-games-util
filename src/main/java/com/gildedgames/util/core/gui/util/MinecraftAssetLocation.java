@@ -9,9 +9,14 @@ public class MinecraftAssetLocation implements AssetLocation
 	
 	protected final String domain, path;
 	
+	public MinecraftAssetLocation(String path)
+	{
+		this("minecraft", path);
+	}
+	
 	public MinecraftAssetLocation(String... paths)
 	{
-		this.domain = StringUtils.isEmpty(paths[0]) ? "minecraft" : paths[0].toLowerCase();
+		this.domain = paths[0];
 		this.path = paths[1];
 		
 		Validate.notNull(this.path);
