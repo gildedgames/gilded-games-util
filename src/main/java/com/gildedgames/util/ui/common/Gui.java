@@ -8,6 +8,18 @@ public interface Gui extends Ui, Dim2DHolder
 {
 
 	void draw(Graphics2D graphics, InputProvider input);
+	
+	/**
+	 * There are 20 ticks in a second.
+	 * @return
+	 */
+	int ticksClosing();
+	
+	/**
+	 * There are 20 ticks in a second.
+	 * @return
+	 */
+	int ticksOpening();
 
 	boolean isVisible();
 

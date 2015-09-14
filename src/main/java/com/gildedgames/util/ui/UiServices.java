@@ -2,7 +2,9 @@ package com.gildedgames.util.ui;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.client.Minecraft;
@@ -16,6 +18,7 @@ import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
+import com.gildedgames.util.ui.util.factory.GuiFrameFactory;
 import com.google.common.collect.ImmutableList;
 
 public class UiServices
@@ -29,21 +32,53 @@ public class UiServices
 	
 	private GuiFrame currentFrame;
 	
+	private List<GuiFrame> openingFrames = new ArrayList<GuiFrame>();
+	
+	private List<GuiFrame> closingFrames = new ArrayList<GuiFrame>();
+	
 	private Map<String, Overlay> overlays = new LinkedHashMap<String, Overlay>();
+	
+	private Map<String, RegisteredOverlay> registeredOverlays = new LinkedHashMap<String, RegisteredOverlay>();
 	
 	public static enum RenderOrder
 	{
 		PRE, NORMAL, POST;
 	}
 	
+	public static class RegisteredOverlay extends Overlay
+	{
+		
+		private GuiFrameFactory factory;
+		
+		public RegisteredOverlay(GuiFrameFactory factory, GuiViewer viewer, RenderOrder renderOrder)
+		{
+			super(null, viewer, renderOrder);
+			
+			this.factory = factory;
+		}
+		
+		public GuiFrameFactory getFactory()
+		{
+			return this.factory;
+		}
+		
+		public GuiFrame createFrame()
+		{
+			this.frame = this.factory.create();
+			
+			return this.frame;
+		}
+		
+	}
+	
 	public static class Overlay
 	{
 		
-		private GuiFrame frame;
+		protected GuiFrame frame;
 		
-		private GuiViewer viewer;
+		protected GuiViewer viewer;
 		
-		private RenderOrder renderOrder;
+		protected RenderOrder renderOrder;
 		
 		public Overlay(GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)
 		{
@@ -93,9 +128,49 @@ public class UiServices
 		this.side = side;
 	}
 	
+	public ImmutableList<RegisteredOverlay> registeredOverlays()
+	{
+		return ImmutableList.copyOf(this.registeredOverlays.values());
+	}
+	
 	public ImmutableList<Overlay> overlays()
 	{
 		return ImmutableList.copyOf(this.overlays.values());
+	}
+	
+	public void createRegisteredOverlays()
+	{
+		for (Map.Entry<String, RegisteredOverlay> entry : this.registeredOverlays.entrySet())
+		{
+			String uniqueSaveName = entry.getKey();
+			RegisteredOverlay overlay = entry.getValue();
+			
+			GuiFrameFactory factory = overlay.getFactory();
+			GuiViewer viewer = overlay.getViewer();
+			RenderOrder renderOrder = overlay.getRenderOrder();
+			
+			UiCore.locate().overlay(uniqueSaveName, factory.create(), viewer);
+		}
+	}
+	
+	public void destroyRegisteredOverlays()
+	{
+		for (Map.Entry<String, RegisteredOverlay> entry : this.registeredOverlays.entrySet())
+		{
+			String uniqueSaveName = entry.getKey();
+
+			UiCore.locate().removeOverlay(uniqueSaveName);
+		}
+	}
+	
+	public void registerOverlay(String uniqueSaveName, GuiFrameFactory factory, GuiViewer viewer)
+	{
+		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.NORMAL);
+	}
+	
+	public void registerOverlay(String uniqueSaveName, GuiFrameFactory factory, GuiViewer viewer, RenderOrder renderOrder)
+	{
+		this.registeredOverlays.put(uniqueSaveName, new RegisteredOverlay(factory, viewer, renderOrder));
 	}
 	
 	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
@@ -110,7 +185,7 @@ public class UiServices
 		this.overlays.put(uniqueSaveName, new Overlay(frame, viewer, renderOrder));
 	}
 	
-	public void remove(String uniqueSaveName)
+	public void removeOverlay(String uniqueSaveName)
 	{
 		this.overlays.remove(uniqueSaveName);
 	}
@@ -140,6 +215,23 @@ public class UiServices
 		this.open(uniqueSaveName, frame, MinecraftGuiViewer.instance());
 	}
 	
+	public void open(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
+	{
+		//this.load(uniqueSaveName, frame, viewer);
+
+		if (frame.ticksOpening() > 0)
+		{
+			//this.openingFrames.add(frame);
+			
+			//return;
+		}
+		
+		viewer.open(frame);
+		
+		this.currentUniqueSaveName = uniqueSaveName;
+		this.currentFrame = frame;
+	}
+	
 	public void close()
 	{
 		this.close(MinecraftGuiViewer.instance());
@@ -148,16 +240,6 @@ public class UiServices
 	public void close(String uniqueSaveName)
 	{
 		this.close(uniqueSaveName, MinecraftGuiViewer.instance());
-	}
-	
-	public void open(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
-	{
-		//this.load(uniqueSaveName, frame, viewer);
-
-		viewer.open(frame);
-		
-		this.currentUniqueSaveName = uniqueSaveName;
-		this.currentFrame = frame;
 	}
 	
 	public void close(String uniqueSaveName, GuiViewer viewer)

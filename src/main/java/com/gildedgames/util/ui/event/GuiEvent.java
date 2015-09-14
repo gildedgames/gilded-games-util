@@ -70,4 +70,16 @@ public class GuiEvent extends UiEvent implements Gui
 		return false;
 	}
 
+	@Override
+	public int ticksClosing()
+	{
+		return 0;
+	}
+
+	@Override
+	public int ticksOpening()
+	{
+		return 0;
+	}
+
 }

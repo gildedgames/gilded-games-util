@@ -35,21 +35,6 @@ public class PlayerEventHandler
 	}
 
 	@SubscribeEvent
-	public void onLivingAttack(LivingAttackEvent event)
-	{
-		if (event.entity instanceof EntityPlayer)
-		{
-			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
-			{
-				if (!manager.get((EntityPlayer) event.entity).onLivingAttack(event.source))
-				{
-					event.setCanceled(true);
-				}
-			}
-		}
-	}
-
-	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event)
 	{
 		if (event.entity instanceof EntityPlayer)
@@ -64,8 +49,6 @@ public class PlayerEventHandler
 				{
 					playerHook.getProfile().setEntity(player);
 				}
-
-				playerHook.onUpdate();
 
 				if (event.entity.worldObj.isRemote)
 				{
@@ -98,19 +81,6 @@ public class PlayerEventHandler
 	}
 
 	@SubscribeEvent
-	public void onLivingDeath(LivingDeathEvent event)
-	{
-		if (event.entity instanceof EntityPlayer)
-		{
-			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
-			{
-				EntityPlayer player = (EntityPlayer) event.entity;
-				manager.get(player).onDeath();
-			}
-		}
-	}
-
-	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
 		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
@@ -134,28 +104,6 @@ public class PlayerEventHandler
 			playerHook.getProfile().setLoggedIn(false);
 
 			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
-		}
-	}
-
-	@SubscribeEvent
-	public void onChangedDimension(PlayerChangedDimensionEvent event)
-	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
-		{
-			IPlayerHook playerHook = manager.get(event.player);
-
-			playerHook.onChangedDimension();
-		}
-	}
-
-	@SubscribeEvent
-	public void onRespawn(PlayerRespawnEvent event)
-	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
-		{
-			IPlayerHook playerHook = manager.get(event.player);
-
-			playerHook.onRespawn();
 		}
 	}
 

@@ -11,6 +11,9 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 
@@ -116,13 +119,34 @@ public class UtilServices
 		
 		return this.gameModeManager;
 	}
+	
+	public IResource getResourceFrom(AssetLocation asset)
+	{
+		ResourceLocation resource = new ResourceLocation(asset.getDomain(), asset.getPath());
+		
+		try
+		{
+			return Minecraft.getMinecraft().getResourceManager().getResource(resource);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	@SuppressWarnings("resource")
 	public InputStream getStreamFromAsset(AssetLocation asset) throws ZipException, IOException
 	{
-		File source = null;
-
-		String path = "assets//" + asset.getDomain() + "//" + asset.getPath();
+		if (asset.getDomain().equals("minecraft"))
+		{
+			return this.getResourceFrom(asset).getInputStream();
+		}
+		
+		File source = null;		
+		
+		String path = "assets/" + asset.getDomain() + "/" + asset.getPath();
 
 		for (ModContainer container : Loader.instance().getActiveModList())
 		{

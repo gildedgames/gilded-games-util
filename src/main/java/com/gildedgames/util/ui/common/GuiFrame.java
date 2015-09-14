@@ -187,4 +187,16 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		
 	}
 
+	@Override
+	public int ticksClosing()
+	{
+		return 0;
+	}
+
+	@Override
+	public int ticksOpening()
+	{
+		return 0;
+	}
+
 }
