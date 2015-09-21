@@ -12,8 +12,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.server.management.ServerConfigurationManager;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import com.gildedgames.util.player.common.IPlayerHookPool;
@@ -38,11 +39,21 @@ public class PlayerUniverse implements IPlayerHook
 	private final Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
 
 	private final IPlayerHookPool<PlayerUniverse> pool;
+	
+	private PlayerUniverse()
+	{
+		this(null, null);
+	}
 
 	public PlayerUniverse(IPlayerHookPool<PlayerUniverse> pool, IPlayerProfile profile)
 	{
 		this.profile = profile;
 		this.pool = pool;
+	}
+	
+	public static PlayerUniverse createEventHandler()
+	{
+		return new PlayerUniverse();
 	}
 
 	@Override
@@ -56,58 +67,17 @@ public class PlayerUniverse implements IPlayerHook
 		{
 			this.universeInstances.put(minecraftUniverse, this.player);
 		}
-
-		if (!this.player.worldObj.isRemote)
+	}
+	
+	@SubscribeEvent
+	public void onLivingUpdate(LivingUpdateEvent event)
+	{
+		if (event.entity instanceof EntityPlayer)
 		{
-			//TODO: This is empty :D
-			/*EntityPlayerMP playerMP = (EntityPlayerMP)this.player;
-
-			ServerConfigurationManager scm = playerMP.mcServer.getConfigurationManager();
+			PlayerUniverse player = UniverseCore.locate().getPlayer((EntityPlayer) event.entity);
 			
-			EntityPlayerMP newPlayer = (EntityPlayerMP)this.universeInstances.get(this.universeID);
-			
-			if (this.player.dimension != newPlayer.dimension)
-			{
-				UniverseCore.teleportToDimension(playerMP, newPlayer.dimension);
-			}
-			
-			this.player.clonePlayer(newPlayer, true);
-
-			playerMP.playerNetServerHandler.setPlayerLocation(newPlayer.posX, newPlayer.posY, newPlayer.posZ, newPlayer.rotationYaw, newPlayer.rotationPitch);
-			playerMP.theItemInWorldManager.setWorld((WorldServer) newPlayer.worldObj);
-			scm.updateTimeAndWeatherForPlayer(playerMP, (WorldServer) newPlayer.worldObj);
-			scm.syncPlayerInventory(playerMP);*/
+			player.player = player.getProfile().getEntity();
 		}
-	}
-
-	@Override
-	public boolean onLivingAttack(DamageSource source)
-	{
-		return true;
-	}
-
-	@Override
-	public void onUpdate()
-	{
-		this.player = this.getProfile().getEntity();
-	}
-
-	@Override
-	public void onDeath()
-	{
-
-	}
-
-	@Override
-	public void onChangedDimension()
-	{
-
-	}
-
-	@Override
-	public void onRespawn()
-	{
-
 	}
 
 	@Override

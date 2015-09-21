@@ -1,11 +1,7 @@
 package com.gildedgames.util.universe.client.gui;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.networking.messages.MessageTravelUniverse;
-import com.gildedgames.util.universe.common.player.PlayerUniverse;
-import com.gildedgames.util.universe.common.util.IUniverse;
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -13,9 +9,16 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 
-import java.io.IOException;
+import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
+import com.gildedgames.util.universe.common.player.PlayerUniverse;
+import com.gildedgames.util.universe.common.util.IUniverse;
 
 public class GuiUniverseHopper extends GuiScreen
 {
@@ -84,38 +87,38 @@ public class GuiUniverseHopper extends GuiScreen
 	{
 		switch (button.id)
 		{
-		case 0:
-		{
-			this.universeIndex--;
-
-			if (this.universeIndex < 0)
+			case 0:
 			{
-				this.universeIndex = UniverseAPI.instance().getUniverses().size() - 1;
+				this.universeIndex--;
+		
+				if (this.universeIndex < 0)
+				{
+					this.universeIndex = UniverseAPI.instance().getUniverses().size() - 1;
+				}
+		
+				SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
+				break;
 			}
-
-			SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
-			break;
-		}
-		case 1:
-		{
-			this.universeIndex++;
-
-			if (this.universeIndex >= UniverseAPI.instance().getUniverses().size())
+			case 1:
 			{
-				this.universeIndex = 0;
+				this.universeIndex++;
+		
+				if (this.universeIndex >= UniverseAPI.instance().getUniverses().size())
+				{
+					this.universeIndex = 0;
+				}
+		
+				SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
+				break;
 			}
-
-			SELECTED_UNIVERSE = UniverseAPI.instance().getUniverses().get(this.universeIndex);
-			break;
-		}
-		case 2:
-		{
-			String id = UniverseAPI.instance().getIDFrom(SELECTED_UNIVERSE);
-
-			UtilCore.NETWORK.sendToServer(new MessageTravelUniverse(id));
-
-			break;
-		}
+			case 2:
+			{
+				String id = UniverseAPI.instance().getIDFrom(SELECTED_UNIVERSE);
+		
+				UtilCore.NETWORK.sendToServer(new TravelUniversePacket(id));
+		
+				break;
+			}
 		}
 	}
 
@@ -159,16 +162,24 @@ public class GuiUniverseHopper extends GuiScreen
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException
 	{
-		if (keyCode == 1 || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
+		if (keyCode == ClientProxy.keyBindHopUniverse.getKeyCode() || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			this.mc.thePlayer.closeScreen();
+			this.mc.displayGuiScreen((GuiScreen)null);
+
+            if (this.mc.currentScreen == null)
+            {
+                this.mc.setIngameFocus();
+            }
 		}
+		
+		super.keyTyped(typedChar, keyCode);
 	}
 
 	@Override
 	public void handleMouseInput() throws IOException
 	{
 		super.handleMouseInput();
+		
 		int wheelDirection = Mouse.getEventDWheel();
 
 		if (wheelDirection != 0)

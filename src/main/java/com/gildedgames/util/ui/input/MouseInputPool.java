@@ -40,6 +40,11 @@ public class MouseInputPool implements Iterable<MouseInput>
 		return indexOf(o) >= 0;
 	}
 	
+	public boolean containsAll(Object[] a)
+	{
+		return this.containsAll(Arrays.asList(a));
+	}
+	
 	public boolean containsAll(Collection<?> c)
 	{
 		return Arrays.asList(this.events).containsAll(c);

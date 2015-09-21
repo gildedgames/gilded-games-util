@@ -151,6 +151,11 @@ public class NBTBridge implements IOBridge
 	public void setSerializedClass(String key, Class<?> classToWrite)
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
+		
+		if (manager == null)
+		{
+			System.out.println("HELLOOOOOOOOOOOOOOO!!!!! " + classToWrite);
+		}
 
 		int classID = manager.getRegistry().getID(classToWrite);
 

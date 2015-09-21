@@ -1,5 +1,11 @@
 package com.gildedgames.util.io_manager.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
@@ -11,8 +17,6 @@ import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
 import com.gildedgames.util.io_manager.overhead.IOVolatileController;
-
-import java.io.*;
 
 public class IOVolatileControllerDefault implements IOVolatileController
 {
@@ -41,10 +45,15 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
 
+		if (io == null)
+		{
+			throw new NullPointerException("Something went wrong trying to create an instance of " + classToReadFrom.getName() + ". Most likely you forgot to create an empty constructor for it.");
+		}
+
 		if (io instanceof IOData)
 		{
 			IOData<I, O> data = (IOData<I, O>) io;
-			
+
 			byte[] array = inputBridge.getByteArray(key + "bytes");
 
 			IOManager manager = IOCore.io().getManager(io.getClass());

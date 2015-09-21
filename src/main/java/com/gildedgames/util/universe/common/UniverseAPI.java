@@ -1,16 +1,19 @@
 package com.gildedgames.util.universe.common;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
 import com.gildedgames.util.universe.common.universe.UniverseMinecraft;
 import com.gildedgames.util.universe.common.util.IUniverse;
 import com.gildedgames.util.universe.common.util.IUniverseListener;
-import net.minecraft.entity.player.EntityPlayer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class UniverseAPI
 {
@@ -95,6 +98,12 @@ public class UniverseAPI
 	public void register(String id, IUniverse universe)
 	{
 		this.universes.put(id, universe);
+		
+		this.universes.size();
+		
+		Side side = UtilCore.getSide();
+		
+		this.universes.size();
 	}
 
 	public void register(IUniverseListener listener)

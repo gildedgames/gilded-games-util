@@ -1,0 +1,48 @@
+package com.gildedgames.util.instances;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.PlayerHookPool;
+
+public class InstanceServices
+{
+	private IPlayerHookPool<PlayerInstances> players;
+
+	private List<InstanceHandler<?>> instances;
+
+	private final Side side;
+
+	public InstanceServices(Side side)
+	{
+		this.side = side;
+	}
+
+	public IPlayerHookPool<PlayerInstances> getPlayers()
+	{
+		if (this.players == null)
+		{
+			this.players = new PlayerHookPool<PlayerInstances>("instances", new PlayerInstancesFactory(), this.side);
+		}
+
+		return this.players;
+	}
+
+	public Collection<InstanceHandler<?>> getHandlers()
+	{
+		if (this.instances == null)
+		{
+			this.instances = new ArrayList<InstanceHandler<?>>();
+		}
+		return this.instances;
+	}
+
+	protected void addHandler(InstanceHandler<?> handler)
+	{
+		((List<InstanceHandler<?>>) this.getHandlers()).add(handler);
+	}
+}

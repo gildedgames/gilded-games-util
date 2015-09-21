@@ -1,11 +1,15 @@
 package com.gildedgames.util.core;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
+
+import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.client.GuiIngame;
 import com.gildedgames.util.menu.MenuCore;
@@ -16,8 +20,9 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
-//import com.gildedgames.util.ui.TestTab;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
+
+//import com.gildedgames.util.ui.TestTab;
 
 public class ClientProxy extends ServerProxy
 {
@@ -27,6 +32,8 @@ public class ClientProxy extends ServerProxy
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
 
 	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
+	
+	public static KeyBinding keyBindHopUniverse = new KeyBinding(StatCollector.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
 
 	@Override
 	public EntityPlayer getPlayer()
@@ -39,20 +46,19 @@ public class ClientProxy extends ServerProxy
 	{
 		UtilEvents utilEvents = new UtilEvents();
 
-		MinecraftForge.EVENT_BUS.register(utilEvents);
-		FMLCommonHandler.instance().bus().register(utilEvents);
+		UtilCore.registerEventHandler(utilEvents);
 		
+		UtilCore.registerEventHandler(this.MinecraftTickInfo);
+
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 
-		MinecraftForge.EVENT_BUS.register(menuClientEvents);
-		FMLCommonHandler.instance().bus().register(menuClientEvents);
+		UtilCore.registerEventHandler(menuClientEvents);
 
 		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
 
 		TabClientEvents clientEvents = new TabClientEvents();
 
-		MinecraftForge.EVENT_BUS.register(clientEvents);
-		FMLCommonHandler.instance().bus().register(clientEvents);
+		UtilCore.registerEventHandler(clientEvents);
 
 		TabAPI.setBackpackTab(new TabBackpack());
 
@@ -61,17 +67,22 @@ public class ClientProxy extends ServerProxy
 		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
 
 		TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
+	}
+	
+	@Override
+	public void init(FMLInitializationEvent event)
+	{
+		ClientRegistry.registerKeyBinding(keyBindHopUniverse);
 
 		//TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 
-		UtilCore.registerEventListener(new GuiIngame(Minecraft.getMinecraft()));
+		UtilCore.registerEventHandler(new GuiIngame(Minecraft.getMinecraft()));
 	}
 
 	@Override
 	public void addScheduledTask(Runnable runnable)
 	{
 		Minecraft.getMinecraft().addScheduledTask(runnable);
-
 	}
 
 }
