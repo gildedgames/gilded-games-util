@@ -31,7 +31,7 @@ public class PlayerProfile implements IPlayerProfile
 
 		this.setUUID(player.getUniqueID());
 
-		this.username = player.getCommandSenderName();//TODO: May be wrong method.
+		this.username = player.getCommandSenderName();
 	}
 
 	@Override

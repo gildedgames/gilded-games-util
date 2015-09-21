@@ -59,32 +59,6 @@ public class PlayerNotification implements IPlayerHook
 	}
 
 	@Override
-	public void onUpdate()
-	{
-	}
-
-	@Override
-	public boolean onLivingAttack(DamageSource source)
-	{
-		return true;
-	}
-
-	@Override
-	public void onDeath()
-	{
-	}
-
-	@Override
-	public void onChangedDimension()
-	{
-	}
-
-	@Override
-	public void onRespawn()
-	{
-	}
-
-	@Override
 	public void syncTo(ByteBuf output, IOSyncable.SyncSide to)
 	{
 	}

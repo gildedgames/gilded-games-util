@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,14 +22,17 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.instances.InstanceCore;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
@@ -50,7 +55,7 @@ public class UtilCore implements ICore
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
-	public final List<ICore> cores = new ArrayList<ICore>();
+	private final List<ICore> cores = new ArrayList<ICore>();
 
 	private final SidedObject<UtilServices> serviceLocator;
 
@@ -64,12 +69,29 @@ public class UtilCore implements ICore
 		this.cores.add(TabCore.INSTANCE);
 		this.cores.add(UniverseCore.INSTANCE);
 		this.cores.add(GroupCore.INSTANCE);
+		this.cores.add(new SpawningCore());
+		this.cores.add(InstanceCore.INST);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
 
 		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
 		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
+	}
+
+	public void registerCore(ICore core)
+	{
+		this.cores.add(core);
+	}
+
+	public static ItemStack getItemStack(Block block)
+	{
+		return UtilCore.getItemStack(block, 1);
+	}
+
+	public static ItemStack getItemStack(Block block, int amount)
+	{
+		return new ItemStack(block, amount);
 	}
 
 	@Override
@@ -86,7 +108,7 @@ public class UtilCore implements ICore
 			e.printStackTrace();
 		}
 
-		UtilCore.NETWORK.init();
+		UtilCore.NETWORK.init(UtilCore.MOD_ID);
 
 		for (ICore core : this.cores)
 		{
@@ -104,6 +126,8 @@ public class UtilCore implements ICore
 		{
 			core.init(event);
 		}
+		
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new UtilGuiHandler());
 
 		proxy.init(event);
 	}
@@ -250,16 +274,16 @@ public class UtilCore implements ICore
 		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
 	}
 
-	public static void registerEventListener(Object listener)
-	{
-		MinecraftForge.EVENT_BUS.register(listener);
-		FMLCommonHandler.instance().bus().register(listener);
-	}
-
 	public static String translate(String key)
 	{
 		//TOOD: Maybe put "ggUtil." before the key?
 		return StatCollector.translateToLocal(key);
+	}
+
+	public static void registerEventHandler(Object o)
+	{
+		MinecraftForge.EVENT_BUS.register(o);
+		FMLCommonHandler.instance().bus().register(o);
 	}
 
 }

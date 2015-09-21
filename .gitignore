@@ -5,22 +5,26 @@
 /.gradle/
 /gradle/
 /.settings/
+/.metadata/
 .classpath
 .project
 gradlew
 gradlew.bat
 /target/
 /maven/
-/logs/
 /saves/
 /config/
+/logs/
 /mod-config/
-usernamecache.json
+/orbis/
 
+*.log
 *.db
 *.php
 *.iml
 *.txt
 
 /.idea/
-*.log
+usernamecache.json
+
+/secrets.properties
