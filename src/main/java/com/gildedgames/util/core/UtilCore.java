@@ -3,8 +3,11 @@ package com.gildedgames.util.core;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
@@ -255,6 +258,31 @@ public class UtilCore implements ICore
 		{
 			System.out.println("[GG]: " + line.toString());
 		}
+	}
+	
+	public static List<EntityPlayerMP> getOnlinePlayers()
+	{
+		return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+	}
+	
+	public static EntityPlayer getPlayerOnServerFromUUID(UUID uuid) 
+	{
+	    if (uuid == null) 
+	    {
+	        return null;
+	    }
+	    
+	    List<EntityPlayerMP> allPlayers = UtilCore.getOnlinePlayers();
+	    
+	    for (EntityPlayerMP player : allPlayers) 
+	    {
+	        if (player.getUniqueID().equals(uuid)) 
+	        {
+	            return player;
+	        }
+	    }
+	    
+	    return null;
 	}
 
 	public static File getWorldDirectory()

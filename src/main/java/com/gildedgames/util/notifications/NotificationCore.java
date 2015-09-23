@@ -25,14 +25,14 @@ public class NotificationCore implements ICore
 
 	public final static NotificationCore INSTANCE = new NotificationCore();
 
-	@SidedProxy(clientSide = "com.gildedgames.util.notifications.ClientProxy", serverSide = "com.gildedgames.util.notifications.ServerProxy")
-	public static ServerProxy proxy;
+	//@SidedProxy(clientSide = "com.gildedgames.util.notifications.ClientProxy", serverSide = "com.gildedgames.util.notifications.ServerProxy")
+	//public static ServerProxy proxy;
 
-	private final SidedObject<NotificationServices> serviceLocator = proxy.createServices();
+	//private final SidedObject<NotificationServices> serviceLocator = proxy.createServices();
 
 	public static NotificationServices locate()
 	{
-		return NotificationCore.INSTANCE.serviceLocator.instance();
+		return null;//NotificationCore.INSTANCE.serviceLocator.instance();
 	}
 
 	public static PlayerNotification getPlayerNotifications(EntityPlayer player)
@@ -63,7 +63,7 @@ public class NotificationCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
+		//PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 	}
 
 	@Override

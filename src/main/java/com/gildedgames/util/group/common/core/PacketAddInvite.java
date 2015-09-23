@@ -26,7 +26,7 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 	public void fromBytes(ByteBuf buf)
 	{
 		super.fromBytes(buf);
-		this.inviter = GroupCore.getGroupMember(IOUtil.readUUID(buf));
+		this.inviter = GroupMember.get(IOUtil.readUUID(buf));
 	}
 
 	@Override

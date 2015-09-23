@@ -4,12 +4,13 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 
-
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupPool;
 import com.gildedgames.util.player.common.IPlayerHookPool;
@@ -33,6 +34,18 @@ public class GroupMember implements IPlayerHook
 	{
 		this.profile = profile;
 		this.pool = pool;
+	}
+	
+	public static GroupMember get(EntityPlayer player)
+	{
+		return GroupCore.locate().getPlayers().get(player);
+	}
+	
+	public static GroupMember get(UUID uuid)
+	{
+		EntityPlayer entity = UtilCore.getPlayerOnServerFromUUID(uuid);
+		
+		return GroupMember.get(entity);
 	}
 
 	@Override

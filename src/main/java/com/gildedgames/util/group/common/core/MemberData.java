@@ -56,13 +56,13 @@ public class MemberData implements NBT, Iterable<GroupMember>
 		int memberSize = input.getInteger("memberSize");
 		for (int i = 0; i < memberSize; i++)
 		{
-			this.members.add(GroupCore.getGroupMember(IOUtil.getUUID(input, "member" + i)));
+			this.members.add(GroupMember.get(IOUtil.getUUID(input, "member" + i)));
 		}
 
 		int invitedSize = input.getInteger("memberSize");
 		for (int i = 0; i < invitedSize; i++)
 		{
-			this.members.add(GroupCore.getGroupMember(IOUtil.getUUID(input, "invited" + i)));
+			this.members.add(GroupMember.get(IOUtil.getUUID(input, "invited" + i)));
 		}
 
 		this.hooks = IOUtil.getIOList("hooks", new NBTFactory(), input);

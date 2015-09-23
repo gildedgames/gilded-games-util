@@ -31,9 +31,9 @@ public abstract class PacketMemberAction<T extends PacketMemberAction<T>> extend
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = GroupCore.locate().getFromID(ByteBufUtils.readUTF8String(buf));
+		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
 		this.group = this.pool.get(ByteBufUtils.readUTF8String(buf));
-		this.member = GroupCore.getGroupMember(IOUtil.readUUID(buf));
+		this.member = GroupMember.get(IOUtil.readUUID(buf));
 	}
 
 	@Override

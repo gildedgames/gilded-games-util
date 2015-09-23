@@ -37,7 +37,7 @@ public class GroupPoolClient extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
+		GroupMember member = GroupMember.get(player);
 		UtilCore.NETWORK.sendToServer(new PacketAddMember(this, group, member));
 	}
 
@@ -48,7 +48,7 @@ public class GroupPoolClient extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
+		GroupMember member = GroupMember.get(player);
 		UtilCore.NETWORK.sendToServer(new PacketRemoveMember(this, group, member));
 	}
 
@@ -75,7 +75,7 @@ public class GroupPoolClient extends GroupPool
 			UtilCore.print("Tried to invite as a different player!");
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
+		GroupMember member = GroupMember.get(player);
 		UtilCore.NETWORK.sendToServer(new PacketAddInvite(this, group, member, this.thePlayer()));
 	}
 
@@ -145,7 +145,7 @@ public class GroupPoolClient extends GroupPool
 
 	private GroupMember thePlayer()
 	{
-		return GroupCore.getGroupMember(Minecraft.getMinecraft().thePlayer);
+		return GroupMember.get(Minecraft.getMinecraft().thePlayer);
 	}
 
 	@Override
