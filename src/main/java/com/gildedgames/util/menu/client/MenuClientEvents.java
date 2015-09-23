@@ -74,7 +74,7 @@ public class MenuClientEvents
 	{
 		if (menu == null)
 		{
-			return;
+			menu = ClientProxy.MINECRAFT_MENU;
 		}
 
 		int mouseX = Mouse.getX();
