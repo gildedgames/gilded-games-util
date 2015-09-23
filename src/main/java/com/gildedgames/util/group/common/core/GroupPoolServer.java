@@ -33,7 +33,7 @@ public class GroupPoolServer extends GroupPool
 			}
 		}
 
-		GroupMember groupMember = GroupCore.getGroupMember(creating);
+		GroupMember groupMember = GroupMember.get(creating);
 
 		Group group = new Group(this);
 
@@ -58,7 +58,7 @@ public class GroupPoolServer extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
+		GroupMember member = GroupMember.get(player);
 		if (group.getPermissions().canJoin(member))//Maybe put this check in PacketAddMember/
 		{
 			this.leaveOldGroup(member);
@@ -75,7 +75,7 @@ public class GroupPoolServer extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
+		GroupMember member = GroupMember.get(player);
 		this.removeMemberDirectly(group, member);
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
 
@@ -103,8 +103,8 @@ public class GroupPoolServer extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupCore.getGroupMember(player);
-		GroupMember inviterG = GroupCore.getGroupMember(inviter);
+		GroupMember member = GroupMember.get(player);
+		GroupMember inviterG = GroupMember.get(inviter);
 		if (!group.getPermissions().canInvite(member, inviterG))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");

@@ -32,16 +32,6 @@ public class GroupCore implements ICore
 		return GroupCore.INSTANCE.serviceLocator.instance();
 	}
 
-	public static GroupMember getGroupMember(EntityPlayer player)
-	{
-		return GroupCore.locate().getPlayers().get(player);
-	}
-
-	public static GroupMember getGroupMember(UUID uuid)
-	{
-		return GroupCore.locate().getPlayers().get(uuid);
-	}
-
 	private static GroupServices client()
 	{
 		return GroupCore.INSTANCE.serviceLocator.client();

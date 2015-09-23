@@ -5,8 +5,8 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.util.IOUtil;
@@ -146,7 +146,10 @@ public class GroupPermsDefault implements IGroupPerms
 	public void read(NBTTagCompound input)
 	{
 		this.type = NBTHelper.getEnum("permtype", input, PermissionType.class);
-		this.owner = GroupCore.getGroupMember(IOUtil.getUUID(input, "owner"));
+		
+		EntityPlayer ownerEntity = UtilCore.getPlayerOnServerFromUUID(IOUtil.getUUID(input, "owner"));
+		
+		this.owner = GroupMember.get(ownerEntity);
 	}
 
 	@Override
@@ -161,7 +164,6 @@ public class GroupPermsDefault implements IGroupPerms
 		{
 			Random random = member.getProfile().getEntity().getRNG();
 			this.owner = this.group.getMemberData().getMembers().get(random.nextInt(this.group.getMemberData().size()));
-
 		}
 	}
 

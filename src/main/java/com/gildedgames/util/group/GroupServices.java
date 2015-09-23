@@ -40,7 +40,7 @@ public class GroupServices
 		return this.pools;
 	}
 
-	public GroupPool getFromID(String id)
+	public GroupPool getPoolFromID(String id)
 	{
 		for (GroupPool pool : this.getPools())
 		{

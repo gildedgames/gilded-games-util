@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTFactory;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -159,7 +158,7 @@ public abstract class GroupPool implements NBT
 
 	protected boolean assertMemberIn(Group group, EntityPlayer player)
 	{
-		if (!group.hasMemberData() || !group.getMemberData().contains(GroupCore.getGroupMember(player)))
+		if (!group.hasMemberData() || !group.getMemberData().contains(GroupMember.get(player)))
 		{
 			UtilCore.print("Member is not in the group like excepted. Group: " + group.getName() + " player: " + player.getCommandSenderName());
 			return false;

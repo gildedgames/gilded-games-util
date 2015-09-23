@@ -28,7 +28,7 @@ public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = GroupCore.locate().getFromID(ByteBufUtils.readUTF8String(buf));
+		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
 		this.groupinfo = NBTHelper.readInputObject(buf);
 	}
 

@@ -24,7 +24,7 @@ public class GuiIngame
 		{
 			return;
 		}
-		NotificationCore.locate().onRenderOverlay();
+		//NotificationCore.locate().onRenderOverlay();
 	}
 
 }
