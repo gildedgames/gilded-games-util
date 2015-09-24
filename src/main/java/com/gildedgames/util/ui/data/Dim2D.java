@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
 import com.google.common.collect.ImmutableList;
@@ -15,7 +17,7 @@ public class Dim2D
 	protected final ImmutableList<Modifier> modifiers;
 
 	protected final Pos2D pos;
-	
+
 	protected final Rotation2D rotation;
 
 	protected final double width, height;
@@ -40,7 +42,7 @@ public class Dim2D
 
 		this.centeredX = builder.centeredX;
 		this.centeredY = builder.centeredY;
-		
+
 		this.rotation = builder.rotation;
 
 		this.modifiers = ImmutableList.copyOf(builder.modifiers);
@@ -55,7 +57,7 @@ public class Dim2D
 	{
 		return this.modifiers.contains(modifier);
 	}
-	
+
 	public Rotation2D rotation()
 	{
 		Rotation2D modifiedRotation = this.rotation;
@@ -72,15 +74,15 @@ public class Dim2D
 				}
 			}
 		}
-		
+
 		return modifiedRotation;
 	}
-	
+
 	public float degrees()
 	{
 		return this.rotation().degrees();
 	}
-	
+
 	public Pos2D origin()
 	{
 		return this.rotation.origin();
@@ -239,12 +241,12 @@ public class Dim2D
 	{
 		return this.centeredY;
 	}
-	
+
 	public boolean intersects(Pos2D pos)
 	{
 		return this.intersects(Dim2D.build().pos(pos).flush());
 	}
-	
+
 	public boolean intersects(Dim2D dim)
 	{
 		return dim.maxX() >= this.x() && dim.maxY() >= this.y() && dim.x() < this.maxX() && dim.y() < this.maxY();
@@ -255,7 +257,7 @@ public class Dim2D
 	{
 		return new Dim2DBuilder(this);
 	}
-	
+
 	public Dim2DHolder toHolder()
 	{
 		return new Dim2DSingle(this);
@@ -416,12 +418,12 @@ public class Dim2D
 		protected boolean centeredX, centeredY;
 
 		protected float scale = 1.0F;
-		
+
 		protected Rotation2D rotation = Rotation2D.flush();
 
 		public Dim2DBuilder()
 		{
-			
+
 		}
 
 		public Dim2DBuilder(Dim2DHolder holder)
@@ -440,7 +442,7 @@ public class Dim2D
 
 			this.centeredX = dim.centeredX;
 			this.centeredY = dim.centeredY;
-			
+
 			this.rotation = dim.rotation;
 
 			this.modifiers = new ArrayList<Modifier>(dim.modifiers);
@@ -457,7 +459,7 @@ public class Dim2D
 
 			this.centeredX = builder.centeredX;
 			this.centeredY = builder.centeredY;
-			
+
 			this.rotation = builder.rotation;
 
 			this.scale = builder.scale;
@@ -472,53 +474,53 @@ public class Dim2D
 		{
 			return this.buildWith(new Dim2DSingle(dim));
 		}
-		
+
 		public Dim2DBuilder degrees(float degrees)
 		{
 			this.rotation = this.rotation.clone().degrees(degrees).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder origin(Pos2D origin)
 		{
 			this.rotation = this.rotation.clone().origin(origin).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder origin(double x, double y)
 		{
 			this.rotation = this.rotation.clone().origin(x, y).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder originX(double x)
 		{
 			this.rotation = this.rotation.clone().originX(x).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder originY(double y)
 		{
 			this.rotation = this.rotation.clone().originY(y).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder addDegrees(float degrees)
 		{
 			this.rotation = this.rotation.clone().addDegrees(degrees).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuilder subtractDegrees(float degrees)
 		{
 			this.rotation = this.rotation.clone().subtractDegrees(degrees).flush();
-			
+
 			return this;
 		}
 
@@ -644,7 +646,7 @@ public class Dim2D
 		 */
 		public Dim2DBuilder clearModifiers(ModifierType... types)
 		{
-			this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.<Object>asList(types))
+			this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.<Object> asList(types))
 			{
 
 				@Override
@@ -711,46 +713,46 @@ public class Dim2D
 			this.builder = builder;
 			this.buildWith = buildWith;
 		}
-		
+
 		public Dim2DBuildWith degrees()
 		{
 			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).degrees().flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuildWith origin()
 		{
 			this.builder.rotation = this.builder.rotation.clone().origin(this.buildWith.getDim().rotation.origin()).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuildWith originX()
 		{
 			this.builder.rotation = this.builder.rotation.clone().originX(this.buildWith.getDim().rotation.origin().x()).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuildWith originY()
 		{
 			this.builder.rotation = this.builder.rotation.clone().originY(this.buildWith.getDim().rotation.origin().y()).flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuildWith rotateCW()
 		{
 			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).addDegrees().flush();
-			
+
 			return this;
 		}
-		
+
 		public Dim2DBuildWith rotateCCW()
 		{
 			this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.getDim().rotation).subtractDegrees().flush();
-			
+
 			return this;
 		}
 
@@ -877,7 +879,7 @@ public class Dim2D
 		{
 			return this.builder;
 		}
-		
+
 		public Dim2D flush()
 		{
 			return this.builder.flush();
@@ -935,6 +937,27 @@ public class Dim2D
 		public List<ModifierType> getTypes()
 		{
 			return Arrays.asList(this.types);
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (super.equals(obj))
+			{
+				return true;
+			}
+			if (!(obj instanceof Modifier))
+			{
+				return false;
+			}
+			Modifier modifier = (Modifier) obj;
+			return modifier.holder.equals(this.holder) && Arrays.equals(modifier.types, this.types);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return new HashCodeBuilder(97, 37).append(this.holder).append(this.types).toHashCode();
 		}
 
 	}
