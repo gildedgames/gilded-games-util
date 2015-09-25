@@ -1,11 +1,11 @@
 package com.gildedgames.util.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.IWorldFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WorldServices
 {
@@ -51,6 +51,11 @@ public class WorldServices
 		IWorld world = this.wrapperFactory.create(dimId, this.isRemote);
 		this.worldWrappers.add(world);
 		return world;
+	}
+
+	public void reset()
+	{
+		this.worldWrappers.clear();
 	}
 
 }
