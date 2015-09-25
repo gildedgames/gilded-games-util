@@ -17,7 +17,7 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 
 public final class GuiViewerHelper
 {
-	
+
 	public static void processInitPre(Dim2DHolder parent, InputProvider input, UIContainer... containers)
 	{
 		for (UIContainer container : containers)
@@ -29,16 +29,16 @@ public final class GuiViewerHelper
 
 			for (Ui element : container.elements())
 			{
-				Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
-
 				if (element instanceof Dim2DHolder)
 				{
-					Dim2DHolder elementDimHolder = (Dim2DHolder)element;
-					
+					Dim2DHolder elementDimHolder = (Dim2DHolder) element;
+
 					elementDimHolder.modDim().addModifier(parent, ModifierType.POS, ModifierType.SCALE).flush();
 				}
-				
+
 				element.init(input);
+
+				Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
 
 				if (parentModifier != null)
 				{
@@ -60,7 +60,7 @@ public final class GuiViewerHelper
 	{
 		GuiViewerHelper.processInitPre(parent, input, containers);
 	}
-	
+
 	public static void processClose(InputProvider input, UIContainer... containers)
 	{
 		for (UIContainer container : containers)
@@ -121,7 +121,7 @@ public final class GuiViewerHelper
 	public static boolean processKeyboardInput(KeyboardInputPool pool, InputProvider input, UIContainer... containers)
 	{
 		boolean success = false;
-		
+
 		for (UIContainer container : containers)
 		{
 			if (container == null)
