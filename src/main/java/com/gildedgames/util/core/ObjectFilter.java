@@ -46,6 +46,11 @@ public class ObjectFilter
 		return getTypesFrom(Arrays.asList(array), condition);
 	}
 
+	public static <T> T getFirstFrom(Object[] array, Class<? extends T> typeClass)
+	{
+		return getFirstFrom(Arrays.asList(array), typeClass);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T, K> Map<K, T> getTypesFromKeys(Map<?, ?> map, Class<? extends K> keyClass, Class<? extends T> typeClass)
 	{
@@ -119,6 +124,20 @@ public class ObjectFilter
 		}
 
 		return returnList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getFirstFrom(Collection<?> list, Class<? extends T> typeClass)
+	{
+		for (Object obj : list)
+		{
+			if (obj != null && typeClass.isAssignableFrom(obj.getClass()))
+			{
+				return (T) obj;
+			}
+		}
+
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
