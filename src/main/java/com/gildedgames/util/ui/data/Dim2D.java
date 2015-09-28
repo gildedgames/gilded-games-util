@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
+import com.gildedgames.util.ui.input.InputProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -250,6 +251,13 @@ public class Dim2D
 	public boolean intersects(Dim2D dim)
 	{
 		return dim.maxX() >= this.x() && dim.maxY() >= this.y() && dim.x() < this.maxX() && dim.y() < this.maxY();
+	}
+	
+	public boolean isHovered(InputProvider input)
+	{
+		Pos2D mousePos = Pos2D.flush(input.getMouseX(), input.getMouseY());
+		
+		return this.intersects(mousePos);
 	}
 
 	@Override

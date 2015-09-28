@@ -32,8 +32,11 @@ public final class GuiViewerHelper
 				if (element instanceof Dim2DHolder)
 				{
 					Dim2DHolder elementDimHolder = (Dim2DHolder) element;
-
-					elementDimHolder.modDim().addModifier(parent, ModifierType.POS, ModifierType.SCALE).flush();
+					
+					if (elementDimHolder.modDim() != null)
+					{
+						elementDimHolder.modDim().addModifier(parent, ModifierType.POS, ModifierType.SCALE).flush();
+					}
 				}
 
 				element.init(input);
@@ -46,7 +49,7 @@ public final class GuiViewerHelper
 					{
 						Dim2DHolder dimHolder = ObjectFilter.getType(child, Dim2DHolder.class);
 
-						if (dimHolder != null)
+						if (dimHolder != null && dimHolder.modDim() != null)
 						{
 							dimHolder.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).flush();
 						}

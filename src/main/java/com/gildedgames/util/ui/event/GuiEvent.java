@@ -9,6 +9,18 @@ import com.gildedgames.util.ui.input.InputProvider;
 
 public class GuiEvent extends UiEvent implements Gui
 {
+	
+	private Gui gui;
+	
+	public GuiEvent(Gui gui)
+	{
+		this.gui = gui;
+	}
+	
+	public Gui getGui()
+	{
+		return this.gui;
+	}
 
 	@Override
 	public Dim2D getDim()
@@ -43,7 +55,7 @@ public class GuiEvent extends UiEvent implements Gui
 	@Override
 	public boolean isVisible()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
