@@ -11,10 +11,8 @@ public class GuiEventScaleWhenHovered extends GuiEvent
 	
 	private final float selectedScale, originalScale;
 	
-	public GuiEventScaleWhenHovered(Gui gui, float originalScale, float selectedScale)
+	public GuiEventScaleWhenHovered(float originalScale, float selectedScale)
 	{
-		super(gui);
-		
 		this.selectedScale = selectedScale;
 		this.originalScale = originalScale;
 	}
@@ -32,6 +30,12 @@ public class GuiEventScaleWhenHovered extends GuiEvent
 		{
 			this.getGui().modDim().scale(this.originalScale).flush();
 		}
+	}
+
+	@Override
+	public void initEvent()
+	{
+		
 	}
 	
 }

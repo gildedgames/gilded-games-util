@@ -38,6 +38,11 @@ public class TextElement extends GuiFrame
 	{
 		this.text.text = text;
 	}
+	
+	public String getText()
+	{
+		return this.text.text;
+	}
 
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)

@@ -32,14 +32,14 @@ public class GuiPositionerGrid implements GuiPositioner
 		int currentX = 0;
 		int currentY = 0;
 
-		for (Gui view : guis)
+		for (Gui gui : guis)
 		{
-			view.modDim().pos(currentX, currentY).center(false).flush();
+			gui.modDim().pos(currentX, currentY).center(false).flush();
 
-			currentX += view.getDim().width() + this.paddingX;
-			if (currentX > listDimensions.width())
+			currentX += gui.getDim().width() + this.paddingX;
+			if (currentX + gui.getDim().width() + this.paddingX > listDimensions.width())
 			{
-				double maxHeight = view.getDim().height();
+				double maxHeight = gui.getDim().height();
 				for (Gui view1 : guis)
 				{
 					if (view1.getDim().y() == currentY)
