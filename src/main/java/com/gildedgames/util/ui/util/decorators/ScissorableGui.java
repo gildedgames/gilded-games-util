@@ -6,9 +6,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
+import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DSeekable;
 import com.gildedgames.util.ui.data.Dim2DSeeker;
+import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.google.common.collect.ImmutableList;
@@ -52,6 +54,28 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
+		for (UIContainer container : this.getDecoratedElement().seekAllContent())
+		{
+			for (Ui ui : container)
+			{
+				if (ui instanceof Gui)
+				{
+					Gui gui = (Gui)ui;
+					
+					if (!gui.getDim().intersects(this.getScissoredArea()))
+					{
+						gui.setEnabled(false);
+						gui.setVisible(false);
+					}
+					else
+					{
+						gui.setEnabled(true);
+						gui.setVisible(true);
+					}
+				}
+			}
+		}	
+		
 		GL11.glPushMatrix();
 
 		double lowerLeftCornerY = this.getScissoredArea().y() + this.getScissoredArea().height();

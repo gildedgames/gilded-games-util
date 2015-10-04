@@ -5,6 +5,7 @@ import net.minecraft.client.gui.ScaledResolution;
 
 import org.lwjgl.input.Mouse;
 
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2DCollection;
 import com.gildedgames.util.ui.data.Dim2DHolder;
@@ -146,5 +147,5 @@ public class MinecraftInputProvider implements InputProvider
 
 		return false;
 	}
-
+	
 }

@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.common;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.ObjectFilter;
@@ -9,6 +11,7 @@ import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -16,7 +19,7 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
-import com.gildedgames.util.ui.util.GuiViewerHelper;
+import com.gildedgames.util.ui.util.GuiProcessingHelper;
 
 
 public abstract class GuiDecorator<T extends Ui> extends GuiFrame
@@ -132,7 +135,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	{
 		this.initContent(input);
 		
-		GuiViewerHelper.processInitPre(this, input, this.content(), this.listeners());
+		GuiProcessingHelper.processInitPre(this, input, this.content(), this.listeners());
 	}
 	
 	@Override
@@ -279,7 +282,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public UIContainerMutable listeners()
+	public UIContainerEvents listeners()
 	{
 		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
@@ -290,6 +293,13 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 		
 		return null;
 	}
+	
+	@Override
+	public List<UIContainer> seekAllContent()
+	{
+		return this.element.seekAllContent();
+	}
+
 
 	@Override
 	public void write(NBTTagCompound output)

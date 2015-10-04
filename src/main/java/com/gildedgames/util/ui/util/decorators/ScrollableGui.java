@@ -96,7 +96,7 @@ public class ScrollableGui extends GuiFrame
 		this.content().set("backdrop", this.backdrop);
 		this.content().set("backdropEmbedded", this.backdropEmbedded);
 
-		this.content().set("scrolledView", this.scrolledGui);
+		this.content().set("scrolledGui", this.scrolledGui);
 		this.content().set("scrollBar", this.scrollBar);
 	}
 

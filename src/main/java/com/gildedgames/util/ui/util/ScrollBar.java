@@ -264,7 +264,7 @@ public class ScrollBar extends GuiFrame
 
 		public ButtonScrollEvent(Dim2DHolder button, ScrollBar scrollBar, float scrollPercentage)
 		{
-			super(scrollBar);
+			super();
 
 			this.button = button;
 			this.scrollBar = scrollBar;
@@ -290,6 +290,12 @@ public class ScrollBar extends GuiFrame
 
 		@Override
 		protected void onFalse(InputProvider input, MouseInputPool pool)
+		{
+			
+		}
+
+		@Override
+		public void initEvent()
 		{
 			
 		}

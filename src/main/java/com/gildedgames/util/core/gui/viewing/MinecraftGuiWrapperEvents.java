@@ -153,7 +153,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				
 				InputProvider input = viewer.getInputProvider();
 				
-				if (this.worldStarted || this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
+				if (this.width != input.getScreenWidth() || this.height != input.getScreenHeight() || this.scaleFactor != input.getScaleFactor())
 				{
 					viewer.getInputProvider().refreshResolution();
 					

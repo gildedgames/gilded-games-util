@@ -53,6 +53,30 @@ public class Dim2D
 	{
 		return this.modifiers;
 	}
+	
+	public ImmutableList<Modifier> getModifiersOfType(ModifierType type)
+	{
+		return ImmutableList.<Modifier>copyOf(ObjectFilter.<Modifier>getTypesFrom(this.modifiers, new FilterCondition(this.modifiers)
+		{
+
+			@Override
+			public boolean isType(Object object)
+			{
+				if (object instanceof Modifier)
+				{
+					Modifier modifier = (Modifier)object;
+					
+					if (modifier.getTypes().contains(ModifierType.POS))
+					{
+						return true;
+					}
+				}
+				
+				return false;
+			}
+			
+		}));
+	}
 
 	public boolean containsModifier(Dim2DHolder modifier)
 	{

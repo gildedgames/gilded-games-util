@@ -20,9 +20,9 @@ public class ObjectFilter
 	public static abstract class FilterCondition
 	{
 
-		private List<Object> data;
+		private List data;
 
-		public FilterCondition(List<Object> data)
+		public FilterCondition(List data)
 		{
 			this.data = data;
 		}

@@ -19,21 +19,23 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 	protected Map<String, Ui> elements = new LinkedHashMap<String, Ui>();
 
-	protected UIContainer parent;
-
-	public UIContainer()
+	protected Ui attachedUi;
+	
+	protected Ui parentUi;
+	
+	public UIContainer(Ui attachedUi)
 	{
-
+		this.attachedUi = attachedUi;
 	}
-
-	protected UIContainer(UIContainer parent)
+	
+	public Ui getAttachedUi()
 	{
-		this.parent = parent;
+		return this.attachedUi;
 	}
-
-	public UIContainer getParent()
+	
+	public Ui getParentUi()
 	{
-		return this.parent;
+		return this.parentUi;
 	}
 
 	public Ui get(String key)
@@ -63,7 +65,17 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 	public List<Gui> queryAll(Object... input)
 	{
-		List<Gui> views = new ArrayList<Gui>();
+		List<Gui> guis = new ArrayList<Gui>();
+
+		if (this.getAttachedUi() instanceof Gui)
+		{
+			Gui gui = (Gui)this.getAttachedUi();
+			
+			if (gui.query(input))
+			{
+				guis.add(gui);
+			}
+		}
 
 		for (Gui element : ObjectFilter.getTypesFrom(this.elements(), Gui.class))
 		{
@@ -71,14 +83,19 @@ public class UIContainer implements Iterable<Ui>, NBT
 			{
 				continue;
 			}
+			
+			for (UIContainer container : element.seekAllContent())
+			{
+				guis.addAll(container.queryAll(input));
+			}
 
 			if (element.query(input))
 			{
-				views.add(element);
+				guis.add(element);
 			}
 		}
 
-		return views;
+		return guis;
 	}
 
 	public boolean contains(String key)
@@ -126,9 +143,8 @@ public class UIContainer implements Iterable<Ui>, NBT
 	@Override
 	public UIContainer clone()
 	{
-		UIContainer clone = new UIContainer();
+		UIContainer clone = new UIContainer(this.attachedUi);
 
-		clone.parent = this.parent;
 		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
 
 		return clone;
@@ -142,7 +158,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 	public UIContainer merge(boolean newContentFirst, UIContainer first, UIContainer... rest)
 	{
 		UIContainer clone = this.clone();
-		UIContainer merged = new UIContainer();
+		UIContainer merged = new UIContainer(this.attachedUi);
 
 		if (!newContentFirst)
 		{
@@ -180,6 +196,28 @@ public class UIContainer implements Iterable<Ui>, NBT
 	public void read(NBTTagCompound input)
 	{
 
+	}
+	
+	public UIContainer getTopParent()
+	{
+		UIContainer parent = this.getParentUi().seekContent();
+		
+		while (parent != null)
+		{
+			if (parent.getParentUi() == null)
+			{
+				return parent;
+			}
+			
+			if (parent.getParentUi().seekContent() == null)
+			{
+				return parent;
+			}
+			
+			parent = parent.getParentUi().seekContent();
+		}
+		
+		return null;
 	}
 
 }
