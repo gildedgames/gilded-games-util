@@ -163,6 +163,11 @@ public class UiServices
 		}
 	}
 	
+	public Overlay getOverlay(String uniqueSaveName)
+	{
+		return this.overlays.get(uniqueSaveName);
+	}
+	
 	public void registerOverlay(String uniqueSaveName, GenericFactory factory, GuiViewer viewer)
 	{
 		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.NORMAL);

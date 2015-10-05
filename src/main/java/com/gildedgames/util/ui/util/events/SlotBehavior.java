@@ -11,11 +11,16 @@ import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
+import com.gildedgames.util.ui.util.factory.GenericFactory;
 
-public abstract class SlotBehavior extends GuiEvent
+public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 {
 	
-	private Gui slotContents;
+	private GuiFrame slotContents;
+	
+	private int cooldown;
+	
+	public static final int COOLDOWN_REQUIRED = 5;
 
 	public SlotBehavior()
 	{
@@ -24,18 +29,20 @@ public abstract class SlotBehavior extends GuiEvent
 	
 	public abstract void onSlotChange();
 
-	public void setSlotContents(Gui gui)
+	public void setSlotContents(GuiFrame gui)
 	{
 		this.slotContents = gui;
 		
-		this.slotContents.modDim().clearModifiers(ModifierType.POS).resetPos().flush();
+		this.slotContents.modDim().clearModifiers(ModifierType.POS).resetPos().scale(0.75F).x(6.5D).y(6.75D).flush();
 
 		this.content().set("slotContents", this.slotContents);
 		
 		this.onSlotChange();
+		
+		this.cooldown = 0;
 	}
 	
-	public Gui getSlotContents()
+	public GuiFrame getSlotContents()
 	{
 		return this.slotContents;
 	}
@@ -45,12 +52,14 @@ public abstract class SlotBehavior extends GuiEvent
 	{
 		super.draw(graphics, input);
 		
+		this.cooldown++;
+		
 		if (this.slotContents != null)
 		{
-			this.slotContents.modDim().center(true).x(this.getGui().getDim().width() / 2).y(this.getGui().getDim().height() / 2).flush();
+			this.slotContents.modDim().center(true).flush();
 		}
 
-		if (MouseButton.LEFT.isDown() && input.isHovered(this.getGui().getDim()))
+		if (this.cooldown > COOLDOWN_REQUIRED && MouseButton.LEFT.isDown() && input.isHovered(this.getGui().getDim()))
 		{
 			UIContainer topParent = this.content().getTopParent();
 			
@@ -80,7 +89,37 @@ public abstract class SlotBehavior extends GuiEvent
 	@Override
 	public void initEvent()
 	{
+		GenericFactory<GuiFrame> factory = new GenericFactory<GuiFrame>()
+		{
+
+			@Override
+			public GuiFrame create()
+			{
+				return SlotBehavior.this.getSlotContents();
+			}
+			
+		};
 		
+		this.getGui().listeners().set("draggableBehavior", new DraggableBehavior(factory)
+		{
+			
+			@Override
+			public boolean isActive()
+			{
+				return SlotBehavior.this.getSlotContents() != null && SlotBehavior.this.cooldown > COOLDOWN_REQUIRED;
+			}
+			
+			@Override
+			public void onCreateDraggedState()
+			{
+				SlotBehavior.this.slotContents = null;
+
+				SlotBehavior.this.onSlotChange();
+				
+				SlotBehavior.this.cooldown = 0;
+			}
+			
+		});
 	}
 
 }

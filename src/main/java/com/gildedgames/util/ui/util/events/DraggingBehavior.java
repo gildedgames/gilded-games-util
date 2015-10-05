@@ -12,7 +12,7 @@ import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 
-public class DraggingBehavior extends GuiEvent
+public class DraggingBehavior extends GuiEvent<GuiFrame>
 {
 	
 	private List<Modifier> prevModifiers;
