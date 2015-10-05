@@ -31,7 +31,7 @@ public class DraggableBehavior extends GuiEvent
 		boolean isHovered = input.isHovered(dim);
 		boolean isPressed = MouseButton.LEFT.isDown();
 		
-		if (isHovered && isPressed)
+		if (isHovered && isPressed && this.isActive())
 		{
 			GuiFrame draggedState = this.draggedStateFactory.create();
 			
@@ -44,8 +44,20 @@ public class DraggableBehavior extends GuiEvent
 				MinecraftGuiWrapper wrapper = (MinecraftGuiWrapper)screen;
 				
 				wrapper.getFrame().listeners().set("draggedState", draggedState);
+				
+				this.onCreateDraggedState();
 			}
 		}
+	}
+	
+	public boolean isActive()
+	{
+		return true;
+	}
+	
+	public void onCreateDraggedState()
+	{
+		
 	}
 
 	@Override

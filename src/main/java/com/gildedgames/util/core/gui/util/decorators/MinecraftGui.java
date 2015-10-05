@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
+import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.Dim2D;
@@ -61,7 +62,7 @@ public class MinecraftGui extends GuiDecorator<Gui>
 	{
 		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
         {
-			Minecraft.getMinecraft().displayGuiScreen(null);
+			UiCore.locate().close();
         }
 		
 		return super.onKeyboardInput(pool, input);

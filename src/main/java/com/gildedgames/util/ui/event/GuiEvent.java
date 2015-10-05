@@ -3,22 +3,22 @@ package com.gildedgames.util.ui.event;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 
-public abstract class GuiEvent extends GuiFrame
+public abstract class GuiEvent<E extends Gui> extends GuiFrame
 {
 	
-	private Gui gui;
+	private E gui;
 
 	public GuiEvent()
 	{
 		
 	}
 	
-	public Gui getGui()
+	public E getGui()
 	{
 		return this.gui;
 	}
 	
-	public void setGui(Gui gui)
+	public void setGui(E gui)
 	{
 		this.gui = gui;
 		
