@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
@@ -135,7 +136,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	{
 		this.initContent(input);
 		
-		GuiProcessingHelper.processInitPre(this, input, this.content(), this.listeners());
+		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
 	}
 	
 	@Override
@@ -282,13 +283,13 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public UIContainerEvents listeners()
+	public UIContainerEvents events()
 	{
 		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{
-			return frame.listeners();
+			return frame.events();
 		}
 		
 		return null;
@@ -300,6 +301,40 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 		return this.element.seekAllContent();
 	}
 
+	@Override
+	public List<Dim2DListener> dimListeners()
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			return frame.dimListeners();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public void addDimListener(Dim2DListener listener)
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			frame.addDimListener(listener);
+		}
+	}
+
+	@Override
+	public void removeDimListener(Dim2DListener listener)
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			frame.removeDimListener(listener);
+		}
+	}
 
 	@Override
 	public void write(NBTTagCompound output)

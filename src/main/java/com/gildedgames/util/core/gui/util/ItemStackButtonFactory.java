@@ -106,7 +106,7 @@ public class ItemStackButtonFactory implements ContentFactory
 		{
 			final MinecraftButtonItemStack button = new MinecraftButtonItemStack(stack);
 			
-			button.listeners().set("draggableBehavior", new DraggableBehavior(new GenericFactory<MinecraftItemStackRender>()
+			button.events().set("draggableBehavior", new DraggableBehavior(new GenericFactory<MinecraftItemStackRender>()
 			{
 
 				@Override

@@ -30,8 +30,6 @@ public final class GuiProcessingHelper
 			for (Ui element : container.elements())
 			{
 				element.init(input);
-
-				Dim2DHolder parentModifier = ObjectFilter.getType(element, Dim2DHolder.class);
 			}
 		}
 	}

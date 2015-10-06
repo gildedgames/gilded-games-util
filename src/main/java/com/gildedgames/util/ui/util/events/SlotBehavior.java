@@ -80,7 +80,7 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 				{
 					GuiFrame frame = (GuiFrame)behavior.getGui();
 					
-					frame.listeners().remove(behavior);
+					frame.events().remove(behavior);
 				}
 			}
 		}
@@ -100,7 +100,7 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 			
 		};
 		
-		this.getGui().listeners().set("draggableBehavior", new DraggableBehavior(factory)
+		this.getGui().events().set("draggableBehavior", new DraggableBehavior(factory)
 		{
 			
 			@Override

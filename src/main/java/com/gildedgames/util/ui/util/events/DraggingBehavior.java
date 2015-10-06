@@ -50,7 +50,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 			
 			if (frame != null)
 			{
-				frame.listeners().remove("draggedState");
+				frame.events().remove("draggedState");
 			}
 		}
 	}

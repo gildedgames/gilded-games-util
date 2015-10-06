@@ -26,6 +26,8 @@ public class Dim2D
 	protected final boolean centeredX, centeredY;
 
 	protected final float scale;
+	
+	protected Dim2DSingle modifiedState;
 
 	private Dim2D()
 	{
@@ -47,6 +49,8 @@ public class Dim2D
 		this.rotation = builder.rotation;
 
 		this.modifiers = ImmutableList.copyOf(builder.modifiers);
+		
+		this.modifiedState = new Dim2DSingle(this);
 	}
 
 	public ImmutableList<Modifier> getModifiers()
@@ -82,25 +86,94 @@ public class Dim2D
 	{
 		return this.modifiers.contains(modifier);
 	}
-
-	public Rotation2D rotation()
+	
+	private void refreshModifierLinks()
 	{
-		Rotation2D modifiedRotation = this.rotation;
-
 		for (Modifier modifier : this.modifiers)
 		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.ROTATION) || modifier.getTypes().contains(ModifierType.ALL))
+			if (modifier != null && modifier.getHolder() != null)
 			{
-				Dim2DHolder holder = modifier.getHolder();
-
+				modifier.refreshListener(this);
+			}
+		}
+	}
+	
+	private void refreshModifiedState()
+	{
+		Rotation2D modifiedRotation = this.rotation;
+		float modifiedScale = this.scale;
+		
+		double offsetX = this.isCenteredX() ? this.width() * this.scale() / 2 : 0;
+		double offsetY = this.isCenteredY() ? this.height() * this.scale() / 2 : 0;
+		
+		Pos2D centeredPos = Pos2D.flush(this.pos.x() - offsetX, this.pos.y() - offsetY);
+		
+		double modifiedWidth = this.width;
+		double modifiedHeight = this.height;
+		
+		for (Modifier modifier : this.modifiers)
+		{
+			if (modifier == null)
+			{
+				continue;
+			}
+			
+			Dim2DHolder holder = modifier.getHolder();
+			
+			if (modifier.getTypes().contains(ModifierType.ROTATION) || modifier.getTypes().contains(ModifierType.ALL))
+			{
 				if (holder.getDim() != null && holder.getDim() != this)
 				{
 					modifiedRotation = modifiedRotation.buildWith(holder.getDim().rotation()).addDegrees().flush();
 				}
 			}
-		}
+			
+			if (modifier.getTypes().contains(ModifierType.SCALE) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedScale *= holder.getDim().scale();
+				}
+			}
 
-		return modifiedRotation;
+			if (holder.getDim() != null && holder.getDim() != this)
+			{
+				if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
+				{
+					centeredPos = centeredPos.clone().addX(holder.getDim().pos().x()).flush();
+				}
+
+				if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
+				{
+					centeredPos = centeredPos.clone().addY(holder.getDim().pos().y()).flush();
+				}
+			}
+			
+			if (modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedWidth += holder.getDim().width();
+				}
+			}
+			
+			if (modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
+			{
+				if (holder.getDim() != null && holder.getDim() != this)
+				{
+					modifiedHeight += holder.getDim().height();
+				}
+			}
+		}
+		
+		this.modifiedState.modDim().pos(centeredPos).scale(modifiedScale).width(modifiedWidth * modifiedScale).height(modifiedHeight * modifiedScale).rotation(modifiedRotation).flush();
+	}
+
+	public Rotation2D rotation()
+	{
+		this.refreshModifierLinks();
+		
+		return this.modifiedState.getDim().rotation;
 	}
 
 	public float degrees()
@@ -115,22 +188,9 @@ public class Dim2D
 
 	public float scale()
 	{
-		float modifiedScale = this.scale;
-
-		for (Modifier modifier : this.modifiers)
-		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.SCALE) || modifier.getTypes().contains(ModifierType.ALL))
-			{
-				Dim2DHolder holder = modifier.getHolder();
-
-				if (holder.getDim() != null && holder.getDim() != this)
-				{
-					modifiedScale *= holder.getDim().scale();
-				}
-			}
-		}
-
-		return modifiedScale;
+		this.refreshModifierLinks();
+		
+		return this.modifiedState.getDim().scale;
 	}
 
 	/**
@@ -138,7 +198,9 @@ public class Dim2D
 	 */
 	public Pos2D pos()
 	{
-		return this.getModifiedPos(this.pos);
+		this.refreshModifierLinks();
+		
+		return this.modifiedState.getDim().pos;
 	}
 
 	public Pos2D maxPos()
@@ -154,45 +216,6 @@ public class Dim2D
 	public double maxY()
 	{
 		return this.y() + this.height();
-	}
-
-	/**
-	 * Unaltered by modifiers.
-	 */
-	private Pos2D getScaledPos(Pos2D pos)
-	{
-		double offsetX = this.isCenteredX() ? this.width() * this.scale() / 2 : 0;
-		double offsetY = this.isCenteredY() ? this.height() * this.scale() / 2 : 0;
-
-		return Pos2D.flush(pos.x() - offsetX, pos.y() - offsetY);
-	}
-
-	private Pos2D getModifiedPos(Pos2D pos)
-	{
-		Pos2D modifiedPos = this.getScaledPos(pos);
-
-		for (Modifier modifier : this.modifiers)
-		{
-			if (modifier != null)
-			{
-				Dim2DHolder holder = modifier.getHolder();
-
-				if (holder.getDim() != null && holder.getDim() != this)
-				{
-					if (modifier.getTypes().contains(ModifierType.X) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
-					{
-						modifiedPos = modifiedPos.clone().addX(holder.getDim().pos().x()).flush();
-					}
-
-					if (modifier.getTypes().contains(ModifierType.Y) || modifier.getTypes().contains(ModifierType.POS) || modifier.getTypes().contains(ModifierType.ALL))
-					{
-						modifiedPos = modifiedPos.clone().addY(holder.getDim().pos().y()).flush();
-					}
-				}
-			}
-		}
-
-		return modifiedPos;
 	}
 
 	/**
@@ -216,22 +239,9 @@ public class Dim2D
 	 */
 	public double width()
 	{
-		double modifiedWidth = this.width;
-
-		for (Modifier modifier : this.modifiers)
-		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
-			{
-				Dim2DHolder holder = modifier.getHolder();
-
-				if (holder.getDim() != null && holder.getDim() != this)
-				{
-					modifiedWidth += holder.getDim().width();
-				}
-			}
-		}
-
-		return modifiedWidth * this.scale();
+		this.refreshModifierLinks();
+		
+		return this.modifiedState.getDim().width;
 	}
 
 	/**
@@ -239,22 +249,9 @@ public class Dim2D
 	 */
 	public double height()
 	{
-		double modifiedHeight = this.height;
-
-		for (Modifier modifier : this.modifiers)
-		{
-			if (modifier != null && modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
-			{
-				Dim2DHolder holder = modifier.getHolder();
-
-				if (holder.getDim() != null && holder.getDim() != this)
-				{
-					modifiedHeight += holder.getDim().height();
-				}
-			}
-		}
-
-		return modifiedHeight * this.scale();
+		this.refreshModifierLinks();
+		
+		return this.modifiedState.getDim().height;
 	}
 
 	public boolean isCenteredX()
@@ -506,6 +503,13 @@ public class Dim2D
 		{
 			return this.buildWith(new Dim2DSingle(dim));
 		}
+		
+		public Dim2DBuilder rotation(Rotation2D rotation)
+		{
+			this.rotation = rotation;
+			
+			return this;
+		}
 
 		public Dim2DBuilder degrees(float degrees)
 		{
@@ -745,6 +749,13 @@ public class Dim2D
 			this.builder = builder;
 			this.buildWith = buildWith;
 		}
+		
+		public Dim2DBuildWith rotation()
+		{
+			this.builder.rotation = this.buildWith.getDim().rotation;
+			
+			return this;
+		}
 
 		public Dim2DBuildWith degrees()
 		{
@@ -942,6 +953,24 @@ public class Dim2D
 		}
 
 	}
+	
+	public static class ModifierDim2DListener implements Dim2DListener
+	{
+		
+		private Dim2D modifying;
+		
+		public ModifierDim2DListener(Dim2D modifying)
+		{
+			this.modifying = modifying;
+		}
+
+		@Override
+		public void notifyChange()
+		{
+			this.modifying.refreshModifiedState();
+		}
+		
+	}
 
 	public static class Modifier
 	{
@@ -949,6 +978,8 @@ public class Dim2D
 		private Dim2DHolder holder;
 
 		private ModifierType[] types;
+		
+		private ModifierDim2DListener listener;
 
 		public Modifier(Dim2DHolder holder, List<ModifierType> types)
 		{
@@ -969,6 +1000,24 @@ public class Dim2D
 		public List<ModifierType> getTypes()
 		{
 			return Arrays.asList(this.types);
+		}
+		
+		public void refreshListener(Dim2D modifying)
+		{
+			if (this.listener == null)
+			{
+				this.listener = new ModifierDim2DListener(modifying);
+				
+				this.holder.addDimListener(this.listener);
+			}
+			else if (this.listener.modifying != modifying)
+			{
+				this.holder.removeDimListener(this.listener);
+				
+				this.listener = new ModifierDim2DListener(modifying);
+				
+				this.holder.addDimListener(this.listener);
+			}
 		}
 
 		@Override

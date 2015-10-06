@@ -81,8 +81,8 @@ public class ScrollBar extends GuiFrame
 		this.baseBarTexture.modDim().center(false).flush();
 		this.grabbableBarTexture.modDim().center(false).flush();
 
-		this.topButton.listeners().set("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
-		this.bottomButton.listeners().set("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
+		this.topButton.events().set("topButtonScrollEvent", new ButtonScrollEvent(this.topButton, this, -0.01F));
+		this.bottomButton.events().set("bottomButtonScrollEvent", new ButtonScrollEvent(this.bottomButton, this, 0.01F));
 
 		this.baseBar = new RepeatableGui(Dim2D.build()
 				.area(this.baseBarTexture.getDim().width(), this.getDim().height() - this.topButton.getDim().height() - this.bottomButton.getDim().height())

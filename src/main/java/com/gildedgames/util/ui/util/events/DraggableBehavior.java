@@ -35,7 +35,7 @@ public class DraggableBehavior extends GuiEvent
 		{
 			GuiFrame draggedState = this.draggedStateFactory.create();
 			
-			draggedState.listeners().set("draggingBehavior", new DraggingBehavior());
+			draggedState.events().set("draggingBehavior", new DraggingBehavior());
 			
 			GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 			
@@ -43,7 +43,7 @@ public class DraggableBehavior extends GuiEvent
 			{
 				MinecraftGuiWrapper wrapper = (MinecraftGuiWrapper)screen;
 				
-				wrapper.getFrame().listeners().set("draggedState", draggedState);
+				wrapper.getFrame().events().set("draggedState", draggedState);
 				
 				this.onCreateDraggedState();
 			}
