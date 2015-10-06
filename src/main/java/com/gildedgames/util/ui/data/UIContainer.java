@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui.data;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,7 +13,6 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.Ui;
-import com.google.common.collect.ImmutableList;
 
 public class UIContainer implements Iterable<Ui>, NBT
 {
@@ -48,9 +48,9 @@ public class UIContainer implements Iterable<Ui>, NBT
 		return (T) this.elements.get(key);
 	}
 
-	public ImmutableList<Ui> elements()
+	public Collection<Ui> elements()
 	{
-		return ImmutableList.copyOf(this.elements.values());
+		return this.elements.values();
 	}
 
 	public Map<String, Ui> map()

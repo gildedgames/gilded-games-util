@@ -1,5 +1,8 @@
 package com.gildedgames.util.ui.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Dim2DGetter<S> extends Dim2DSeeker<S>
 {
 	

@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
+import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
@@ -27,11 +28,13 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 
 	private UIContainerMutable mainContent = new UIContainerMutable(this);
 	
-	private UIContainerEvents listeners = new UIContainerEvents(this);
+	private UIContainerEvents events = new UIContainerEvents(this);
 	
 	private Dim2D dim;
 	
 	private List<UIContainer> containers;
+	
+	private List<Dim2DListener> dimListeners = new ArrayList<Dim2DListener>();
 	
 	public GuiFrame()
 	{
@@ -49,14 +52,32 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		return this.mainContent;
 	}
 
-	public UIContainerEvents listeners()
+	public UIContainerEvents events()
 	{
-		return this.listeners;
+		return this.events;
 	}
 	
 	protected UIContainerMutable content()
 	{
 		return this.mainContent;
+	}
+	
+	@Override
+	public List<Dim2DListener> dimListeners()
+	{
+		return this.dimListeners;
+	}
+
+	@Override
+	public void addDimListener(Dim2DListener listener)
+	{
+		this.dimListeners.add(listener);
+	}
+
+	@Override
+	public void removeDimListener(Dim2DListener listener)
+	{
+		this.dimListeners.remove(listener);
 	}
 
 	@Override
@@ -93,6 +114,11 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	public void setDim(Dim2D dim)
 	{
 		this.dim = dim;
+		
+		for (Dim2DListener listener : this.dimListeners())
+		{
+			listener.notifyChange();
+		}
 	}
 	
 	@Override
@@ -130,7 +156,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		this.initContent(input);
 		
-		GuiProcessingHelper.processInitPre(this, input, this.content(), this.listeners()); 
+		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events()); 
 	}
 
 	@Override
@@ -142,37 +168,37 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	@Override
 	public void onClose(InputProvider input)
 	{
-		GuiProcessingHelper.processClose(input, this.content(), this.listeners());
+		GuiProcessingHelper.processClose(input, this.content(), this.events());
 	}
 	
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
-		return GuiProcessingHelper.processKeyboardInput(pool, input, this.content(), this.listeners());
+		return GuiProcessingHelper.processKeyboardInput(pool, input, this.content(), this.events());
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		GuiProcessingHelper.processDraw(graphics, input, this.content(), this.listeners());
+		GuiProcessingHelper.processDraw(graphics, input, this.content(), this.events());
 	}
 	
 	@Override
 	public void tick(TickInfo tickInfo, InputProvider input)
 	{
-		GuiProcessingHelper.processTick(input, tickInfo, this.content(), this.listeners());
+		GuiProcessingHelper.processTick(input, tickInfo, this.content(), this.events());
 	}
 
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		GuiProcessingHelper.processMouseInput(input, pool, this.content(), this.listeners());
+		GuiProcessingHelper.processMouseInput(input, pool, this.content(), this.events());
 	}
 
 	@Override
 	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
-		GuiProcessingHelper.processMouseScroll(input, scrollDifference, this.content(), this.listeners());
+		GuiProcessingHelper.processMouseScroll(input, scrollDifference, this.content(), this.events());
 	}
 	
 	@Override
@@ -213,7 +239,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 			this.containers = new ArrayList<UIContainer>();
 			
 			this.containers.add(this.mainContent);
-			this.containers.add(this.listeners);
+			this.containers.add(this.events);
 		}
 		
 		return this.containers;

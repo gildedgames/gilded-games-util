@@ -13,6 +13,8 @@ public class Dim2DCollection implements Dim2DHolder
 	
 	private List<Dim2DSeekable> seekables = new ArrayList<Dim2DSeekable>();
 	
+	private List<Dim2DListener> listeners = new ArrayList<Dim2DListener>();
+	
 	public Dim2DCollection()
 	{
 		
@@ -146,6 +148,24 @@ public class Dim2DCollection implements Dim2DHolder
 	public Dim2DBuilder copyDim()
 	{
 		return null;
+	}
+	
+	@Override
+	public List<Dim2DListener> dimListeners()
+	{
+		return this.listeners;
+	}
+
+	@Override
+	public void addDimListener(Dim2DListener listener)
+	{
+		this.listeners.add(listener);
+	}
+
+	@Override
+	public void removeDimListener(Dim2DListener listener)
+	{
+		this.listeners.remove(listener);
 	}
 
 }
