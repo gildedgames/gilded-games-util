@@ -105,21 +105,21 @@ public class Rotation2D
 			return this;
 		}
 		
-		public Rotation2DBuilder origin(double x, double y)
+		public Rotation2DBuilder origin(float x, float y)
 		{
 			this.origin = this.origin.clone().x(x).y(y).flush();
 			
 			return this;
 		} 
 		
-		public Rotation2DBuilder originX(double x)
+		public Rotation2DBuilder originX(float x)
 		{
 			this.origin = this.origin.clone().x(x).flush();
 			
 			return this;
 		}
 		
-		public Rotation2DBuilder originY(double y)
+		public Rotation2DBuilder originY(float y)
 		{
 			this.origin = this.origin.clone().y(y).flush();
 			
