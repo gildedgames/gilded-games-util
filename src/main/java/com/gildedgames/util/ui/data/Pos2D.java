@@ -3,20 +3,20 @@ package com.gildedgames.util.ui.data;
 public class Pos2D
 {
 	
-	private final double x, y;
+	private final float x, y;
 	
-	private Pos2D(double x, double y)
+	private Pos2D(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	public double x()
+	public float x()
 	{
 		return this.x;
 	}
 	
-	public double y()
+	public float y()
 	{
 		return this.y;
 	}
@@ -37,7 +37,7 @@ public class Pos2D
 		return new Pos2DBuilder().flush();
 	}
 	
-	public static Pos2D flush(double x, double y)
+	public static Pos2D flush(float x, float y)
 	{
 		return new Pos2D(x, y);
 	}
@@ -50,7 +50,7 @@ public class Pos2D
 	public static class Pos2DBuilder
 	{
 		
-		private double x, y;
+		private float x, y;
 		
 		private Pos2DBuilder()
 		{
@@ -69,41 +69,41 @@ public class Pos2D
 			this.y = builder.y;
 		}
 		
-		public Pos2DBuilder x(double x)
+		public Pos2DBuilder x(float x)
 		{
 			this.x = x;
 			
 			return this;
 		}
 		
-		public Pos2DBuilder y(double y)
+		public Pos2DBuilder y(float y)
 		{
 			this.y = y;
 			
 			return this;
 		}
 		
-		public Pos2DBuilder addX(double x)
+		public Pos2DBuilder addX(float x)
 		{
 			return this.add(x, 0);
 		}
 		
-		public Pos2DBuilder addY(double y)
+		public Pos2DBuilder addY(float y)
 		{
 			return this.add(0, y);
 		}
 		
-		public Pos2DBuilder subtractX(double x)
+		public Pos2DBuilder subtractX(float x)
 		{
 			return this.subtract(x, 0);
 		}
 		
-		public Pos2DBuilder subtractY(double y)
+		public Pos2DBuilder subtractY(float y)
 		{
 			return this.subtract(0, y);
 		}
 		
-		public Pos2DBuilder subtract(double x, double y)
+		public Pos2DBuilder subtract(float x, float y)
 		{
 			return this.add(-x, -y);
 		}
@@ -118,7 +118,7 @@ public class Pos2D
 			return this.add(-pos.x, -pos.y);
 		}
 
-		public Pos2DBuilder add(double x, double y)
+		public Pos2DBuilder add(float x, float y)
 		{
 			this.x += x;
 			this.y += y;

@@ -26,9 +26,15 @@ public class TextElement extends GuiFrame
 		{
 
 			@Override
-			public Dim2D getDim()
+			public Dim2D assembleDim()
 			{
 				return Dim2D.build().width(this.seekFrom.text.scaledWidth()).height(this.seekFrom.text.scaledHeight()).flush();
+			}
+
+			@Override
+			public boolean dimHasChanged()
+			{
+				return true;
 			}
 			
 		}, ModifierType.X, ModifierType.AREA).flush();

@@ -59,20 +59,41 @@ public class ScrollableGui extends GuiFrame
 
 		this.scrolledGui.modDim().resetPos().addModifier(new Dim2DGetter()
 		{
+			
+			private boolean dimHasChanged;
+			
+			private float prevScrollPer, scrollPer;
 
 			@Override
-			public Dim2D getDim()
+			public Dim2D assembleDim()
 			{
 				ScrollBar scrollBar = ScrollableGui.this.scrollBar;
 
-				float scrollPercentage = scrollBar.getScrollPercentage();
+				this.prevScrollPer = scrollBar.getScrollPercentage();
 
 				double scrolledElementHeight = ScrollableGui.this.scrolledGui.getDim().withoutModifiers(ModifierType.HEIGHT).height();
 				double scissoredHeight = ScrollableGui.this.scrolledGui.getScissoredArea().height();
 
-				int scrollValue = (int) -(scrollPercentage * (scrolledElementHeight - scissoredHeight));
+				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
 				return Dim2D.build().x(scrollBar.getDim().withoutModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addHeight(-ScrollableGui.this.padding).addWidth(-scrollBar.getDim().width() - (ScrollableGui.this.padding * 2)).flush();
+			}
+
+			@Override
+			public boolean dimHasChanged()
+			{
+				ScrollBar scrollBar = ScrollableGui.this.scrollBar;
+				
+				this.scrollPer = scrollBar.getScrollPercentage();
+				
+				if (this.scrollPer != this.prevScrollPer)
+				{
+					this.prevScrollPer = this.scrollPer;
+					
+					return true;
+				}
+				
+				return false;
 			}
 
 		}, ModifierType.AREA, ModifierType.POS).flush();
