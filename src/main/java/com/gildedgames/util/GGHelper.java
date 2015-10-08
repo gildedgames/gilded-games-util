@@ -1,6 +1,5 @@
 package com.gildedgames.util;
 
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -8,7 +7,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 /**
@@ -16,18 +18,18 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
  * @author Emile
  *
  */
-public class GGHelper 
+public class GGHelper
 {
 	public static boolean contains(StructureBoundingBox boundingBox, BlockPos pos)
 	{
 		return pos.getX() >= boundingBox.minX && pos.getX() <= boundingBox.maxX && pos.getZ() >= boundingBox.minZ && pos.getZ() <= boundingBox.maxZ && pos.getY() >= boundingBox.minY && pos.getY() <= boundingBox.maxY;
 	}
-	
+
 	public static boolean contains(StructureBoundingBox boundingBox, int x, int y, int z)
 	{
 		return x >= boundingBox.minX && x <= boundingBox.maxX && z >= boundingBox.minZ && z <= boundingBox.maxZ && y >= boundingBox.minY && y <= boundingBox.maxY;
 	}
-	
+
 	/**
 	 * Gets the IBlockState associated with an ItemStack. Returns null if the ItemStack doesn't have an ItemBlock
 	 */
@@ -55,7 +57,12 @@ public class GGHelper
 	{
 		return state.getBlock().getMaterial() == Material.air;
 	}
-	
+
+	public static boolean isSolid(IBlockState state, World world, BlockPos pos)
+	{
+		return !isAir(state) && state.getBlock().isBlockSolid(world, pos, EnumFacing.DOWN) && state.getBlock().getMaterial().isOpaque();
+	}
+
 	public static BlockPos getBlockPos(NBTTagCompound tag, String key)
 	{
 		final NBTTagCompound newTag = tag.getCompoundTag(key);
@@ -65,7 +72,7 @@ public class GGHelper
 		}
 		return new BlockPos(newTag.getInteger("x"), newTag.getInteger("y"), newTag.getInteger("z"));
 	}
-	
+
 	public static void setBlockPos(NBTTagCompound tag, BlockPos pos, String key)
 	{
 		if (pos == null)
@@ -77,5 +84,15 @@ public class GGHelper
 		newTag.setInteger("y", pos.getY());
 		newTag.setInteger("z", pos.getZ());
 		tag.setTag(key, newTag);
+	}
+
+	public static Iterable<BlockPos> getInBox(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+	{
+		return BlockPos.getAllInBoxMutable(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
+	}
+
+	public static Iterable<BlockPos> getInBox(AxisAlignedBB boundingBox)
+	{
+		return getInBox((int) boundingBox.minX, (int) boundingBox.minY, (int) boundingBox.minZ, (int) boundingBox.maxX, (int) boundingBox.maxY, (int) boundingBox.maxZ);
 	}
 }
