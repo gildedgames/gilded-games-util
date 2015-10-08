@@ -1,5 +1,8 @@
 package com.gildedgames.util.group.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroup;
@@ -7,28 +10,26 @@ import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.IGroupPool;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.IOCore;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Group implements IGroup
 {
-	
-	protected final IGroupPool parentPool;
-	
+
+	protected final IGroupPool<Group> parentPool;
+
 	protected IGroupPerms permissions;
-	
+
 	protected String name;
-	
+
 	protected GroupMember owner;
-	
+
 	protected final List<GroupMember> members = new ArrayList<GroupMember>();
-	
+
 	protected final List<GroupMember> invitedMembers = new ArrayList<GroupMember>();
-	
-	public Group(IGroupPool parentPool, IGroupPerms permissions)
+
+	public Group(IGroupPool<Group> parentPool, IGroupPerms permissions)
 	{
 		this.parentPool = parentPool;
 		this.setPermissions(permissions);
@@ -38,7 +39,7 @@ public class Group implements IGroup
 	public void write(NBTTagCompound output)
 	{
 		NBTFactory factory = new NBTFactory();
-		
+
 		IOCore.io().set("permissions", output, factory, this.permissions);
 		output.setString("name", this.name);
 	}
@@ -47,7 +48,7 @@ public class Group implements IGroup
 	public void read(NBTTagCompound input)
 	{
 		NBTFactory factory = new NBTFactory();
-		
+
 		this.permissions = IOCore.io().get("permissions", input, factory);
 		this.name = input.getString("name");
 	}
@@ -80,7 +81,7 @@ public class Group implements IGroup
 	public boolean join(EntityPlayer player)
 	{
 		GroupMember member = GroupCore.getGroupMember(player);
-		
+
 		return this.addMember(member);
 	}
 
@@ -88,7 +89,7 @@ public class Group implements IGroup
 	public boolean leave(EntityPlayer player)
 	{
 		GroupMember member = GroupCore.getGroupMember(player);
-		
+
 		return this.removeMember(member);
 	}
 
@@ -96,7 +97,7 @@ public class Group implements IGroup
 	public boolean invite(EntityPlayer player)
 	{
 		GroupMember member = GroupCore.getGroupMember(player);
-		
+
 		return this.inviteMember(member);
 	}
 
@@ -105,17 +106,17 @@ public class Group implements IGroup
 	{
 		return this.owner;
 	}
-	
+
 	private boolean addMember(GroupMember member)
 	{
 		return this.members.add(member);
 	}
-	
+
 	private boolean removeMember(GroupMember member)
 	{
 		return this.members.remove(member);
 	}
-	
+
 	private boolean inviteMember(GroupMember member)
 	{
 		return this.invitedMembers.add(member);
@@ -128,7 +129,7 @@ public class Group implements IGroup
 	}
 
 	@Override
-	public IGroupPool getParentPool()
+	public IGroupPool<Group> getParentPool()
 	{
 		return this.parentPool;
 	}

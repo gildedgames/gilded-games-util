@@ -5,16 +5,16 @@ import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupPerms;
 import com.gildedgames.util.group.common.IGroupPool;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PacketGroupPermissions extends CustomPacket<PacketGroupPermissions>
 {
-	
+
 	private IGroup group;
-	
+
 	private IGroupPerms permissions;
 
 	public PacketGroupPermissions()
@@ -32,11 +32,11 @@ public class PacketGroupPermissions extends CustomPacket<PacketGroupPermissions>
 	{
 		String groupName = ByteBufUtils.readUTF8String(buf);
 		String poolID = ByteBufUtils.readUTF8String(buf);
-		
+
 		IGroupPool pool = GroupCore.locate().getFromID(poolID);
-	
+
 		this.group = pool.get(groupName);
-		
+
 		// Read Permissions
 	}
 
@@ -45,24 +45,20 @@ public class PacketGroupPermissions extends CustomPacket<PacketGroupPermissions>
 	{
 		ByteBufUtils.writeUTF8String(buf, this.group.getName());
 		ByteBufUtils.writeUTF8String(buf, this.group.getParentPool().getID());
-		
+
 		// Write Permissions
 	}
 
 	@Override
 	public void handleClientSide(PacketGroupPermissions message, EntityPlayer player)
 	{
-		this.group.setPermissions(this.permissions);
+		message.group.setPermissions(message.permissions);
 	}
 
 	@Override
 	public void handleServerSide(PacketGroupPermissions message, EntityPlayer player)
 	{
-		if (player instanceof EntityPlayerMP)
-		{
-			
-			this.group.setPermissions(this.permissions);
-		}
+		message.group.setPermissions(message.permissions);
 	}
 
 }
