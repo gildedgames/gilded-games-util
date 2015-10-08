@@ -3,10 +3,6 @@ package com.gildedgames.util.core.gui.util;
 import java.awt.Color;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -27,13 +23,17 @@ import com.gildedgames.util.ui.util.TextBox;
 import com.gildedgames.util.ui.util.TextureElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
 public class GuiFactory
 {
 
 	private static final MinecraftAssetLocation SCROLL_BAR = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
 
 	private static final MinecraftAssetLocation PANEL = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePane.png");
-	
+
 	private static final MinecraftAssetLocation PANEL_EMBEDDED = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePaneEmbedded.png");
 
 	private GuiFactory()
@@ -50,7 +50,7 @@ public class GuiFactory
 	{
 		return new MinecraftButtonSounds(button);
 	}
-	
+
 	public static GuiFrame upArrowButton()
 	{
 		return GuiFactory.downArrowButton(Dim2D.flush());
@@ -87,12 +87,12 @@ public class GuiFactory
 		return GuiFactory.pressSound(button);
 	}
 
-	public static GuiFrame button(Pos2D pos, double width, String text)
+	public static GuiFrame button(Pos2D pos, float width, String text)
 	{
 		return GuiFactory.button(pos, width, text, true);
 	}
 
-	public static GuiFrame button(Pos2D pos, double width, String text, boolean centered)
+	public static GuiFrame button(Pos2D pos, float width, String text, boolean centered)
 	{
 		Dim2D dim = Dim2D.build().area(width, 20).center(centered).pos(pos).flush();
 
@@ -111,12 +111,12 @@ public class GuiFactory
 		return GuiFactory.pressSound(new MinecraftButton(button, centered));
 	}
 
-	public static ScrollBar scrollBar(Pos2D pos, double height, Dim2D scrollableArea)
+	public static ScrollBar scrollBar(Pos2D pos, float height, Dim2D scrollableArea)
 	{
 		return GuiFactory.scrollBar(pos, height, scrollableArea, true);
 	}
 
-	public static ScrollBar scrollBar(Pos2D pos, double height, Dim2D scrollableArea, boolean centered)
+	public static ScrollBar scrollBar(Pos2D pos, float height, Dim2D scrollableArea, boolean centered)
 	{
 		Sprite bar = new Sprite(SCROLL_BAR, UV.build().min(0, 0).area(10, 10).flush());
 		Sprite base = new Sprite(SCROLL_BAR, UV.build().min(10, 0).area(10, 10).flush());
@@ -133,12 +133,12 @@ public class GuiFactory
 
 		return scrollBar;
 	}
-	
+
 	public static TextureElement panel(Dim2D dim)
 	{
 		return GuiFactory.createResizableTexture(PANEL, dim, UV.build().area(4, 4).flush(), UV.build().area(4, 20).flush(), UV.build().area(20, 4).flush());
 	}
-	
+
 	public static TextureElement panelEmbedded(Dim2D dim)
 	{
 		return GuiFactory.createResizableTexture(PANEL_EMBEDDED, dim, UV.build().area(4, 4).flush(), UV.build().area(4, 20).flush(), UV.build().area(20, 4).flush());
@@ -158,26 +158,26 @@ public class GuiFactory
 	{
 		return new TextureElement(sprite, dim);
 	}
-	
+
 	public static TextureElement texture(AssetLocation asset)
 	{
 		return GuiFactory.texture(asset, Dim2D.flush());
 	}
-	
+
 	public static TextureElement texture(AssetLocation asset, UV uv)
 	{
 		Sprite sprite = new Sprite(asset, uv);
-		
-		return GuiFactory.texture(sprite, Dim2D.build().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
+
+		return GuiFactory.texture(sprite, Dim2D.build().area(uv.width(), uv.height()).flush());
 	}
 
 	public static TextureElement texture(AssetLocation asset, Dim2D dim)
 	{
 		Sprite sprite = new Sprite(asset);
-		
+
 		return GuiFactory.texture(sprite, dim.clone().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
 	}
-	
+
 	public static TextureElement createResizableTexture(AssetLocation asset, Dim2D dim, UV corners, UV verticalSides, UV horizontalSides)
 	{
 		return GuiFactory.texture(new Sprite(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);
@@ -201,50 +201,50 @@ public class GuiFactory
 	public static GuiFrame textBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
 		TextBox box = new TextBox(dim, false, text);
-		
+
 		if (!hasSlider)
 		{
 			return box;
 		}
-		
+
 		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
 	}
 
 	public static GuiFrame centeredTextBox(Dim2D dim, boolean hasSlider, Text... text)
 	{
 		TextBox box = new TextBox(dim, true, text);
-		
+
 		if (!hasSlider)
 		{
 			return box;
 		}
-		
+
 		return new ScrollableGui(dim, box, GuiFactory.createScrollBar());
 	}
 
 	public static Font font()
 	{
 		final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
-		
+
 		return new Font()
 		{
 
 			@Override
-			public double getWidth(String text)
+			public float getWidth(String text)
 			{
 				return fontRenderer.getStringWidth(text);
 			}
 
 			@Override
-			public double getHeight(String text)
+			public float getHeight(String text)
 			{
 				return fontRenderer.FONT_HEIGHT;
 			}
 
 			@Override
-			public List<String> splitStringsIntoArea(String text, double width)
+			public List<String> splitStringsIntoArea(String text, float width)
 			{
-				return fontRenderer.listFormattedStringToWidth(text, (int)width);
+				return fontRenderer.listFormattedStringToWidth(text, (int) width);
 			}
 		};
 	}

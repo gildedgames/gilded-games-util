@@ -1,5 +1,7 @@
 package com.gildedgames.util.ui.common;
 
+import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.ObjectFilter;
@@ -7,8 +9,10 @@ import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
 import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
 import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -16,7 +20,7 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
-import com.gildedgames.util.ui.util.GuiViewerHelper;
+import com.gildedgames.util.ui.util.GuiProcessingHelper;
 
 
 public abstract class GuiDecorator<T extends Ui> extends GuiFrame
@@ -132,7 +136,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	{
 		this.initContent(input);
 		
-		GuiViewerHelper.processInitPre(this, input, this.content(), this.listeners());
+		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
 	}
 	
 	@Override
@@ -279,16 +283,57 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public UIContainerMutable listeners()
+	public UIContainerEvents events()
 	{
 		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{
-			return frame.listeners();
+			return frame.events();
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public List<UIContainer> seekAllContent()
+	{
+		return this.element.seekAllContent();
+	}
+
+	@Override
+	public List<Dim2DListener> dimListeners()
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			return frame.dimListeners();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public void addDimListener(Dim2DListener listener)
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			frame.addDimListener(listener);
+		}
+	}
+
+	@Override
+	public void removeDimListener(Dim2DListener listener)
+	{
+		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		
+		if (frame != null)
+		{
+			frame.removeDimListener(listener);
+		}
 	}
 
 	@Override

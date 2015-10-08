@@ -1,85 +1,30 @@
 package com.gildedgames.util.ui.event;
 
 import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.common.GuiFrame;
 
-public class GuiEvent extends UiEvent implements Gui
+public abstract class GuiEvent<E extends Gui> extends GuiFrame
 {
+	
+	private E gui;
 
-	@Override
-	public Dim2D getDim()
-	{
-		return null;
-	}
-
-	@Override
-	public void setDim(Dim2D dim)
+	public GuiEvent()
 	{
 		
 	}
-
-	@Override
-	public Dim2DModifier modDim()
+	
+	public E getGui()
 	{
-		return null;
+		return this.gui;
 	}
-
-	@Override
-	public Dim2DBuilder copyDim()
+	
+	public void setGui(E gui)
 	{
-		return null;
-	}
-
-	@Override
-	public void draw(Graphics2D graphics, InputProvider input)
-	{
+		this.gui = gui;
 		
+		this.initEvent();
 	}
-
-	@Override
-	public boolean isVisible()
-	{
-		return false;
-	}
-
-	@Override
-	public void setVisible(boolean visible)
-	{
-		
-	}
-
-	@Override
-	public boolean isFocused()
-	{
-		return false;
-	}
-
-	@Override
-	public void setFocused(boolean focused)
-	{
-		
-	}
-
-	@Override
-	public boolean query(Object... input)
-	{
-		return false;
-	}
-
-	@Override
-	public int ticksClosing()
-	{
-		return 0;
-	}
-
-	@Override
-	public int ticksOpening()
-	{
-		return 0;
-	}
-
+	
+	public abstract void initEvent();
+	
 }
