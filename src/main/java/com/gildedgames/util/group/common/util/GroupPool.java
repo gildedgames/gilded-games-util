@@ -1,19 +1,19 @@
 package com.gildedgames.util.group.common.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gildedgames.util.group.common.IGroup;
 import com.gildedgames.util.group.common.IGroupFactory;
 import com.gildedgames.util.group.common.IGroupPool;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GroupPool<G extends IGroup> implements IGroupPool<G>
 {
-	
+
 	protected final String id;
-	
+
 	protected final IGroupFactory<G> factory;
-	
+
 	protected List<G> groups = new ArrayList<G>();
 
 	public GroupPool(String id, IGroupFactory<G> factory)
@@ -21,13 +21,13 @@ public class GroupPool<G extends IGroup> implements IGroupPool<G>
 		this.id = id;
 		this.factory = factory;
 	}
-	
+
 	@Override
 	public String getID()
 	{
 		return this.id;
 	}
-	
+
 	@Override
 	public List<G> getGroups()
 	{
@@ -62,7 +62,7 @@ public class GroupPool<G extends IGroup> implements IGroupPool<G>
 				return group;
 			}
 		}
-		
+
 		return null;
 	}
 
