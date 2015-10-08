@@ -62,13 +62,13 @@ public class GuiCollection extends GuiFrame
 
 	private void clearAndProvideContent()
 	{
-		this.listeners().clear(Gui.class);
+		this.events().clear(Gui.class);
 
 		for (ContentFactory contentProvider : this.contentProviders)
 		{
 			if (contentProvider != null)
 			{
-				this.listeners().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.listeners().map()), this.getDim()));
+				this.events().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.getDim()));
 			}
 		}
 	}
@@ -77,15 +77,15 @@ public class GuiCollection extends GuiFrame
 	{
 		this.positioner.positionList(views, this.getDim());
 
-		double totalContentHeight = 0;
+		float totalContentHeight = 0;
 
-		for (Gui view : views)
+		for (Gui gui : views)
 		{
-			if (view != null)
+			if (gui != null)
 			{
-				view.modDim().addModifier(this, ModifierType.POS).flush();
+				//gui.modDim().addModifier(this, ModifierType.POS).flush();
 
-				totalContentHeight = Math.max(totalContentHeight, view.getDim().y() + view.getDim().height());
+				totalContentHeight = Math.max(totalContentHeight, gui.getDim().y() + gui.getDim().height());
 			}
 		}
 
@@ -94,7 +94,7 @@ public class GuiCollection extends GuiFrame
 
 	private void sortContent()
 	{
-		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), Gui.class);
+		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.events().elements(), Gui.class);
 		List<Gui> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
 		for (Gui view : filteredViews)
@@ -116,7 +116,7 @@ public class GuiCollection extends GuiFrame
 
 	private List<Gui> getSortedViews()
 	{
-		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.listeners().elements(), Gui.class);
+		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.events().elements(), Gui.class);
 		List<Gui> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
 		return sortedViews;

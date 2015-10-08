@@ -18,7 +18,7 @@ import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
-import com.gildedgames.util.ui.util.factory.GuiFrameFactory;
+import com.gildedgames.util.ui.util.factory.GenericFactory;
 import com.google.common.collect.ImmutableList;
 
 public class UiServices
@@ -48,16 +48,16 @@ public class UiServices
 	public static class RegisteredOverlay extends Overlay
 	{
 		
-		private GuiFrameFactory factory;
+		private GenericFactory<GuiFrame> factory;
 		
-		public RegisteredOverlay(GuiFrameFactory factory, GuiViewer viewer, RenderOrder renderOrder)
+		public RegisteredOverlay(GenericFactory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
 		{
 			super(null, viewer, renderOrder);
 			
 			this.factory = factory;
 		}
 		
-		public GuiFrameFactory getFactory()
+		public GenericFactory<GuiFrame> getFactory()
 		{
 			return this.factory;
 		}
@@ -145,7 +145,7 @@ public class UiServices
 			String uniqueSaveName = entry.getKey();
 			RegisteredOverlay overlay = entry.getValue();
 			
-			GuiFrameFactory factory = overlay.getFactory();
+			GenericFactory<GuiFrame> factory = overlay.getFactory();
 			GuiViewer viewer = overlay.getViewer();
 			RenderOrder renderOrder = overlay.getRenderOrder();
 			
@@ -163,12 +163,17 @@ public class UiServices
 		}
 	}
 	
-	public void registerOverlay(String uniqueSaveName, GuiFrameFactory factory, GuiViewer viewer)
+	public Overlay getOverlay(String uniqueSaveName)
+	{
+		return this.overlays.get(uniqueSaveName);
+	}
+	
+	public void registerOverlay(String uniqueSaveName, GenericFactory factory, GuiViewer viewer)
 	{
 		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.NORMAL);
 	}
 	
-	public void registerOverlay(String uniqueSaveName, GuiFrameFactory factory, GuiViewer viewer, RenderOrder renderOrder)
+	public void registerOverlay(String uniqueSaveName, GenericFactory factory, GuiViewer viewer, RenderOrder renderOrder)
 	{
 		this.registeredOverlays.put(uniqueSaveName, new RegisteredOverlay(factory, viewer, renderOrder));
 	}

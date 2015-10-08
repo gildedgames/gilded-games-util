@@ -9,9 +9,8 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputBehavior;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.listeners.MouseListener;
 
-public abstract class MouseEvent extends UiEvent implements MouseListener
+public abstract class MouseEvent extends GuiEvent
 {
 
 	private final Collection<MouseInput> eventList;

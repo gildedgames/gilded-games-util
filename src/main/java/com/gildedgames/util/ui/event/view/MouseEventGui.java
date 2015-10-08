@@ -11,37 +11,26 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 
 public abstract class MouseEventGui extends MouseEvent
 {
-
-	protected final Gui gui;
-
-	public MouseEventGui(Gui view)
+	
+	public MouseEventGui()
 	{
-		this(view, new ArrayList<MouseInput>());
+		this(new ArrayList<MouseInput>());
 	}
 
-	public MouseEventGui(Gui view, List<MouseInput> events)
+	public MouseEventGui(List<MouseInput> events)
 	{
 		super(events);
-
-		this.gui = view;
 	}
 
-	public MouseEventGui(Gui view, MouseInput... events)
+	public MouseEventGui(MouseInput... events)
 	{
 		super(events);
-
-		this.gui = view;
-	}
-
-	public Gui getView()
-	{
-		return this.gui;
 	}
 
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (input.isHovered(this.gui.getDim()) && this.behaviorsMet(input, pool, this.scrollDifference) && pool.containsAll(this.getEvents()))
+		if (input.isHovered(this.getGui().getDim()) && this.behaviorsMet(input, pool, this.scrollDifference) && pool.containsAll(this.getEvents()))
 		{
 			this.onTrue(input, pool);
 		}

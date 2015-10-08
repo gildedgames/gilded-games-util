@@ -1,15 +1,5 @@
 package com.gildedgames.util.world;
 
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
@@ -19,6 +9,16 @@ import com.gildedgames.util.world.common.WorldEventHandler;
 import com.gildedgames.util.world.common.world.IWorld;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryClient;
 import com.gildedgames.util.world.common.world.WorldMinecraftFactoryServer;
+
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 public class WorldCore implements ICore
 {
@@ -69,7 +69,8 @@ public class WorldCore implements ICore
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-
+		this.serviceLocator.client().reset();
+		this.serviceLocator.server().reset();
 	}
 
 	@Override
@@ -81,7 +82,8 @@ public class WorldCore implements ICore
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-
+		this.serviceLocator.client().reset();
+		this.serviceLocator.server().reset();
 	}
 
 	@Override

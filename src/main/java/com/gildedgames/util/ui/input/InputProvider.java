@@ -9,15 +9,15 @@ public interface InputProvider
 	
 	void refreshResolution();
 	
-	double getScreenWidth();
+	float getScreenWidth();
 	
-	double getScreenHeight();
+	float getScreenHeight();
 
-	double getScaleFactor();
+	float getScaleFactor();
 	
-	double getMouseX();
+	float getMouseX();
 	
-	double getMouseY();
+	float getMouseY();
 	
 	boolean isHovered(Dim2D dim);
 	
@@ -27,8 +27,8 @@ public interface InputProvider
 	
 	InputProvider clone();
 	
-	InputProvider copyWithMouseXOffset(double xOffset);
+	InputProvider copyWithMouseXOffset(float xOffset);
 	
-	InputProvider copyWithMouseYOffset(double yOffset);
+	InputProvider copyWithMouseYOffset(float yOffset);
 	
 }

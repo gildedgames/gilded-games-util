@@ -33,8 +33,8 @@ public class ResizableUVBehavior implements UVBehavior
 		this.topSide = horizontalArea.clone().min(this.topLeftCorner.width(), 0).flush();
 		this.bottomSide = horizontalArea.clone().min(this.topLeftCorner.width(), this.topLeftCorner.height() + verticalArea.height()).flush();
 		
-		double centerWidth = this.topRightCorner.minU() - this.topLeftCorner.maxU();
-		double centerHeight = this.bottomRightCorner.minV() - this.topLeftCorner.maxV();
+		float centerWidth = this.topRightCorner.minU() - this.topLeftCorner.maxU();
+		float centerHeight = this.bottomRightCorner.minV() - this.topLeftCorner.maxV();
 		
 		this.center = UV.build().min(this.topLeftCorner.maxU(), this.topLeftCorner.maxV()).area(centerWidth, centerHeight).flush();
 	}
@@ -64,28 +64,28 @@ public class ResizableUVBehavior implements UVBehavior
 		this.drawnUVs.add(new UVDimPair(this.bottomLeftCorner, Dim2D.build().y(area.height() - this.topLeftCorner.height()).flush()));
 		this.drawnUVs.add(new UVDimPair(this.bottomRightCorner, Dim2D.build().x(area.width() - this.topRightCorner.width()).y(area.height() - this.topLeftCorner.height()).flush()));
 	
-		for (double xStart = this.topLeftCorner.width(); xStart < area.width(); xStart += this.topSide.width())
+		for (float xStart = this.topLeftCorner.width(); xStart < area.width(); xStart += this.topSide.width())
 		{
-			double width = Math.min(this.topSide.width(), area.width() - xStart - this.topRightCorner.width());
+			float width = Math.min(this.topSide.width(), area.width() - xStart - this.topRightCorner.width());
 			
 			this.drawnUVs.add(new UVDimPair(this.topSide.clone().width(width).flush(), Dim2D.build().x(xStart).flush()));
 			this.drawnUVs.add(new UVDimPair(this.bottomSide.clone().width(width).flush(), Dim2D.build().y(area.height() - this.topLeftCorner.height()).x(xStart).flush()));
 		}
 		
-		for (double yStart = this.topLeftCorner.height(); yStart < area.height(); yStart += this.leftSide.height())
+		for (float yStart = this.topLeftCorner.height(); yStart < area.height(); yStart += this.leftSide.height())
 		{
-			double height = Math.min(this.leftSide.height(), area.height() - yStart - this.bottomLeftCorner.height());
+			float height = Math.min(this.leftSide.height(), area.height() - yStart - this.bottomLeftCorner.height());
 			
 			this.drawnUVs.add(new UVDimPair(this.leftSide.clone().height(height).flush(), Dim2D.build().y(yStart).flush()));
 			this.drawnUVs.add(new UVDimPair(this.rightSide.clone().height(height).flush(), Dim2D.build().x(area.width() - this.topLeftCorner.width()).y(yStart).flush()));
 		}
 		
-		for (double xStart = this.topLeftCorner.width(); xStart < area.width(); xStart += this.center.width())
+		for (float xStart = this.topLeftCorner.width(); xStart < area.width(); xStart += this.center.width())
 		{
-			for (double yStart = this.topLeftCorner.height(); yStart < area.height(); yStart += this.center.height())
+			for (float yStart = this.topLeftCorner.height(); yStart < area.height(); yStart += this.center.height())
 			{
-				double width = Math.min(this.center.width(), area.width() - xStart - this.topRightCorner.width());
-				double height = Math.min(this.center.height(), area.height() - yStart - this.bottomLeftCorner.height());
+				float width = Math.min(this.center.width(), area.width() - xStart - this.topRightCorner.width());
+				float height = Math.min(this.center.height(), area.height() - yStart - this.bottomLeftCorner.height());
 				
 				this.drawnUVs.add(new UVDimPair(this.center.clone().width(width).height(height).flush(), Dim2D.build().x(xStart).y(yStart).flush()));
 			}

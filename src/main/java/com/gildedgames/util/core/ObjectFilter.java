@@ -20,9 +20,9 @@ public class ObjectFilter
 	public static abstract class FilterCondition
 	{
 
-		private List<Object> data;
+		private List data;
 
-		public FilterCondition(List<Object> data)
+		public FilterCondition(List data)
 		{
 			this.data = data;
 		}
@@ -44,6 +44,11 @@ public class ObjectFilter
 	public static <T> List<T> getTypesFrom(Object[] array, FilterCondition condition)
 	{
 		return getTypesFrom(Arrays.asList(array), condition);
+	}
+
+	public static <T> T getFirstFrom(Object[] array, Class<? extends T> typeClass)
+	{
+		return getFirstFrom(Arrays.asList(array), typeClass);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -119,6 +124,20 @@ public class ObjectFilter
 		}
 
 		return returnList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getFirstFrom(Collection<?> list, Class<? extends T> typeClass)
+	{
+		for (Object obj : list)
+		{
+			if (obj != null && typeClass.isAssignableFrom(obj.getClass()))
+			{
+				return (T) obj;
+			}
+		}
+
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
