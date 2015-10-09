@@ -1,11 +1,11 @@
 package com.gildedgames.util.notifications.common.util;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotification;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractNotification implements INotification
 {
@@ -23,25 +23,25 @@ public abstract class AbstractNotification implements INotification
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(ByteBuf output)
 	{
 		boolean senderKnown = this.sender != null;
-		output.setBoolean("senderKnown", senderKnown);
+		output.writeBoolean(senderKnown);
 		if (senderKnown)
 		{
-			IOUtil.setUUID(this.sender.getUniqueID(), output, "sender");
+			IOUtil.writeUUID(this.sender.getUniqueID(), output);
 		}
-		IOUtil.setUUID(this.receiver.getUniqueID(), output, "receiver");
+		IOUtil.writeUUID(this.receiver.getUniqueID(), output);
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(ByteBuf input)
 	{
-		if (input.getBoolean("senderKnown"))
+		if (input.readBoolean())
 		{
-			this.sender = NotificationCore.playerFromUUID(IOUtil.getUUID(input, "sender"));
+			this.sender = NotificationCore.playerFromUUID(IOUtil.readUUID(input));
 		}
-		this.receiver = NotificationCore.playerFromUUID(IOUtil.getUUID(input, "receiver"));
+		this.receiver = NotificationCore.playerFromUUID(IOUtil.readUUID(input));
 	}
 
 	@Override

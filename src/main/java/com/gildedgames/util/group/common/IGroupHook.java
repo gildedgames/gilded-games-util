@@ -1,9 +1,10 @@
 package com.gildedgames.util.group.common;
 
-import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 
-public interface IGroupHook extends NBT
+public interface IGroupHook extends IO<IOBridge, IOBridge>
 {
 	void onMemberAdded(GroupMember member);
 

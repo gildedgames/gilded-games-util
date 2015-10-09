@@ -2,14 +2,13 @@ package com.gildedgames.util.group.common.permissions;
 
 import java.util.Random;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.util.IOUtil;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 public class GroupPermsDefault implements IGroupPerms
 {
@@ -136,20 +135,17 @@ public class GroupPermsDefault implements IGroupPerms
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(IOBridge output)
 	{
-		NBTHelper.setEnum("permtype", output, this.type);
-		IOUtil.setUUID(this.owner.getProfile(), output, "owner");
+		output.setString("permtype", this.type.getName());
+		IOUtil.setUUID(this.owner.getProfile().getUUID(), output, "owner");
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(IOBridge input)
 	{
-		this.type = NBTHelper.getEnum("permtype", input, PermissionType.class);
-		
-		EntityPlayer ownerEntity = UtilCore.getPlayerOnServerFromUUID(IOUtil.getUUID(input, "owner"));
-		
-		this.owner = GroupMember.get(ownerEntity);
+		this.type = PermissionType.valueOf(input.getString("permtype"));
+		this.owner = GroupMember.get(UtilCore.getPlayerOnServerFromUUID(IOUtil.getUUID(input, "owner")));
 	}
 
 	@Override

@@ -3,12 +3,12 @@ package com.gildedgames.util.notifications.common.core;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.notifications.common.player.PlayerNotification;
+
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.gildedgames.util.notifications.NotificationCore;
-import com.gildedgames.util.notifications.common.player.PlayerNotification;
 
 @SideOnly(Side.CLIENT)
 public class NotificationQueue
@@ -22,6 +22,7 @@ public class NotificationQueue
 	public void addNotification(INotification notification)
 	{
 		this.notificationQueue.add(notification);
+		this.thePlayer().addNotification(notification.getMessage());
 	}
 
 	public void tick()
@@ -31,10 +32,6 @@ public class NotificationQueue
 		if (this.ticks % 100 == 0)
 		{
 			this.active = this.notificationQueue.poll();
-			if (this.active.getMessage() != null)
-			{
-				this.thePlayer().addNotification(this.active.getMessage());
-			}
 		}
 	}
 

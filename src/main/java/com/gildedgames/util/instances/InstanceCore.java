@@ -2,6 +2,9 @@ package com.gildedgames.util.instances;
 
 import java.util.UUID;
 
+import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.SidedObject;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -12,9 +15,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.core.SidedObject;
 
 public class InstanceCore implements ICore
 {
@@ -49,6 +49,13 @@ public class InstanceCore implements ICore
 		InstanceHandler<T> handler = new InstanceHandler<T>(factory);
 		this.services.client().addHandler(handler);
 		return handler;
+	}
+
+	@Override
+	public void flushData()
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

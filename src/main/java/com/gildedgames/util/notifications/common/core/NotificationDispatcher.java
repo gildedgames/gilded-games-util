@@ -1,13 +1,16 @@
 package com.gildedgames.util.notifications.common.core;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.networking.messages.PacketNotification;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+
+/**
+ * Server sided notification sender.
+ */
 public class NotificationDispatcher
 {
 

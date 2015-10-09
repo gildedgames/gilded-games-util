@@ -1,10 +1,10 @@
 package com.gildedgames.util.notifications;
 
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.SidedObject;
 
-class ClientProxy extends ServerProxy
+import net.minecraftforge.fml.relauncher.Side;
+
+public class ClientProxy extends ServerProxy
 {
 	@Override
 	public SidedObject<NotificationServices> createServices()

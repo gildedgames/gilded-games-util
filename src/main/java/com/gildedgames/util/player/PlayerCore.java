@@ -1,5 +1,16 @@
 package com.gildedgames.util.player;
 
+import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.player.common.IPlayerHookPool;
+import com.gildedgames.util.player.common.PlayerEventHandler;
+import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
+import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookClient;
+import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
+import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.player.server.PlayerHookSaveHandler;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -11,17 +22,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.PlayerEventHandler;
-import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
-import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookClient;
-import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.server.PlayerHookSaveHandler;
 
 public class PlayerCore implements ICore
 {
@@ -82,9 +82,14 @@ public class PlayerCore implements ICore
 	}
 
 	@Override
-	public void serverStopping(FMLServerStoppingEvent event)
+	public void flushData()
 	{
 		this.playerHookSaveHandler.flushData();
+	}
+
+	@Override
+	public void serverStopping(FMLServerStoppingEvent event)
+	{
 	}
 
 	@Override

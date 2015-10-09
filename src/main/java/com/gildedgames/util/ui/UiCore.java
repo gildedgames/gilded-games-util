@@ -1,5 +1,8 @@
 package com.gildedgames.util.ui;
 
+import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.SidedObject;
+
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -9,9 +12,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.core.SidedObject;
 
 public class UiCore implements ICore
 {
@@ -28,7 +28,7 @@ public class UiCore implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
+
 	}
 
 	@Override
@@ -70,6 +70,13 @@ public class UiCore implements ICore
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
+
+	}
+
+	@Override
+	public void flushData()
+	{
+		// TODO Auto-generated method stub
 
 	}
 

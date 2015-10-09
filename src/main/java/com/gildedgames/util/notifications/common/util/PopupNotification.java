@@ -1,9 +1,10 @@
 package com.gildedgames.util.notifications.common.util;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PopupNotification extends AbstractNotification
 {
@@ -21,15 +22,17 @@ public class PopupNotification extends AbstractNotification
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(ByteBuf output)
 	{
 		super.write(output);
+		ByteBufUtils.writeUTF8String(output, this.message);
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(ByteBuf input)
 	{
 		super.read(input);
+		this.message = ByteBufUtils.readUTF8String(input);
 	}
 
 	@Override

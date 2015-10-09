@@ -1,13 +1,17 @@
 package com.gildedgames.util.group.common.core;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.player.GroupMember;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketRemoveGroup extends PacketGroupAction<PacketRemoveGroup>
 {
+	public PacketRemoveGroup()
+	{
+
+	}
+
 	public PacketRemoveGroup(GroupPool pool, Group group)
 	{
 		super(pool, group);

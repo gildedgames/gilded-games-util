@@ -3,14 +3,13 @@ package com.gildedgames.util.group.common.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.player.GroupMember;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 
 //Basically just asks the server to do his work for him :) :) :)
 //Won't ever change its state on its own to ensure clients not acting weirdly
@@ -86,6 +85,13 @@ public class GroupPoolClient extends GroupPool
 		{
 			return;
 		}
+
+		if (!group.getMemberData().isInvited(player))
+		{
+			UtilCore.print("Tried to remove an invitation of someone who wasn't invited.");
+		}
+		GroupMember member = GroupMember.get(player);
+		UtilCore.NETWORK.sendToServer(new PacketRemoveInvite(this, group, member));
 	}
 
 	@Override
@@ -117,6 +123,16 @@ public class GroupPoolClient extends GroupPool
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
 			listener.onInvited(group, inviter.getProfile().getEntity());
+		}
+	}
+
+	protected void invitationRemoved(Group group)
+	{
+		UtilCore.debugPrint("Invitation for group " + group.getName() + " removed.");
+		this.thePlayer().removeInvite(group);
+		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
+		{
+			listener.onInviteRemoved(group);
 		}
 	}
 

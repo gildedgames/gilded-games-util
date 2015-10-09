@@ -1,7 +1,5 @@
 package com.gildedgames.util.core.nbt;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -12,17 +10,22 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
+import com.gildedgames.util.instances.BlockPosDimension;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.util.IOUtil;
+import com.google.common.collect.AbstractIterator;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-
-import com.gildedgames.util.instances.BlockPosDimension;
-import com.gildedgames.util.io_manager.IOCore;
-import com.google.common.collect.AbstractIterator;
 
 public class NBTHelper
 {
@@ -60,6 +63,16 @@ public class NBTHelper
 			return CompressedStreamTools.read(input);
 		}
 		return null;
+	}
+
+	public static void setIOList(String key, List<? extends IO<IOBridge, IOBridge>> list, NBTTagCompound tag)
+	{
+		IOUtil.setIOList(key, list, NBTBridge.factory, new NBTBridge(tag));
+	}
+
+	public static <T extends IO<IOBridge, IOBridge>> List<T> getIOList(String key, NBTTagCompound tag)
+	{
+		return IOUtil.getIOList(key, NBTBridge.factory, new NBTBridge(tag));
 	}
 
 	public static <T extends NBT> void writeOutputObject(T object, ByteBuf byteBuf)

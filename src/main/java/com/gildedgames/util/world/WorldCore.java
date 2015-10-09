@@ -98,6 +98,13 @@ public class WorldCore implements ICore
 
 	}
 
+	@Override
+	public void flushData()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
 	 * Util method for accessing IWorlds through the Minecraft World instance.
 	 * Only use where you are sure you can use World instances.

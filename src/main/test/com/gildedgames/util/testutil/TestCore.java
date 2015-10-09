@@ -1,15 +1,5 @@
 package com.gildedgames.util.testutil;
 
-import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.instances.InstanceCore;
@@ -19,6 +9,16 @@ import com.gildedgames.util.testutil.commands.ReturnFromInstance;
 import com.gildedgames.util.testutil.instances.DefaultHandler;
 import com.gildedgames.util.testutil.instances.DefaultInstance;
 import com.gildedgames.util.testutil.instances.DefaultInstancesFactory;
+
+import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 public class TestCore implements ICore
 {
@@ -86,6 +86,13 @@ public class TestCore implements ICore
 
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void flushData()
 	{
 		// TODO Auto-generated method stub
 

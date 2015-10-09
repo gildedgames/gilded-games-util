@@ -1,9 +1,9 @@
 package com.gildedgames.util.group.common.core;
 
+import com.gildedgames.util.core.io.ByteBufBridge;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-
-import com.gildedgames.util.core.nbt.NBTHelper;
 
 public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupInfo>
 {
@@ -16,6 +16,7 @@ public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupIn
 
 	public PacketChangeGroupInfo(GroupPool pool, Group group, GroupInfo groupInfo)
 	{
+		super(pool, group);
 		this.groupInfo = groupInfo;
 	}
 
@@ -23,14 +24,14 @@ public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupIn
 	public void fromBytes(ByteBuf buf)
 	{
 		super.fromBytes(buf);
-		this.groupInfo = NBTHelper.readInputObject(buf);
+		this.groupInfo = (new ByteBufBridge(buf)).getIO("");
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		super.toBytes(buf);
-		NBTHelper.writeOutputObject(this.groupInfo, buf);
+		(new ByteBufBridge(buf)).setIO("", this.groupInfo);
 	}
 
 	@Override

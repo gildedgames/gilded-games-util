@@ -2,13 +2,12 @@ package com.gildedgames.util.group.common.core;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupSettings;
 import com.gildedgames.util.group.common.player.GroupMember;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class GroupPoolServer extends GroupPool
 {
@@ -118,7 +117,14 @@ public class GroupPoolServer extends GroupPool
 	@Override
 	public void removeInvitation(EntityPlayer player, Group group)
 	{
-
+		if (!this.assertValidGroup(group))
+		{
+			return;
+		}
+		GroupMember member = GroupMember.get(player);
+		this.removeInvitationDirectly(group, member);
+		UtilCore.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
+		UtilCore.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) player);
 	}
 
 	/**

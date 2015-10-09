@@ -1,31 +1,21 @@
 package com.gildedgames.util.group.common.notifications;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.notifications.NotificationCore;
+
+import net.minecraft.client.Minecraft;
 
 public class NotificationsGroupHook implements IGroupHook
 {
-	Group group;
+	private Group group;
 
 	public NotificationsGroupHook(Group group)
 	{
 		this.group = group;
-	}
-
-	@Override
-	public void write(NBTTagCompound output)
-	{
-	}
-
-	@Override
-	public void read(NBTTagCompound input)
-	{
 	}
 
 	@Override
@@ -52,6 +42,16 @@ public class NotificationsGroupHook implements IGroupHook
 
 	@Override
 	public void onInviteRemoved(GroupMember member)
+	{
+	}
+
+	@Override
+	public void write(IOBridge output)
+	{
+	}
+
+	@Override
+	public void read(IOBridge input)
 	{
 	}
 

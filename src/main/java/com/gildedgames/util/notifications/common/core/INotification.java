@@ -1,11 +1,15 @@
 package com.gildedgames.util.notifications.common.core;
 
+import com.gildedgames.util.io_manager.io.IO;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.gildedgames.util.core.nbt.NBT;
-
-public interface INotification extends NBT
+public interface INotification extends IO<ByteBuf, ByteBuf>
 {
+	/**
+	 * Returns the text that will be displayed in the popup
+	 */
 	String getName();
 
 	EntityPlayer getReceiver();

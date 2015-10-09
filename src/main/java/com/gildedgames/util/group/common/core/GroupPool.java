@@ -3,18 +3,17 @@ package com.gildedgames.util.group.common.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
-public abstract class GroupPool implements NBT
+import net.minecraft.entity.player.EntityPlayer;
+
+public abstract class GroupPool implements IO<IOBridge, IOBridge>
 {
 
 	protected final String id;
@@ -124,6 +123,15 @@ public abstract class GroupPool implements NBT
 		UtilCore.debugPrint("Inviting member " + member.getProfile().getUsername() + " to group " + group.getName());
 		group.getMemberData().invite(member);
 		group.getPermissions().onMemberInvited(member);
+		member.addInvite(group);
+	}
+
+	protected void removeInvitationDirectly(Group group, GroupMember member)
+	{
+		this.assertHasMemberData(group);
+		UtilCore.debugPrint("Removing invitation of member " + member.getProfile().getUsername() + " from group " + group.getName());
+		group.getMemberData().removeInvitation(member);
+		member.removeInvite(group);
 	}
 
 	protected void assertHasMemberData(Group group)
@@ -140,7 +148,7 @@ public abstract class GroupPool implements NBT
 
 	public abstract void removeMember(EntityPlayer player, Group group);
 
-	public abstract void invite(EntityPlayer player, EntityPlayer inviter, Group group);
+	public abstract void invite(EntityPlayer invited, EntityPlayer inviter, Group group);
 
 	public abstract void removeInvitation(EntityPlayer player, Group group);
 
@@ -180,15 +188,15 @@ public abstract class GroupPool implements NBT
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(IOBridge input)
 	{
-		this.groups = IOUtil.getIOList("groups", new NBTFactory(), input);
+		this.groups = IOUtil.getIOList("groups", input);
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(IOBridge output)
 	{
-		IOUtil.setIOList("groups", this.groups, new NBTFactory(), output);
+		IOUtil.setIOList("groups", this.groups, output);
 	}
 
 }
