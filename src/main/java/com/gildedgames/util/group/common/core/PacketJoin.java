@@ -1,9 +1,9 @@
 package com.gildedgames.util.group.common.core;
 
+import com.gildedgames.util.core.io.ByteBufBridge;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-
-import com.gildedgames.util.core.nbt.NBTHelper;
 
 public class PacketJoin extends PacketGroupAction<PacketJoin>
 {
@@ -23,14 +23,14 @@ public class PacketJoin extends PacketGroupAction<PacketJoin>
 	public void fromBytes(ByteBuf buf)
 	{
 		super.fromBytes(buf);
-		MemberData data = NBTHelper.readInputObject(buf);
+		this.data = (new ByteBufBridge(buf)).getIO("");
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		super.toBytes(buf);
-		NBTHelper.writeOutputObject(this.group.getMemberData(), buf);
+		(new ByteBufBridge(buf)).setIO("", this.data);
 	}
 
 	@Override

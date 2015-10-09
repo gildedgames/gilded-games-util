@@ -1,15 +1,15 @@
 package com.gildedgames.util.notifications.common.networking.messages;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
-
 import com.gildedgames.util.core.CustomPacket;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 {
@@ -17,6 +17,11 @@ public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 	private INotificationMessage message;
 
 	private String messageKey;
+
+	public PacketRemoveMessage()
+	{
+
+	}
 
 	public PacketRemoveMessage(INotificationMessage message)
 	{

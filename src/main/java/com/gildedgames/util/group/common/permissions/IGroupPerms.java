@@ -1,10 +1,11 @@
 package com.gildedgames.util.group.common.permissions;
 
-import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 
-public interface IGroupPerms extends NBT, IGroupHook
+public interface IGroupPerms extends IO<IOBridge, IOBridge>, IGroupHook
 {
 
 	String getName();

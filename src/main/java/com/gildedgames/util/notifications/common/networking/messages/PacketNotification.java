@@ -1,14 +1,13 @@
 package com.gildedgames.util.notifications.common.networking.messages;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.CustomPacket;
-import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketNotification extends CustomPacket<PacketNotification>
 {
@@ -16,6 +15,11 @@ public class PacketNotification extends CustomPacket<PacketNotification>
 	private INotification notification;
 
 	private PlayerNotification player;
+
+	public PacketNotification()
+	{
+
+	}
 
 	public PacketNotification(INotification notification, PlayerNotification player)
 	{
@@ -27,14 +31,14 @@ public class PacketNotification extends CustomPacket<PacketNotification>
 	public void fromBytes(ByteBuf buf)
 	{
 		this.player = NotificationCore.getPlayerNotifications(IOUtil.readUUID(buf));
-		this.notification = NBTHelper.readInputObject(buf);
+		this.notification = IOUtil.readIO(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		IOUtil.writeUUID(this.player.getProfile().getUUID(), buf);
-		NBTHelper.writeOutputObject(this.notification, buf);
+		IOUtil.writeIO(buf, this.notification);
 	}
 
 	@Override

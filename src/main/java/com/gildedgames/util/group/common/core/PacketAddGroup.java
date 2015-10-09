@@ -1,18 +1,18 @@
 package com.gildedgames.util.group.common.core;
 
+import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.group.GroupCore;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-
-import com.gildedgames.util.core.CustomPacket;
-import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.group.GroupCore;
 
 public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 {
 	GroupPool pool;
 
-	GroupInfo groupinfo;
+	GroupInfo groupInfo;
 
 	public PacketAddGroup()
 	{
@@ -22,35 +22,35 @@ public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 	public PacketAddGroup(GroupPool pool, GroupInfo groupInfo)
 	{
 		this.pool = pool;
-		this.groupinfo = groupInfo;
+		this.groupInfo = groupInfo;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
 		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
-		this.groupinfo = NBTHelper.readInputObject(buf);
+		this.groupInfo = (new ByteBufBridge(buf)).getIO("");
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
 		ByteBufUtils.writeUTF8String(buf, this.pool.getID());
-		NBTHelper.writeOutputObject(this.groupinfo, buf);
+		(new ByteBufBridge(buf)).setIO("", this.groupInfo);
 	}
 
 	@Override
 	public void handleClientSide(PacketAddGroup message, EntityPlayer player)
 	{
 		Group group = new Group(message.pool);
-		group.setGroupInfo(message.groupinfo);
+		group.setGroupInfo(message.groupInfo);
 		message.pool.addGroupDirectly(group);
 	}
 
 	@Override
 	public void handleServerSide(PacketAddGroup message, EntityPlayer player)
 	{
-		message.pool.create(message.groupinfo.getName(), player);
+		message.pool.create(message.groupInfo.getName(), player);
 	}
 
 }

@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
-public class MemberData implements NBT, Iterable<GroupMember>
+import net.minecraft.entity.player.EntityPlayer;
+
+public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
 {
 	private final List<GroupMember> members = new ArrayList<GroupMember>();
 
@@ -28,27 +28,27 @@ public class MemberData implements NBT, Iterable<GroupMember>
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(IOBridge output)
 	{
 		int memberSize = this.members.size();
 		output.setInteger("memberSize", memberSize);
 		for (int i = 0; i < memberSize; i++)
 		{
-			IOUtil.setUUID(this.members.get(i).getProfile(), output, "member" + i);
+			IOUtil.setUUID(this.members.get(i).getProfile().getUUID(), output, "member" + i);
 		}
 
 		int invitedSize = this.invitedMembers.size();
 		output.setInteger("memberSize", invitedSize);
 		for (int i = 0; i < invitedSize; i++)
 		{
-			IOUtil.setUUID(this.invitedMembers.get(i).getProfile(), output, "invited" + i);
+			IOUtil.setUUID(this.invitedMembers.get(i).getProfile().getUUID(), output, "invited" + i);
 		}
 
-		IOUtil.setIOList("hooks", this.hooks, new NBTFactory(), output);
+		IOUtil.setIOList("hooks", this.hooks, output);
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(IOBridge input)
 	{
 		this.members.clear();
 		this.invitedMembers.clear();
@@ -65,7 +65,7 @@ public class MemberData implements NBT, Iterable<GroupMember>
 			this.members.add(GroupMember.get(IOUtil.getUUID(input, "invited" + i)));
 		}
 
-		this.hooks = IOUtil.getIOList("hooks", new NBTFactory(), input);
+		this.hooks = IOUtil.getIOList("hooks", input);
 	}
 
 	protected void join(GroupMember member)
@@ -114,6 +114,28 @@ public class MemberData implements NBT, Iterable<GroupMember>
 		this.invitedMembers.add(member);
 	}
 
+	protected void removeInvitation(GroupMember member)
+	{
+		if (this.members.contains(member))
+		{
+			UtilCore.print("Tried to remove invitation of a player who is already a member: " + member.getProfile().getUsername());
+			return;
+		}
+
+		if (!this.invitedMembers.contains(member))
+		{
+			UtilCore.print("Tried to remove invitation of a player who wasn't invited: " + member.getProfile().getUsername());
+			return;
+		}
+
+		for (IGroupHook hook : this.hooks)
+		{
+			hook.onInviteRemoved(member);
+		}
+
+		this.invitedMembers.remove(member);
+	}
+
 	protected boolean assertMember(GroupMember member)
 	{
 		if (!this.members.contains(member))
@@ -148,6 +170,11 @@ public class MemberData implements NBT, Iterable<GroupMember>
 	public List<GroupMember> getMembers()
 	{
 		return new ArrayList<GroupMember>(this.members);
+	}
+
+	public boolean isInvited(EntityPlayer player)
+	{
+		return this.isInvited(GroupCore.locate().getPlayers().get(player));
 	}
 
 	public boolean isInvited(GroupMember player)

@@ -5,6 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
+import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.instances.InstanceCore;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.menu.MenuCore;
+import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.spawning.SpawningCore;
+import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.world.WorldCore;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,18 +40,6 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.group.GroupCore;
-import com.gildedgames.util.instances.InstanceCore;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.spawning.SpawningCore;
-import com.gildedgames.util.tab.TabCore;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.world.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
 public class UtilCore implements ICore
@@ -74,6 +75,7 @@ public class UtilCore implements ICore
 		this.cores.add(GroupCore.INSTANCE);
 		this.cores.add(new SpawningCore());
 		this.cores.add(InstanceCore.INST);
+		this.cores.add(NotificationCore.INSTANCE);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
@@ -129,7 +131,7 @@ public class UtilCore implements ICore
 		{
 			core.init(event);
 		}
-		
+
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new UtilGuiHandler());
 
 		proxy.init(event);
@@ -193,6 +195,8 @@ public class UtilCore implements ICore
 		}
 
 		proxy.serverStopping(event);
+
+		this.flushData();
 	}
 
 	@Override
@@ -205,6 +209,18 @@ public class UtilCore implements ICore
 		}
 
 		proxy.serverStopped(event);
+	}
+
+	@Override
+	public void flushData()
+	{
+		UtilCore.debugPrint("Flushing data for GG Util");
+		for (ICore core : this.cores)
+		{
+			core.flushData();
+		}
+		proxy.flushData();
+		UtilCore.debugPrint("Finished flushing data for GG Util");
 	}
 
 	public MCSyncableDispatcher getDispatcher()
@@ -259,30 +275,30 @@ public class UtilCore implements ICore
 			System.out.println("[GG]: " + line.toString());
 		}
 	}
-	
+
 	public static List<EntityPlayerMP> getOnlinePlayers()
 	{
 		return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
 	}
-	
-	public static EntityPlayer getPlayerOnServerFromUUID(UUID uuid) 
+
+	public static EntityPlayer getPlayerOnServerFromUUID(UUID uuid)
 	{
-	    if (uuid == null) 
-	    {
-	        return null;
-	    }
-	    
-	    List<EntityPlayerMP> allPlayers = UtilCore.getOnlinePlayers();
-	    
-	    for (EntityPlayerMP player : allPlayers) 
-	    {
-	        if (player.getUniqueID().equals(uuid)) 
-	        {
-	            return player;
-	        }
-	    }
-	    
-	    return null;
+		if (uuid == null)
+		{
+			return null;
+		}
+
+		List<EntityPlayerMP> allPlayers = UtilCore.getOnlinePlayers();
+
+		for (EntityPlayerMP player : allPlayers)
+		{
+			if (player.getUniqueID().equals(uuid))
+			{
+				return player;
+			}
+		}
+
+		return null;
 	}
 
 	public static File getWorldDirectory()

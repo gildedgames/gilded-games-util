@@ -1,8 +1,5 @@
 package com.gildedgames.util.group.common.notifications;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.core.Group;
@@ -10,6 +7,15 @@ import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.notifications.NotificationCore;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+
+/**
+ * Client sided only. Sends notifications to the player to
+ * notify him of group changes. 
+ * @author Emile
+ *
+ */
 public class NotificationsPoolHook implements IGroupPoolListenerClient<NotificationsGroupHook>
 {
 
@@ -77,6 +83,12 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	public void onInvited(Group group, EntityPlayer inviter)
 	{
 		this.sendPopup(UtilCore.translate("group.invited") + " " + group.getName(), inviter);
+	}
+
+	@Override
+	public void onInviteRemoved(Group group)
+	{
+		this.sendPopup(UtilCore.translate("group.inviteremoved") + " " + group.getName());
 	}
 
 }

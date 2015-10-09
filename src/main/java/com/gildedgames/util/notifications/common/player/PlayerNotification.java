@@ -1,19 +1,19 @@
 package com.gildedgames.util.notifications.common.player;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-
+import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.io_manager.io.IOSyncable;
+import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class PlayerNotification implements IPlayerHook
 {
@@ -34,11 +34,13 @@ public class PlayerNotification implements IPlayerHook
 	@Override
 	public void write(NBTTagCompound output)
 	{
+		NBTHelper.setIOList("notifications", this.notifications, output);
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
+		this.notifications = NBTHelper.getIOList("notifications", input);
 	}
 
 	@Override
@@ -61,12 +63,19 @@ public class PlayerNotification implements IPlayerHook
 	@Override
 	public void syncTo(ByteBuf output, IOSyncable.SyncSide to)
 	{
+		if (to == SyncSide.CLIENT)
+		{
+			IOUtil.writeIOList(this.notifications, output);
+		}
 	}
 
 	@Override
 	public void syncFrom(ByteBuf input, IOSyncable.SyncSide from)
 	{
-
+		if (from == SyncSide.SERVER)
+		{
+			this.notifications = IOUtil.readIOList(input);
+		}
 	}
 
 	public void addNotification(INotificationMessage notification)
@@ -104,22 +113,17 @@ public class PlayerNotification implements IPlayerHook
 	@Override
 	public boolean isDirty()
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void markDirty()
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void markClean()
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 }

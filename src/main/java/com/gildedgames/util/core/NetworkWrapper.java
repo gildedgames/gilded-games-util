@@ -2,15 +2,15 @@ package com.gildedgames.util.core;
 
 import java.util.List;
 
+import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.group.common.player.GroupMember;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.group.common.core.Group;
-import com.gildedgames.util.group.common.player.GroupMember;
 
 public class NetworkWrapper
 {
@@ -27,6 +27,23 @@ public class NetworkWrapper
 	public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side)
 	{
 		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, side);
+	}
+
+	public <REQ extends IMessage, REPLY extends IMessage> void registerMessageCommon(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType)
+	{
+		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, Side.CLIENT);
+		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, Side.SERVER);
+	}
+
+	public <T extends CustomPacket<T>> void registerPacket(Class<T> packet, Side side)
+	{
+		this.registerMessage(packet, packet, side);
+	}
+
+	public <T extends CustomPacket<T>> void registerPacket(Class<T> packet)
+	{
+		this.registerMessage(packet, packet, Side.CLIENT);
+		this.registerMessage(packet, packet, Side.SERVER);
 	}
 
 	public void sendToAll(IMessage message)

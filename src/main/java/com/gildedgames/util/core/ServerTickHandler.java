@@ -25,7 +25,10 @@ public class ServerTickHandler
 
 	private void tickEnd()
 	{
-
+		if (this.minutesHasPassed(3))
+		{
+			UtilCore.instance.flushData();
+		}
 	}
 
 	private void tickStart()

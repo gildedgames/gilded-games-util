@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager.util;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -12,16 +10,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import net.minecraft.nbt.NBTTagCompound;
-
+import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.core.io.ByteBufFactory;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+
 public class IOUtil
 {
+
+	private final static ByteBufFactory bufFactory = new ByteBufFactory();
 
 	public static <I, O> void setIOList(String key, List<? extends IO<I, O>> list, IOFactory<I, O> factory, O output)
 	{
@@ -48,6 +51,32 @@ public class IOUtil
 		for (int count = 0; count < listSize; count++)
 		{
 			T obj = IOCore.io().get(key + "IO" + count, input, factory);
+
+			list.add(obj);
+		}
+
+		return list;
+	}
+
+	public static void setIOList(String key, List<? extends IO<IOBridge, IOBridge>> list, IOBridge output)
+	{
+		output.setInteger(key + "listSize", list.size());
+
+		for (int count = 0; count < list.size(); count++)
+		{
+			output.setIO(key + "IO" + count, list.get(count));
+		}
+	}
+
+	public static <T extends IO<IOBridge, IOBridge>> List<T> getIOList(String key, IOBridge input)
+	{
+		int listSize = input.getInteger(key + "listSize");
+
+		List<T> list = new ArrayList<T>(listSize);
+
+		for (int count = 0; count < listSize; count++)
+		{
+			T obj = input.getIO(key + "IO" + count);
 
 			list.add(obj);
 		}
@@ -163,9 +192,48 @@ public class IOUtil
 		tag.setLong(key + "least", uuid.getLeastSignificantBits());
 	}
 
+	public static void setUUID(UUID uuid, IOBridge tag, String key)
+	{
+		tag.setLong(key + "most", uuid.getMostSignificantBits());
+		tag.setLong(key + "least", uuid.getLeastSignificantBits());
+	}
+
 	public static UUID getUUID(NBTTagCompound tag, String name)
 	{
 		return new UUID(tag.getLong(name + "most"), tag.getLong("least"));
+	}
+
+	public static UUID getUUID(IOBridge tag, String name)
+	{
+		return new UUID(tag.getLong(name + "most"), tag.getLong("least"));
+	}
+
+	public static <T extends IO<ByteBuf, ByteBuf>> T readIO(ByteBuf buf)
+	{
+		if (buf.readBoolean())
+		{
+			return IOCore.io().get("", buf, bufFactory);
+		}
+		return null;
+	}
+
+	public static void writeIO(ByteBuf buf, IO<ByteBuf, ByteBuf> io)
+	{
+		buf.writeBoolean(io != null);
+		if (io != null)
+		{
+			IOCore.io().set("", buf, bufFactory, io);
+		}
+	}
+
+	public static void writeIOList(List<? extends IO<IOBridge, IOBridge>> list, ByteBuf buf)
+	{
+		IOUtil.setIOList("", list, ByteBufBridge.factory, new ByteBufBridge(buf));
+	}
+
+	public static <T extends IO<IOBridge, IOBridge>> List<T> readIOList(ByteBuf buf)
+	{
+		return IOUtil.getIOList("", ByteBufBridge.factory, new ByteBufBridge(buf));
 	}
 
 	private static class FilenameFilterExtension implements FilenameFilter

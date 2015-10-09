@@ -1,5 +1,14 @@
 package com.gildedgames.util.universe;
 
+import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.universe.common.UniverseAPI;
+import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
+import com.gildedgames.util.universe.common.player.PlayerUniverse;
+import com.gildedgames.util.universe.common.util.TeleporterGeneric;
+
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
@@ -12,15 +21,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.universe.common.UniverseAPI;
-import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
-import com.gildedgames.util.universe.common.player.PlayerUniverse;
-import com.gildedgames.util.universe.common.util.TeleporterGeneric;
 
 public class UniverseCore implements ICore
 {
@@ -40,7 +40,7 @@ public class UniverseCore implements ICore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilCore.registerEventHandler(PlayerUniverse.createEventHandler());
-		
+
 		UtilCore.NETWORK.registerMessage(TravelUniversePacket.class, TravelUniversePacket.class, Side.SERVER);
 
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
@@ -94,6 +94,13 @@ public class UniverseCore implements ICore
 	{
 		ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
 		scm.transferPlayerToDimension(player, dimension, UniverseCore.GENERIC_TELEPORTER);
+	}
+
+	@Override
+	public void flushData()
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 }

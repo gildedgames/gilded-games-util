@@ -1,13 +1,10 @@
 package com.gildedgames.util.group.common.core;
 
-import net.minecraft.nbt.NBTTagCompound;
-
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
-import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 
-public final class Group implements NBT
+public final class Group implements IO<IOBridge, IOBridge>
 {
 
 	private final GroupPool parentPool;
@@ -22,23 +19,17 @@ public final class Group implements NBT
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void write(IOBridge output)
 	{
-		NBTFactory factory = new NBTFactory();
-
-		IOCore.io().set("info", output, factory, this.groupInfo);
-
-		IOCore.io().set("members", output, factory, this.members);
+		output.setIO("info", this.groupInfo);
+		output.setIO("members", this.members);
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void read(IOBridge input)
 	{
-		NBTFactory factory = new NBTFactory();
-
-		this.groupInfo = IOCore.io().get("info", input, factory);
-
-		this.members = IOCore.io().get("members", input, factory);
+		this.groupInfo = input.getIO("info");
+		this.members = input.getIO("members");
 	}
 
 	public boolean hasMemberData()

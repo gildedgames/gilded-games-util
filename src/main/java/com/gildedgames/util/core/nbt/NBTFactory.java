@@ -1,22 +1,21 @@
 package com.gildedgames.util.core.nbt;
 
-import com.gildedgames.util.io_manager.factory.IOBridge;
-import com.gildedgames.util.io_manager.factory.IOFactory;
-import com.gildedgames.util.io_manager.factory.IOObserver;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.factory.IOFactory;
+import com.gildedgames.util.io_manager.factory.IOObserver;
+
+import net.minecraft.nbt.NBTTagCompound;
+
 public class NBTFactory implements IOFactory<NBTTagCompound, NBTTagCompound>
 {
 
-	private int writeIndex, readIndex;
-
-	private final ArrayList<IOObserver<NBTTagCompound, NBTTagCompound>> observers = new ArrayList<IOObserver<NBTTagCompound, NBTTagCompound>>();
+	private final List<IOObserver<NBTTagCompound, NBTTagCompound>> observers = new ArrayList<IOObserver<NBTTagCompound, NBTTagCompound>>();
 
 	@Override
 	public NBTTagCompound createInput(byte[] reading)
