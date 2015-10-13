@@ -3,22 +3,21 @@ package com.gildedgames.util.ui.util.rect;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 
-
 public abstract class RectGetter<S> extends RectSeeker<S>
 {
-	
-	private ModDim2D assembledDim = new ModDim2D(this);
-	
+
+	private ModDim2D assembledDim = new ModDim2D();
+
 	public RectGetter()
 	{
-		
+
 	}
-	
+
 	public RectGetter(S seekFrom)
 	{
 		this.seekFrom = seekFrom;
 	}
-	
+
 	@Override
 	public final ModDim2D dim()
 	{
@@ -35,7 +34,7 @@ public abstract class RectGetter<S> extends RectSeeker<S>
 	 * @return
 	 */
 	public abstract Rect assembleRect();
-	
+
 	/**
 	 * Calculations should be kept small here to check if the Dim2D object that will be assembled is different.
 	 * @return

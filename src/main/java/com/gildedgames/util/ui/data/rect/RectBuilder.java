@@ -29,6 +29,21 @@ public class RectBuilder
 
 	public RectBuilder(Rect rect)
 	{
+		this.set(rect);
+	}
+
+	public BuildWithRectHolder buildWith(RectHolder holder)
+	{
+		return new BuildWithRectHolder(this, holder);
+	}
+
+	public BuildWithRectHolder buildWith(Rect dim)
+	{
+		return this.buildWith(RectCollection.flush(dim));
+	}
+
+	public RectBuilder set(Rect rect)
+	{
 		this.pos = rect.pos();
 
 		this.width = rect.width();
@@ -40,16 +55,7 @@ public class RectBuilder
 		this.centeredY = rect.isCenteredY();
 
 		this.rotation = rect.rotation();
-	}
-
-	public BuildWithRectHolder buildWith(RectHolder holder)
-	{
-		return new BuildWithRectHolder(this, holder);
-	}
-
-	public BuildWithRectHolder buildWith(Rect dim)
-	{
-		return this.buildWith(RectCollection.flush(dim));
+		return this;
 	}
 
 	public RectBuilder rotation(Rotation2D rotation)

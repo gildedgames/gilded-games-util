@@ -10,31 +10,31 @@ import com.gildedgames.util.ui.data.rect.RectHolder;
 
 public class RectFunnel
 {
-	
+
 	protected List<BuildIntoRectHolder> modifiers;
-	
+
 	private RectFunnel(List<BuildIntoRectHolder> modifiers)
 	{
 		this.modifiers = modifiers;
 	}
-	
+
 	public static RectFunnel collect(List<RectHolder> holders)
 	{
 		return RectFunnel.collect(holders.toArray(new RectHolder[holders.size()]));
 	}
-	
+
 	public static RectFunnel collect(RectHolder... holders)
 	{
 		List<BuildIntoRectHolder> modifiers = new ArrayList<BuildIntoRectHolder>();
-		
+
 		for (RectHolder holder : holders)
 		{
-			modifiers.add(new BuildIntoRectHolder(holder));
+			modifiers.add(new BuildIntoRectHolder(holder.dim()));
 		}
-			
+
 		return new RectFunnel(modifiers);
 	}
-	
+
 	public static RectFunnel collect(BuildIntoRectHolder... modifiers)
 	{
 		return new RectFunnel(Arrays.asList(modifiers));
@@ -66,7 +66,7 @@ public class RectFunnel
 		{
 			modifier.height(height);
 		}
-		
+
 		return this;
 	}
 
@@ -96,7 +96,7 @@ public class RectFunnel
 		{
 			modifier.pos(x, y);
 		}
-		
+
 		return this;
 	}
 
@@ -106,7 +106,7 @@ public class RectFunnel
 		{
 			modifier.center(centeredX, centeredY);
 		}
-		
+
 		return this;
 	}
 
@@ -136,7 +136,7 @@ public class RectFunnel
 		{
 			modifier.area(width, height);
 		}
-		
+
 		return this;
 	}
 
@@ -146,7 +146,7 @@ public class RectFunnel
 		{
 			modifier.y(y);
 		}
-		
+
 		return this;
 	}
 
@@ -156,7 +156,7 @@ public class RectFunnel
 		{
 			modifier.x(x);
 		}
-		
+
 		return this;
 	}
 
@@ -166,7 +166,7 @@ public class RectFunnel
 		{
 			modifier.center(centered);
 		}
-		
+
 		return this;
 	}
 
@@ -186,7 +186,7 @@ public class RectFunnel
 		{
 			modifier.addWidth(width);
 		}
-		
+
 		return this;
 	}
 
@@ -196,7 +196,7 @@ public class RectFunnel
 		{
 			modifier.addHeight(height);
 		}
-		
+
 		return this;
 	}
 
@@ -206,7 +206,7 @@ public class RectFunnel
 		{
 			modifier.addArea(width, height);
 		}
-		
+
 		return this;
 	}
 
@@ -216,7 +216,7 @@ public class RectFunnel
 		{
 			modifier.addX(x);
 		}
-		
+
 		return this;
 	}
 
@@ -226,7 +226,7 @@ public class RectFunnel
 		{
 			modifier.addY(y);
 		}
-		
+
 		return this;
 	}
 
@@ -236,7 +236,7 @@ public class RectFunnel
 		{
 			modifier.addPos(pos);
 		}
-		
+
 		return this;
 	}
 
@@ -246,8 +246,8 @@ public class RectFunnel
 		{
 			modifier.flush();
 		}
-		
+
 		return this;
 	}
-	
+
 }

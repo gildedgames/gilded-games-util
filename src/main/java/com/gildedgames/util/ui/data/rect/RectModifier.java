@@ -8,18 +8,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class RectModifier
 {
 
-	private RectHolder modifyWith, modify;
+	private RectHolder modifyWith;
 
 	private ModifierType[] types;
 
-	public RectModifier(RectHolder modify, RectHolder modifyWith, List<ModifierType> types)
+	public RectModifier(RectHolder modifyWith, List<ModifierType> types)
 	{
-		this(modify, modifyWith, types.toArray(new ModifierType[types.size()]));
+		this(modifyWith, types.toArray(new ModifierType[types.size()]));
 	}
 
-	public RectModifier(RectHolder modify, RectHolder modifyWith, ModifierType... types)
+	public RectModifier(RectHolder modifyWith, ModifierType... types)
 	{
-		this.modify = modify;
 		this.modifyWith = modifyWith;
 		this.types = types;
 	}
@@ -28,16 +27,7 @@ public class RectModifier
 	{
 		return this.modifyWith;
 	}
-	
-	/**
-	 * The Dim2D object this Modifier is applying to.
-	 * @return
-	 */
-	public RectHolder modifiedHolder()
-	{
-		return this.modify;
-	}
-	
+
 	public List<ModifierType> getTypes()
 	{
 		return Arrays.asList(this.types);
@@ -50,12 +40,12 @@ public class RectModifier
 		{
 			return true;
 		}
-		
+
 		if (!(obj instanceof RectModifier))
 		{
 			return false;
 		}
-		
+
 		RectModifier modifier = (RectModifier) obj;
 		return modifier.modifyWith.equals(this.modifyWith) && Arrays.equals(modifier.types, this.types);
 	}
@@ -63,9 +53,9 @@ public class RectModifier
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(97, 37).append(this.modifyWith).append(this.modify).append(this.types).toHashCode();
+		return new HashCodeBuilder(97, 37).append(this.modifyWith).append(this.types).toHashCode();
 	}
-	
+
 	public static enum ModifierType
 	{
 		X, Y, POS, WIDTH, HEIGHT, AREA, SCALE, ROTATION, CENTERING, ALL;

@@ -26,8 +26,6 @@ public class ModDim2D implements Rect
 
 	List<ModifierType> modsDisabled = new ArrayList<ModifierType>();
 
-	private RectHolder owner;
-
 	/**
 	 * Originalstate: Non-modified rectangle value without modifiers, the base values
 	 * modifiedState: original state with modifiers applied.
@@ -38,23 +36,23 @@ public class ModDim2D implements Rect
 
 	private RectListener ourListener;
 
-	public ModDim2D(RectHolder owner)
-	{
-		this.owner = owner;
+	private boolean preventRecursion = false;
 
-		this.buildInto = new BuildIntoRectHolder(this.owner);
+	public ModDim2D()
+	{
+		this.buildInto = new BuildIntoRectHolder(this);
 
 		this.ourListener = this.createListener();
 	}
 
-	public static ModDim2D build(RectHolder owner)
+	public static ModDim2D build()
 	{
-		return new ModDim2D(owner);
+		return new ModDim2D();
 	}
 
-	public static ModDim2D build(RectHolder owner, Rect rect)
+	public static ModDim2D build(Rect rect)
 	{
-		ModDim2D dim = new ModDim2D(owner);
+		ModDim2D dim = new ModDim2D();
 		dim.set(rect);
 		return dim;
 	}
@@ -91,7 +89,7 @@ public class ModDim2D implements Rect
 	@Override
 	public ModDim2D clone()
 	{
-		ModDim2D clone = new ModDim2D(this.owner);
+		ModDim2D clone = new ModDim2D();
 		clone.set(this);
 		return clone;
 	}
@@ -106,6 +104,7 @@ public class ModDim2D implements Rect
 	{
 		this.originalState = dim;
 		this.refreshModifiedState();
+		this.buildInto.set(this.originalState);
 		return this;
 	}
 
@@ -113,9 +112,9 @@ public class ModDim2D implements Rect
 	{
 		this.modifiers = new ArrayList<RectModifier>(modDim.modifiers);
 		this.listeners = new ArrayList<RectListener>(modDim.listeners);
-		this.owner = modDim.owner;
 		this.originalState = modDim.originalState;
 		this.modifiedState = modDim.modifiedState;
+		this.buildInto.set(this.originalState);
 		return this;
 	}
 
@@ -150,10 +149,7 @@ public class ModDim2D implements Rect
 		Rotation2D rotation = this.originalState.rotation();
 		float scale = this.originalState.scale();
 
-		final float offsetX = this.originalState.isCenteredX() ? this.originalState.width() * this.originalState.scale() / 2 : 0;
-		final float offsetY = this.originalState.isCenteredY() ? this.originalState.height() * this.originalState.scale() / 2 : 0;
-
-		Pos2D pos = Pos2D.flush(this.originalState.pos().x() - offsetX, this.originalState.pos().y() - offsetY);
+		Pos2D pos = Pos2D.flush(this.originalState.pos().x(), this.originalState.pos().y());
 
 		float width = this.originalState.width();
 		float height = this.originalState.height();
@@ -213,20 +209,33 @@ public class ModDim2D implements Rect
 			}
 		}
 
+		final float offsetX = this.originalState.isCenteredX() ? width * this.originalState.scale() / 2 : 0;
+		final float offsetY = this.originalState.isCenteredY() ? height * this.originalState.scale() / 2 : 0;
 		width *= this.originalState.scale();
 		height *= this.originalState.scale();
 
+		pos = pos.clone().subtract(offsetX, offsetY).flush();
+
 		this.modifiedState = Dim2D.build(this.originalState).pos(pos).area(width, height).rotation(rotation).scale(scale).flush();
+
+		if (this.preventRecursion)
+		{
+			return;
+		}
+
+		this.preventRecursion = true;
+
+		for (RectListener listener : this.listeners)
+		{
+			listener.notifyDimChange();
+		}
+
+		this.preventRecursion = false;
 	}
 
 	public Collection<RectModifier> mods()
 	{
 		return this.modifiers;
-	}
-
-	public RectHolder getOwner()
-	{
-		return this.owner;
 	}
 
 	public boolean containsModifier(RectHolder modifier)
@@ -262,7 +271,12 @@ public class ModDim2D implements Rect
 
 	public ModDim2D add(final RectHolder modifyingWith, ModifierType mandatoryType, ModifierType... otherTypes)
 	{
-		final RectModifier modifier = new RectModifier(this.owner, modifyingWith, Lists.asList(mandatoryType, otherTypes));
+		if (modifyingWith.dim().equals(this))
+		{
+			throw new IllegalArgumentException();
+		}
+
+		final RectModifier modifier = new RectModifier(modifyingWith, Lists.asList(mandatoryType, otherTypes));
 
 		if (!this.modifiers.contains(modifier))
 		{
@@ -284,7 +298,7 @@ public class ModDim2D implements Rect
 	 */
 	public boolean remove(final RectHolder modifyingWith, ModifierType mandatoryType, ModifierType... otherTypes)
 	{
-		RectModifier modifier = new RectModifier(this.owner, modifyingWith, Lists.asList(mandatoryType, otherTypes));
+		RectModifier modifier = new RectModifier(modifyingWith, Lists.asList(mandatoryType, otherTypes));
 
 		boolean success = this.modifiers.remove(modifier);
 

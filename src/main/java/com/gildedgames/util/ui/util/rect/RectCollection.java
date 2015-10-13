@@ -7,13 +7,13 @@ import com.gildedgames.util.ui.data.rect.RectHolder;
 public class RectCollection implements RectHolder
 {
 
-	private ModDim2D dim = new ModDim2D(this);
-	
+	private ModDim2D dim = new ModDim2D();
+
 	protected RectCollection()
 	{
-		
+
 	}
-	
+
 	protected RectCollection(Rect dim)
 	{
 		this.dim().set(dim);
@@ -30,7 +30,7 @@ public class RectCollection implements RectHolder
 	{
 		return this.dim().toString();
 	}
-	
+
 	public static RectCollectionBuilder build()
 	{
 		return new RectCollectionBuilder();
@@ -40,5 +40,5 @@ public class RectCollection implements RectHolder
 	{
 		return RectCollection.build().addDim(dim).flush();
 	}
-	
+
 }
