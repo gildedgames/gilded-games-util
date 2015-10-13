@@ -2,6 +2,7 @@ package com.gildedgames.util.ui.data.rect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
@@ -10,7 +11,6 @@ import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.Rotation2D;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
@@ -21,104 +21,152 @@ public class ModDim2D implements Rect
 {
 
 	private List<RectModifier> modifiers = new ArrayList<RectModifier>();
-	
+
 	private List<RectListener> listeners = new ArrayList<RectListener>();
-	
+
 	List<ModifierType> modsDisabled = new ArrayList<ModifierType>();
-	
+
 	private RectHolder owner;
-	
-	private Rect originalState, modifiedState;
-	
+
+	/**
+	 * Originalstate: Non-modified rectangle value without modifiers, the base values
+	 * modifiedState: original state with modifiers applied.
+	 */
+	private Rect originalState = Dim2D.flush(), modifiedState = Dim2D.flush();
+
 	private BuildIntoRectHolder buildInto;
-	
-	private RectBuilder builder;
-	
+
+	private RectListener ourListener;
+
 	public ModDim2D(RectHolder owner)
 	{
 		this.owner = owner;
-		
+
 		this.buildInto = new BuildIntoRectHolder(this.owner);
-		this.builder = Dim2D.build(this.owner);
+
+		this.ourListener = this.createListener();
 	}
-	
+
+	public static ModDim2D build(RectHolder owner)
+	{
+		return new ModDim2D(owner);
+	}
+
+	public static ModDim2D build(RectHolder owner, Rect rect)
+	{
+		ModDim2D dim = new ModDim2D(owner);
+		dim.set(rect);
+		return dim;
+	}
+
+	public static ModDim2D clone(RectHolder owner)
+	{
+		return owner.dim().clone();
+	}
+
+	private RectListener createListener()
+	{
+		return new RectListener()
+		{
+
+			@Override
+			public void notifyDimChange()
+			{
+				ModDim2D.this.refreshModifiedState();
+			}
+
+		};
+	}
+
 	public BuildIntoRectHolder mod()
 	{
 		return this.buildInto;
 	}
-	
-	public RectBuilder copy()
+
+	public RectBuilder copyRect()
 	{
-		return this.builder;
+		return new RectBuilder(this);
 	}
-	
-	public void set(RectHolder holder)
+
+	@Override
+	public ModDim2D clone()
+	{
+		ModDim2D clone = new ModDim2D(this.owner);
+		clone.set(this);
+		return clone;
+	}
+
+	public ModDim2D set(RectHolder holder)
 	{
 		this.set(holder.dim());
+		return this;
 	}
-	
-	public void set(Rect dim)
+
+	public ModDim2D set(Rect dim)
 	{
 		this.originalState = dim;
+		this.refreshModifiedState();
+		return this;
 	}
-	
-	public void set(ModDim2D modDim)
+
+	public ModDim2D set(ModDim2D modDim)
 	{
 		this.modifiers = new ArrayList<RectModifier>(modDim.modifiers);
 		this.listeners = new ArrayList<RectListener>(modDim.listeners);
 		this.owner = modDim.owner;
 		this.originalState = modDim.originalState;
 		this.modifiedState = modDim.modifiedState;
+		return this;
 	}
-	
+
 	public boolean areDisabled(ModifierType... mods)
 	{
 		boolean areDisabled = true;
-		
+
 		for (ModifierType type : mods)
 		{
 			if (type == ModifierType.ALL)
 			{
 				return true;
 			}
-			
+
 			boolean value = this.modsDisabled.contains(type);
-		
+
 			if (!value)
 			{
 				areDisabled = false;
 			}
 		}
-		
+
 		return areDisabled;
 	}
-	
+
 	/**
 	 * Calculate the values for the modified state of this Dim2D object, based on the provided pool of Modifiers.
 	 * @param modifiers
 	 */
-	protected void refreshModifiedState(ModDim2D modifiers)
+	protected void refreshModifiedState()
 	{
-		Rotation2D rotation = this.rotation();
-		float scale = this.scale();
-		
-		final float offsetX = this.isCenteredX() ? this.width() * this.scale() / 2 : 0;
-		final float offsetY = this.isCenteredY() ? this.height() * this.scale() / 2 : 0;
-		
-		Pos2D pos = Pos2D.flush(this.pos().x() - offsetX, this.pos().y() - offsetY);
-		
-		float width = this.width();
-		float height = this.height();
-		
-		for (RectModifier modifier : modifiers.mods())
+		Rotation2D rotation = this.originalState.rotation();
+		float scale = this.originalState.scale();
+
+		final float offsetX = this.originalState.isCenteredX() ? this.originalState.width() * this.originalState.scale() / 2 : 0;
+		final float offsetY = this.originalState.isCenteredY() ? this.originalState.height() * this.originalState.scale() / 2 : 0;
+
+		Pos2D pos = Pos2D.flush(this.originalState.pos().x() - offsetX, this.originalState.pos().y() - offsetY);
+
+		float width = this.originalState.width();
+		float height = this.originalState.height();
+
+		for (RectModifier modifier : this.mods())
 		{
 			if (modifier == null)
 			{
 				continue;
 			}
-			
+
 			RectHolder modifyingWith = modifier.modifyingWith();
-			
+
 			if (modifier.getTypes().contains(ModifierType.ROTATION) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
@@ -126,7 +174,7 @@ public class ModDim2D implements Rect
 					rotation = rotation.buildWith(modifyingWith.dim().rotation()).addDegrees().flush();
 				}
 			}
-			
+
 			if (modifier.getTypes().contains(ModifierType.SCALE) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
@@ -147,7 +195,7 @@ public class ModDim2D implements Rect
 					pos = pos.clone().addY(modifyingWith.dim().pos().y()).flush();
 				}
 			}
-			
+
 			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
@@ -155,7 +203,7 @@ public class ModDim2D implements Rect
 					width += modifyingWith.dim().width();
 				}
 			}
-			
+
 			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
@@ -164,119 +212,110 @@ public class ModDim2D implements Rect
 				}
 			}
 		}
-		
-		width *= this.scale();
-		height *= this.scale();
-		
-		this.modifiedState = Dim2D.build(this.originalState).pos(pos).area(width,  height).rotation(rotation).scale(scale).flush();
+
+		width *= this.originalState.scale();
+		height *= this.originalState.scale();
+
+		this.modifiedState = Dim2D.build(this.originalState).pos(pos).area(width, height).rotation(rotation).scale(scale).flush();
 	}
-	
-	public List<RectModifier> mods()
+
+	public Collection<RectModifier> mods()
 	{
 		return this.modifiers;
 	}
-	
+
 	public RectHolder getOwner()
 	{
 		return this.owner;
 	}
-	
+
 	public boolean containsModifier(RectHolder modifier)
 	{
 		return this.modifiers.contains(modifier);
 	}
-	
-	public ImmutableList<RectModifier> getModifiersOfType(ModifierType type)
-	{
-		return ImmutableList.<RectModifier>copyOf(ObjectFilter.<RectModifier>getTypesFrom(this.modifiers, new FilterCondition(this.modifiers)
-		{
 
-			@Override
-			public boolean isType(Object object)
-			{
-				if (object instanceof RectModifier)
-				{
-					RectModifier modifier = (RectModifier)object;
-					
-					if (modifier.getTypes().contains(ModifierType.POS))
-					{
-						return true;
-					}
-				}
-				
-				return false;
-			}
-			
-		}));
-	}
-	
 	/**
-	 * @return Returns a clone() of this Dim2D object, unaltered by any modifiers.
+	 * Clears the modifiers that you pass along to the method
 	 */
-	public void clear(ModifierType... types)
+	public ModDim2D clear(final ModifierType... types)
 	{
-		this.modifiers = ObjectFilter.getTypesFrom(types, new FilterCondition(Arrays.<Object> asList(types))
+		this.modifiers = ObjectFilter.getTypesFrom(this.modifiers, new FilterCondition<RectModifier>(this.modifiers)
 		{
-
 			@Override
-			public boolean isType(Object object)
+			public boolean isType(RectModifier modifier)
 			{
-				if (object instanceof RectModifier)
+				for (ModifierType type : ObjectFilter.getTypesFrom(types, ModifierType.class))
 				{
-					RectModifier modifier = (RectModifier) object;
-
-					for (ModifierType type : ObjectFilter.getTypesFrom(this.data(), ModifierType.class))
+					if (modifier.getTypes().contains(type))
 					{
-						if (modifier.getTypes().contains(type))
-						{
-							return true;
-						}
+						return false;
 					}
 				}
 
-				return false;
+				return true;
 			}
-
 		});
+
+		this.refreshModifiedState();
+		return this;
 	}
 
-	public boolean add(final RectHolder modifyingWith, ModifierType mandatoryType, ModifierType... otherTypes)
+	public ModDim2D add(final RectHolder modifyingWith, ModifierType mandatoryType, ModifierType... otherTypes)
 	{
 		final RectModifier modifier = new RectModifier(this.owner, modifyingWith, Lists.asList(mandatoryType, otherTypes));
 
 		if (!this.modifiers.contains(modifier))
 		{
-			boolean result = this.modifiers.add(modifier);
-			
-			modifyingWith.dim().addListener(new RectListener()
-			{
+			this.modifiers.add(modifier);
 
-				@Override
-				public void notifyDimChange()
-				{
-					
-				}
-				
-			});
-			
-			return result;
+			modifyingWith.dim().addListener(this.ourListener);
+
+			this.refreshModifiedState();
 		}
-		
-		return false;
+		return this;
 	}
 
-	public boolean remove(final RectHolder holder, ModifierType mandatoryType, ModifierType... otherTypes)
+	/**
+	 * Removes from this modDim the ModifierTypes given.
+	 * @param modifyingWith
+	 * @param mandatoryType
+	 * @param otherTypes
+	 * @return
+	 */
+	public boolean remove(final RectHolder modifyingWith, ModifierType mandatoryType, ModifierType... otherTypes)
 	{
-		RectModifier modifier = new RectModifier(this.owner, holder, Lists.asList(mandatoryType, otherTypes));
+		RectModifier modifier = new RectModifier(this.owner, modifyingWith, Lists.asList(mandatoryType, otherTypes));
 
-		return this.modifiers.remove(modifier);
+		boolean success = this.modifiers.remove(modifier);
+
+		//True when no remaining modifiers use the given modifyingWith
+		boolean removeListener = true;
+		for (RectModifier rModifier : this.modifiers)
+		{
+			if (rModifier.modifyingWith().equals(modifyingWith))
+			{
+				removeListener = false;
+			}
+		}
+
+		if (removeListener)
+		{
+			modifyingWith.dim().removeListener(this.ourListener);
+		}
+
+		this.refreshModifiedState();
+
+		return success;
 	}
 
-	public boolean addListener(RectListener listener)
+	public void addListener(RectListener listener)
 	{
-		return this.listeners.add(listener);
+		if (!this.listeners.contains(listener))
+		{
+			this.listeners.add(listener);
+		}
 	}
-	
+
 	public boolean removeListener(RectListener listener)
 	{
 		return this.listeners.remove(listener);
@@ -388,6 +427,17 @@ public class ModDim2D implements Rect
 	public RectBuilder rebuild()
 	{
 		return this.modifiedState.rebuild();
+	}
+
+	public ModDim2D disableModifiers(ModifierType... pos)
+	{
+		if (pos.length == 0)
+		{
+			this.modsDisabled.add(ModifierType.ALL);
+			return this;
+		}
+		this.modsDisabled.addAll(Arrays.asList(pos));
+		return this;
 	}
 
 }

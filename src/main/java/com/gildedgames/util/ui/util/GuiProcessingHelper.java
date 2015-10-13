@@ -110,7 +110,7 @@ public final class GuiProcessingHelper
 			{
 				if (element.isEnabled())
 				{
-					GuiFrame frame = ObjectFilter.getType(element, GuiFrame.class);
+					GuiFrame frame = ObjectFilter.cast(element, GuiFrame.class);
 
 					success = element.onKeyboardInput(pool, input) || success;
 				}

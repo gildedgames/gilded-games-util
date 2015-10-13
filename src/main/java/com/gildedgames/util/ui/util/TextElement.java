@@ -11,19 +11,16 @@ import com.gildedgames.util.ui.util.rect.RectGetter;
 
 public class TextElement extends GuiFrame
 {
-	
-	private final Text text;
 
-	private final boolean centered;
+	private final Text text;
 
 	public TextElement(Text text, Pos2D pos, boolean centered)
 	{
 		super(Dim2D.build().pos(pos).scale(text.scale).centerX(centered).flush());
 
 		this.text = text;
-		this.centered = centered;
-		
-		this.dim().mod().addModifier(new RectGetter<TextElement>(this)
+
+		this.dim().add(new RectGetter<TextElement>(this)
 		{
 
 			@Override
@@ -37,15 +34,15 @@ public class TextElement extends GuiFrame
 			{
 				return true;
 			}
-			
-		}, ModifierType.X, ModifierType.AREA).flush();
+
+		}, ModifierType.X, ModifierType.AREA);
 	}
-	
+
 	public void setText(String text)
 	{
 		this.text.text = text;
 	}
-	
+
 	public String getText()
 	{
 		return this.text.text;
@@ -55,7 +52,7 @@ public class TextElement extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		graphics.drawText(this.text.text, this.dim(), this.text.drawingData);
 	}
 

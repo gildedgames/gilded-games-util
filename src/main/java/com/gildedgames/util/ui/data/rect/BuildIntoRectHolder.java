@@ -1,6 +1,5 @@
 package com.gildedgames.util.ui.data.rect;
 
-
 public class BuildIntoRectHolder extends RectBuilder
 {
 
@@ -8,8 +7,6 @@ public class BuildIntoRectHolder extends RectBuilder
 
 	public BuildIntoRectHolder(RectHolder holder)
 	{
-		super(holder);
-
 		this.holder = holder;
 	}
 
@@ -20,7 +17,7 @@ public class BuildIntoRectHolder extends RectBuilder
 
 		this.holder.dim().set(commit);
 
-		return commit;
+		return this.holder.dim();
 	}
 
 }

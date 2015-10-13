@@ -14,47 +14,43 @@ import com.gildedgames.util.ui.input.MouseButton;
 
 public class DraggingBehavior extends GuiEvent<GuiFrame>
 {
-	
+
 	private List<RectModifier> prevModifiers;
-	
+
 	private int ticksSinceCreation;
 
 	public DraggingBehavior()
 	{
-		
+
 	}
-	
+
 	@Override
 	public void initEvent()
 	{
-		if (this.prevModifiers == null)
-		{
-			this.prevModifiers = this.getGui().dim().getModifiersOfType(ModifierType.POS);
-		}
-		
-		this.getGui().dim().mod().disableModifiers(ModifierType.POS).flush();
+		this.getGui().dim().disableModifiers(ModifierType.POS);
 	}
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		this.ticksSinceCreation++;
 
-		this.getGui().dim().mod().center(true).disableModifiers(ModifierType.POS).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
-		
+		this.getGui().dim().disableModifiers(ModifierType.POS);
+		this.getGui().dim().mod().center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
+
 		if (MouseButton.LEFT.isDown() && this.ticksSinceCreation > 5)
 		{
-			GuiFrame frame = ObjectFilter.getType(this.getGui().seekContent().getParentUi(), GuiFrame.class);
-			
+			GuiFrame frame = ObjectFilter.cast(this.getGui().seekContent().getParentUi(), GuiFrame.class);
+
 			if (frame != null)
 			{
 				frame.events().remove("draggedState");
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean query(Object... input)
 	{
@@ -65,7 +61,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
