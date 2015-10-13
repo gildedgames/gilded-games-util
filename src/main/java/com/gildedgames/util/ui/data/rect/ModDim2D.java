@@ -149,7 +149,7 @@ public class ModDim2D implements Rect
 		Rotation2D rotation = this.originalState.rotation();
 		float scale = this.originalState.scale();
 
-		Pos2D pos = Pos2D.flush(this.originalState.pos().x(), this.originalState.pos().y());
+		Pos2D pos = this.originalState.pos();
 
 		float width = this.originalState.width();
 		float height = this.originalState.height();

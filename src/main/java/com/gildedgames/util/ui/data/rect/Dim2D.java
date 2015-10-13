@@ -11,7 +11,7 @@ import com.gildedgames.util.ui.util.rect.RectCollection;
 public class Dim2D implements Rect
 {
 
-	final Pos2D pos;
+	final Pos2D pos, maxPos;
 
 	final Rotation2D rotation;
 
@@ -29,7 +29,7 @@ public class Dim2D implements Rect
 	Dim2D(RectBuilder builder)
 	{
 		this.pos = builder.pos;
-
+		
 		this.width = builder.width;
 		this.height = builder.height;
 
@@ -39,6 +39,8 @@ public class Dim2D implements Rect
 		this.centeredY = builder.centeredY;
 
 		this.rotation = builder.rotation;
+		
+		this.maxPos = this.pos.clone().add(this.width(), this.height()).flush();
 	}
 
 	@Override
@@ -80,19 +82,19 @@ public class Dim2D implements Rect
 	@Override
 	public Pos2D maxPos()
 	{
-		return this.pos().clone().add(this.width(), this.height()).flush();
+		return this.maxPos;
 	}
 
 	@Override
 	public float maxX()
 	{
-		return this.x() + this.width();
+		return this.maxPos().x();
 	}
 
 	@Override
 	public float maxY()
 	{
-		return this.y() + this.height();
+		return this.maxPos().y();
 	}
 
 	@Override
