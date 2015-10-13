@@ -6,11 +6,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2DCollection;
-import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class MinecraftInputProvider implements InputProvider
 {
@@ -73,7 +73,7 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public boolean isHovered(Dim2D dim)
+	public boolean isHovered(Rect dim)
 	{
 		if (dim == null)
 		{
@@ -124,28 +124,14 @@ public class MinecraftInputProvider implements InputProvider
 	}
 
 	@Override
-	public boolean isHovered(Dim2DHolder holder)
+	public boolean isHovered(RectHolder holder)
 	{
 		if (holder == null)
 		{
 			return false;
 		}
 
-		return this.isHovered(holder.getDim());
-	}
-
-	@Override
-	public boolean isHovered(Dim2DCollection collection)
-	{
-		for (Dim2DHolder holder : collection.getDimHolders())
-		{
-			if (this.isHovered(holder))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return this.isHovered(holder.dim());
 	}
 	
 }

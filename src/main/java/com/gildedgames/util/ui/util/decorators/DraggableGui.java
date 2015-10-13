@@ -45,7 +45,7 @@ public class DraggableGui extends GuiFrame
 	{
 		super.draw(graphics, input);
 		
-		this.modDim().pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
+		this.dim().mod().pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
 	}
 
 }

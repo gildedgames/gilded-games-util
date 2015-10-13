@@ -47,6 +47,19 @@ public class Pos2D
 		return new Pos2DBuilder();
 	}
 	
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof Pos2D))
+		{
+			return false;
+		}
+		
+		Pos2D pos = (Pos2D)obj;
+		
+		return pos.x() == this.x() && pos.y() == this.y();
+	}
+	
 	public static class Pos2DBuilder
 	{
 		

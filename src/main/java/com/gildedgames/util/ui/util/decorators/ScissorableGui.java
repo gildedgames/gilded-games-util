@@ -7,38 +7,33 @@ import org.lwjgl.opengl.GL11;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2DSeekable;
-import com.gildedgames.util.ui.data.Dim2DSeeker;
 import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.util.rect.RectSeekable;
+import com.gildedgames.util.ui.util.rect.RectSeeker;
 import com.google.common.collect.ImmutableList;
 
-public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
+public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 {
 
-	protected Dim2D scissoredArea;
+	protected ModDim2D scissoredArea;
 
-	private ImmutableList seekers = ImmutableList.<Dim2DSeeker> of(new Seeker(this));
+	private ImmutableList seekers = ImmutableList.<RectSeeker> of(new Seeker(this));
 
-	public ScissorableGui(Dim2D scissoredArea, Gui gui)
+	public ScissorableGui(ModDim2D scissoredArea, Gui gui)
 	{
 		super(gui);
 
 		this.scissoredArea = scissoredArea;
 	}
 
-	public Dim2D getScissoredArea()
+	public ModDim2D getScissoredArea()
 	{
 		return this.scissoredArea;
 	}
 
-	public void setScissoredArea(Dim2D dim)
-	{
-		this.scissoredArea = dim;
-	}
-	
 	@Override
 	protected void preInitContent(InputProvider input)
 	{
@@ -62,7 +57,7 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 				{
 					Gui gui = (Gui)ui;
 					
-					if (!gui.getDim().intersects(this.getScissoredArea()))
+					if (!gui.dim().intersects(this.getScissoredArea()))
 					{
 						gui.setEnabled(false);
 						gui.setVisible(false);
@@ -98,12 +93,12 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 	}
 
 	@Override
-	public ImmutableList<Dim2DSeeker> getDimSeekers()
+	public ImmutableList<RectSeeker> getRectSeekers()
 	{
 		return this.seekers;
 	}
 
-	public static class Seeker extends Dim2DSeeker<ScissorableGui>
+	public static class Seeker extends RectSeeker<ScissorableGui>
 	{
 
 		public Seeker()
@@ -117,15 +112,9 @@ public class ScissorableGui extends GuiDecorator<Gui> implements Dim2DSeekable
 		}
 
 		@Override
-		public Dim2D getDim()
+		public ModDim2D dim()
 		{
 			return this.seekFrom.getScissoredArea();
-		}
-
-		@Override
-		public void setDim(Dim2D dim)
-		{
-			this.seekFrom.setScissoredArea(dim);
 		}
 
 	}

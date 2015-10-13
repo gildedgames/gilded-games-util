@@ -7,8 +7,9 @@ import net.minecraft.client.gui.GuiButton;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -30,7 +31,7 @@ public class MinecraftButton extends GuiFrame
 		this.button = button;
 	}
 	
-	public MinecraftButton(Dim2D dim, String text)
+	public MinecraftButton(Rect dim, String text)
 	{
 		super(dim);
 		
@@ -62,11 +63,11 @@ public class MinecraftButton extends GuiFrame
 		
 		this.button.drawButton(mc, (int)input.getMouseX(), (int)input.getMouseY());
 		
-		this.button.xPosition = (int) this.getDim().x();
-		this.button.yPosition = (int) this.getDim().y();
+		this.button.xPosition = (int) this.dim().x();
+		this.button.yPosition = (int) this.dim().y();
 		
-		this.button.width = (int) this.getDim().width();
-		this.button.height = (int) this.getDim().height();
+		this.button.width = (int) this.dim().width();
+		this.button.height = (int) this.dim().height();
 	}
 	
 	@Override

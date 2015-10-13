@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class TextBox extends GuiFrame
@@ -16,7 +16,7 @@ public class TextBox extends GuiFrame
 
 	private boolean centerFormat;
 
-	public TextBox(Dim2D dim, boolean centerFormat, Text... text)
+	public TextBox(Rect dim, boolean centerFormat, Text... text)
 	{
 		super(dim);
 		
@@ -35,7 +35,7 @@ public class TextBox extends GuiFrame
 		int i = 0;
 		int textHeight = 0;
 
-		float halfWidth = this.getDim().width() / 2;
+		float halfWidth = this.dim().width() / 2;
 		
 		for (Text t : this.text)
 		{
@@ -51,7 +51,7 @@ public class TextBox extends GuiFrame
 
 			for (final String string : stringList)
 			{
-				final List<String> newStrings = t.font.splitStringsIntoArea(string, (int) (this.getDim().width() / t.scale));
+				final List<String> newStrings = t.font.splitStringsIntoArea(string, (int) (this.dim().width() / t.scale));
 
 				for (final String s : newStrings)
 				{
@@ -74,7 +74,7 @@ public class TextBox extends GuiFrame
 			}
 		}
 
-		this.modDim().height(textHeight).flush();
+		this.dim().mod().height(textHeight).flush();
 		
 		super.initContent(input);
 	}

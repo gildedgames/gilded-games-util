@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D.Modifier;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.RectModifier;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -15,7 +15,7 @@ import com.gildedgames.util.ui.input.MouseButton;
 public class DraggingBehavior extends GuiEvent<GuiFrame>
 {
 	
-	private List<Modifier> prevModifiers;
+	private List<RectModifier> prevModifiers;
 	
 	private int ticksSinceCreation;
 
@@ -29,10 +29,10 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 	{
 		if (this.prevModifiers == null)
 		{
-			this.prevModifiers = this.getGui().getDim().getModifiersOfType(ModifierType.POS);
+			this.prevModifiers = this.getGui().dim().getModifiersOfType(ModifierType.POS);
 		}
 		
-		this.getGui().modDim().clearModifiers(ModifierType.POS).flush();
+		this.getGui().dim().mod().disableModifiers(ModifierType.POS).flush();
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 		
 		this.ticksSinceCreation++;
 
-		this.getGui().modDim().center(true).clearModifiers(ModifierType.POS).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
+		this.getGui().dim().mod().center(true).disableModifiers(ModifierType.POS).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
 		
 		if (MouseButton.LEFT.isDown() && this.ticksSinceCreation > 5)
 		{

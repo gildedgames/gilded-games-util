@@ -19,13 +19,14 @@ import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.core.UtilEvents;
 import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.graphics.Sprite.UV;
 import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
+import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -49,7 +50,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		return new ResourceLocation(resource.getDomain(), resource.getPath());
 	}
 
-	private void draw(Dim2D dim, DrawingData data, DrawInner inner)
+	private void draw(Rect dim, DrawingData data, DrawInner inner)
 	{
 		GlStateManager.pushMatrix();
 
@@ -89,13 +90,13 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawSprite(Sprite sprite, Dim2D dim, DrawingData data)
+	public void drawSprite(Sprite sprite, Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawSprite(this, sprite, data, dim));
 	}
 
 	@Override
-	public void drawText(String text, Dim2D dim, DrawingData data)
+	public void drawText(String text, Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawText(this.fontRenderer, text, dim, data));
 	}
@@ -107,13 +108,13 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawRectangle(Dim2D dim, DrawingData data)
+	public void drawRectangle(Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawRectangle(this, dim, data));
 	}
 
 	@Override
-	public void drawGradientRectangle(Dim2D dim, DrawingData startColor, DrawingData endColor)
+	public void drawGradientRectangle(Rect dim, DrawingData startColor, DrawingData endColor)
 	{
 		this.draw(dim, startColor, new DrawGradientRectangle(this, dim, startColor, endColor));
 	}
@@ -213,11 +214,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final Sprite sprite;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, DrawingData data, Dim2D dim)
+		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, DrawingData data, Rect dim)
 		{
 			this.graphics = graphics;
 			this.sprite = sprite;
@@ -230,17 +231,17 @@ public class MinecraftGraphics2D implements Graphics2D
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getAsset()));
 			
-			if (this.sprite.getBehavior().shouldRecalculateUVs(this.sprite, this.dim.toHolder()))
+			if (this.sprite.getBehavior().shouldRecalculateUVs(this.sprite, RectCollection.flush(this.dim)))
 			{
-				this.sprite.getBehavior().recalculateUVs(this.sprite, this.dim.toHolder());
+				this.sprite.getBehavior().recalculateUVs(this.sprite, RectCollection.flush(this.dim));
 			}
 			
-			List<UVDimPair> uvDimPairs = this.sprite.getBehavior().getDrawnUVsFor(this.sprite, this.dim.toHolder());
+			List<UVDimPair> uvDimPairs = this.sprite.getBehavior().getDrawnUVsFor(this.sprite, RectCollection.flush(this.dim));
 			
 			for (UVDimPair uvDimPair : uvDimPairs)
 			{
 				UV uv = uvDimPair.getUV();
-				Dim2D dim = uvDimPair.getDim();
+				Rect dim = uvDimPair.getRect();
 				
 				this.graphics.drawModalRectWithCustomSizedTexture(dim.x(), dim.y(), uv.minU(), uv.minV(), uv.width(), uv.height(), this.sprite.getAssetWidth(), this.sprite.getAssetHeight());
 			}
@@ -255,11 +256,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final String text;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawText(FontRenderer fontRenderer, String text, Dim2D dim, DrawingData data)
+		public DrawText(FontRenderer fontRenderer, String text, Rect dim, DrawingData data)
 		{
 			this.fontRenderer = fontRenderer;
 			this.text = text;
@@ -280,11 +281,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final MinecraftGraphics2D graphics;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData data)
+		public DrawRectangle(MinecraftGraphics2D graphics, Rect dim, DrawingData data)
 		{
 			this.graphics = graphics;
 			this.dim = dim;
@@ -304,11 +305,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final MinecraftGraphics2D graphics;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData startColor, endColor;
 
-		public DrawGradientRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData startColor, DrawingData endColor)
+		public DrawGradientRectangle(MinecraftGraphics2D graphics, Rect dim, DrawingData startColor, DrawingData endColor)
 		{
 			this.graphics = graphics;
 			this.dim = dim;
