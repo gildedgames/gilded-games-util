@@ -17,7 +17,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -33,9 +34,9 @@ public class MinecraftItemStackRender extends GuiFrame
 		this(Dim2D.flush(), stack);
 	}
 	
-	public MinecraftItemStackRender(Dim2D dim, ItemStack stack)
+	public MinecraftItemStackRender(Rect dim, ItemStack stack)
 	{
-		super(dim.clone().area(20, 20).flush());
+		super(dim.rebuild().area(20, 20).flush());
 		
 		this.stack = stack;
 	}
@@ -54,7 +55,7 @@ public class MinecraftItemStackRender extends GuiFrame
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glEnable(GL11.GL_LIGHTING);
 
-			this.renderItemAndEffectIntoGUI(this.stack, this.getDim().x() + 2.0D, this.getDim().y() + 2.0D);
+			this.renderItemAndEffectIntoGUI(this.stack, this.dim().x() + 2.0D, this.dim().y() + 2.0D);
 
 			GL11.glDisable(GL11.GL_LIGHTING);
 			

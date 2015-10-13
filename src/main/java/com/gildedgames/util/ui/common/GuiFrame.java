@@ -5,14 +5,12 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
-import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -30,20 +28,18 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	
 	private UIContainerEvents events = new UIContainerEvents(this);
 	
-	private Dim2D dim;
+	private ModDim2D dim = new ModDim2D(this);
 	
 	private List<UIContainer> containers;
-	
-	private List<Dim2DListener> dimListeners = new ArrayList<Dim2DListener>();
-	
+
 	public GuiFrame()
 	{
-		this(Dim2D.flush());
+		
 	}
-
-	public GuiFrame(Dim2D dim)
+	
+	public GuiFrame(Rect rect)
 	{
-		this.dim = dim;
+		this.dim.set(rect);
 	}
 	
 	@Override
@@ -60,24 +56,6 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	protected UIContainerMutable content()
 	{
 		return this.mainContent;
-	}
-	
-	@Override
-	public List<Dim2DListener> dimListeners()
-	{
-		return this.dimListeners;
-	}
-
-	@Override
-	public void addDimListener(Dim2DListener listener)
-	{
-		this.dimListeners.add(listener);
-	}
-
-	@Override
-	public void removeDimListener(Dim2DListener listener)
-	{
-		this.dimListeners.remove(listener);
 	}
 
 	@Override
@@ -105,32 +83,9 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	}
 
 	@Override
-	public Dim2D getDim()
+	public ModDim2D dim()
 	{
 		return this.dim;
-	}
-	
-	@Override
-	public void setDim(Dim2D dim)
-	{
-		this.dim = dim;
-		
-		for (Dim2DListener listener : this.dimListeners())
-		{
-			listener.notifyChange();
-		}
-	}
-	
-	@Override
-	public Dim2DModifier modDim()
-	{
-		return new Dim2DModifier(this);
-	}
-	
-	@Override
-	public Dim2DBuilder copyDim()
-	{
-		return Dim2D.build(this);
 	}
 	
 	@Override

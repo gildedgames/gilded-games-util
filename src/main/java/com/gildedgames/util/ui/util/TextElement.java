@@ -1,12 +1,13 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
-import com.gildedgames.util.ui.data.Dim2DGetter;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.ui.util.rect.RectGetter;
 
 public class TextElement extends GuiFrame
 {
@@ -22,17 +23,17 @@ public class TextElement extends GuiFrame
 		this.text = text;
 		this.centered = centered;
 		
-		this.modDim().addModifier(new Dim2DGetter<TextElement>(this)
+		this.dim().mod().addModifier(new RectGetter<TextElement>(this)
 		{
 
 			@Override
-			public Dim2D assembleDim()
+			public Rect assembleRect()
 			{
-				return Dim2D.build().width(this.seekFrom.text.scaledWidth()).height(this.seekFrom.text.scaledHeight()).flush();
+				return Dim2D.build().width(TextElement.this.text.scaledWidth()).height(TextElement.this.text.scaledHeight()).flush();
 			}
 
 			@Override
-			public boolean dimHasChanged()
+			public boolean shouldReassemble()
 			{
 				return true;
 			}
@@ -55,7 +56,7 @@ public class TextElement extends GuiFrame
 	{
 		super.draw(graphics, input);
 		
-		graphics.drawText(this.text.text, this.getDim(), this.text.drawingData);
+		graphics.drawText(this.text.text, this.dim(), this.text.drawingData);
 	}
 
 }

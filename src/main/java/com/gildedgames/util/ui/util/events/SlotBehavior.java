@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -33,7 +33,7 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 	{
 		this.slotContents = gui;
 		
-		this.slotContents.modDim().clearModifiers(ModifierType.POS).resetPos().scale(0.75F).x(6.5F).y(6.75F).flush();
+		this.slotContents.dim().mod().disableModifiers(ModifierType.POS).resetPos().scale(0.75F).x(6.5F).y(6.75F).flush();
 
 		this.content().set("slotContents", this.slotContents);
 		
@@ -56,10 +56,10 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 		
 		if (this.slotContents != null)
 		{
-			this.slotContents.modDim().center(true).flush();
+			this.slotContents.dim().mod().center(true).flush();
 		}
 
-		if (this.cooldown > COOLDOWN_REQUIRED && MouseButton.LEFT.isDown() && input.isHovered(this.getGui().getDim()))
+		if (this.cooldown > COOLDOWN_REQUIRED && MouseButton.LEFT.isDown() && input.isHovered(this.getGui().dim()))
 		{
 			UIContainer topParent = this.content().getTopParent();
 			

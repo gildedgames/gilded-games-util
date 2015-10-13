@@ -5,7 +5,8 @@ import java.io.File;
 
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -24,9 +25,9 @@ public class FileBrowserButton extends GuiFrame
 
 	private final String directory, name;
 
-	public FileBrowserButton(Dim2D dim, TextureElement texture, String name, File file, String directory)
+	public FileBrowserButton(Rect dim, TextureElement texture, String name, File file, String directory)
 	{
-		super(dim.clone().area(16, 23).flush());
+		super(dim.rebuild().area(16, 23).flush());
 
 		this.texture = texture;
 		this.file = file;
@@ -46,13 +47,13 @@ public class FileBrowserButton extends GuiFrame
 			@Override
 			protected void onTrue(InputProvider inputM, MouseInputPool pool)
 			{
-				button.modDim().pos(1, 1).flush();
+				button.dim().mod().pos(1, 1).flush();
 			}
 
 			@Override
 			protected void onFalse(InputProvider inputM, MouseInputPool pool)
 			{
-				button.modDim().pos(0, 0).flush();
+				button.dim().mod().pos(0, 0).flush();
 			}
 
 			@Override
@@ -65,7 +66,7 @@ public class FileBrowserButton extends GuiFrame
 		
 		this.content().set("button", button);
 		
-		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.getDim().width() / 2, this.getDim().height() / 2 + 12).centerX(true).width(16).height(12).flush(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
+		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.dim().width() / 2, this.dim().height() / 2 + 12).centerX(true).width(16).height(12).flush(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
 
 		this.content().set("text", textBox);
 		

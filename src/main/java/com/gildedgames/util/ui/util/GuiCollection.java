@@ -7,9 +7,8 @@ import java.util.List;
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -68,14 +67,14 @@ public class GuiCollection extends GuiFrame
 		{
 			if (contentProvider != null)
 			{
-				this.events().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.getDim()));
+				this.events().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim()));
 			}
 		}
 	}
 
 	private void positionContent(List<Gui> views)
 	{
-		this.positioner.positionList(views, this.getDim());
+		this.positioner.positionList(views, this.dim());
 
 		float totalContentHeight = 0;
 
@@ -83,13 +82,13 @@ public class GuiCollection extends GuiFrame
 		{
 			if (gui != null)
 			{
-				//gui.modDim().addModifier(this, ModifierType.POS).flush();
+				//gui.dim().mod().addModifier(this, ModifierType.POS).flush();
 
-				totalContentHeight = Math.max(totalContentHeight, gui.getDim().y() + gui.getDim().height());
+				totalContentHeight = Math.max(totalContentHeight, gui.dim().y() + gui.dim().height());
 			}
 		}
 
-		this.modDim().height(totalContentHeight).flush();
+		this.dim().mod().height(totalContentHeight).flush();
 	}
 
 	private void sortContent()

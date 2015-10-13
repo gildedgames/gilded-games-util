@@ -4,10 +4,9 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
-import com.gildedgames.util.ui.data.Dim2DHolder;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
+import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -18,7 +17,7 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 public final class GuiProcessingHelper
 {
 
-	public static void processInitPre(Dim2DHolder parent, InputProvider input, UIContainer... containers)
+	public static void processInitPre(RectHolder parent, InputProvider input, UIContainer... containers)
 	{
 		for (UIContainer container : containers)
 		{
@@ -34,7 +33,7 @@ public final class GuiProcessingHelper
 		}
 	}
 
-	public static void processResolutionChange(Dim2DHolder parent, InputProvider input, UIContainer... containers)
+	public static void processResolutionChange(RectHolder parent, InputProvider input, UIContainer... containers)
 	{
 		GuiProcessingHelper.processInitPre(parent, input, containers);
 	}
