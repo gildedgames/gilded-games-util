@@ -3,11 +3,11 @@ package com.gildedgames.util.ui.data.rect;
 public class BuildIntoRectHolder extends RectBuilder
 {
 
-	protected RectHolder holder;
+	protected ModDim2D modDim;
 
-	public BuildIntoRectHolder(RectHolder holder)
+	public BuildIntoRectHolder(ModDim2D modDim)
 	{
-		this.holder = holder;
+		this.modDim = modDim;
 	}
 
 	@Override
@@ -15,9 +15,9 @@ public class BuildIntoRectHolder extends RectBuilder
 	{
 		Rect commit = super.flush();
 
-		this.holder.dim().set(commit);
+		this.modDim.set(commit);
 
-		return this.holder.dim();
+		return this.modDim;
 	}
 
 }

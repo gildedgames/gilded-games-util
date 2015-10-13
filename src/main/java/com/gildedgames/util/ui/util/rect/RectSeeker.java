@@ -5,16 +5,16 @@ import com.gildedgames.util.ui.data.rect.RectHolder;
 
 public abstract class RectSeeker<S> implements RectHolder
 {
-	
+
 	protected S seekFrom;
 
-	private ModDim2D dim = new ModDim2D(this);
+	private ModDim2D dim = new ModDim2D();
 
 	public RectSeeker()
 	{
-		
+
 	}
-	
+
 	public RectSeeker(S seekFrom)
 	{
 		this.seekFrom = seekFrom;
@@ -25,5 +25,5 @@ public abstract class RectSeeker<S> implements RectHolder
 	{
 		return this.dim;
 	}
-	
+
 }

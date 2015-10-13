@@ -41,9 +41,10 @@ public class ScrollableGui extends GuiFrame
 		this.padding = padding;
 
 		int posPadding = this.padding + 1;
-		int areaPadding = -this.padding * 2 - 2;
+		int areaPadding = this.padding * 2 - 2;
 
-		this.scrolledGui = new ScissorableGui(ModDim2D.build(this).add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(areaPadding, areaPadding).flush(), scrolledGui);
+		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(areaPadding, areaPadding).flush();
+		this.scrolledGui = new ScissorableGui(dim, scrolledGui);
 		this.scrollBar = scrollBar;
 
 		this.backdrop = backdrop;
@@ -74,7 +75,7 @@ public class ScrollableGui extends GuiFrame
 
 				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
-				return ModDim2D.build(this).mod().x(ModDim2D.clone(scrollBar).disableModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addHeight(-ScrollableGui.this.padding).addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2)).flush();
+				return ModDim2D.build().mod().x(ModDim2D.clone(scrollBar).disableModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addHeight(-ScrollableGui.this.padding).addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2)).flush();
 			}
 
 			@Override

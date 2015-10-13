@@ -27,7 +27,7 @@ public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 	{
 		super(gui);
 
-		this.scissoredArea = (new ModDim2D(this)).set(scissoredArea);
+		this.scissoredArea = (new ModDim2D()).set(scissoredArea);
 	}
 
 	public ModDim2D getScissoredArea()
