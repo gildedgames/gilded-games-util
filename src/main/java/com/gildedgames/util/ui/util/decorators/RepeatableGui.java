@@ -2,7 +2,6 @@ package com.gildedgames.util.ui.util.decorators;
 
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
@@ -14,7 +13,7 @@ public class RepeatableGui extends GuiFrame
 
 	protected ScissorableGui repeatedGui;
 
-	public RepeatableGui(ModDim2D repeatArea, Gui repeatedGui)
+	public RepeatableGui(Rect repeatArea, Gui repeatedGui)
 	{
 		this.dim().set(repeatArea);
 		this.repeatedGui = new ScissorableGui(repeatArea, repeatedGui);
@@ -27,7 +26,7 @@ public class RepeatableGui extends GuiFrame
 
 		this.repeatedGui.dim().clear();
 		this.repeatedGui.dim().add(this, ModifierType.POS);
-		
+
 		this.repeatedGui.dim().mod().resetPos().flush();
 
 		float textureHeight = this.repeatedGui.dim().height();
@@ -46,8 +45,9 @@ public class RepeatableGui extends GuiFrame
 			widthCountNeeded = this.dim().width() / textureWidth;
 		}
 
-		Rect oldDim = this.repeatedGui.dim().copy().flush();
-		Rect oldDimNoMods = Dim2D.build(oldDim).disableModifiers().flush();
+		ModDim2D oldDim = this.repeatedGui.dim().clone();
+
+		ModDim2D oldDimNoMod = oldDim.clone().disableModifiers();
 
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{
@@ -58,7 +58,7 @@ public class RepeatableGui extends GuiFrame
 				this.repeatedGui.dim().mod().addX(textureWidth).flush();
 			}
 
-			this.repeatedGui.dim().mod().x(oldDimNoMods.x()).addY(textureHeight).flush();
+			this.repeatedGui.dim().mod().x(oldDimNoMod.x()).addY(textureHeight).flush();
 		}
 
 		this.repeatedGui.dim().set(oldDim);

@@ -42,21 +42,6 @@ public class RectBuilder
 		this.rotation = rect.rotation();
 	}
 
-	private RectBuilder(RectBuilder builder)
-	{
-		this.pos = builder.pos;
-
-		this.width = builder.width;
-		this.height = builder.height;
-
-		this.centeredX = builder.centeredX;
-		this.centeredY = builder.centeredY;
-
-		this.rotation = builder.rotation;
-
-		this.scale = builder.scale;
-	}
-
 	public BuildWithRectHolder buildWith(RectHolder holder)
 	{
 		return new BuildWithRectHolder(this, holder);
@@ -66,11 +51,11 @@ public class RectBuilder
 	{
 		return this.buildWith(RectCollection.flush(dim));
 	}
-	
+
 	public RectBuilder rotation(Rotation2D rotation)
 	{
 		this.rotation = rotation;
-		
+
 		return this;
 	}
 
@@ -161,7 +146,7 @@ public class RectBuilder
 	public RectBuilder pos(float x, float y)
 	{
 		this.pos = Pos2D.flush(x, y);
-		
+
 		return this;
 	}
 
@@ -241,6 +226,11 @@ public class RectBuilder
 		return this.addX(pos.x()).addY(pos.y());
 	}
 
+	/**
+	 * Finalise the state and return it. Some implementations
+	 * automatically set it to its holder.
+	 * @return
+	 */
 	public Rect flush()
 	{
 		return new Dim2D(this);

@@ -40,7 +40,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -51,7 +51,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean isVisible()
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -64,7 +64,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void setVisible(boolean visible)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -75,7 +75,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public ModDim2D dim()
 	{
-		RectHolder holder = ObjectFilter.getType(this.element, RectHolder.class);
+		RectHolder holder = ObjectFilter.cast(this.element, RectHolder.class);
 		
 		if (holder != null)
 		{
@@ -154,7 +154,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
-		KeyboardListener listener = ObjectFilter.getType(this.element, KeyboardListener.class);
+		KeyboardListener listener = ObjectFilter.cast(this.element, KeyboardListener.class);
 		
 		if (listener != null)
 		{
@@ -167,7 +167,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -178,7 +178,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
-		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -189,7 +189,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean isFocused()
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -202,7 +202,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void setFocused(boolean focused)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -213,7 +213,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean query(Object... input)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -232,7 +232,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UIContainerMutable content()
 	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{
@@ -245,7 +245,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UIContainerEvents events()
 	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{

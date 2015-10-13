@@ -9,6 +9,7 @@ import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.rect.RectSeekable;
@@ -20,13 +21,13 @@ public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 
 	protected ModDim2D scissoredArea;
 
-	private ImmutableList seekers = ImmutableList.<RectSeeker> of(new Seeker(this));
+	private ImmutableList<RectSeeker> seekers = ImmutableList.<RectSeeker> of(new Seeker(this));
 
-	public ScissorableGui(ModDim2D scissoredArea, Gui gui)
+	public ScissorableGui(Rect scissoredArea, Gui gui)
 	{
 		super(gui);
 
-		this.scissoredArea = scissoredArea;
+		this.scissoredArea = (new ModDim2D(this)).set(scissoredArea);
 	}
 
 	public ModDim2D getScissoredArea()
@@ -37,13 +38,13 @@ public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 	@Override
 	protected void preInitContent(InputProvider input)
 	{
-		
+
 	}
 
 	@Override
 	protected void postInitContent(InputProvider input)
 	{
-		
+
 	}
 
 	@Override
@@ -55,8 +56,8 @@ public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 			{
 				if (ui instanceof Gui)
 				{
-					Gui gui = (Gui)ui;
-					
+					Gui gui = (Gui) ui;
+
 					if (!gui.dim().intersects(this.getScissoredArea()))
 					{
 						gui.setEnabled(false);
@@ -69,8 +70,8 @@ public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 					}
 				}
 			}
-		}	
-		
+		}
+
 		GL11.glPushMatrix();
 
 		double lowerLeftCornerY = this.getScissoredArea().y() + this.getScissoredArea().height();

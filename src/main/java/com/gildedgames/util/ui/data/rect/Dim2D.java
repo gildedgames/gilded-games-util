@@ -20,7 +20,7 @@ public class Dim2D implements Rect
 	final boolean centeredX, centeredY;
 
 	final float scale;
-	
+
 	Dim2D()
 	{
 		this(new RectBuilder());
@@ -40,7 +40,7 @@ public class Dim2D implements Rect
 
 		this.rotation = builder.rotation;
 	}
-	
+
 	@Override
 	public RectBuilder rebuild()
 	{
@@ -142,15 +142,15 @@ public class Dim2D implements Rect
 	{
 		return dim.maxX() >= this.x() && dim.maxY() >= this.y() && dim.x() < this.maxX() && dim.y() < this.maxY();
 	}
-	
+
 	@Override
 	public boolean isHovered(InputProvider input)
 	{
 		Pos2D mousePos = Pos2D.flush(input.getMouseX(), input.getMouseY());
-		
+
 		return this.intersects(mousePos);
-	} 
-	
+	}
+
 	@Override
 	public RectBuilder clone()
 	{
@@ -273,7 +273,7 @@ public class Dim2D implements Rect
 
 		return this.pos().toString() + link + "Area() Width: '" + this.width() + "', Height: '" + this.height() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale() + "'";
 	}
-	
+
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -281,25 +281,25 @@ public class Dim2D implements Rect
 
 		if (obj instanceof Rect)
 		{
-			dim = (Rect)obj;
+			dim = (Rect) obj;
 		}
 		else if (obj instanceof RectHolder)
 		{
-			RectHolder holder = (RectHolder)obj;
-			
+			RectHolder holder = (RectHolder) obj;
+
 			dim = holder.dim();
 		}
 		else
 		{
 			return false;
 		}
-		
+
 		if (!dim.pos().equals(this.pos()) || dim.scale() != this.scale() || dim.isCenteredX() != this.centeredX || dim.isCenteredY() != this.centeredY || dim.width() != this.width() || dim.height() != this.height() || dim.rotation() != this.rotation())
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 }

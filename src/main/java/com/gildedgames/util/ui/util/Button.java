@@ -1,9 +1,7 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.view.MouseEventGuiFocus;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
@@ -24,8 +22,6 @@ public class Button extends GuiFrame
 	public Button(Rect dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState)
 	{
 		super(dim);
-
-		Rect scissor = Dim2D.build().addModifier(this, ModifierType.ALL).flush();
 
 		this.defaultState = defaultState;//new ScissorableGui(scissor, defaultState);
 		this.hoveredState = hoveredState;//new ScissorableGui(scissor, hoveredState);
@@ -48,7 +44,7 @@ public class Button extends GuiFrame
 		this.content().set("hoveredState", this.hoveredState);
 		this.content().set("clickedState", this.clickedState);
 		this.content().set("defaultState", this.defaultState);
-		
+
 		super.initContent(input);
 	}
 
