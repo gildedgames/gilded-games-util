@@ -8,11 +8,11 @@ public abstract class RectSeeker<S> implements RectHolder
 
 	protected S seekFrom;
 
-	private ModDim2D dim = new ModDim2D();
+	private ModDim2D dim;
 
 	public RectSeeker()
 	{
-
+		dim = new ModDim2D();
 	}
 
 	public RectSeeker(S seekFrom)
