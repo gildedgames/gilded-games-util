@@ -43,7 +43,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 		
 		MinecraftButton button = this.content().get("button", MinecraftButton.class);
 		
-		button.dim().mod().buildWith(this).area().build().flush();
+		button.dim().mod().buildWith(this).area().rebuild().flush();
 	}
 	
 	public ItemStack getItemStack()

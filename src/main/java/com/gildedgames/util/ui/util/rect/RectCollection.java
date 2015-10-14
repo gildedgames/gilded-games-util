@@ -38,7 +38,7 @@ public class RectCollection implements RectHolder
 
 	public static RectCollection flush(Rect dim)
 	{
-		return RectCollection.build().addDim(dim).flush();
+		return new RectCollection(dim);
 	}
 
 }
