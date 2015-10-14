@@ -64,6 +64,11 @@ public class RectCollectionBuilder
 	public RectCollection flush()
 	{
 		RectCollection resultHolder = new RectCollection();
+		if (this.holders.isEmpty())
+		{
+			return resultHolder;
+		}
+		resultHolder.dim().set(this.holders.get(0));
 
 		for (RectHolder holder : this.holders)
 		{

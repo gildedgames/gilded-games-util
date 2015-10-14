@@ -29,7 +29,7 @@ public class Dim2D implements Rect
 	Dim2D(RectBuilder builder)
 	{
 		this.pos = builder.pos;
-		
+
 		this.width = builder.width;
 		this.height = builder.height;
 
@@ -39,7 +39,7 @@ public class Dim2D implements Rect
 		this.centeredY = builder.centeredY;
 
 		this.rotation = builder.rotation;
-		
+
 		this.maxPos = this.pos.clone().add(this.width(), this.height()).flush();
 	}
 
@@ -197,15 +197,18 @@ public class Dim2D implements Rect
 	{
 		RectBuilder result = new RectBuilder();
 
+		if (dimensions.isEmpty())
+		{
+			throw new IllegalArgumentException();
+		}
+
 		float overallScale = 0.0F;
 
 		int validDimensions = 0;
 
-		int centeredXCount = 0;
-		int nonCenteredXCount = 0;
+		Rect rect1 = dimensions.get(0);
 
-		int centeredYCount = 0;
-		int nonCenteredYCount = 0;
+		result.pos(rect1.x(), rect1.y()).area(rect1.maxX() - rect1.x(), rect1.maxY() - rect1.y());
 
 		for (Rect dim : dimensions)
 		{
@@ -219,51 +222,15 @@ public class Dim2D implements Rect
 				float maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
 				float maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
 
-				result.pos(Pos2D.flush(minX, minY)).area(maxX - minY, maxY - minY);
+				result.pos(Pos2D.flush(minX, minY)).area(maxX - minX, maxY - minY);
 
 				overallScale += dim.scale();
 
 				validDimensions++;
-
-				if (dim.isCenteredX())
-				{
-					centeredXCount++;
-				}
-				else
-				{
-					nonCenteredXCount++;
-				}
-
-				if (dim.isCenteredY())
-				{
-					centeredYCount++;
-				}
-				else
-				{
-					nonCenteredYCount++;
-				}
 			}
 		}
 
 		result.scale(overallScale / validDimensions);
-
-		if (centeredXCount >= nonCenteredXCount)
-		{
-			result.centerX(true);
-		}
-		else
-		{
-			result.centerX(false);
-		}
-
-		if (centeredYCount >= nonCenteredYCount)
-		{
-			result.centerY(true);
-		}
-		else
-		{
-			result.centerY(false);
-		}
 
 		return result.flush();
 	}
