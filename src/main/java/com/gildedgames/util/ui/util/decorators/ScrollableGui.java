@@ -43,7 +43,7 @@ public class ScrollableGui extends GuiFrame
 		int posPadding = this.padding + 1;
 		int areaPadding = this.padding * 2 - 2;
 
-		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(areaPadding, areaPadding).flush();
+		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(-areaPadding, -areaPadding).flush();
 		this.scrolledGui = new ScissorableGui(dim, scrolledGui);
 		this.scrollBar = scrollBar;
 
