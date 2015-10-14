@@ -27,7 +27,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void initEvent()
 	{
-		this.getGui().dim().disableModifiers(ModifierType.POS);
+		this.getGui().dim().clear(ModifierType.POS);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 
 		this.ticksSinceCreation++;
 
-		this.getGui().dim().disableModifiers(ModifierType.POS);
+		this.getGui().dim().clear(ModifierType.POS);
 		this.getGui().dim().mod().center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
 
 		if (MouseButton.LEFT.isDown() && this.ticksSinceCreation > 5)

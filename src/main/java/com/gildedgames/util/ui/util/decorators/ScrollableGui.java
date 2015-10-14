@@ -71,13 +71,13 @@ public class ScrollableGui extends GuiFrame
 
 				this.prevScrollPer = scrollBar.getScrollPercentage();
 
-				double scrolledElementHeight = ModDim2D.clone(ScrollableGui.this.scrolledGui).disableModifiers(ModifierType.HEIGHT).height();
+				double scrolledElementHeight = ModDim2D.clone(ScrollableGui.this.scrolledGui).clear(ModifierType.HEIGHT).height();
 				double scissoredHeight = ScrollableGui.this.scrolledGui.getScissoredArea().height();
 
 				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
 				return ModDim2D.build().mod()
-						.x(ModDim2D.clone(scrollBar).disableModifiers(ModifierType.POS).maxX())
+						.x(ModDim2D.clone(scrollBar).clear(ModifierType.POS).maxX())
 						.y(ScrollableGui.this.padding + scrollValue)
 						.addHeight(-ScrollableGui.this.padding)
 						.addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2))

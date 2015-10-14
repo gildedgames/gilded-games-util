@@ -47,7 +47,7 @@ public class RepeatableGui extends GuiFrame
 
 		ModDim2D oldDim = this.repeatedGui.dim().clone();
 
-		ModDim2D oldDimNoMod = oldDim.clone().disableModifiers();
+		ModDim2D oldDimNoMod = oldDim.clone().clear();
 
 		for (int heightAmount = 0; heightAmount <= heightCountNeeded; heightAmount++)
 		{

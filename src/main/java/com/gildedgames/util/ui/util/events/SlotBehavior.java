@@ -33,7 +33,7 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 	{
 		this.slotContents = gui;
 
-		this.slotContents.dim().disableModifiers(ModifierType.POS);
+		this.slotContents.dim().clear(ModifierType.POS);
 		this.slotContents.dim().mod().resetPos().scale(0.75F).x(6.5F).y(6.75F).flush();
 
 		this.content().set("slotContents", this.slotContents);
