@@ -200,4 +200,11 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		return this.containers;
 	}
 
+	@Override
+	public void updateState()
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 }

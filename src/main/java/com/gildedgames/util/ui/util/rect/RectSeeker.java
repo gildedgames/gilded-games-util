@@ -12,7 +12,7 @@ public abstract class RectSeeker<S> implements RectHolder
 
 	public RectSeeker()
 	{
-		dim = new ModDim2D();
+		this.dim = new ModDim2D();
 	}
 
 	public RectSeeker(S seekFrom)
@@ -24,6 +24,12 @@ public abstract class RectSeeker<S> implements RectHolder
 	public ModDim2D dim()
 	{
 		return this.dim;
+	}
+
+	@Override
+	public void updateState()
+	{
+
 	}
 
 }

@@ -80,7 +80,16 @@ public class ModDim2D implements Rect
 	{
 		return this.originalState;
 	}
-	
+
+	private Rect modifiedState()
+	{
+		for (RectModifier modifier : this.modifiers)
+		{
+			modifier.modifyingWith().updateState();
+		}
+		return this.modifiedState;
+	}
+
 	public BuildIntoRectHolder mod()
 	{
 		return this.buildInto;
@@ -343,109 +352,109 @@ public class ModDim2D implements Rect
 	@Override
 	public Rotation2D rotation()
 	{
-		return this.modifiedState.rotation();
+		return this.modifiedState().rotation();
 	}
 
 	@Override
 	public float degrees()
 	{
-		return this.modifiedState.degrees();
+		return this.modifiedState().degrees();
 	}
 
 	@Override
 	public Pos2D origin()
 	{
-		return this.modifiedState.origin();
+		return this.modifiedState().origin();
 	}
 
 	@Override
 	public float scale()
 	{
-		return this.modifiedState.scale();
+		return this.modifiedState().scale();
 	}
 
 	@Override
 	public Pos2D pos()
 	{
-		return this.modifiedState.pos();
+		return this.modifiedState().pos();
 	}
 
 	@Override
 	public Pos2D maxPos()
 	{
-		return this.modifiedState.maxPos();
+		return this.modifiedState().maxPos();
 	}
 
 	@Override
 	public float maxX()
 	{
-		return this.modifiedState.maxX();
+		return this.modifiedState().maxX();
 	}
 
 	@Override
 	public float maxY()
 	{
-		return this.modifiedState.maxY();
+		return this.modifiedState().maxY();
 	}
 
 	@Override
 	public float x()
 	{
-		return this.modifiedState.x();
+		return this.modifiedState().x();
 	}
 
 	@Override
 	public float y()
 	{
-		return this.modifiedState.y();
+		return this.modifiedState().y();
 	}
 
 	@Override
 	public float width()
 	{
-		return this.modifiedState.width();
+		return this.modifiedState().width();
 	}
 
 	@Override
 	public float height()
 	{
-		return this.modifiedState.height();
+		return this.modifiedState().height();
 	}
 
 	@Override
 	public boolean isCenteredX()
 	{
-		return this.modifiedState.isCenteredX();
+		return this.modifiedState().isCenteredX();
 	}
 
 	@Override
 	public boolean isCenteredY()
 	{
-		return this.modifiedState.isCenteredY();
+		return this.modifiedState().isCenteredY();
 	}
 
 	@Override
 	public boolean intersects(Pos2D pos)
 	{
-		return this.modifiedState.intersects(pos);
+		return this.modifiedState().intersects(pos);
 	}
 
 	@Override
 	public boolean intersects(Rect dim)
 	{
-		return this.modifiedState.intersects(dim);
+		return this.modifiedState().intersects(dim);
 	}
 
 	@Override
 	public boolean isHovered(InputProvider input)
 	{
-		return this.modifiedState.isHovered(input);
+		return this.modifiedState().isHovered(input);
 	}
 
 	@Override
 	public RectBuilder rebuild()
 	{
-		return this.modifiedState.rebuild();
+		return this.modifiedState().rebuild();
 	}
 
 	public ModDim2D disableModifiers(ModifierType... pos)
