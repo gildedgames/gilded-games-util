@@ -206,7 +206,7 @@ public class ModDim2D implements Rect
 				}
 			}
 
-			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
+			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.WIDTH) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
 				{
@@ -214,7 +214,7 @@ public class ModDim2D implements Rect
 				}
 			}
 
-			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.ALL))
+			if (modifier.getTypes().contains(ModifierType.AREA) || modifier.getTypes().contains(ModifierType.HEIGHT) || modifier.getTypes().contains(ModifierType.ALL))
 			{
 				if (modifyingWith.dim() != null && modifyingWith.dim() != this)
 				{
