@@ -76,7 +76,12 @@ public class ScrollableGui extends GuiFrame
 
 				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
-				return ModDim2D.build().mod().x(ModDim2D.clone(scrollBar).disableModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addHeight(-ScrollableGui.this.padding).addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2)).flush();
+				return ModDim2D.build().mod()
+						.x(ModDim2D.clone(scrollBar).disableModifiers(ModifierType.POS).maxX())
+						.y(ScrollableGui.this.padding + scrollValue)
+						.addHeight(-ScrollableGui.this.padding)
+						.addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2))
+						.flush();
 			}
 
 			@Override
@@ -120,12 +125,12 @@ public class ScrollableGui extends GuiFrame
 		this.content().set("scrolledGui", this.scrolledGui);
 		this.content().set("scrollBar", this.scrollBar);
 	}
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		//System.out.println(input.getScreenWidth());
 		//System.out.println(this.backdrop.dim());
 	}
