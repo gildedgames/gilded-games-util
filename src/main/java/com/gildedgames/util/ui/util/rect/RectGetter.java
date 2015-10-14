@@ -6,8 +6,6 @@ import com.gildedgames.util.ui.data.rect.Rect;
 public abstract class RectGetter<S> extends RectSeeker<S>
 {
 
-	private ModDim2D assembledDim = new ModDim2D();
-
 	public RectGetter()
 	{
 
@@ -21,9 +19,9 @@ public abstract class RectGetter<S> extends RectSeeker<S>
 	@Override
 	public final ModDim2D dim()
 	{
-		if ((this.assembledDim == null || this.shouldReassemble()))
+		if ((super.dim() == null || this.shouldReassemble()))
 		{
-			this.assembledDim.set(this.assembleRect());
+			super.dim().set(this.assembleRect());
 		}
 
 		return super.dim();
