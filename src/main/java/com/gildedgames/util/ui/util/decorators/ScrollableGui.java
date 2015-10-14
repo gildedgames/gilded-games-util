@@ -7,6 +7,7 @@ import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
+import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.TextureElement;
@@ -107,17 +108,26 @@ public class ScrollableGui extends GuiFrame
 		this.scrollBar.setScrollingAreas(scrollingArea);
 		this.scrollBar.setContentArea(this.scrolledGui);
 
-		Rect backdropDim = Dim2D.build().buildWith(this).area().build().flush();
-		Rect embeddedDim = Dim2D.build().buildWith(this).area().build().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
+		Rect backdropDim = ModDim2D.build().add(this, ModifierType.AREA).mod().flush();
+		Rect embeddedDim = ModDim2D.build().add(this, ModifierType.AREA).mod().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
 
-		this.backdrop.dim().set(backdropDim);
-		this.backdropEmbedded.dim().set(embeddedDim);
+		this.backdrop.dim().clear().set(backdropDim);
+		this.backdropEmbedded.dim().clear().set(embeddedDim);
 
 		this.content().set("backdrop", this.backdrop);
 		this.content().set("backdropEmbedded", this.backdropEmbedded);
 
 		this.content().set("scrolledGui", this.scrolledGui);
 		this.content().set("scrollBar", this.scrollBar);
+	}
+	
+	@Override
+	public void draw(Graphics2D graphics, InputProvider input)
+	{
+		super.draw(graphics, input);
+		
+		//System.out.println(input.getScreenWidth());
+		//System.out.println(this.backdrop.dim());
 	}
 
 }

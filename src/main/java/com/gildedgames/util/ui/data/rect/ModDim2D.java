@@ -76,6 +76,11 @@ public class ModDim2D implements Rect
 		};
 	}
 
+	public Rect originalState()
+	{
+		return this.originalState;
+	}
+	
 	public BuildIntoRectHolder mod()
 	{
 		return this.buildInto;
