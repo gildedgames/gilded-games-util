@@ -1,8 +1,5 @@
 package com.gildedgames.util.ui.data.rect;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class RectModifier
@@ -10,17 +7,12 @@ public class RectModifier
 
 	private RectHolder modifyWith;
 
-	private ModifierType[] types;
+	private ModifierType type;
 
-	public RectModifier(RectHolder modifyWith, List<ModifierType> types)
-	{
-		this(modifyWith, types.toArray(new ModifierType[types.size()]));
-	}
-
-	public RectModifier(RectHolder modifyWith, ModifierType... types)
+	public RectModifier(RectHolder modifyWith, ModifierType types)
 	{
 		this.modifyWith = modifyWith;
-		this.types = types;
+		this.type = types;
 	}
 
 	public RectHolder modifyingWith()
@@ -28,9 +20,9 @@ public class RectModifier
 		return this.modifyWith;
 	}
 
-	public List<ModifierType> getTypes()
+	public ModifierType getType()
 	{
-		return Arrays.asList(this.types);
+		return this.type;
 	}
 
 	@Override
@@ -47,13 +39,13 @@ public class RectModifier
 		}
 
 		RectModifier modifier = (RectModifier) obj;
-		return modifier.modifyWith.equals(this.modifyWith) && Arrays.equals(modifier.types, this.types);
+		return modifier.modifyWith.equals(this.modifyWith) && modifier.type.equals(this.type);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return new HashCodeBuilder(97, 37).append(this.modifyWith).append(this.types).toHashCode();
+		return new HashCodeBuilder(97, 37).append(this.modifyWith).append(this.type).toHashCode();
 	}
 
 	public static enum ModifierType
