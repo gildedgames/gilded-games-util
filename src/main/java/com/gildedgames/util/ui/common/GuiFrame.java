@@ -112,10 +112,17 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		this.initContent(input);
 
 		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
+
+		this.postInit(input);
 	}
 
 	@Override
 	public void initContent(InputProvider input)
+	{
+
+	}
+
+	protected void postInit(InputProvider input)
 	{
 
 	}
