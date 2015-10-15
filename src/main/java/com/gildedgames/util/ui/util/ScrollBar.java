@@ -190,7 +190,7 @@ public class ScrollBar extends GuiFrame
 		{
 			double contentAndScrollHeightDif = Math.abs(this.contentArea.dim().height() - this.scrollingAreas.dim().height());
 
-			float baseBarPercentage = (float) contentAndScrollHeightDif / this.contentArea.dim().height();
+			float baseBarPercentage = this.contentArea.dim().height() < 0.3f ? 0f : (float) contentAndScrollHeightDif / this.contentArea.dim().height();
 
 			float barHeight = this.baseBar.dim().height() - (int) (this.baseBar.dim().height() * baseBarPercentage);
 
