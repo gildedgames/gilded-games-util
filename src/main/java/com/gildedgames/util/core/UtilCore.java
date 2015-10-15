@@ -15,6 +15,7 @@ import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.player.PlayerCore;
 import com.gildedgames.util.spawning.SpawningCore;
 import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.testutil.TestCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.world.WorldCore;
 
@@ -76,6 +77,8 @@ public class UtilCore implements ICore
 		this.cores.add(new SpawningCore());
 		this.cores.add(InstanceCore.INST);
 		this.cores.add(NotificationCore.INSTANCE);
+
+		this.cores.add(TestCore.INST);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();

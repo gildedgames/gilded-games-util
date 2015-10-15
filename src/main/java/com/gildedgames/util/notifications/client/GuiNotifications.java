@@ -10,8 +10,9 @@ import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.GuiCollection;
 import com.gildedgames.util.ui.util.ScreenDimUtil;
@@ -24,11 +25,11 @@ import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class GuiNotificationList extends GuiFrame
+public class GuiNotifications extends GuiFrame
 {
 	protected PlayerNotification player;
 
-	public GuiNotificationList(EntityPlayer player)
+	public GuiNotifications(EntityPlayer player)
 	{
 		this.player = NotificationCore.getPlayerNotifications(player);
 	}
@@ -43,7 +44,9 @@ public class GuiNotificationList extends GuiFrame
 
 		GuiCollection notifications = new GuiCollection(Pos2D.flush(), 100, positioner, content);
 
-		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(ScreenDimUtil.getCenter(input)).center(true).area(100, 400).flush(), notifications);
+		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(ScreenDimUtil.getCenter(input)).center(true).area(200, 200).flush(), notifications);
+
+		this.content().set("notifications", scrollNotifications);
 
 	}
 
@@ -58,7 +61,7 @@ public class GuiNotificationList extends GuiFrame
 		}
 
 		@Override
-		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Dim2D contentArea)
+		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
 

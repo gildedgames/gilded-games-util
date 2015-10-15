@@ -1,5 +1,9 @@
 package com.gildedgames.util.tab.client;
 
+import java.io.IOException;
+
+import org.lwjgl.input.Mouse;
+
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.client.util.RenderTabGroup;
 import com.gildedgames.util.tab.common.TabAPI;
@@ -7,6 +11,7 @@ import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -14,9 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
 
 public class TabClientEvents
 {
@@ -28,38 +30,30 @@ public class TabClientEvents
 	public void onGuiOpen(GuiOpenEvent event)
 	{
 		GuiScreen gui = event.gui;
-		
+
 		ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
-		
+
 		if (groupHandler != null)
 		{
-			ITabGroup activeGroup = groupHandler.getSide(Side.CLIENT);
-			
-			if (activeGroup != null)
+			ITab selectedTab = groupHandler.getSide(Side.CLIENT).getSelectedTab();
+
+			if (event.gui != null && selectedTab.isTabValid(gui))
 			{
-				ITab selectedTab = activeGroup.getSelectedTab();
-				
-				if (event.gui != null && selectedTab.isTabValid(gui))
-				{
-					return;
-				}
-				else
-				{
-					TabAPI.INSTANCE.setActiveGroup(null);
-				}
+				return;
 			}
+			TabAPI.INSTANCE.setActiveGroup(null);
 		}
 
 		for (ITabGroupHandler tabGroupHandler : TabAPI.INSTANCE.getRegisteredTabGroups().values())
 		{
 			ITabGroup tabGroup = tabGroupHandler.getSide(Side.CLIENT);
-			
+
 			for (ITab tab : tabGroup.getTabs())
 			{
-				if (tab != null && event.gui != null && tab.isTabValid(gui))
+				if (event.gui != null && tab.isTabValid(gui))
 				{
 					ITab selectedTab = tabGroup.getSelectedTab();
-					
+
 					if (selectedTab != null && !selectedTab.isTabValid(gui))
 					{
 						if (tabGroup.getRememberSelectedTab())
@@ -102,11 +96,11 @@ public class TabClientEvents
 		if (event.phase == TickEvent.Phase.START)
 		{
 			ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
-			
+
 			if (groupHandler != null)
 			{
 				ITabGroup activeGroup = groupHandler.getSide(Side.CLIENT);
-				
+
 				if (activeGroup != null)
 				{
 					while (Mouse.next())
@@ -121,17 +115,17 @@ public class TabClientEvents
 							{
 								activeGroup.getSelectedTab().onClose(Minecraft.getMinecraft().thePlayer);
 								activeGroup.setSelectedTab(hoveredTab);
-	
+
 								if (hoveredTab != activeGroup.getRememberedTab() && hoveredTab.isRemembered())
 								{
 									if (activeGroup.getRememberedTab() != null)
 									{
 										activeGroup.getRememberedTab().onClose(Minecraft.getMinecraft().thePlayer);
 									}
-	
+
 									activeGroup.setRememberedTab(hoveredTab);
 								}
-	
+
 								hoveredTab.onOpen(Minecraft.getMinecraft().thePlayer);
 								UtilCore.NETWORK.sendToServer(new PacketOpenTab(hoveredTab));
 							}
@@ -159,11 +153,11 @@ public class TabClientEvents
 		if (event.phase == TickEvent.Phase.END)
 		{
 			ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
-			
+
 			if (groupHandler != null)
 			{
 				ITabGroup activeGroup = groupHandler.getSide(Side.CLIENT);
-				
+
 				if (activeGroup != null)
 				{
 					tabGroupRenderer.render(activeGroup);
@@ -171,5 +165,5 @@ public class TabClientEvents
 			}
 		}
 	}
-	
+
 }
