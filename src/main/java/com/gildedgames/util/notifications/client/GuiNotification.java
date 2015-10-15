@@ -3,11 +3,12 @@ package com.gildedgames.util.notifications.client;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
-import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
-import com.gildedgames.util.notifications.common.player.PlayerNotification;
+import com.gildedgames.util.notifications.common.core.INotificationResponse;
+import com.gildedgames.util.notifications.common.networking.messages.PacketClickedResponse;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
@@ -27,77 +28,92 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiPositionerList;
 import com.google.common.collect.ImmutableMap;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.Minecraft;
 
-public class GuiNotifications extends GuiFrame
+public class GuiNotification extends GuiFrame
 {
-	protected PlayerNotification player;
+	private INotificationMessage message;
 
-	public GuiNotifications(EntityPlayer player)
+	public GuiNotification(INotificationMessage message)
 	{
-		this.player = NotificationCore.getPlayerNotifications(player);
+		this.message = message;
 	}
 
 	@Override
 	public void initContent(InputProvider input)
 	{
 		super.initContent(input);
-
 		GuiPositioner positioner = new GuiPositionerList(0);
-		ContentFactory content = new NotificationButtonContent(this.player);
+		ContentFactory content = new NotificationContent(this.message);
 
 		GuiCollection notifications = new GuiCollection(Pos2D.flush(), 100, positioner, content);
 
 		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(ScreenDimUtil.getCenter(input)).center(true).area(200, 200).flush(), notifications);
 
-		this.content().set("notifications", scrollNotifications);
-
+		this.content().set("notification", scrollNotifications);
 	}
 
-	private static class NotificationButtonContent implements ContentFactory
+	private static class NotificationContent implements ContentFactory
 	{
+		private INotificationMessage message;
 
-		private PlayerNotification player;
-
-		protected NotificationButtonContent(PlayerNotification player)
+		public NotificationContent(INotificationMessage message)
 		{
-			this.player = player;
+			this.message = message;
 		}
 
 		@Override
 		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
+			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Pos2D.flush(), false));
+			buttons.put("sender", new TextElement(GuiFactory.text("From: " + this.message.getSender().getCommandSenderName(), Color.YELLOW), Pos2D.flush(), false));
+			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));
 
-			for (INotificationMessage message : this.player.getNotifications())
+			int i = 0;
+			for (INotificationResponse response : this.message.getResponses())
 			{
-				buttons.put(message.getKey(), new NotificationButton(message));
+				buttons.put(Integer.toString(i), new ResponseButton(this.message, response, i));
 			}
 
+			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), "Back")
+			{
+				@Override
+				public void onMouseInput(MouseInputPool pool, InputProvider input)
+				{
+					super.onMouseInput(pool, input);
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
+					{
+						UiCore.locate().open("", new GuiNotifications(Minecraft.getMinecraft().thePlayer));
+					}
+				}
+			});
 			return buttons;
 		}
 
 	}
 
-	private static class NotificationButton extends GuiFrame
+	private static class ResponseButton extends GuiFrame
 	{
 		private INotificationMessage message;
 
-		protected NotificationButton(INotificationMessage message)
+		private INotificationResponse response;
+
+		private int index;
+
+		public ResponseButton(INotificationMessage message, INotificationResponse response, int index)
 		{
 			super(Dim2D.build().area(175, 20).flush());
 			this.message = message;
+			this.response = response;
 		}
 
 		@Override
 		public void initContent(InputProvider input)
 		{
 			super.initContent(input);
-
 			this.content().set("button", new MinecraftButton(Dim2D.build().buildWith(this).area().flush(), ""));
-			this.content().set("title", new TextElement(GuiFactory.text(this.message.getTitle(), new Color(0xE5E5E5)), Pos2D.flush(1, 2), false));
-			this.content().set("from", new TextElement(GuiFactory.text("From: ", Color.BLACK, 0.75f), Pos2D.flush(1, 12), false));
-			this.content().set("username", new TextElement(GuiFactory.text(this.message.getSender().getCommandSenderName(), new Color(0x8FE639), 0.75f), Pos2D.flush(1, 12), false));
+			this.content().set("title", new TextElement(GuiFactory.text(this.response.getName(), new Color(0xE5E5E5)), Pos2D.flush(1, 2), false));
 		}
 
 		@Override
@@ -106,9 +122,10 @@ public class GuiNotifications extends GuiFrame
 			super.onMouseInput(pool, input);
 			if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
 			{
-				UiCore.locate().open("", new GuiNotification(this.message));
+				UtilCore.NETWORK.sendToServer(new PacketClickedResponse(this.message, this.index));
+				this.response.openScreenAfterClicked(UiCore.locate().getGuiScreen());
 			}
 		}
-
 	}
+
 }

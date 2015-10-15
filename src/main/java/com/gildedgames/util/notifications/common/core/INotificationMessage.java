@@ -29,6 +29,11 @@ public interface INotificationMessage extends IO<IOBridge, IOBridge>
 	 */
 	EntityPlayer getSender();
 
+	/**
+	 * Returns the responses to this notification. 
+	 * The order of this list should always remain
+	 * identical.
+	 */
 	List<INotificationResponse> getResponses();
 
 	/**
