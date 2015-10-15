@@ -6,6 +6,7 @@ import com.gildedgames.util.instances.InstanceCore;
 import com.gildedgames.util.instances.InstanceHandler;
 import com.gildedgames.util.testutil.commands.CreateDimension;
 import com.gildedgames.util.testutil.commands.ReturnFromInstance;
+import com.gildedgames.util.testutil.commands.SendNotification;
 import com.gildedgames.util.testutil.instances.DefaultHandler;
 import com.gildedgames.util.testutil.instances.DefaultInstance;
 import com.gildedgames.util.testutil.instances.DefaultInstancesFactory;
@@ -82,6 +83,7 @@ public class TestCore implements ICore
 	{
 		event.registerServerCommand(new CreateDimension());
 		event.registerServerCommand(new ReturnFromInstance());
+		event.registerServerCommand(new SendNotification());
 	}
 
 	@Override
