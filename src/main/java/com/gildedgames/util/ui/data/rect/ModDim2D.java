@@ -512,4 +512,10 @@ public class ModDim2D implements Rect
 		return this.modifiedState().rebuild();
 	}
 
+	@Override
+	public String toString()
+	{
+		return this.modifiedState.toString();
+	}
+
 }
