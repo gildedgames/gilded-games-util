@@ -2,13 +2,18 @@ package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.RectHolder;
+import com.gildedgames.util.ui.data.rect.RectListener;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -24,6 +29,8 @@ public class GuiCollection extends GuiFrame
 	protected GuiSorter sorter;
 
 	protected List<ContentFactory> contentProviders = new ArrayList<ContentFactory>();
+
+	private boolean isSorting;
 
 	public GuiCollection(GuiPositioner positioner, ContentFactory... contentProviders)
 	{
@@ -67,7 +74,26 @@ public class GuiCollection extends GuiFrame
 		{
 			if (contentProvider != null)
 			{
-				this.events().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim()));
+				LinkedHashMap<String, Ui> elements = contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim());
+				for (Entry<String, Ui> entry : elements.entrySet())
+				{
+					RectHolder holder = ObjectFilter.cast(entry.getValue(), RectHolder.class);
+					if (holder != null)
+					{
+						holder.dim().addListener(new RectListener()
+						{
+							@Override
+							public void notifyDimChange()
+							{
+								if (!GuiCollection.this.isSorting)
+								{
+									GuiCollection.this.sortAndPositionContent();
+								}
+							}
+						});
+					}
+				}
+				this.events().setAll(elements);
 			}
 		}
 	}
@@ -109,8 +135,10 @@ public class GuiCollection extends GuiFrame
 
 	private void sortAndPositionContent()
 	{
+		this.isSorting = true;
 		this.positionContent(this.getSortedViews());
 		this.sortContent();
+		this.isSorting = false;
 	}
 
 	private List<Gui> getSortedViews()
@@ -121,19 +149,11 @@ public class GuiCollection extends GuiFrame
 		return sortedViews;
 	}
 
-	public void refresh()
-	{
-		this.clearAndProvideContent();
-		this.sortAndPositionContent();
-	}
-
 	@Override
 	public void initContent(InputProvider input)
 	{
-		this.refresh();
-
-		//this.getDimensions().set(this.getListeners().getCombinedDimensions());
-		
+		this.clearAndProvideContent();
+		this.sortAndPositionContent();
 		super.initContent(input);
 	}
 
