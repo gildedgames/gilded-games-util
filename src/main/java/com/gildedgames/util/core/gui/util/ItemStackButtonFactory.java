@@ -13,7 +13,7 @@ import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.util.events.DraggableBehavior;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
 import com.gildedgames.util.ui.util.factory.GenericFactory;
@@ -98,7 +98,7 @@ public class ItemStackButtonFactory implements ContentFactory
 	}
 
 	@Override
-	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Dim2D contentArea)
+	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 	{
 		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
 		

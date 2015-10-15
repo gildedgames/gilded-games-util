@@ -3,7 +3,8 @@ package com.gildedgames.util.core.gui.util.wrappers;
 import net.minecraft.item.ItemStack;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -17,7 +18,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 		this(Dim2D.build().area(20, 20).flush(), stack);
 	}
 
-	public MinecraftButtonItemStack(Dim2D dim, ItemStack stack)
+	public MinecraftButtonItemStack(Rect dim, ItemStack stack)
 	{
 		super(dim);
 
@@ -32,7 +33,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 		this.content().set("button", new MinecraftButton(Dim2D.build().buildWith(this).area().flush(), ""));
 		this.content().set("itemStackRender", this.itemStackRender);
 		
-		this.itemStackRender.modDim().center(true).x(this.getDim().width() / 2).y(this.getDim().height() / 2).flush();
+		this.itemStackRender.dim().mod().center(true).x(this.dim().width() / 2).y(this.dim().height() / 2).flush();
 	}
 	
 	@Override
@@ -42,7 +43,7 @@ public class MinecraftButtonItemStack extends GuiFrame
 		
 		MinecraftButton button = this.content().get("button", MinecraftButton.class);
 		
-		button.modDim().buildWith(this).area().build().flush();
+		button.dim().mod().buildWith(this).area().rebuild().flush();
 	}
 	
 	public ItemStack getItemStack()

@@ -22,13 +22,13 @@ public class GuiEventScaleWhenHovered extends GuiEvent
 	{
 		Pos2D mousePos = Pos2D.flush(input.getMouseX(), input.getMouseY());
 		
-		if (this.getGui().getDim().intersects(mousePos))
+		if (this.getGui().dim().intersects(mousePos))
 		{
-			this.getGui().modDim().scale(this.selectedScale).flush();
+			this.getGui().dim().mod().scale(this.selectedScale).flush();
 		}
 		else
 		{
-			this.getGui().modDim().scale(this.originalScale).flush();
+			this.getGui().dim().mod().scale(this.originalScale).flush();
 		}
 	}
 

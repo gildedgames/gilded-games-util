@@ -7,6 +7,18 @@ import static org.lwjgl.opengl.GL11.GL_ZERO;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
+import com.gildedgames.util.ui.data.AssetLocation;
+import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.graphics.Graphics2D;
+import com.gildedgames.util.ui.graphics.Sprite;
+import com.gildedgames.util.ui.graphics.Sprite.UV;
+import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
+import com.gildedgames.util.ui.util.rect.RectCollection;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -14,18 +26,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.gildedgames.util.core.UtilEvents;
-import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.graphics.Sprite.UV;
-import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -49,33 +49,28 @@ public class MinecraftGraphics2D implements Graphics2D
 		return new ResourceLocation(resource.getDomain(), resource.getPath());
 	}
 
-	private void draw(Dim2D dim, DrawingData data, DrawInner inner)
+	private void draw(Rect dim, DrawingData data, DrawInner inner)
 	{
 		GlStateManager.pushMatrix();
 
 		double currentX = dim.x();
 		double currentY = dim.y();
 
-		float partialTicks = UtilEvents.getPartialTicks();
-
 		double x = currentX;//currentX + (currentX - prevX) * partialTicks;
 		double y = currentY;//currentY + (currentY - prevY) * partialTicks;
 
 		/** TO-DO: Figure out why the prevPos and currentPos are the same wtf?! :D **/
 
-		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		
 		GlStateManager.translate(x, y, 0);
 
 		GlStateManager.scale(dim.scale(), dim.scale(), 0);
-		
+
 		GlStateManager.translate((dim.width() / 2) + dim.rotation().originX(), (dim.height() / 2) + dim.rotation().originY(), 0);
-		
+
 		GlStateManager.rotate(dim.rotation().degrees(), 0.0F, 0.0F, 1.0F);
-		
+
 		GlStateManager.translate(-(dim.width() / 2) - dim.rotation().originX(), -(dim.height() / 2) - dim.rotation().originY(), 0);
-		
+
 		GlStateManager.color(1, 1, 1, data.getAlpha());
 
 		GlStateManager.enableBlend();
@@ -89,13 +84,13 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawSprite(Sprite sprite, Dim2D dim, DrawingData data)
+	public void drawSprite(Sprite sprite, Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawSprite(this, sprite, data, dim));
 	}
 
 	@Override
-	public void drawText(String text, Dim2D dim, DrawingData data)
+	public void drawText(String text, Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawText(this.fontRenderer, text, dim, data));
 	}
@@ -107,13 +102,13 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawRectangle(Dim2D dim, DrawingData data)
+	public void drawRectangle(Rect dim, DrawingData data)
 	{
 		this.draw(dim, data, new DrawRectangle(this, dim, data));
 	}
 
 	@Override
-	public void drawGradientRectangle(Dim2D dim, DrawingData startColor, DrawingData endColor)
+	public void drawGradientRectangle(Rect dim, DrawingData startColor, DrawingData endColor)
 	{
 		this.draw(dim, startColor, new DrawGradientRectangle(this, dim, startColor, endColor));
 	}
@@ -148,58 +143,58 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.enableAlpha();
 		GlStateManager.enableTexture2D();
 	}
-	
-    private void drawModalRectWithCustomSizedTexture(double x, double y, double u, double v, double width, double height, double textureWidth, double textureHeight)
-    {
-        double f4 = 1.0D / textureWidth;
-        double f5 = 1.0D / textureHeight;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.startDrawingQuads();
-        worldrenderer.addVertexWithUV((double)x, (double)(y + height), 0.0D, (double)(u * f4), (double)((v + (float)height) * f5));
-        worldrenderer.addVertexWithUV((double)(x + width), (double)(y + height), 0.0D, (double)((u + (float)width) * f4), (double)((v + (float)height) * f5));
-        worldrenderer.addVertexWithUV((double)(x + width), (double)y, 0.0D, (double)((u + (float)width) * f4), (double)(v * f5));
-        worldrenderer.addVertexWithUV((double)x, (double)y, 0.0D, (double)(u * f4), (double)(v * f5));
-        tessellator.draw();
-    }
-    
-    private void drawRect(double left, double top, double right, double bottom, int color)
-    {
-        double j1;
 
-        if (left < right)
-        {
-            j1 = left;
-            left = right;
-            right = j1;
-        }
+	private void drawModalRectWithCustomSizedTexture(double x, double y, double u, double v, double width, double height, double textureWidth, double textureHeight)
+	{
+		double f4 = 1.0D / textureWidth;
+		double f5 = 1.0D / textureHeight;
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		worldrenderer.startDrawingQuads();
+		worldrenderer.addVertexWithUV(x, y + height, 0.0D, u * f4, (v + (float) height) * f5);
+		worldrenderer.addVertexWithUV(x + width, y + height, 0.0D, (u + (float) width) * f4, (v + (float) height) * f5);
+		worldrenderer.addVertexWithUV(x + width, y, 0.0D, (u + (float) width) * f4, v * f5);
+		worldrenderer.addVertexWithUV(x, y, 0.0D, u * f4, v * f5);
+		tessellator.draw();
+	}
 
-        if (top < bottom)
-        {
-            j1 = top;
-            top = bottom;
-            bottom = j1;
-        }
+	private void drawRect(double left, double top, double right, double bottom, int color)
+	{
+		double j1;
 
-        float f3 = (float)(color >> 24 & 255) / 255.0F;
-        float f = (float)(color >> 16 & 255) / 255.0F;
-        float f1 = (float)(color >> 8 & 255) / 255.0F;
-        float f2 = (float)(color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        GlStateManager.enableBlend();
-        GlStateManager.disableTexture2D();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.color(f, f1, f2, f3);
-        worldrenderer.startDrawingQuads();
-        worldrenderer.addVertex((double)left, (double)bottom, 0.0D);
-        worldrenderer.addVertex((double)right, (double)bottom, 0.0D);
-        worldrenderer.addVertex((double)right, (double)top, 0.0D);
-        worldrenderer.addVertex((double)left, (double)top, 0.0D);
-        tessellator.draw();
-        GlStateManager.enableTexture2D();
-        GlStateManager.disableBlend();
-    }
+		if (left < right)
+		{
+			j1 = left;
+			left = right;
+			right = j1;
+		}
+
+		if (top < bottom)
+		{
+			j1 = top;
+			top = bottom;
+			bottom = j1;
+		}
+
+		float f3 = (color >> 24 & 255) / 255.0F;
+		float f = (color >> 16 & 255) / 255.0F;
+		float f1 = (color >> 8 & 255) / 255.0F;
+		float f2 = (color & 255) / 255.0F;
+		Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		GlStateManager.enableBlend();
+		GlStateManager.disableTexture2D();
+		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+		GlStateManager.color(f, f1, f2, f3);
+		worldrenderer.startDrawingQuads();
+		worldrenderer.addVertex(left, bottom, 0.0D);
+		worldrenderer.addVertex(right, bottom, 0.0D);
+		worldrenderer.addVertex(right, top, 0.0D);
+		worldrenderer.addVertex(left, top, 0.0D);
+		tessellator.draw();
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
+	}
 
 	private static interface DrawInner
 	{
@@ -213,35 +208,38 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final Sprite sprite;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, DrawingData data, Dim2D dim)
+		private final RectCollection collection;
+
+		public DrawSprite(MinecraftGraphics2D graphics, Sprite sprite, DrawingData data, Rect dim)
 		{
 			this.graphics = graphics;
 			this.sprite = sprite;
 			this.dim = dim;
 			this.data = data;
+			this.collection = RectCollection.flush(this.dim);
 		}
 
 		@Override
 		public void draw()
 		{
 			this.graphics.minecraft.renderEngine.bindTexture(this.graphics.convert(this.sprite.getAsset()));
-			
-			if (this.sprite.getBehavior().shouldRecalculateUVs(this.sprite, this.dim.toHolder()))
+
+			if (this.sprite.getBehavior().shouldRecalculateUVs(this.sprite, this.collection))
 			{
-				this.sprite.getBehavior().recalculateUVs(this.sprite, this.dim.toHolder());
+				this.sprite.getBehavior().recalculateUVs(this.sprite, this.collection);
 			}
-			
-			List<UVDimPair> uvDimPairs = this.sprite.getBehavior().getDrawnUVsFor(this.sprite, this.dim.toHolder());
-			
+
+			List<UVDimPair> uvDimPairs = this.sprite.getBehavior().getDrawnUVsFor(this.sprite, this.collection);
+
 			for (UVDimPair uvDimPair : uvDimPairs)
 			{
 				UV uv = uvDimPair.getUV();
-				Dim2D dim = uvDimPair.getDim();
-				
+				Rect dim = uvDimPair.getRect();
+
 				this.graphics.drawModalRectWithCustomSizedTexture(dim.x(), dim.y(), uv.minU(), uv.minV(), uv.width(), uv.height(), this.sprite.getAssetWidth(), this.sprite.getAssetHeight());
 			}
 		}
@@ -255,11 +253,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final String text;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawText(FontRenderer fontRenderer, String text, Dim2D dim, DrawingData data)
+		public DrawText(FontRenderer fontRenderer, String text, Rect dim, DrawingData data)
 		{
 			this.fontRenderer = fontRenderer;
 			this.text = text;
@@ -280,11 +278,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final MinecraftGraphics2D graphics;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData data;
 
-		public DrawRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData data)
+		public DrawRectangle(MinecraftGraphics2D graphics, Rect dim, DrawingData data)
 		{
 			this.graphics = graphics;
 			this.dim = dim;
@@ -304,11 +302,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		private final MinecraftGraphics2D graphics;
 
-		private final Dim2D dim;
+		private final Rect dim;
 
 		private final DrawingData startColor, endColor;
 
-		public DrawGradientRectangle(MinecraftGraphics2D graphics, Dim2D dim, DrawingData startColor, DrawingData endColor)
+		public DrawGradientRectangle(MinecraftGraphics2D graphics, Rect dim, DrawingData startColor, DrawingData endColor)
 		{
 			this.graphics = graphics;
 			this.dim = dim;

@@ -3,8 +3,9 @@ package com.gildedgames.util.ui.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.graphics.Sprite.UV;
 
 public class ResizableUVBehavior implements UVBehavior
@@ -18,7 +19,7 @@ public class ResizableUVBehavior implements UVBehavior
 	
 	private final List<UVDimPair> drawnUVs = new ArrayList<UVDimPair>();
 	
-	private Dim2D lastAreaToDraw;
+	private Rect lastAreaToDraw;
 	
 	public ResizableUVBehavior(UV cornersArea, UV verticalArea, UV horizontalArea)
 	{
@@ -40,23 +41,23 @@ public class ResizableUVBehavior implements UVBehavior
 	}
 
 	@Override
-	public List<UVDimPair> getDrawnUVsFor(Sprite sprite, Dim2DHolder areaToDraw)
+	public List<UVDimPair> getDrawnUVsFor(Sprite sprite, RectHolder areaToDraw)
 	{
 		return this.drawnUVs;
 	}
 
 	@Override
-	public boolean shouldRecalculateUVs(Sprite sprite, Dim2DHolder areaToDraw)
+	public boolean shouldRecalculateUVs(Sprite sprite, RectHolder areaToDraw)
 	{
-		return this.lastAreaToDraw == null || this.lastAreaToDraw.width() != areaToDraw.getDim().width() || this.lastAreaToDraw.height() != areaToDraw.getDim().height();
+		return this.lastAreaToDraw == null || this.lastAreaToDraw.width() != areaToDraw.dim().width() || this.lastAreaToDraw.height() != areaToDraw.dim().height();
 	}
 
 	@Override
-	public void recalculateUVs(Sprite sprite, Dim2DHolder areaToDraw)
+	public void recalculateUVs(Sprite sprite, RectHolder areaToDraw)
 	{
 		this.drawnUVs.clear();
 		
-		Dim2D area = areaToDraw.getDim();
+		Rect area = areaToDraw.dim();
 		
 		this.drawnUVs.add(new UVDimPair(this.topLeftCorner, Dim2D.build().flush()));
 		this.drawnUVs.add(new UVDimPair(this.topRightCorner, Dim2D.build().x(area.width() - this.topRightCorner.width()).flush()));
@@ -91,7 +92,7 @@ public class ResizableUVBehavior implements UVBehavior
 			}
 		}
 		
-		this.lastAreaToDraw = areaToDraw.getDim();
+		this.lastAreaToDraw = areaToDraw.dim();
 	}
 
 }

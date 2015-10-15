@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapper;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -27,7 +27,7 @@ public class DraggableBehavior extends GuiEvent
 	{
 		super.draw(graphics, input);
 		
-		Dim2D dim = this.getGui().getDim();
+		Rect dim = this.getGui().dim();
 		boolean isHovered = input.isHovered(dim);
 		boolean isPressed = MouseButton.LEFT.isDown();
 		

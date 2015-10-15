@@ -3,7 +3,7 @@ package com.gildedgames.util.ui.util.transform;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 
 public class GuiPositionerList implements GuiPositioner
 {
@@ -16,15 +16,15 @@ public class GuiPositionerList implements GuiPositioner
 	}
 
 	@Override
-	public List<Gui> positionList(List<Gui> guis, Dim2D collectionDim)
+	public List<Gui> positionList(List<Gui> guis, Rect collectionDim)
 	{
 		int currentY = 0;
 
 		for (Gui view : guis)
 		{
-			view.modDim().y(currentY).center(false).flush();
+			view.dim().mod().y(currentY).center(false).flush();
 
-			currentY += view.getDim().height() + this.paddingY;
+			currentY += view.dim().height() + this.paddingY;
 		}
 
 		return guis;

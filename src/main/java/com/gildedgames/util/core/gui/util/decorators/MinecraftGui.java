@@ -9,11 +9,13 @@ import org.lwjgl.input.Keyboard;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.util.RectangleElement;
+import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class MinecraftGui extends GuiDecorator<Gui>
 {
@@ -45,9 +47,9 @@ public class MinecraftGui extends GuiDecorator<Gui>
 			DrawingData startColor = new DrawingData(new Color(-1072689136, true));
 			DrawingData endColor = new DrawingData(new Color(-804253680, true));
 			
-			Dim2D dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).flush();
+			Rect dim = Dim2D.build().area(input.getScreenWidth(), input.getScreenHeight()).flush();
 			
-			this.content().set("darkBackground", new RectangleElement(dim.toHolder(), startColor, endColor));
+			this.content().set("darkBackground", new RectangleElement(RectCollection.flush(dim), startColor, endColor));
 		}
 	}
 	

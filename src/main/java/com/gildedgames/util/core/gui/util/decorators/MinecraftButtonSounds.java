@@ -37,7 +37,7 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
 	{
 		Gui view = this.getDecoratedElement();
 		
-		if (input.isHovered(view.getDim()) && pool.contains(this.event))
+		if (input.isHovered(view.dim()) && pool.contains(this.event))
 		{
 			this.playPressSound(this.mc.getSoundHandler());
 		}

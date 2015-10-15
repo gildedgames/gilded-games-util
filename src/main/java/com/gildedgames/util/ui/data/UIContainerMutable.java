@@ -8,32 +8,33 @@ import java.util.Map;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
+import com.gildedgames.util.ui.data.rect.RectHolder;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.util.RectangleElement;
 
 public class UIContainerMutable extends UIContainer
 {
-	
+
 	public UIContainerMutable(Ui attachedUi)
 	{
 		super(attachedUi);
 	}
-	
-	public void displayDim(Dim2DHolder holder)
+
+	public void displayDim(RectHolder holder)
 	{
 		this.elements.put("displayDim", new RectangleElement(holder, new DrawingData(Color.PINK)));
 	}
 
 	public void set(String key, Ui element)
 	{
-		Dim2DHolder gui = ObjectFilter.getType(element, Dim2DHolder.class);
-		Dim2DHolder parentModifier = ObjectFilter.getType(this.getAttachedUi(), Dim2DHolder.class);
-		
+		RectHolder gui = ObjectFilter.cast(element, RectHolder.class);
+		RectHolder parentModifier = ObjectFilter.cast(this.getAttachedUi(), RectHolder.class);
+
 		element.seekContent().parentUi = this.getAttachedUi();
 
-		if (gui != null && gui.modDim() != null && parentModifier != null)
+		if (gui != null && gui.dim().mod() != null && parentModifier != null)
 		{
-			gui.modDim().addModifier(parentModifier, ModifierType.POS, ModifierType.SCALE).flush();
+			gui.dim().add(parentModifier, ModifierType.POS, ModifierType.SCALE);
 		}
 
 		this.elements.put(key, element);
@@ -43,7 +44,7 @@ public class UIContainerMutable extends UIContainer
 	{
 		this.elements.remove(key);
 	}
-	
+
 	public void remove(Ui element)
 	{
 		List<String> keysToRemove = new ArrayList<String>();
@@ -52,13 +53,13 @@ public class UIContainerMutable extends UIContainer
 		{
 			String key = entry.getKey();
 			Ui elem = entry.getValue();
-			
-			if (elem == element)
+
+			if (elem.equals(element))
 			{
 				keysToRemove.add(key);
 			}
 		}
-		
+
 		for (String key : keysToRemove)
 		{
 			this.elements.remove(key);

@@ -3,16 +3,12 @@ package com.gildedgames.util.ui.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.nbt.NBTTagCompound;
-
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
-import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -21,31 +17,31 @@ import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.GuiProcessingHelper;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public class GuiFrame implements Gui, KeyboardListener, MouseListener
 {
-	
+
 	private boolean visible = true, enabled = true, focused = false;
 
 	private UIContainerMutable mainContent = new UIContainerMutable(this);
-	
+
 	private UIContainerEvents events = new UIContainerEvents(this);
-	
-	private Dim2D dim;
-	
+
+	private ModDim2D dim = new ModDim2D();
+
 	private List<UIContainer> containers;
-	
-	private List<Dim2DListener> dimListeners = new ArrayList<Dim2DListener>();
-	
+
 	public GuiFrame()
 	{
-		this(Dim2D.flush());
+
 	}
 
-	public GuiFrame(Dim2D dim)
+	public GuiFrame(Rect rect)
 	{
-		this.dim = dim;
+		this.dim.set(rect);
 	}
-	
+
 	@Override
 	public UIContainer seekContent()
 	{
@@ -56,28 +52,10 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		return this.events;
 	}
-	
+
 	protected UIContainerMutable content()
 	{
 		return this.mainContent;
-	}
-	
-	@Override
-	public List<Dim2DListener> dimListeners()
-	{
-		return this.dimListeners;
-	}
-
-	@Override
-	public void addDimListener(Dim2DListener listener)
-	{
-		this.dimListeners.add(listener);
-	}
-
-	@Override
-	public void removeDimListener(Dim2DListener listener)
-	{
-		this.dimListeners.remove(listener);
 	}
 
 	@Override
@@ -105,34 +83,11 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	}
 
 	@Override
-	public Dim2D getDim()
+	public ModDim2D dim()
 	{
 		return this.dim;
 	}
-	
-	@Override
-	public void setDim(Dim2D dim)
-	{
-		this.dim = dim;
-		
-		for (Dim2DListener listener : this.dimListeners())
-		{
-			listener.notifyChange();
-		}
-	}
-	
-	@Override
-	public Dim2DModifier modDim()
-	{
-		return new Dim2DModifier(this);
-	}
-	
-	@Override
-	public Dim2DBuilder copyDim()
-	{
-		return Dim2D.build(this);
-	}
-	
+
 	@Override
 	public boolean isFocused()
 	{
@@ -150,39 +105,39 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void init(InputProvider input)
 	{
 		this.initContent(input);
-		
-		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events()); 
+
+		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
 	}
 
 	@Override
 	public void initContent(InputProvider input)
 	{
-		 
+
 	}
-	
+
 	@Override
 	public void onClose(InputProvider input)
 	{
 		GuiProcessingHelper.processClose(input, this.content(), this.events());
 	}
-	
+
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		return GuiProcessingHelper.processKeyboardInput(pool, input, this.content(), this.events());
 	}
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		GuiProcessingHelper.processDraw(graphics, input, this.content(), this.events());
 	}
-	
+
 	@Override
 	public void tick(TickInfo tickInfo, InputProvider input)
 	{
@@ -200,23 +155,23 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		GuiProcessingHelper.processMouseScroll(input, scrollDifference, this.content(), this.events());
 	}
-	
+
 	@Override
 	public void onResolutionChange(InputProvider input)
 	{
 		this.init(input);
 	}
-	
+
 	@Override
 	public void write(NBTTagCompound output)
 	{
-		
+
 	}
 
 	@Override
 	public void read(NBTTagCompound input)
 	{
-		
+
 	}
 
 	@Override
@@ -237,12 +192,19 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		if (this.containers == null)
 		{
 			this.containers = new ArrayList<UIContainer>();
-			
+
 			this.containers.add(this.mainContent);
 			this.containers.add(this.events);
 		}
-		
+
 		return this.containers;
+	}
+
+	@Override
+	public void updateState()
+	{
+		// TODO Auto-generated method stub
+
 	}
 
 }

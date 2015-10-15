@@ -13,6 +13,8 @@ import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.Ui;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 
 public class UIContainer implements Iterable<Ui>, NBT
 {
@@ -113,16 +115,16 @@ public class UIContainer implements Iterable<Ui>, NBT
 		return this.elements.size();
 	}
 
-	public Dim2D getCombinedDimensions()
+	public Rect getCombinedDimensions()
 	{
-		List<Dim2D> areas = new ArrayList<Dim2D>();
+		List<Rect> areas = new ArrayList<Rect>();
 
 		this.addCombinedDimensions(this, areas);
 
 		return Dim2D.combine(areas);
 	}
 
-	private void addCombinedDimensions(UIContainer container, List<Dim2D> areas)
+	private void addCombinedDimensions(UIContainer container, List<Rect> areas)
 	{
 		for (Map.Entry<String, Ui> entry : container.map().entrySet())
 		{
@@ -133,7 +135,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 			{
 				Gui view = (Gui) element;
 
-				areas.add(view.getDim());
+				areas.add(view.dim());
 
 				this.addCombinedDimensions(view.seekContent(), areas);
 			}

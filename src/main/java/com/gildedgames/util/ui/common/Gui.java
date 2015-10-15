@@ -1,10 +1,10 @@
 package com.gildedgames.util.ui.common;
 
-import com.gildedgames.util.ui.data.Dim2DHolder;
+import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public interface Gui extends Ui, Dim2DHolder
+public interface Gui extends Ui, RectHolder
 {
 
 	void draw(Graphics2D graphics, InputProvider input);

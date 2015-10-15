@@ -1,8 +1,8 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
 import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -14,12 +14,12 @@ public class TextureElement extends GuiFrame
 
 	protected DrawingData data;
 
-	public TextureElement(Sprite sprite, Dim2D dim)
+	public TextureElement(Sprite sprite, Rect dim)
 	{
 		this(sprite, dim, new DrawingData());
 	}
 
-	public TextureElement(Sprite sprite, Dim2D dim, DrawingData data)
+	public TextureElement(Sprite sprite, Rect dim, DrawingData data)
 	{
 		super(dim);
 
@@ -44,12 +44,12 @@ public class TextureElement extends GuiFrame
 	{
 		super.draw(graphics, input);
 		
-		graphics.drawSprite(this.sprite, this.getDim(), this.data);
+		graphics.drawSprite(this.sprite, this.dim(), this.data);
 	}
 	
 	public TextureElement clone()
 	{
-		return new TextureElement(this.sprite, this.getDim(), this.data);
+		return new TextureElement(this.sprite, this.dim(), this.data);
 	}
 
 }
