@@ -3,15 +3,16 @@ package com.gildedgames.util.ui.util.decorators;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.ModifierType;
-import com.gildedgames.util.ui.data.Dim2DCollection;
-import com.gildedgames.util.ui.data.Dim2DGetter;
-import com.gildedgames.util.ui.data.TickInfo;
+import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.ScrollBar;
 import com.gildedgames.util.ui.util.TextureElement;
+import com.gildedgames.util.ui.util.rect.RectCollection;
+import com.gildedgames.util.ui.util.rect.RectGetter;
 
 public class ScrollableGui extends GuiFrame
 {
@@ -19,33 +20,34 @@ public class ScrollableGui extends GuiFrame
 	protected ScrollBar scrollBar;
 
 	protected ScissorableGui scrolledGui;
-	
+
 	protected TextureElement backdrop, backdropEmbedded;
-	
+
 	protected final int padding;
-	
-	public ScrollableGui(Dim2D windowSize, Gui scrolledGui)
+
+	public ScrollableGui(Rect windowSize, Gui scrolledGui)
 	{
 		this(windowSize, scrolledGui, GuiFactory.createScrollBar());
 	}
-	
-	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar)
+
+	public ScrollableGui(Rect windowSize, Gui scrolledGui, ScrollBar scrollBar)
 	{
 		this(windowSize, scrolledGui, scrollBar, GuiFactory.panel(Dim2D.flush()), GuiFactory.panelEmbedded(Dim2D.flush()), 7);
 	}
 
-	public ScrollableGui(Dim2D windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding)
+	public ScrollableGui(Rect windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding)
 	{
-		super(windowSize);
-		
-		this.padding = padding;
-		
-		int posPadding = this.padding + 1;
-		int areaPadding = -this.padding * 2 - 2;
+		this.dim().set(windowSize);
 
-		this.scrolledGui = new ScissorableGui(Dim2D.build().addModifier(this, ModifierType.ALL).pos(posPadding, posPadding).area(areaPadding, areaPadding).flush(), scrolledGui);
+		this.padding = padding;
+
+		int posPadding = this.padding + 1;
+		int areaPadding = this.padding * 2 - 2;
+
+		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(-areaPadding, -areaPadding).flush();
+		this.scrolledGui = new ScissorableGui(dim, scrolledGui);
 		this.scrollBar = scrollBar;
-		
+
 		this.backdrop = backdrop;
 		this.backdropEmbedded = backdropEmbedded;
 	}
@@ -55,65 +57,68 @@ public class ScrollableGui extends GuiFrame
 	{
 		super.initContent(input);
 
-		this.scrollBar.modDim().resetPos().addModifier(this, ModifierType.HEIGHT).flush();
+		this.scrollBar.dim().add(this, ModifierType.HEIGHT).mod().resetPos().flush();
 
-		this.scrolledGui.modDim().resetPos().addModifier(new Dim2DGetter()
+		this.scrolledGui.dim().add(new RectGetter()
 		{
-			
-			private boolean dimHasChanged;
-			
+
 			private float prevScrollPer, scrollPer;
 
 			@Override
-			public Dim2D assembleDim()
+			public Rect assembleRect()
 			{
 				ScrollBar scrollBar = ScrollableGui.this.scrollBar;
 
 				this.prevScrollPer = scrollBar.getScrollPercentage();
 
-				double scrolledElementHeight = ScrollableGui.this.scrolledGui.getDim().withoutModifiers(ModifierType.HEIGHT).height();
+				double scrolledElementHeight = ModDim2D.clone(ScrollableGui.this.scrolledGui).clear(ModifierType.HEIGHT).height();
 				double scissoredHeight = ScrollableGui.this.scrolledGui.getScissoredArea().height();
 
 				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
-				return Dim2D.build().x(scrollBar.getDim().withoutModifiers(ModifierType.POS).maxX()).y(ScrollableGui.this.padding + scrollValue).addHeight(-ScrollableGui.this.padding).addWidth(-scrollBar.getDim().width() - (ScrollableGui.this.padding * 2)).flush();
+				return ModDim2D.build().mod()
+						.x(ModDim2D.clone(scrollBar).clear(ModifierType.POS).maxX())
+						.y(ScrollableGui.this.padding + scrollValue)
+						.addHeight(-ScrollableGui.this.padding)
+						.addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2))
+						.flush();
 			}
 
 			@Override
-			public boolean dimHasChanged()
+			public boolean shouldReassemble()
 			{
 				ScrollBar scrollBar = ScrollableGui.this.scrollBar;
-				
+
 				this.scrollPer = scrollBar.getScrollPercentage();
-				
+
 				if (this.scrollPer != this.prevScrollPer)
 				{
 					this.prevScrollPer = this.scrollPer;
-					
+
 					return true;
 				}
-				
+
 				return false;
 			}
 
-		}, ModifierType.AREA, ModifierType.POS).flush();
+		}, ModifierType.AREA, ModifierType.POS).mod().resetPos().flush();
 
-		this.scrollBar.modDim().resetPos().flush();
+		this.scrollBar.dim().mod().resetPos().flush();
 
-		this.scrollBar.modDim().center(false).pos(this.padding + 1, this.padding + 1).height(-this.padding * 2 - 2).flush();
-		this.scrolledGui.modDim().center(false).flush();
+		this.scrollBar.dim().mod().center(false).pos(this.padding + 1, this.padding + 1).height(-this.padding * 2 - 2).flush();
+		this.scrolledGui.dim().mod().center(false).flush();
 
-		Dim2DCollection scrollingArea = new Dim2DCollection().addHolder(this);
+		RectCollection scrollingArea = RectCollection.build().addHolder(this).flush();
 
 		this.scrollBar.setScrollingAreas(scrollingArea);
 		this.scrollBar.setContentArea(this.scrolledGui);
 
-		Dim2D backdropDim = Dim2D.build().buildWith(this).area().build().flush();
-		Dim2D embeddedDim = Dim2D.build().buildWith(this).area().build().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
-		
-		this.backdrop.setDim(backdropDim);
-		this.backdropEmbedded.setDim(embeddedDim);
-		
+		Rect backdropDim = ModDim2D.build().add(this, ModifierType.AREA).mod().flush();
+		Rect embeddedDim = ModDim2D.build().add(this, ModifierType.AREA).mod().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
+
+		this.backdrop.dim().clear().set(backdropDim);
+		this.backdropEmbedded.dim().clear().set(embeddedDim);
+
 		this.content().set("backdrop", this.backdrop);
 		this.content().set("backdropEmbedded", this.backdropEmbedded);
 
@@ -125,12 +130,9 @@ public class ScrollableGui extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-	}
 
-	@Override
-	public void tick(TickInfo tickInfo, InputProvider input)
-	{
-		super.tick(tickInfo, input);
+		//System.out.println(input.getScreenWidth());
+		//System.out.println(this.backdrop.dim());
 	}
 
 }

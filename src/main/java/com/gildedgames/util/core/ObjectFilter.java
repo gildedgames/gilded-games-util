@@ -17,22 +17,22 @@ public class ObjectFilter
 
 	}
 
-	public static abstract class FilterCondition
+	public static abstract class FilterCondition<T>
 	{
 
-		private List data;
+		private List<T> data;
 
-		public FilterCondition(List data)
+		public FilterCondition(List<T> data)
 		{
 			this.data = data;
 		}
 
-		public List<Object> data()
+		public List<T> data()
 		{
 			return this.data;
 		}
 
-		public abstract boolean isType(Object object);
+		public abstract boolean isType(T object);
 
 	}
 
@@ -41,7 +41,7 @@ public class ObjectFilter
 		return getTypesFrom(Arrays.asList(array), typeClass);
 	}
 
-	public static <T> List<T> getTypesFrom(Object[] array, FilterCondition condition)
+	public static <T> List<T> getTypesFrom(T[] array, FilterCondition<T> condition)
 	{
 		return getTypesFrom(Arrays.asList(array), condition);
 	}
@@ -110,16 +110,15 @@ public class ObjectFilter
 		return returnList;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> getTypesFrom(Collection<?> list, FilterCondition condition)
+	public static <T> List<T> getTypesFrom(Collection<T> list, FilterCondition<T> condition)
 	{
 		List<T> returnList = new ArrayList<T>();
 
-		for (Object obj : list)
+		for (T obj : list)
 		{
 			if (obj != null && condition.isType(obj))
 			{
-				returnList.add((T) obj);
+				returnList.add(obj);
 			}
 		}
 
@@ -141,7 +140,7 @@ public class ObjectFilter
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T getType(Object object, Class<? extends T> typeClass)
+	public static <T> T cast(Object object, Class<? extends T> typeClass)
 	{
 		T returnObject = null;
 

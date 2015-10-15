@@ -5,15 +5,14 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.data.Dim2D;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DBuilder;
-import com.gildedgames.util.ui.data.Dim2D.Dim2DModifier;
-import com.gildedgames.util.ui.data.Dim2DHolder;
-import com.gildedgames.util.ui.data.Dim2DListener;
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
+import com.gildedgames.util.ui.data.rect.BuildIntoRectHolder;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
+import com.gildedgames.util.ui.data.rect.RectBuilder;
+import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
@@ -30,8 +29,6 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	
 	public GuiDecorator(T element)
 	{
-		super(Dim2D.build().flush());
-		
 		this.element = element;
 	}
 	
@@ -43,7 +40,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -54,7 +51,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean isVisible()
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -67,7 +64,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void setVisible(boolean visible)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -76,50 +73,13 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	}
 
 	@Override
-	public Dim2D getDim()
+	public ModDim2D dim()
 	{
-		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
+		RectHolder holder = ObjectFilter.cast(this.element, RectHolder.class);
 		
 		if (holder != null)
 		{
-			return holder.getDim();
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public void setDim(Dim2D dim)
-	{
-		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
-		
-		if (holder != null)
-		{
-			holder.setDim(dim);
-		}
-	}
-	
-	@Override
-	public Dim2DModifier modDim()
-	{
-		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
-		
-		if (holder != null)
-		{
-			return holder.modDim();
-		}
-		
-		return null;
-	}
-	
-	@Override
-	public Dim2DBuilder copyDim()
-	{
-		Dim2DHolder holder = ObjectFilter.getType(this.element, Dim2DHolder.class);
-		
-		if (holder != null)
-		{
-			return holder.copyDim();
+			return holder.dim();
 		}
 		
 		return null;
@@ -194,7 +154,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
-		KeyboardListener listener = ObjectFilter.getType(this.element, KeyboardListener.class);
+		KeyboardListener listener = ObjectFilter.cast(this.element, KeyboardListener.class);
 		
 		if (listener != null)
 		{
@@ -207,7 +167,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -218,7 +178,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
-		MouseListener listener = ObjectFilter.getType(this.element, MouseListener.class);
+		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
 		
 		if (listener != null)
 		{
@@ -229,7 +189,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean isFocused()
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -242,7 +202,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public void setFocused(boolean focused)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -253,7 +213,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public boolean query(Object... input)
 	{
-		Gui view = ObjectFilter.getType(this.element, Gui.class);
+		Gui view = ObjectFilter.cast(this.element, Gui.class);
 		
 		if (view != null)
 		{
@@ -272,7 +232,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UIContainerMutable content()
 	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{
@@ -285,7 +245,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UIContainerEvents events()
 	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
+		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
 		
 		if (frame != null)
 		{
@@ -299,41 +259,6 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	public List<UIContainer> seekAllContent()
 	{
 		return this.element.seekAllContent();
-	}
-
-	@Override
-	public List<Dim2DListener> dimListeners()
-	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
-		
-		if (frame != null)
-		{
-			return frame.dimListeners();
-		}
-		
-		return null;
-	}
-
-	@Override
-	public void addDimListener(Dim2DListener listener)
-	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
-		
-		if (frame != null)
-		{
-			frame.addDimListener(listener);
-		}
-	}
-
-	@Override
-	public void removeDimListener(Dim2DListener listener)
-	{
-		GuiFrame frame = ObjectFilter.getType(this.element, GuiFrame.class);
-		
-		if (frame != null)
-		{
-			frame.removeDimListener(listener);
-		}
 	}
 
 	@Override

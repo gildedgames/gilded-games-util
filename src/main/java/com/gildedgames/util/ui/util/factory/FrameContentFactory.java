@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.Dim2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.google.common.collect.ImmutableMap;
 
 public class FrameContentFactory implements ContentFactory
@@ -21,7 +21,7 @@ public class FrameContentFactory implements ContentFactory
 	}
 
 	@Override
-	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Dim2D contentArea)
+	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 	{
 		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
 
