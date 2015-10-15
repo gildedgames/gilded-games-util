@@ -14,6 +14,7 @@ import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.data.rect.RectListener;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -83,9 +84,9 @@ public class GuiCollection extends GuiFrame
 						holder.dim().addListener(new RectListener()
 						{
 							@Override
-							public void notifyDimChange()
+							public void notifyDimChange(List<ModifierType> modifier)
 							{
-								if (!GuiCollection.this.isSorting)
+								if (!modifier.contains(ModifierType.X) && !modifier.contains(ModifierType.Y) && GuiCollection.this.isSorting)
 								{
 									GuiCollection.this.sortAndPositionContent();
 								}

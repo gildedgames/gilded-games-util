@@ -65,7 +65,7 @@ public class ModDim2D implements Rect
 		{
 
 			@Override
-			public void notifyDimChange()
+			public void notifyDimChange(List<ModifierType> types)
 			{
 				ModDim2D.this.refreshModifiedState();
 			}
@@ -135,6 +135,7 @@ public class ModDim2D implements Rect
 	 */
 	protected void refreshModifiedState()
 	{
+		Rect oldModifiedState = this.modifiedState;
 		Rotation2D rotation = this.originalState.rotation();
 		float scale = this.originalState.scale();
 
@@ -204,12 +205,40 @@ public class ModDim2D implements Rect
 
 		this.preventRecursion = true;
 
+		List<ModifierType> changedTypes = ModDim2D.getChangedTypes(oldModifiedState, this.modifiedState);
+
 		for (RectListener listener : this.listeners)
 		{
-			listener.notifyDimChange();
+			listener.notifyDimChange(changedTypes);
 		}
 
 		this.preventRecursion = false;
+	}
+
+	public static List<ModifierType> getChangedTypes(Rect r1, Rect r2)
+	{
+		List<ModifierType> types = new ArrayList<ModifierType>();
+		if (r1.x() != r2.x())
+		{
+			types.add(ModifierType.X);
+		}
+		if (r1.y() != r2.y())
+		{
+			types.add(ModifierType.Y);
+		}
+		if (r1.width() != r2.width())
+		{
+			types.add(ModifierType.WIDTH);
+		}
+		if (r1.height() != r2.height())
+		{
+			types.add(ModifierType.HEIGHT);
+		}
+		if (r1.rotation() != r2.rotation())
+		{
+			types.add(ModifierType.ROTATION);
+		}
+		return types;
 	}
 
 	public Collection<RectModifier> mods()
