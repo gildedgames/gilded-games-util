@@ -190,7 +190,7 @@ public class ScrollBar extends GuiFrame
 		{
 			double contentAndScrollHeightDif = Math.abs(this.contentArea.dim().height() - this.scrollingAreas.dim().height());
 
-			float baseBarPercentage = this.contentArea.dim().height() < 0.3f ? 0f : (float) contentAndScrollHeightDif / this.contentArea.dim().height();
+			float baseBarPercentage = this.contentArea.dim().height() < this.dim().height() ? 0f : (float) contentAndScrollHeightDif / this.contentArea.dim().height();
 
 			float barHeight = this.baseBar.dim().height() - (int) (this.baseBar.dim().height() * baseBarPercentage);
 
@@ -201,7 +201,7 @@ public class ScrollBar extends GuiFrame
 		{
 			double basePosY = input.getMouseY() - this.baseBar.dim().y() + this.grabbedMouseYOffset;
 
-			float percent = (float) basePosY / (this.baseBar.dim().height() - this.grabbableBar.dim().height());
+			float percent = this.contentArea.dim().height() < this.dim().height() ? 0f : (float) basePosY / (this.baseBar.dim().height() - this.grabbableBar.dim().height());
 
 			this.setScrollPercentage(percent);
 		}
@@ -215,9 +215,9 @@ public class ScrollBar extends GuiFrame
 
 	private void setScrollPercentage(float percentage)
 	{
-		this.scrollPercentage = percentage;
+		this.scrollPercentage = this.contentArea.dim().height() < this.dim().height() ? 0f : Math.max(0.0F, Math.min(percentage, 1.0F));
 
-		this.scrollPercentage = Math.max(0.0F, Math.min(this.scrollPercentage, 1.0F));
+		int i = 0;
 	}
 
 	private void increaseScrollPercentage(float percentage)

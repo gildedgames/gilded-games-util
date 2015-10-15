@@ -42,7 +42,7 @@ public class ScrollableGui extends GuiFrame
 		this.padding = padding;
 
 		int posPadding = this.padding + 1;
-		int areaPadding = this.padding * 2 - 2;
+		int areaPadding = this.padding * 2 + 1;
 
 		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(-areaPadding, -areaPadding).flush();
 		this.scrolledGui = new ScissorableGui(dim, scrolledGui);
@@ -77,10 +77,7 @@ public class ScrollableGui extends GuiFrame
 				int scrollValue = (int) -(this.prevScrollPer * (scrolledElementHeight - scissoredHeight));
 
 				return ModDim2D.build().mod()
-						.x(ModDim2D.clone(scrollBar).clear(ModifierType.POS).maxX())
-						.y(ScrollableGui.this.padding + scrollValue)
-						.addHeight(-ScrollableGui.this.padding)
-						.addWidth(-scrollBar.dim().width() - (ScrollableGui.this.padding * 2))
+						.y(scrollValue)
 						.flush();
 			}
 
@@ -101,12 +98,12 @@ public class ScrollableGui extends GuiFrame
 				return false;
 			}
 
-		}, ModifierType.AREA, ModifierType.POS).mod().resetPos().flush();
+		}, ModifierType.Y).mod().resetPos().flush();
 
 		this.scrollBar.dim().mod().resetPos().flush();
 
 		this.scrollBar.dim().mod().center(false).pos(this.padding + 1, this.padding + 1).height(-this.padding * 2 - 2).flush();
-		this.scrolledGui.dim().mod().center(false).flush();
+		this.scrolledGui.dim().mod().center(false).pos(this.scrollBar.dim().maxX(), this.padding).addArea(-this.scrollBar.dim().width() - (this.padding * 2), -this.padding * 2).flush();
 
 		RectCollection scrollingArea = RectCollection.build().addHolder(this).flush();
 
