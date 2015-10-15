@@ -26,7 +26,7 @@ public class TextElement extends GuiFrame
 			@Override
 			public Rect assembleRect()
 			{
-				return Dim2D.build().width(TextElement.this.text.scaledWidth()).height(TextElement.this.text.scaledHeight()).flush();
+				return Dim2D.build().width(TextElement.this.text.width()).height(TextElement.this.text.height()).flush();
 			}
 
 			@Override
