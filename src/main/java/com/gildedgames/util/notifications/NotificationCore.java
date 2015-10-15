@@ -8,6 +8,7 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
+import com.gildedgames.util.notifications.common.networking.messages.PacketClickedResponse;
 import com.gildedgames.util.notifications.common.networking.messages.PacketNotification;
 import com.gildedgames.util.notifications.common.networking.messages.PacketRemoveMessage;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
@@ -27,6 +28,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class NotificationCore implements ICore
 {
@@ -86,6 +88,7 @@ public class NotificationCore implements ICore
 
 		UtilCore.NETWORK.registerPacket(PacketNotification.class);
 		UtilCore.NETWORK.registerPacket(PacketRemoveMessage.class);
+		UtilCore.NETWORK.registerPacket(PacketClickedResponse.class, Side.SERVER);
 	}
 
 	@Override
