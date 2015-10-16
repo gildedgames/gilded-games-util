@@ -207,11 +207,6 @@ public class ModDim2D implements Rect
 
 		List<ModifierType> changedTypes = ModDim2D.getChangedTypes(oldModifiedState, this.modifiedState);
 
-		if (changedTypes.isEmpty())
-		{
-			return;
-		}
-
 		for (RectListener listener : this.listeners)
 		{
 			listener.notifyDimChange(changedTypes);
