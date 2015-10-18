@@ -35,7 +35,7 @@ public class TextElement extends GuiFrame
 				return true;
 			}
 
-		}, ModifierType.X, ModifierType.AREA);
+		}, ModifierType.AREA);
 	}
 
 	public void setText(String text)
