@@ -67,7 +67,7 @@ public class GuiNotification extends GuiFrame
 		{
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
 			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Pos2D.flush(), false));
-			buttons.put("sender", new TextElement(GuiFactory.text("From: " + this.message.getSender().getCommandSenderName(), Color.YELLOW), Pos2D.flush(), false));
+			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + this.message.getSender().getCommandSenderName(), Color.YELLOW), Pos2D.flush(), false));
 			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));
 
 			int i = 0;
@@ -76,7 +76,7 @@ public class GuiNotification extends GuiFrame
 				buttons.put(Integer.toString(i), new ResponseButton(this.message, response, i));
 			}
 
-			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), "Back")
+			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), UtilCore.translate("gui.back"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
