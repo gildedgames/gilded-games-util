@@ -24,4 +24,6 @@ public interface IGroupPerms extends IO<IOBridge, IOBridge>, IGroupHook
 
 	boolean canRemoveMember(GroupMember toRemove, GroupMember remover);
 
+	GroupMember owner();
+
 }

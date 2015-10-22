@@ -1,7 +1,10 @@
 package com.gildedgames.util.tab.client.social;
 
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.client.GuiGroup;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
+import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.client.GuiGroups;
+import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.tab.common.util.TabGeneric;
 import com.gildedgames.util.ui.UiCore;
 
@@ -24,13 +27,17 @@ public class TabGroup extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return UiCore.locate().containsFrame(gui, GuiGroup.class);
+		return UiCore.locate().containsFrame(gui, GuiGroups.class);
 	}
 
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		UiCore.locate().open("", new GuiGroup(player));
+		GroupMember member = GroupCore.locate().getPlayers().get(player);
+		if (member.groupsInFor(GroupCore.locate().getDefaultPool()).isEmpty())
+		{
+			UiCore.locate().open("", new MinecraftGui(new GuiGroups(player)));
+		}
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.core.INotificationResponse;
@@ -53,7 +54,7 @@ public class GuiNotification extends GuiFrame
 		this.content().set("notification", scrollNotifications);
 	}
 
-	private static class NotificationContent implements ContentFactory
+	private static class NotificationContent implements ContentFactory<Ui>
 	{
 		private INotificationMessage message;
 
@@ -84,7 +85,7 @@ public class GuiNotification extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
 					{
-						UiCore.locate().open("", new GuiNotifications(Minecraft.getMinecraft().thePlayer));
+						UiCore.locate().open("", new MinecraftGui(new GuiNotifications(Minecraft.getMinecraft().thePlayer)));
 					}
 				}
 			});
