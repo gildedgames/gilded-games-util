@@ -3,96 +3,81 @@ package com.gildedgames.util.ui.util.input;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.event.view.MouseEventGui;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiCollection;
+import com.gildedgames.util.ui.util.factory.ContentFactory;
+import com.gildedgames.util.ui.util.transform.GuiPositioner;
 
-public class RadioButtonSet extends GuiFrame
+public class RadioButtonSet extends GuiCollection<RadioButton>
 {
-	
+
 	private List<RadioButton> buttons = new ArrayList<RadioButton>();
 
-	public RadioButtonSet()
+	public RadioButtonSet(GuiPositioner positioner, ContentFactory<RadioButton>... contentProviders)
 	{
-		
+		super(positioner, contentProviders);
 	}
-	
-	public void add(RadioButton button)
-	{
-		this.buttons.add(button);
-		
-		this.setButtons();
-	}
-	
-	public boolean remove(RadioButton button)
-	{
-		boolean flag = this.buttons.remove(button);
-		
-		this.setButtons();
-		
-		return flag;
-	}
-	
-	private void setButtons()
-	{
-		this.content().clear();
-		
-		List<Rect> rects = new ArrayList<Rect>();
-		
-		for (final RadioButton button : this.buttons)
-		{
-			button.events().set("click", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED))
-			{
 
-				@Override
-				protected void onTrue(InputProvider input, MouseInputPool pool)
+	public RadioButtonSet(Pos2D pos, int width, GuiPositioner positioner, ContentFactory<RadioButton>... contentProviders)
+	{
+		super(pos, width, positioner, contentProviders);
+	}
+
+	@Override
+	protected void onElementAdded(final RadioButton element)
+	{
+		super.onElementAdded(element);
+
+		this.buttons.add(element);
+
+		element.events().set("click", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED))
+		{
+			@Override
+			protected void onTrue(InputProvider input, MouseInputPool pool)
+			{
+				element.setOn(true);
+
+				for (RadioButton rButton : RadioButtonSet.this.buttons)
 				{
-					button.setOn(true);
-					
-					for (RadioButton rButton : RadioButtonSet.this.buttons)
+					if (rButton != element)
 					{
-						if (rButton != button)
-						{
-							rButton.setOn(false);
-						}
+						rButton.setOn(false);
 					}
 				}
+			}
 
-				@Override
-				protected void onFalse(InputProvider input, MouseInputPool pool)
-				{
-					
-				}
+			@Override
+			protected void onFalse(InputProvider input, MouseInputPool pool)
+			{
+			}
 
-				@Override
-				public void initEvent() {
-					
-				}
-				
-			});
-			
-			button.dim().mod().pos(0,  this.content().size() * 20).flush();
-			
-			this.content().set(String.valueOf(this.content().size()), button);
-			
-			rects.add(button.dim());
-		}
-		
-		Rect combined = Dim2D.combine(rects);
-
-		this.dim().mod().area(combined.width(), combined.height()).flush();
+			@Override
+			public void initEvent()
+			{
+			}
+		});
 	}
-	
-	@Override
-	public void initContent(InputProvider input)
+
+	/**
+	 * Confirms the selection of the currently
+	 * active radio button.
+	 */
+	public void confirm()
 	{
-		this.setButtons();
+		for (RadioButton rButton : RadioButtonSet.this.buttons)
+		{
+			if (rButton.isOn())
+			{
+				rButton.onConfirmed();
+				return;
+			}
+		}
 	}
-	
+
 }

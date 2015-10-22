@@ -7,13 +7,13 @@ import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.google.common.collect.ImmutableMap;
 
-public class FrameContentFactory implements ContentFactory
+public class FrameContentFactory implements ContentFactory<Ui>
 {
 
 	private GenericFactory<GuiFrame> frameFactory;
-	
+
 	private int buttonCount;
-	
+
 	public FrameContentFactory(GenericFactory<GuiFrame> frameFactory, int buttonCount)
 	{
 		this.frameFactory = frameFactory;
@@ -34,5 +34,5 @@ public class FrameContentFactory implements ContentFactory
 
 		return buttons;
 	}
-	
+
 }
