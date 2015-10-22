@@ -2,10 +2,6 @@ package com.gildedgames.util.core.gui.viewing;
 
 import java.io.IOException;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -17,6 +13,10 @@ import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.input.MouseMotion;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 
 public final class MinecraftGuiWrapper extends GuiScreen
 {
@@ -43,7 +43,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	public final void initGui()
 	{
 		this.updateScreen();
-		
+
 		INPUT.refreshResolution();
 
 		if (!this.hasInit)
@@ -61,7 +61,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
-		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(keyTyped, ButtonState.PRESSED));
+		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(keyTyped, charTyped, ButtonState.PRESSED));
 
 		this.frame.onKeyboardInput(pool, INPUT);
 	}

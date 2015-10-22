@@ -1,16 +1,17 @@
 package com.gildedgames.util.ui.util.input;
 
+import org.apache.commons.lang3.math.NumberUtils;
 
 public class FloatInput implements DataInput<Float>
 {
-	
+
 	private float data;
-	
+
 	public FloatInput()
 	{
-		
+
 	}
-	
+
 	public FloatInput(float data)
 	{
 		this.data = data;
@@ -27,5 +28,17 @@ public class FloatInput implements DataInput<Float>
 	{
 		this.data = data;
 	}
-	
+
+	@Override
+	public boolean validString(String string)
+	{
+		return NumberUtils.isNumber(string);
+	}
+
+	@Override
+	public Float parse(String string)
+	{
+		return Float.parseFloat(string);
+	}
+
 }

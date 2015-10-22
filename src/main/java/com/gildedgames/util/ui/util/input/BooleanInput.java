@@ -1,16 +1,15 @@
 package com.gildedgames.util.ui.util.input;
 
-
 public class BooleanInput implements DataInput<Boolean>
 {
-	
+
 	private boolean data;
-	
+
 	public BooleanInput()
 	{
-		
+
 	}
-	
+
 	public BooleanInput(boolean data)
 	{
 		this.data = data;
@@ -27,5 +26,17 @@ public class BooleanInput implements DataInput<Boolean>
 	{
 		this.data = data;
 	}
-	
+
+	@Override
+	public boolean validString(String string)
+	{
+		return false;
+	}
+
+	@Override
+	public Boolean parse(String string)
+	{
+		return false;
+	}
+
 }

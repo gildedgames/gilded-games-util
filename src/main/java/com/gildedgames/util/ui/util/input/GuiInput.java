@@ -24,10 +24,10 @@ import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.TextElement;
 
-public class GuiInput extends GuiFrame
+public class GuiInput<T> extends GuiFrame
 {
 
-	private DataInput data;
+	private DataInput<T> data;
 
 	private final AssetLocation texture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputBox.png");
 
@@ -39,7 +39,7 @@ public class GuiInput extends GuiFrame
 
 	private int textIndex;
 
-	public GuiInput(DataInput data, Rect rect, String title)
+	public GuiInput(DataInput<T> data, Rect rect, String title)
 	{
 		this.data = data;
 		this.dim().mod().set(rect).flush();
@@ -66,16 +66,20 @@ public class GuiInput extends GuiFrame
 				{
 					TextElement text = GuiInput.this.input;
 
-					if (pool.has(Keyboard.KEY_DELETE))
+					if (pool.has(Keyboard.KEY_BACK))
 					{
 						text.setText(text.getText().substring(0, text.getText().length() - 2));
 					}
 
 					for (KeyboardInput key : pool)
 					{
-						String keyString = String.valueOf((char) key.getKey());
-
-						text.setText(text.getText().concat(keyString));
+						String keyString = String.valueOf(key.getChar());
+						String newString = text.getText().concat(keyString);
+						if (GuiInput.this.data.validString(newString))
+						{
+							GuiInput.this.data.setData(GuiInput.this.data.parse(newString));
+							text.setText(newString);
+						}
 					}
 				}
 
