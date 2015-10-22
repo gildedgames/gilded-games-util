@@ -9,7 +9,7 @@ import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
@@ -23,6 +23,8 @@ import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.TextElement;
+
+import net.minecraft.util.ChatAllowedCharacters;
 
 public class GuiInput<T> extends GuiFrame
 {
@@ -52,9 +54,9 @@ public class GuiInput<T> extends GuiFrame
 	{
 		super.initContent(input);
 
-		this.input = new TextElement(GuiFactory.text("", Color.WHITE), Pos2D.flush(0, 0), false);
-		this.text = new TextElement(GuiFactory.text(this.title, Color.WHITE), Pos2D.flush(this.dim().width() / 2, 0), true);
+		this.text = new TextElement(GuiFactory.text(this.title, Color.WHITE), Dim2D.build().x(this.dim().width() / 2).centerX(true).flush());
 		GuiFrame inputBox = GuiFactory.createResizableTexture(this.texture, this.dim().clone().clear(ModifierType.POS).mod().pos(0, this.text.dim().height()).flush(), UV.build().area(1, 1).flush(), UV.build().area(1, 18).flush(), UV.build().area(198, 1).flush());
+		this.input = new TextElement(GuiFactory.text("", Color.WHITE), Dim2D.build().pos(2, this.text.dim().height() + inputBox.dim().height() / 2).centerY(true).flush());
 
 		this.input.events().set("onTyping", new GuiEvent()
 		{
@@ -68,17 +70,20 @@ public class GuiInput<T> extends GuiFrame
 
 					if (pool.has(Keyboard.KEY_BACK))
 					{
-						text.setText(text.getText().substring(0, text.getText().length() - 2));
+						text.setText(text.getText().substring(0, text.getText().length() - 1));
 					}
 
 					for (KeyboardInput key : pool)
 					{
-						String keyString = String.valueOf(key.getChar());
-						String newString = text.getText().concat(keyString);
-						if (GuiInput.this.data.validString(newString))
+						if (ChatAllowedCharacters.isAllowedCharacter(key.getChar()))
 						{
-							GuiInput.this.data.setData(GuiInput.this.data.parse(newString));
-							text.setText(newString);
+							String keyString = String.valueOf(key.getChar());
+							String newString = text.getText().concat(keyString);
+							if (GuiInput.this.data.validString(newString))
+							{
+								GuiInput.this.data.setData(GuiInput.this.data.parse(newString));
+								text.setText(newString);
+							}
 						}
 					}
 				}

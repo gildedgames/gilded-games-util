@@ -122,9 +122,9 @@ public class GuiGroups extends GuiFrame
 		public void initContent(InputProvider input)
 		{
 			super.initContent(input);
-			this.content().set("group", new TextElement(GuiFactory.text(this.group.getName(), new Color(0xE5E5E5)), Pos2D.flush(1, 2), false));
-			this.content().set("perm", new TextElement(GuiFactory.text(this.group.getPermissions().getName(), Color.BLACK, 0.75f), Pos2D.flush(1, 12), false));
-			this.content().set("username", new TextElement(GuiFactory.text(this.group.getPermissions().owner().getProfile().getUsername(), new Color(0x8FE639), 0.75f), Pos2D.flush(1, 12), false));
+			this.content().set("group", new TextElement(GuiFactory.text(this.group.getName(), new Color(0xE5E5E5)), Dim2D.build().pos(1, 2).flush()));
+			this.content().set("perm", new TextElement(GuiFactory.text(this.group.getPermissions().getName(), Color.BLACK, 0.75f), Dim2D.build().pos(1, 12).flush()));
+			this.content().set("username", new TextElement(GuiFactory.text(this.group.getPermissions().owner().getProfile().getUsername(), new Color(0x8FE639), 0.75f), Dim2D.build().pos(10, 2).flush()));
 		}
 
 		@Override

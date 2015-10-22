@@ -67,8 +67,8 @@ public class GuiNotification extends GuiFrame
 		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
-			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Pos2D.flush(), false));
-			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + this.message.getSender().getCommandSenderName(), Color.YELLOW), Pos2D.flush(), false));
+			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Dim2D.flush()));
+			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + this.message.getSender().getCommandSenderName(), Color.YELLOW), Dim2D.flush()));
 			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));
 
 			int i = 0;
@@ -114,7 +114,7 @@ public class GuiNotification extends GuiFrame
 		{
 			super.initContent(input);
 			this.content().set("button", new MinecraftButton(Dim2D.build().buildWith(this).area().flush(), ""));
-			this.content().set("title", new TextElement(GuiFactory.text(this.response.getName(), new Color(0xE5E5E5)), Pos2D.flush(1, 2), false));
+			this.content().set("title", new TextElement(GuiFactory.text(this.response.getName(), new Color(0xE5E5E5)), Dim2D.build().pos(1, 2).flush()));
 		}
 
 		@Override
