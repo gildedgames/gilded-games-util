@@ -3,7 +3,9 @@ package com.gildedgames.util.notifications.client;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
@@ -54,7 +56,7 @@ public class GuiNotifications extends GuiFrame
 
 	}
 
-	private static class NotificationButtonContent implements ContentFactory
+	private static class NotificationButtonContent implements ContentFactory<Ui>
 	{
 
 		private PlayerNotification player;
@@ -96,7 +98,7 @@ public class GuiNotifications extends GuiFrame
 
 			this.content().set("button", new MinecraftButton(Dim2D.build().buildWith(this).area().flush(), ""));
 			this.content().set("title", new TextElement(GuiFactory.text(this.message.getTitle(), new Color(0xE5E5E5)), Pos2D.flush(1, 2), false));
-			this.content().set("from", new TextElement(GuiFactory.text("From: ", Color.BLACK, 0.75f), Pos2D.flush(1, 12), false));
+			this.content().set("from", new TextElement(GuiFactory.text(UtilCore.translate("gui.from"), Color.BLACK, 0.75f), Pos2D.flush(1, 12), false));
 			this.content().set("username", new TextElement(GuiFactory.text(this.message.getSender().getCommandSenderName(), new Color(0x8FE639), 0.75f), Pos2D.flush(1, 12), false));
 		}
 
@@ -106,7 +108,7 @@ public class GuiNotifications extends GuiFrame
 			super.onMouseInput(pool, input);
 			if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
 			{
-				UiCore.locate().open("", new GuiNotification(this.message));
+				UiCore.locate().open("", new MinecraftGui(new GuiNotification(this.message)));
 			}
 		}
 

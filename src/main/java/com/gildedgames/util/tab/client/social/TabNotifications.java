@@ -1,6 +1,7 @@
 package com.gildedgames.util.tab.client.social;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.notifications.client.GuiNotification;
 import com.gildedgames.util.notifications.client.GuiNotifications;
 import com.gildedgames.util.tab.common.util.TabGeneric;
@@ -26,13 +27,13 @@ public class TabNotifications extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return UiCore.locate().containsFrame(gui, GuiNotifications.class) || UiCore.locate().containsFrame(gui, GuiNotification.class);
+		return UiCore.locate().containsFrame(gui, GuiNotifications.class, GuiNotification.class);
 	}
 
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		UiCore.locate().open("", new GuiNotifications(player));
+		UiCore.locate().open("", new MinecraftGui(new GuiNotifications(player)));
 	}
 
 	@Override

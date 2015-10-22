@@ -212,19 +212,22 @@ public class UiServices
 	 * Returns true if the given screen is a wrapper around the GuiFrame class
 	 * given.
 	 */
-	public boolean containsFrame(GuiScreen screen, Class<? extends GuiFrame> frame)
+	public boolean containsFrame(GuiScreen screen, Class<? extends GuiFrame>... frames)
 	{
 		if (screen instanceof MinecraftGuiWrapper)
 		{
 			GuiFrame wrapped = ((MinecraftGuiWrapper) screen).getFrame();
-			if (wrapped.getClass().equals(frame))
+			for (Class<? extends GuiFrame> frame : frames)
 			{
-				return true;
-			}
-			if (wrapped instanceof MinecraftGui)
-			{
-				MinecraftGui mcGui = (MinecraftGui) wrapped;
-				return mcGui.getDecoratedElement().getClass().equals(frame);
+				if (wrapped.getClass().equals(frame))
+				{
+					return true;
+				}
+				if (wrapped instanceof MinecraftGui)
+				{
+					MinecraftGui mcGui = (MinecraftGui) wrapped;
+					return mcGui.getDecoratedElement().getClass().equals(frame);
+				}
 			}
 		}
 		return false;

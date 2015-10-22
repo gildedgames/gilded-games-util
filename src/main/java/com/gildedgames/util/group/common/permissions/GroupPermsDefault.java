@@ -226,4 +226,10 @@ public class GroupPermsDefault implements IGroupPerms
 		return this.owner.getProfile().getEntity();
 	}
 
+	@Override
+	public GroupMember owner()
+	{
+		return this.owner;
+	}
+
 }
