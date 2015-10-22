@@ -9,6 +9,7 @@ import com.gildedgames.util.menu.client.MenuClientEvents;
 import com.gildedgames.util.menu.client.util.MenuMinecraft;
 import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.client.social.TabChat;
+import com.gildedgames.util.tab.client.social.TabGroup;
 import com.gildedgames.util.tab.client.social.TabNotifications;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.tab.TabBackpack;
@@ -67,6 +68,7 @@ public class ClientProxy extends ServerProxy
 
 		TabGroupHandler socialTab = new TabGroupHandler();
 		socialTab.getSide(Side.CLIENT).add(new TabChat());
+		socialTab.getSide(Side.CLIENT).add(new TabGroup());
 		socialTab.getSide(Side.CLIENT).add(new TabNotifications());
 		TabAPI.INSTANCE.register(socialTab);
 	}
