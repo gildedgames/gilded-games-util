@@ -22,29 +22,29 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiSorter;
 import com.google.common.collect.ImmutableMap;
 
-public class GuiCollection extends GuiFrame
+public class GuiCollection<T extends Ui> extends GuiFrame
 {
 
 	protected GuiPositioner positioner;
 
 	protected GuiSorter sorter;
 
-	protected List<ContentFactory> contentProviders = new ArrayList<ContentFactory>();
+	protected List<ContentFactory<T>> contentProviders = new ArrayList<ContentFactory<T>>();
 
 	private boolean isSorting;
 
-	public GuiCollection(GuiPositioner positioner, ContentFactory... contentProviders)
+	public GuiCollection(GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		this(Pos2D.flush(), 0, positioner, contentProviders);
 	}
 
-	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory... contentProviders)
+	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		super(Dim2D.build().pos(pos).width(width).flush());
 
 		this.positioner = positioner;
 
-		this.contentProviders.addAll(Arrays.<ContentFactory> asList(contentProviders));
+		this.contentProviders.addAll(Arrays.<ContentFactory<T>> asList(contentProviders));
 	}
 
 	public void setPositioner(GuiPositioner positioner)
@@ -71,12 +71,12 @@ public class GuiCollection extends GuiFrame
 	{
 		this.events().clear(Gui.class);
 
-		for (ContentFactory contentProvider : this.contentProviders)
+		for (ContentFactory<T> contentProvider : this.contentProviders)
 		{
 			if (contentProvider != null)
 			{
-				LinkedHashMap<String, Ui> elements = contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim());
-				for (Entry<String, Ui> entry : elements.entrySet())
+				LinkedHashMap<String, T> elements = contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim());
+				for (Entry<String, T> entry : elements.entrySet())
 				{
 					RectHolder holder = ObjectFilter.cast(entry.getValue(), RectHolder.class);
 					if (holder != null)
@@ -93,10 +93,16 @@ public class GuiCollection extends GuiFrame
 							}
 						});
 					}
+					this.onElementAdded(entry.getValue());
 				}
 				this.events().setAll(elements);
 			}
 		}
+	}
+
+	protected void onElementAdded(T element)
+	{
+
 	}
 
 	private void positionContent(List<Gui> views)
