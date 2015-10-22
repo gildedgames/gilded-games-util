@@ -10,6 +10,7 @@ import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
@@ -56,6 +57,8 @@ public class GuiInput extends GuiFrame
 		
 		this.input = new TextElement(GuiFactory.text("", Color.WHITE), Pos2D.flush(0, 0), false);
 		this.text = new TextElement(GuiFactory.text(this.title, Color.WHITE), Pos2D.flush(this.dim().width() / 2, -2), true);
+		
+		GuiFrame test = GuiFactory.createResizableTexture(this.texture, Dim2D.build().area(20, 20).pos(this.dim().width() / 2, -2).flush(), UV.build().area(1, 1).flush(), UV.build().area(1, 18).flush(), UV.build().area(198, 1).flush());
 		
 		this.input.events().set("onTyping", new GuiEvent()
 		{
@@ -118,7 +121,8 @@ public class GuiInput extends GuiFrame
 		});
 		
 		this.content().set("inputBox", inputBox);
-		
+
+		this.content().set("test", test);
 		this.content().set("text", this.text);
 		this.content().set("input", this.input);
 	}
