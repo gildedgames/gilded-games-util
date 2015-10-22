@@ -14,9 +14,9 @@ public class TextElement extends GuiFrame
 
 	private final Text text;
 
-	public TextElement(Text text, Pos2D pos, boolean centered)
+	public TextElement(Text text, Pos2D pos, boolean centeredX)
 	{
-		super(Dim2D.build().pos(pos).scale(text.scale).centerX(centered).flush());
+		super(Dim2D.build().pos(pos).scale(text.scale).centerX(centeredX).flush());
 
 		this.text = text;
 
