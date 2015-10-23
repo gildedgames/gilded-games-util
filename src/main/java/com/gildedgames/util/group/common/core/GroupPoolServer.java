@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupSettings;
+import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,7 @@ public class GroupPoolServer extends GroupPool
 	}
 
 	@Override
-	public Group create(String name, EntityPlayer creating)
+	public Group create(String name, EntityPlayer creating, IGroupPerms perms)
 	{
 		for (Group group : this.groups)
 		{
@@ -32,16 +33,16 @@ public class GroupPoolServer extends GroupPool
 			}
 		}
 
-		GroupMember groupMember = GroupMember.get(creating);
-
 		Group group = new Group(this);
 
-		GroupInfo groupInfo = new GroupInfo(name, this.settings.createPermissions(group, groupMember));
+		GroupInfo groupInfo = new GroupInfo(name, perms);
 		group.setGroupInfo(groupInfo);
 
 		MemberData memberData = new MemberData();
 		memberData.setHooks(this.createHooks(group));
 		group.setMemberData(memberData);
+
+		this.addGroupDirectly(group);
 
 		UtilCore.NETWORK.sendToAll(new PacketAddGroup(this, groupInfo));
 
@@ -58,7 +59,7 @@ public class GroupPoolServer extends GroupPool
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		if (group.getPermissions().canJoin(member))//Maybe put this check in PacketAddMember/
+		if (group.getPermissions().canJoin(group, member))//Maybe put this check in PacketAddMember/
 		{
 			this.leaveOldGroup(member);
 			UtilCore.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
@@ -78,7 +79,9 @@ public class GroupPoolServer extends GroupPool
 		this.removeMemberDirectly(group, member);
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
 
-		if (this.settings.groupRemovedWhenEmpty() && group.getMemberData().size() == 0)
+		group.getPermissions().onMemberRemoved(group, member);
+
+		if (this.settings.groupRemovedWhenEmpty() && group.getMemberData().size() == 0 && this.groups.contains(group))
 		{
 			this.remove(group);
 		}
@@ -104,7 +107,7 @@ public class GroupPoolServer extends GroupPool
 		}
 		GroupMember member = GroupMember.get(player);
 		GroupMember inviterG = GroupMember.get(inviter);
-		if (!group.getPermissions().canInvite(member, inviterG))
+		if (!group.getPermissions().canInvite(group, member, inviterG))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
 			return;

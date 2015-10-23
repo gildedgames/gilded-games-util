@@ -5,6 +5,7 @@ import com.gildedgames.util.notifications.common.core.INotificationMessage;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class MessageNotification extends AbstractNotification
 {
@@ -30,6 +31,7 @@ public class MessageNotification extends AbstractNotification
 	{
 		super.read(input);
 		this.message.read(new ByteBufBridge(input));
+		this.title = ByteBufUtils.readUTF8String(input);
 	}
 
 	@Override
@@ -37,6 +39,7 @@ public class MessageNotification extends AbstractNotification
 	{
 		super.write(output);
 		this.message.write(new ByteBufBridge(output));
+		ByteBufUtils.writeUTF8String(output, this.title);
 	}
 
 	@Override

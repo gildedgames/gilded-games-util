@@ -8,12 +8,16 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupPool;
+import com.gildedgames.util.group.common.core.PacketAddInvite;
+import com.gildedgames.util.group.common.core.PacketGroupPool;
+import com.gildedgames.util.group.common.core.PacketJoin;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GroupMember implements IPlayerHook
@@ -42,9 +46,7 @@ public class GroupMember implements IPlayerHook
 
 	public static GroupMember get(UUID uuid)
 	{
-		EntityPlayer entity = UtilCore.getPlayerOnServerFromUUID(uuid);
-
-		return GroupMember.get(entity);
+		return GroupCore.locate().getPlayers().get(uuid);
 	}
 
 	@Override
@@ -80,7 +82,22 @@ public class GroupMember implements IPlayerHook
 	@Override
 	public void entityInit(EntityPlayer player)
 	{
-
+		if (player.worldObj.isRemote)
+		{
+			return;
+		}
+		for (GroupPool pool : GroupCore.locate().getPools())
+		{
+			UtilCore.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.getProfile().getEntity());
+		}
+		for (Group joined : this.groups)
+		{
+			UtilCore.NETWORK.sendTo(new PacketJoin(joined.getParentPool(), joined), (EntityPlayerMP) this.profile.getEntity());
+		}
+		for (Group invited : this.invitations)
+		{
+			UtilCore.NETWORK.sendTo(new PacketAddInvite(invited.getParentPool(), invited, this, this), (EntityPlayerMP) this.profile.getEntity());
+		}
 	}
 
 	@Override
@@ -110,7 +127,10 @@ public class GroupMember implements IPlayerHook
 	public void joinGroup(Group group)
 	{
 		this.removeInvite(group);
-		this.groups.add(group);
+		if (!this.groups.contains(group))
+		{
+			this.groups.add(group);
+		}
 	}
 
 	public void leaveGroup(Group group)
@@ -138,7 +158,10 @@ public class GroupMember implements IPlayerHook
 
 	public void addInvite(Group group)
 	{
-		this.invitations.add(group);
+		if (!this.invitations.contains(group))
+		{
+			this.invitations.add(group);
+		}
 	}
 
 	public void removeInvite(Group group)

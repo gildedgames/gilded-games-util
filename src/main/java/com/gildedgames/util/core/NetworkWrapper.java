@@ -75,7 +75,10 @@ public class NetworkWrapper
 	{
 		for (GroupMember member : group.getMemberData())
 		{
-			this.sendTo(message, (EntityPlayerMP) member.getProfile().getEntity());
+			if (member.getProfile().getEntity() != null)
+			{
+				this.sendTo(message, (EntityPlayerMP) member.getProfile().getEntity());
+			}
 		}
 	}
 

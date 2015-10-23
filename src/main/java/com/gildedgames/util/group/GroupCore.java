@@ -1,8 +1,10 @@
 package com.gildedgames.util.group;
 
+import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.nbt.NBTBridge;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.core.GroupPool;
@@ -12,6 +14,7 @@ import com.gildedgames.util.group.common.core.PacketAddInvite;
 import com.gildedgames.util.group.common.core.PacketAddMember;
 import com.gildedgames.util.group.common.core.PacketChangeGroupInfo;
 import com.gildedgames.util.group.common.core.PacketChangeOwner;
+import com.gildedgames.util.group.common.core.PacketGroupPool;
 import com.gildedgames.util.group.common.core.PacketInvite;
 import com.gildedgames.util.group.common.core.PacketJoin;
 import com.gildedgames.util.group.common.core.PacketRemoveGroup;
@@ -25,6 +28,7 @@ import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.player.PlayerCore;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -93,7 +97,7 @@ public class GroupCore implements ICore
 		UtilCore.NETWORK.registerPacket(PacketRemoveInvitation.class, Side.CLIENT);
 		UtilCore.NETWORK.registerPacket(PacketRemoveInvite.class);
 		UtilCore.NETWORK.registerPacket(PacketRemoveMember.class);
-
+		UtilCore.NETWORK.registerPacket(PacketGroupPool.class, Side.CLIENT);
 	}
 
 	@Override
@@ -111,8 +115,13 @@ public class GroupCore implements ICore
 	@Override
 	public void flushData()
 	{
-		// TODO Auto-generated method stub
-
+		for (GroupPool pool : this.serviceLocator.server().getPools())
+		{
+			NBTTagCompound tag = new NBTTagCompound();
+			NBTBridge bridge = new NBTBridge(tag);
+			pool.write(bridge);
+			GGHelper.writeNBTToFile(tag, pool.getID() + ".group");
+		}
 	}
 
 	@Override
@@ -136,13 +145,25 @@ public class GroupCore implements ICore
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-
+		for (GroupPool pool : this.serviceLocator.server().getPools())
+		{
+			pool.clear();
+		}
 	}
 
 	@Override
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-
+		for (GroupPool pool : this.serviceLocator.server().getPools())
+		{
+			NBTTagCompound tag = GGHelper.readNBTFromFile(pool.getID() + ".group");
+			if (tag == null)
+			{
+				continue;
+			}
+			NBTBridge bridge = new NBTBridge(tag);
+			pool.read(bridge);
+		}
 	}
 
 	@Override

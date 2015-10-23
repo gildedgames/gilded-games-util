@@ -11,6 +11,11 @@ public class GroupInfo implements IO<IOBridge, IOBridge>
 
 	private String name;
 
+	private GroupInfo()
+	{
+
+	}
+
 	protected GroupInfo(String name, IGroupPerms permissions)
 	{
 		this.name = name;
