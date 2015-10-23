@@ -1,9 +1,10 @@
 package com.gildedgames.util.player.common.player;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -127,7 +128,12 @@ public class PlayerProfile implements IPlayerProfile
 			buf.writeLong(this.uuid.getMostSignificantBits());
 			buf.writeLong(this.uuid.getLeastSignificantBits());
 
-			ByteBufUtils.writeUTF8String(buf, this.username);
+			boolean hasUsername = StringUtils.isEmpty(this.username);
+			buf.writeBoolean(hasUsername);
+			if (hasUsername)
+			{
+				ByteBufUtils.writeUTF8String(buf, this.username);
+			}
 
 			buf.writeBoolean(this.isLoggedIn);
 		}
@@ -140,7 +146,10 @@ public class PlayerProfile implements IPlayerProfile
 		{
 			this.uuid = new UUID(buf.readLong(), buf.readLong());
 
-			this.username = ByteBufUtils.readUTF8String(buf);
+			if (buf.readBoolean())
+			{
+				this.username = ByteBufUtils.readUTF8String(buf);
+			}
 
 			this.isLoggedIn = buf.readBoolean();
 		}

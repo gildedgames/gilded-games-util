@@ -1,10 +1,9 @@
 package com.gildedgames.util.group.common.core;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.player.GroupMember;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 {
@@ -29,7 +28,7 @@ public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 	{
 		Group group = message.group;
 		GroupMember thePlayer = GroupMember.get(player);
-		if (!group.hasMemberData() || !group.getMemberData().contains(message.member) || !group.getPermissions().canChangeOwner(message.member, thePlayer))
+		if (!group.hasMemberData() || !group.getMemberData().contains(message.member) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to change " + message.member.getProfile().getUsername() + " to the owner but did not have the permissions.");
 			return;

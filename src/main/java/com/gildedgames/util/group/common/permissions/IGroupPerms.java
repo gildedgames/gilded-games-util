@@ -1,28 +1,30 @@
 package com.gildedgames.util.group.common.permissions;
 
-import com.gildedgames.util.group.common.IGroupHook;
+import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;
 
-public interface IGroupPerms extends IO<IOBridge, IOBridge>, IGroupHook
+public interface IGroupPerms extends IO<IOBridge, IOBridge>
 {
 
 	String getName();
 
 	String getDescription();
 
-	boolean canInvite(GroupMember member, GroupMember inviter);
+	boolean canInvite(Group group, GroupMember member, GroupMember inviter);
 
-	boolean canChangeOwner(GroupMember newOwner, GroupMember changing);
+	boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing);
 
-	boolean canJoin(GroupMember member);
+	boolean canJoin(Group group, GroupMember member);
 
-	boolean isVisible();
+	boolean isVisible(Group group);
 
-	boolean canRemoveGroup(GroupMember remover);
+	boolean canRemoveGroup(Group group, GroupMember remover);
 
-	boolean canRemoveMember(GroupMember toRemove, GroupMember remover);
+	boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover);
+
+	void onMemberRemoved(Group group, GroupMember removed);
 
 	GroupMember owner();
 

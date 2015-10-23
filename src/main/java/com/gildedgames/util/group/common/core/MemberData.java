@@ -9,12 +9,11 @@ import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
-import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
+public class MemberData implements Iterable<GroupMember>
 {
 	private final List<GroupMember> members = new ArrayList<GroupMember>();
 
@@ -27,7 +26,6 @@ public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
 		this.hooks = hooks;
 	}
 
-	@Override
 	public void write(IOBridge output)
 	{
 		int memberSize = this.members.size();
@@ -38,7 +36,7 @@ public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
 		}
 
 		int invitedSize = this.invitedMembers.size();
-		output.setInteger("memberSize", invitedSize);
+		output.setInteger("inviteSize", invitedSize);
 		for (int i = 0; i < invitedSize; i++)
 		{
 			IOUtil.setUUID(this.invitedMembers.get(i).getProfile().getUUID(), output, "invited" + i);
@@ -47,7 +45,30 @@ public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
 		IOUtil.setIOList("hooks", this.hooks, output);
 	}
 
-	@Override
+	public void readAndAdd(Group group, IOBridge input)
+	{
+		this.members.clear();
+		this.invitedMembers.clear();
+
+		int memberSize = input.getInteger("memberSize");
+		for (int i = 0; i < memberSize; i++)
+		{
+			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "member" + i));
+			this.members.add(member);
+			member.joinGroup(group);
+		}
+
+		int invitedSize = input.getInteger("inviteSize");
+		for (int i = 0; i < invitedSize; i++)
+		{
+			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "invited" + i));
+			this.invitedMembers.add(member);
+			member.addInvite(group);
+		}
+
+		this.hooks = IOUtil.getIOList("hooks", input);
+	}
+
 	public void read(IOBridge input)
 	{
 		this.members.clear();
@@ -59,10 +80,11 @@ public class MemberData implements IO<IOBridge, IOBridge>, Iterable<GroupMember>
 			this.members.add(GroupMember.get(IOUtil.getUUID(input, "member" + i)));
 		}
 
-		int invitedSize = input.getInteger("memberSize");
+		int invitedSize = input.getInteger("inviteSize");
 		for (int i = 0; i < invitedSize; i++)
 		{
-			this.members.add(GroupMember.get(IOUtil.getUUID(input, "invited" + i)));
+			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "invited" + i));
+			this.invitedMembers.add(member);
 		}
 
 		this.hooks = IOUtil.getIOList("hooks", input);

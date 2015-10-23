@@ -98,7 +98,7 @@ public class GuiGroups extends GuiFrame
 			LinkedHashMap<String, RadioButton> buttons = new LinkedHashMap<String, RadioButton>();
 			for (Group group : GroupCore.locate().getDefaultPool().getGroups())
 			{
-				if (group.getPermissions().canJoin(this.member))
+				if (group.getPermissions().canJoin(group, this.member))
 				{
 					buttons.put(group.getName(), new GroupButton(group));
 				}
@@ -123,8 +123,8 @@ public class GuiGroups extends GuiFrame
 		{
 			super.initContent(input);
 			this.content().set("group", new TextElement(GuiFactory.text(this.group.getName(), new Color(0xE5E5E5)), Dim2D.build().pos(1, 2).flush()));
-			this.content().set("perm", new TextElement(GuiFactory.text(this.group.getPermissions().getName(), Color.BLACK, 0.75f), Dim2D.build().pos(1, 12).flush()));
-			this.content().set("username", new TextElement(GuiFactory.text(this.group.getPermissions().owner().getProfile().getUsername(), new Color(0x8FE639), 0.75f), Dim2D.build().pos(10, 2).flush()));
+			this.content().set("perm", new TextElement(GuiFactory.text(this.group.getPermissions().getName(), Color.green, 0.75f), Dim2D.build().pos(1, 12).flush()));
+			this.content().set("username", new TextElement(GuiFactory.text(this.group.getPermissions().owner().getProfile().getUsername(), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 		}
 
 		@Override
