@@ -39,7 +39,7 @@ public class Button extends GuiFrame
 		this.hoveredState.dim().mod().center(false).resetPos().flush();
 		this.clickedState.dim().mod().center(false).resetPos().flush();
 
-		this.clickedState.events().set("clickEvent", new MouseEventGuiFocus(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED)));
+		this.clickedState.events().set("clickEvent", new MouseEventGuiFocus(new MouseInput(MouseButton.LEFT, ButtonState.PRESS)));
 
 		this.content().set("hoveredState", this.hoveredState);
 		this.content().set("clickedState", this.clickedState);

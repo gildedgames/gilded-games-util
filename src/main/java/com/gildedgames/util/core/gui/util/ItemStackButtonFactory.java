@@ -9,7 +9,7 @@ import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.util.events.DraggableBehavior;
+import com.gildedgames.util.ui.util.events.DragFactory;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
 import com.gildedgames.util.ui.util.factory.GenericFactory;
 import com.google.common.collect.ImmutableMap;
@@ -106,7 +106,7 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 		{
 			final MinecraftButtonItemStack button = new MinecraftButtonItemStack(stack);
 
-			button.events().set("draggableBehavior", new DraggableBehavior(new GenericFactory<MinecraftItemStackRender>()
+			button.events().set("draggableBehavior", new DragFactory(new GenericFactory<MinecraftItemStackRender>()
 			{
 
 				@Override

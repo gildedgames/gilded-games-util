@@ -9,7 +9,7 @@ public class MouseInput extends ButtonInput
 
 	public MouseInput(MouseButton button)
 	{
-		this(button, ButtonState.PRESSED);
+		this(button, ButtonState.PRESS);
 	}
 
 	public MouseInput(MouseButton button, ButtonState state)

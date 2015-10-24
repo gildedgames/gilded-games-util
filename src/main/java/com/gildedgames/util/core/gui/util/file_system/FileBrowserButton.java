@@ -42,7 +42,7 @@ public class FileBrowserButton extends GuiFrame
 
 		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).flush(), this.texture);
 		
-		button.events().set("pushDown", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED))
+		button.events().set("pushDown", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESS))
 		{
 			@Override
 			protected void onTrue(InputProvider inputM, MouseInputPool pool)

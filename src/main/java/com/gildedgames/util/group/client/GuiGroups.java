@@ -62,7 +62,7 @@ public class GuiGroups extends GuiFrame
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
 			{
 				super.onMouseInput(pool, input);
-				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
+				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
 					groups.confirm();
 				}
@@ -75,7 +75,7 @@ public class GuiGroups extends GuiFrame
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
 			{
 				super.onMouseInput(pool, input);
-				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
+				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
 					UiCore.locate().open("", new MinecraftGui(new GuiCreateGroup()));
 				}

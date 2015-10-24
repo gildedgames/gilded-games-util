@@ -9,17 +9,19 @@ import com.gildedgames.util.ui.data.rect.RectModifier;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
+import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
+import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class DraggingBehavior extends GuiEvent<GuiFrame>
+public class DragBehavior extends GuiEvent<GuiFrame>
 {
 
 	private List<RectModifier> prevModifiers;
 
 	private int ticksSinceCreation;
 
-	public DraggingBehavior()
+	public DragBehavior()
 	{
 
 	}
@@ -35,12 +37,13 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 	{
 		super.draw(graphics, input);
 
-		this.ticksSinceCreation++;
-
-		this.getGui().dim().clear(ModifierType.POS);
 		this.getGui().dim().mod().center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
-
-		if (MouseButton.LEFT.isDown() && this.ticksSinceCreation > 5)
+	}
+	
+	@Override
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
+	{
+		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 		{
 			GuiFrame frame = ObjectFilter.cast(this.getGui().seekContent().getParentUi(), GuiFrame.class);
 
@@ -49,6 +52,8 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 				frame.events().remove("draggedState");
 			}
 		}
+		
+		super.onMouseInput(pool, input);
 	}
 
 	@Override
@@ -56,7 +61,7 @@ public class DraggingBehavior extends GuiEvent<GuiFrame>
 	{
 		for (Object obj : input)
 		{
-			if (obj == DraggingBehavior.class)
+			if (obj == DragBehavior.class)
 			{
 				return true;
 			}

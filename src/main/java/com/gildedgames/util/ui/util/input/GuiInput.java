@@ -64,7 +64,7 @@ public class GuiInput<T> extends GuiFrame
 			@Override
 			public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 			{
-				if (GuiInput.this.isClicked && pool.has(ButtonState.PRESSED))
+				if (GuiInput.this.isClicked && pool.has(ButtonState.PRESS))
 				{
 					TextElement text = GuiInput.this.input;
 
@@ -99,7 +99,7 @@ public class GuiInput<T> extends GuiFrame
 
 		});
 
-		inputBox.events().set("clicking", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED))
+		inputBox.events().set("clicking", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESS))
 		{
 
 			@Override

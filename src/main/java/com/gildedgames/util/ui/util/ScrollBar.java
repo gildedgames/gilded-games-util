@@ -156,14 +156,14 @@ public class ScrollBar extends GuiFrame
 	{
 		super.onMouseInput(pool, input);
 
-		if (this.grabbedBar && !pool.has(ButtonState.PRESSED))
+		if (this.grabbedBar && !pool.has(ButtonState.PRESS))
 		{
 			this.grabbedBar = false;
 		}
 
 		if (pool.has(MouseButton.LEFT))
 		{
-			if (pool.has(ButtonState.PRESSED) && input.isHovered(this.baseBar.dim()))
+			if (pool.has(ButtonState.PRESS) && input.isHovered(this.baseBar.dim()))
 			{
 				this.grabbedBar = true;
 
@@ -176,7 +176,7 @@ public class ScrollBar extends GuiFrame
 					this.grabbedMouseYOffset = -(this.grabbableBar.dim().height() / 2) + 1;
 				}
 			}
-			else if (pool.has(ButtonState.RELEASED))
+			else if (pool.has(ButtonState.RELEASE))
 			{
 				this.grabbedBar = false;
 			}

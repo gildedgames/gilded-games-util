@@ -83,7 +83,7 @@ public class GuiNotification extends GuiFrame
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
 				{
 					super.onMouseInput(pool, input);
-					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
 						UiCore.locate().open("", new MinecraftGui(new GuiNotifications(Minecraft.getMinecraft().thePlayer)));
 					}
@@ -121,7 +121,7 @@ public class GuiNotification extends GuiFrame
 		public void onMouseInput(MouseInputPool pool, InputProvider input)
 		{
 			super.onMouseInput(pool, input);
-			if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESSED))
+			if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 			{
 				UtilCore.NETWORK.sendToServer(new PacketClickedResponse(this.message, this.index));
 				this.response.openScreenAfterClicked(UiCore.locate().getGuiScreen());
