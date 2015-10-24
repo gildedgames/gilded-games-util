@@ -61,7 +61,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void keyTyped(char charTyped, int keyTyped)
 	{
-		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(keyTyped, charTyped, ButtonState.PRESSED));
+		KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(keyTyped, charTyped, ButtonState.PRESS));
 
 		this.frame.onKeyboardInput(pool, INPUT);
 	}
@@ -69,7 +69,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void mouseClicked(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESS), new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESS));
 
 		this.frame.onMouseInput(pool, INPUT);
 	}
@@ -77,7 +77,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	public final void mouseReleased(int mouseX, int mouseY, int mouseButtonIndex)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.RELEASED));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.RELEASE));
 
 		this.frame.onMouseInput(pool, INPUT);
 	}
@@ -85,7 +85,7 @@ public final class MinecraftGuiWrapper extends GuiScreen
 	@Override
 	protected final void mouseClickMove(int mouseX, int mouseY, int mouseButtonIndex, long timeSinceLastClick)
 	{
-		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.PRESSED, MouseMotion.MOVING));
+		MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(mouseButtonIndex), ButtonState.HOLD));
 
 		this.frame.onMouseInput(pool, INPUT);
 	}

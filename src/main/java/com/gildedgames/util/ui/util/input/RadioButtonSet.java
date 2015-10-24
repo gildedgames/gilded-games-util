@@ -36,7 +36,7 @@ public class RadioButtonSet extends GuiCollection<RadioButton>
 
 		this.buttons.add(element);
 
-		element.events().set("click", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESSED))
+		element.events().set("click", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESS))
 		{
 			@Override
 			protected void onTrue(InputProvider input, MouseInputPool pool)

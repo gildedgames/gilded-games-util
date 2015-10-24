@@ -68,12 +68,12 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 
 			for (UIContainer container : topParent.getAttachedUi().seekAllContent())
 			{
-				draggables.addAll(container.queryAll(DraggingBehavior.class));
+				draggables.addAll(container.queryAll(DragBehavior.class));
 			}
 
-			if (draggables.size() >= 1 && draggables.get(0) instanceof DraggingBehavior)
+			if (draggables.size() >= 1 && draggables.get(0) instanceof DragBehavior)
 			{
-				DraggingBehavior behavior = (DraggingBehavior) draggables.get(0);
+				DragBehavior behavior = (DragBehavior) draggables.get(0);
 
 				this.setSlotContents(behavior.getGui());
 
@@ -101,7 +101,7 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 
 		};
 
-		this.getGui().events().set("draggableBehavior", new DraggableBehavior(factory)
+		this.getGui().events().set("draggableBehavior", new DragFactory(factory)
 		{
 
 			@Override

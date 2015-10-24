@@ -81,7 +81,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 			this.eventButton = button;
 			this.lastMouseEvent = Minecraft.getSystemTime();
 
-			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED), new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED));
+			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESS), new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESS));
 
 			frame.onMouseInput(pool, viewer.getInputProvider());
 		}
@@ -94,7 +94,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
 			this.eventButton = -1;
 
-			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.RELEASED));
+			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.RELEASE));
 
 			frame.onMouseInput(pool, viewer.getInputProvider());
 		}
@@ -102,7 +102,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		{
 			long l = Minecraft.getSystemTime() - this.lastMouseEvent;
 
-			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESSED, MouseMotion.MOVING));
+			MouseInputPool pool = new MouseInputPool(new MouseInput(MouseButton.fromIndex(button), ButtonState.PRESS, MouseMotion.MOVING));
 
 			frame.onMouseInput(pool, viewer.getInputProvider());
 		}
@@ -122,7 +122,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (Keyboard.getEventKeyState())
 		{
-			KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(Keyboard.getEventKey(), Keyboard.getEventCharacter(), ButtonState.PRESSED));
+			KeyboardInputPool pool = new KeyboardInputPool(new KeyboardInput(Keyboard.getEventKey(), Keyboard.getEventCharacter(), ButtonState.PRESS));
 
 			frame.onKeyboardInput(pool, viewer.getInputProvider());
 		}

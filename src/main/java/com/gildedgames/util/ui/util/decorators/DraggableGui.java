@@ -33,7 +33,7 @@ public class DraggableGui extends GuiFrame
 
 		if (pool.has(MouseButton.LEFT))
 		{
-			if (pool.has(ButtonState.PRESSED))
+			if (pool.has(ButtonState.PRESS))
 			{
 				
 			}
