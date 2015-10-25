@@ -10,11 +10,11 @@ import com.google.common.collect.ImmutableMap;
 public class FrameContentFactory implements ContentFactory<Ui>
 {
 
-	private GenericFactory<GuiFrame> frameFactory;
+	private Factory<GuiFrame> frameFactory;
 
 	private int buttonCount;
 
-	public FrameContentFactory(GenericFactory<GuiFrame> frameFactory, int buttonCount)
+	public FrameContentFactory(Factory<GuiFrame> frameFactory, int buttonCount)
 	{
 		this.frameFactory = frameFactory;
 		this.buttonCount = buttonCount;

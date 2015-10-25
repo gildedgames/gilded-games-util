@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameData;
+
 import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
@@ -11,13 +16,9 @@ import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.util.events.DragFactory;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
-import com.gildedgames.util.ui.util.factory.GenericFactory;
+import com.gildedgames.util.ui.util.factory.Factory;
+import com.gildedgames.util.ui.util.factory.Function;
 import com.google.common.collect.ImmutableMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameData;
 
 public class ItemStackButtonFactory implements ContentFactory<Ui>
 {
@@ -91,10 +92,13 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 	}
 
 	private StackTypes stackTypes;
+	
+	private Function<Object, Object> dataFunction;
 
-	public ItemStackButtonFactory(StackTypes stackTypes)
+	public ItemStackButtonFactory(StackTypes stackTypes, Function<Object, Object> dataFunction)
 	{
 		this.stackTypes = stackTypes;
+		this.dataFunction = dataFunction;
 	}
 
 	@Override
@@ -106,7 +110,7 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 		{
 			final MinecraftButtonItemStack button = new MinecraftButtonItemStack(stack);
 
-			button.events().set("draggableBehavior", new DragFactory(new GenericFactory<MinecraftItemStackRender>()
+			button.events().set("draggableBehavior", new DragFactory(new Factory<MinecraftItemStackRender>()
 			{
 
 				@Override
@@ -115,7 +119,7 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 					return new MinecraftItemStackRender(button.getItemStack());
 				}
 
-			}));
+			}, this.dataFunction));
 
 			buttons.put(stack.getUnlocalizedName(), button);
 		}

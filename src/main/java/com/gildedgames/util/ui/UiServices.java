@@ -7,6 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.fml.relauncher.Side;
+
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
@@ -16,12 +20,8 @@ import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
-import com.gildedgames.util.ui.util.factory.GenericFactory;
+import com.gildedgames.util.ui.util.factory.Factory;
 import com.google.common.collect.ImmutableList;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class UiServices
 {
@@ -50,16 +50,16 @@ public class UiServices
 	public static class RegisteredOverlay extends Overlay
 	{
 
-		private GenericFactory<GuiFrame> factory;
+		private Factory<GuiFrame> factory;
 
-		public RegisteredOverlay(GenericFactory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
+		public RegisteredOverlay(Factory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
 		{
 			super(null, viewer, renderOrder);
 
 			this.factory = factory;
 		}
 
-		public GenericFactory<GuiFrame> getFactory()
+		public Factory<GuiFrame> getFactory()
 		{
 			return this.factory;
 		}
@@ -147,7 +147,7 @@ public class UiServices
 			String uniqueSaveName = entry.getKey();
 			RegisteredOverlay overlay = entry.getValue();
 
-			GenericFactory<GuiFrame> factory = overlay.getFactory();
+			Factory<GuiFrame> factory = overlay.getFactory();
 			GuiViewer viewer = overlay.getViewer();
 			RenderOrder renderOrder = overlay.getRenderOrder();
 			//TODO: renderOrder isn't used
@@ -171,12 +171,12 @@ public class UiServices
 		return this.overlays.get(uniqueSaveName);
 	}
 
-	public void registerOverlay(String uniqueSaveName, GenericFactory factory, GuiViewer viewer)
+	public void registerOverlay(String uniqueSaveName, Factory factory, GuiViewer viewer)
 	{
 		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.NORMAL);
 	}
 
-	public void registerOverlay(String uniqueSaveName, GenericFactory factory, GuiViewer viewer, RenderOrder renderOrder)
+	public void registerOverlay(String uniqueSaveName, Factory factory, GuiViewer viewer, RenderOrder renderOrder)
 	{
 		this.registeredOverlays.put(uniqueSaveName, new RegisteredOverlay(factory, viewer, renderOrder));
 	}
@@ -232,13 +232,18 @@ public class UiServices
 		}
 		return false;
 	}
+	
+	public boolean hasFrame()
+	{
+		return this.getCurrentFrame() != null;
+	}
 
-	public GuiFrame currentFrame()
+	public GuiFrame getCurrentFrame()
 	{
 		return this.currentFrame;
 	}
 
-	public String currentFrameName()
+	public String getCurrentFrameName()
 	{
 		return this.currentUniqueSaveName;
 	}

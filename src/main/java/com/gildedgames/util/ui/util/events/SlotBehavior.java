@@ -9,41 +9,43 @@ import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
+import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
-import com.gildedgames.util.ui.util.factory.GenericFactory;
+import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.factory.Factory;
+import com.gildedgames.util.ui.util.factory.Function;
 
-public abstract class SlotBehavior extends GuiEvent<GuiFrame>
+public class SlotBehavior extends GuiEvent<GuiFrame>
 {
 
-	private GuiFrame slotContents;
+	private DraggedState slotContents;
+	
+	private SlotParser parser;
 
-	private int cooldown;
-
-	public static final int COOLDOWN_REQUIRED = 5;
-
-	public SlotBehavior()
+	public SlotBehavior(SlotParser parser)
 	{
-
+		this.parser = parser;
 	}
 
-	public abstract void onSlotChange();
-
-	public void setSlotContents(GuiFrame gui)
+	public void setSlotContents(DraggedState draggedState)
 	{
-		this.slotContents = gui;
+		if (!this.parser.isAllowed(draggedState))
+		{
+			return;
+		}
+		
+		this.slotContents = draggedState;
 
 		this.slotContents.dim().clear(ModifierType.POS);
 		this.slotContents.dim().mod().resetPos().scale(0.75F).x(5.5F).y(5.55F).flush();
 
 		this.content().set("slotContents", this.slotContents);
 
-		this.onSlotChange();
-
-		this.cooldown = 0;
+		this.parser.onContentsChange(this.slotContents);
 	}
 
-	public GuiFrame getSlotContents()
+	public DraggedState getSlotContents()
 	{
 		return this.slotContents;
 	}
@@ -53,14 +55,16 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 	{
 		super.draw(graphics, input);
 
-		this.cooldown++;
-
 		if (this.slotContents != null)
 		{
 			this.slotContents.dim().mod().center(true).flush();
 		}
-
-		if (this.cooldown > COOLDOWN_REQUIRED && MouseButton.LEFT.isDown() && input.isHovered(this.getGui().dim()))
+	}
+	
+	@Override
+	public void onMouseInput(MouseInputPool pool, InputProvider input)
+	{
+		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.RELEASE) && input.isHovered(this.getGui().dim()))
 		{
 			UIContainer topParent = this.content().getTopParent();
 
@@ -85,39 +89,53 @@ public abstract class SlotBehavior extends GuiEvent<GuiFrame>
 				}
 			}
 		}
+		
+		super.onMouseInput(pool, input);
 	}
 
 	@Override
 	public void initEvent()
 	{
-		GenericFactory<GuiFrame> factory = new GenericFactory<GuiFrame>()
+		Factory<GuiFrame> iconFactory = new Factory<GuiFrame>()
 		{
 
 			@Override
 			public GuiFrame create()
 			{
+				SlotBehavior.this.getSlotContents().events().set("dragBehavior", new DragBehavior(), SlotBehavior.this.getSlotContents());
+				
 				return SlotBehavior.this.getSlotContents();
 			}
 
 		};
 
-		this.getGui().events().set("draggableBehavior", new DragFactory(factory)
+		Function<Object, Object> dataFunction = new Function<Object, Object>()
+		{
+
+			@Override
+			public Object apply(Object input)
+			{
+				return SlotBehavior.this.getSlotContents().getData();
+			}
+	
+		};
+		
+		this.getGui().events().set("dragFactory", new DragFactory(iconFactory, dataFunction)
 		{
 
 			@Override
 			public boolean isActive()
 			{
-				return SlotBehavior.this.getSlotContents() != null && SlotBehavior.this.cooldown > COOLDOWN_REQUIRED;
+				return SlotBehavior.this.getSlotContents() != null;
 			}
 
 			@Override
 			public void onCreateDraggedState()
 			{
 				SlotBehavior.this.slotContents = null;
+				SlotBehavior.this.content().remove("draggedState");
 
-				SlotBehavior.this.onSlotChange();
-
-				SlotBehavior.this.cooldown = 0;
+				SlotBehavior.this.parser.onContentsChange(null);
 			}
 
 		});
