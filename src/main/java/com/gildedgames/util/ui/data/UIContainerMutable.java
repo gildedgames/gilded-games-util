@@ -27,11 +27,18 @@ public class UIContainerMutable extends UIContainer
 
 	public void set(String key, Ui element)
 	{
+		if (element == null)
+		{
+			this.elements.put(key, null);
+			
+			return;
+		}
+		
 		RectHolder gui = ObjectFilter.cast(element, RectHolder.class);
 		RectHolder parentModifier = ObjectFilter.cast(this.getAttachedUi(), RectHolder.class);
-
+		
 		element.seekContent().parentUi = this.getAttachedUi();
-
+		
 		if (gui != null && gui.dim().mod() != null && parentModifier != null)
 		{
 			gui.dim().add(parentModifier, ModifierType.POS, ModifierType.SCALE);

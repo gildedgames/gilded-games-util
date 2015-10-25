@@ -2,9 +2,10 @@ package com.gildedgames.util.ui.util.events;
 
 import java.util.List;
 
-import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.BuildIntoRectHolder;
+import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.data.rect.RectModifier;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
@@ -14,7 +15,7 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public class DragBehavior extends GuiEvent<GuiFrame>
+public class DragBehavior extends GuiEvent<DraggedState>
 {
 
 	private List<RectModifier> prevModifiers;
@@ -29,7 +30,11 @@ public class DragBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void initEvent()
 	{
-		this.getGui().dim().clear(ModifierType.POS);
+		Gui gui = this.getGui();
+		
+		ModDim2D dim = gui.dim();
+		
+		dim.clear(ModifierType.POS);
 	}
 
 	@Override
@@ -37,19 +42,25 @@ public class DragBehavior extends GuiEvent<GuiFrame>
 	{
 		super.draw(graphics, input);
 
-		this.getGui().dim().mod().center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
+		Gui gui = this.getGui();
+		
+		ModDim2D dim = gui.dim();
+		
+		BuildIntoRectHolder mod = dim.mod();
+		
+		mod.center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
 	}
 	
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.RELEASE))
 		{
-			GuiFrame frame = ObjectFilter.cast(this.getGui().seekContent().getParentUi(), GuiFrame.class);
+			//GuiFrame frame = ObjectFilter.cast(this.getGui().seekContent().getParentUi(), GuiFrame.class);
 
-			if (frame != null)
+			//if (frame != null)
 			{
-				frame.events().remove("draggedState");
+				//frame.events().remove("draggedState");
 			}
 		}
 		

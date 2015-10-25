@@ -1,7 +1,7 @@
 package com.gildedgames.util.ui.util.factory;
 
 
-public interface GenericFactory<E>
+public interface Factory<E>
 {
 
 	E create();
