@@ -1,5 +1,6 @@
 package com.gildedgames.util.group.common.core;
 
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;
@@ -7,11 +8,16 @@ import com.gildedgames.util.io_manager.io.IO;
 public final class Group implements IO<IOBridge, IOBridge>
 {
 
-	private final GroupPool parentPool;
+	private GroupPool parentPool;
 
 	private MemberData members;
 
 	private GroupInfo groupInfo;
+
+	private Group()
+	{
+
+	}
 
 	protected Group(GroupPool parentPool)
 	{
@@ -21,15 +27,25 @@ public final class Group implements IO<IOBridge, IOBridge>
 	@Override
 	public void write(IOBridge output)
 	{
+		output.setString("pool", this.parentPool.getID());
 		output.setIO("info", this.groupInfo);
-		output.setIO("members", this.members);
+		output.setBoolean("hasMemberData", this.members != null);
+		if (this.members != null)
+		{
+			this.members.write(output);
+		}
 	}
 
 	@Override
 	public void read(IOBridge input)
 	{
+		this.parentPool = GroupCore.locate().getPoolFromID(input.getString("pool"));
 		this.groupInfo = input.getIO("info");
-		this.members = input.getIO("members");
+		if (input.getBoolean("hasMemberData"))
+		{
+			this.members = new MemberData();
+			this.members.readAndAdd(this, input);
+		}
 	}
 
 	public boolean hasMemberData()
@@ -60,6 +76,11 @@ public final class Group implements IO<IOBridge, IOBridge>
 	public IGroupPerms getPermissions()
 	{
 		return this.groupInfo.getPermissions();
+	}
+
+	public GroupInfo getGroupInfo()
+	{
+		return this.groupInfo;
 	}
 
 	protected void setGroupInfo(GroupInfo groupInfo)

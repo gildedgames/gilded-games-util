@@ -15,23 +15,25 @@ public class NotificationQueue
 {
 	private Queue<INotification> notificationQueue = new LinkedList<INotification>();
 
-	private int ticks = 0;
+	private long notiTime = 0;
 
 	private INotification active;
 
 	public void addNotification(INotification notification)
 	{
 		this.notificationQueue.add(notification);
-		this.thePlayer().addNotification(notification.getMessage());
+		if (notification.getMessage() != null)
+		{
+			this.thePlayer().addNotification(notification.getMessage());
+		}
 	}
 
 	public void tick()
 	{
-		this.ticks++;
-
-		if (this.ticks % 100 == 0)
+		if (this.active == null || this.getNotiTime() >= 3000)
 		{
 			this.active = this.notificationQueue.poll();
+			this.notiTime = Minecraft.getSystemTime();
 		}
 	}
 
@@ -43,5 +45,10 @@ public class NotificationQueue
 	public INotification activeNotification()
 	{
 		return this.active;
+	}
+
+	public long getNotiTime()
+	{
+		return Minecraft.getSystemTime() - this.notiTime;
 	}
 }

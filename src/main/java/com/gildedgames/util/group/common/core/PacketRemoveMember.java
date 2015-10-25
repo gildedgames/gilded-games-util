@@ -27,7 +27,7 @@ public class PacketRemoveMember extends PacketMemberAction<PacketRemoveMember>
 	@Override
 	public void handleServerSide(PacketRemoveMember message, EntityPlayer player)
 	{
-		if (!message.group.getPermissions().canRemoveMember(message.member, GroupMember.get(player)))
+		if (!message.group.getPermissions().canRemoveMember(message.group, message.member, GroupMember.get(player)))
 		{
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to remove " + message.member.getProfile().getUsername() + " but did not have the permissions.");
 			return;

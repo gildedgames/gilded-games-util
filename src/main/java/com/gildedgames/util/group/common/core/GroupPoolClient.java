@@ -6,6 +6,7 @@ import java.util.List;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
+import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
 
 import net.minecraft.client.Minecraft;
@@ -22,9 +23,9 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public Group create(String name, EntityPlayer creating)
+	public Group create(String name, EntityPlayer creating, IGroupPerms perms)
 	{
-		GroupInfo groupInfo = new GroupInfo(name, null);
+		GroupInfo groupInfo = new GroupInfo(name, perms);
 		UtilCore.NETWORK.sendToServer(new PacketAddGroup(this, groupInfo));
 		return null;
 	}
@@ -32,7 +33,7 @@ public class GroupPoolClient extends GroupPool
 	@Override
 	public void addMember(EntityPlayer player, Group group)
 	{
-		if (!this.assertValidGroup(group))
+		if (!super.assertValidGroup(group))
 		{
 			return;
 		}

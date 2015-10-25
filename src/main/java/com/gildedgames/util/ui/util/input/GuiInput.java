@@ -133,4 +133,9 @@ public class GuiInput<T> extends GuiFrame
 		this.dim().mod().addHeight(this.text.dim().height()).flush();
 	}
 
+	public T getData()
+	{
+		return this.data.getData();
+	}
+
 }

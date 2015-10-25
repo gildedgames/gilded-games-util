@@ -6,6 +6,7 @@ import java.util.List;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.IGroupPoolListener;
+import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;
@@ -45,6 +46,11 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	public void setGroups(List<Group> groups)
 	{
 		this.groups = groups;
+	}
+
+	public void clear()
+	{
+		this.groups.clear();
 	}
 
 	protected List<IGroupHook> createHooks(Group group)
@@ -105,7 +111,6 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		UtilCore.debugPrint("Adding member " + member.getProfile().getUsername() + " to group " + group.getName());
 		member.joinGroup(group);
 		group.getMemberData().join(member);
-		group.getPermissions().onMemberAdded(member);
 	}
 
 	protected void removeMemberDirectly(Group group, GroupMember member)
@@ -114,7 +119,6 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		UtilCore.debugPrint("Removing member " + member.getProfile().getUsername() + " from group " + group.getName());
 		member.leaveGroup(group);
 		group.getMemberData().leave(member);
-		group.getPermissions().onMemberRemoved(member);
 	}
 
 	protected void inviteDirectly(Group group, GroupMember member, GroupMember inviter)
@@ -122,7 +126,6 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		this.assertHasMemberData(group);
 		UtilCore.debugPrint("Inviting member " + member.getProfile().getUsername() + " to group " + group.getName());
 		group.getMemberData().invite(member);
-		group.getPermissions().onMemberInvited(member);
 		member.addInvite(group);
 	}
 
@@ -142,7 +145,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		}
 	}
 
-	public abstract Group create(String name, EntityPlayer creating);
+	public abstract Group create(String name, EntityPlayer creating, IGroupPerms perms);
 
 	public abstract void addMember(EntityPlayer player, Group group);
 
