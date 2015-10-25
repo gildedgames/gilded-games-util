@@ -2,7 +2,6 @@ package com.gildedgames.util.group.common.permissions;
 
 import java.util.Random;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -29,13 +28,13 @@ public class GroupPermsDefault implements IGroupPerms
 			}
 
 			@Override
-			protected String getName()
+			public String getName()
 			{
 				return "group.open.name";
 			}
 
 			@Override
-			protected String getDescription()
+			public String getDescription()
 			{
 				return "group.open.description";
 			}
@@ -61,13 +60,13 @@ public class GroupPermsDefault implements IGroupPerms
 			}
 
 			@Override
-			protected String getName()
+			public String getName()
 			{
 				return "group.closed.name";
 			}
 
 			@Override
-			protected String getDescription()
+			public String getDescription()
 			{
 				return "group.closed.description";
 			}
@@ -93,13 +92,13 @@ public class GroupPermsDefault implements IGroupPerms
 			}
 
 			@Override
-			protected String getName()
+			public String getName()
 			{
 				return "group.private.name";
 			}
 
 			@Override
-			protected String getDescription()
+			public String getDescription()
 			{
 				return "group.private.description";
 			}
@@ -116,9 +115,9 @@ public class GroupPermsDefault implements IGroupPerms
 
 		protected abstract boolean canEveryoneInvite();
 
-		protected abstract String getName();
+		public abstract String getName();
 
-		protected abstract String getDescription();
+		public abstract String getDescription();
 
 	}
 
@@ -126,18 +125,21 @@ public class GroupPermsDefault implements IGroupPerms
 
 	private PermissionType type = PermissionType.OPEN;
 
-	private final Group group;
-
-	public GroupPermsDefault(Group group, GroupMember creating)
+	private GroupPermsDefault()
 	{
-		this.group = group;
+
+	}
+
+	public GroupPermsDefault(GroupMember creating, PermissionType type)
+	{
 		this.owner = creating;
+		this.type = type;
 	}
 
 	@Override
 	public void write(IOBridge output)
 	{
-		output.setString("permtype", this.type.getName());
+		output.setString("permtype", this.type.name());
 		IOUtil.setUUID(this.owner.getProfile().getUUID(), output, "owner");
 	}
 
@@ -145,32 +147,18 @@ public class GroupPermsDefault implements IGroupPerms
 	public void read(IOBridge input)
 	{
 		this.type = PermissionType.valueOf(input.getString("permtype"));
-		this.owner = GroupMember.get(UtilCore.getPlayerOnServerFromUUID(IOUtil.getUUID(input, "owner")));
+		this.owner = GroupMember.get(IOUtil.getUUID(input, "owner"));
 	}
 
 	@Override
-	public void onMemberAdded(GroupMember member)
+	public void onMemberRemoved(Group group, GroupMember member)
 	{
-	}
-
-	@Override
-	public void onMemberRemoved(GroupMember member)
-	{
-		if (member.equals(this.owner))
+		if (member.equals(this.owner) && group.getMemberData().size() > 0)
 		{
 			Random random = member.getProfile().getEntity().getRNG();
-			this.owner = this.group.getMemberData().getMembers().get(random.nextInt(this.group.getMemberData().size()));
+			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
+			//This isn't synced to the clients!
 		}
-	}
-
-	@Override
-	public void onMemberInvited(GroupMember member)
-	{
-	}
-
-	@Override
-	public void onInviteRemoved(GroupMember member)
-	{
 	}
 
 	@Override
@@ -186,37 +174,37 @@ public class GroupPermsDefault implements IGroupPerms
 	}
 
 	@Override
-	public boolean canInvite(GroupMember member, GroupMember inviter)
+	public boolean canInvite(Group group, GroupMember member, GroupMember inviter)
 	{
 		return this.type.canEveryoneInvite() || inviter.equals(this.owner);
 	}
 
 	@Override
-	public boolean canChangeOwner(GroupMember newOwner, GroupMember changing)
+	public boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing)
 	{
 		return changing.equals(this.owner);
 	}
 
 	@Override
-	public boolean canJoin(GroupMember member)
+	public boolean canJoin(Group group, GroupMember member)
 	{
-		return !this.type.requiresInvite() || this.group.hasMemberData() && this.group.getMemberData().contains(member);
+		return !this.type.requiresInvite() || group.hasMemberData() && group.getMemberData().contains(member);
 	}
 
 	@Override
-	public boolean isVisible()
+	public boolean isVisible(Group group)
 	{
 		return this.type.isVisible();
 	}
 
 	@Override
-	public boolean canRemoveGroup(GroupMember remover)
+	public boolean canRemoveGroup(Group group, GroupMember remover)
 	{
 		return remover.equals(this.owner);
 	}
 
 	@Override
-	public boolean canRemoveMember(GroupMember toRemove, GroupMember remover)
+	public boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover)
 	{
 		return remover.equals(this.owner);
 	}

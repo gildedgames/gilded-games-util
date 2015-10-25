@@ -1,20 +1,26 @@
 package com.gildedgames.util.player.common;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.PlayerProfile;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.*;
 
 public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {
 
-	private HashMap<UUID, T> playerMap = new HashMap<UUID, T>();
+	private Map<UUID, T> playerMap = new HashMap<UUID, T>();
 
-	private ArrayList<UUID> sentRequests = new ArrayList<UUID>();
+	private List<UUID> sentRequests = new ArrayList<UUID>();
 
 	private final String name;
 
@@ -39,6 +45,10 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	@Override
 	public T get(EntityPlayer player)
 	{
+		if (player == null)
+		{
+			return null;
+		}
 		return this.get(player.getUniqueID());
 	}
 
@@ -89,7 +99,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 		{
 			PlayerProfile profile = new PlayerProfile();
 			profile.setUUID(uuid);
-
+		
 			player.setProfile(profile);
 		}*/
 

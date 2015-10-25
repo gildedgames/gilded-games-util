@@ -50,7 +50,7 @@ public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 	@Override
 	public void handleServerSide(PacketAddGroup message, EntityPlayer player)
 	{
-		message.pool.create(message.groupInfo.getName(), player);
+		message.pool.create(message.groupInfo.getName(), player, message.groupInfo.getPermissions());
 	}
 
 }
