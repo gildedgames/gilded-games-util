@@ -22,6 +22,8 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	private DraggedState slotContents;
 	
 	private SlotParser parser;
+	
+	private boolean takenContentsOut;
 
 	public SlotBehavior(SlotParser parser)
 	{
@@ -64,7 +66,9 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.RELEASE) && input.isHovered(this.getGui().dim()))
+		super.onMouseInput(pool, input);
+		
+		if (!this.takenContentsOut && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
 			UIContainer topParent = this.content().getTopParent();
 
@@ -90,7 +94,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 			}
 		}
 		
-		super.onMouseInput(pool, input);
+		this.takenContentsOut = false;
 	}
 
 	@Override
@@ -132,6 +136,8 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 			@Override
 			public void onCreateDraggedState()
 			{
+				SlotBehavior.this.takenContentsOut = true;
+				
 				SlotBehavior.this.slotContents = null;
 				SlotBehavior.this.content().remove("draggedState");
 
