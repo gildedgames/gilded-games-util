@@ -38,7 +38,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 		this.slotContents = draggedState;
 
 		this.slotContents.dim().clear(ModifierType.POS);
-		this.slotContents.dim().mod().resetPos().scale(0.75F).x(5.5F).y(5.55F).flush();
+		this.slotContents.dim().mod().resetPos().x(this.getGui().dim().width() / 2).y(this.getGui().dim().height() / 2).center(true).flush();
 
 		this.content().set("slotContents", this.slotContents);
 
