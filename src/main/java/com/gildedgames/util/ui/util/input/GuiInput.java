@@ -2,6 +2,8 @@ package com.gildedgames.util.ui.util.input;
 
 import java.awt.Color;
 
+import net.minecraft.util.ChatAllowedCharacters;
+
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.UtilCore;
@@ -24,8 +26,6 @@ import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.TextElement;
 
-import net.minecraft.util.ChatAllowedCharacters;
-
 public class GuiInput<T> extends GuiFrame
 {
 
@@ -33,13 +33,15 @@ public class GuiInput<T> extends GuiFrame
 
 	private final AssetLocation texture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputBox.png");
 
+	private final AssetLocation cursorTexture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputCursor.png");
+	
 	private boolean isClicked;
 
 	private TextElement input, text;
 
 	private String title;
 
-	private int textIndex;
+	private int textIndex, cursorIndex;
 
 	public GuiInput(DataInput<T> data, Rect rect, String title)
 	{
@@ -58,19 +60,28 @@ public class GuiInput<T> extends GuiFrame
 		GuiFrame inputBox = GuiFactory.createResizableTexture(this.texture, this.dim().clone().clear(ModifierType.POS).mod().pos(0, this.text.dim().height()).flush(), UV.build().area(1, 1).flush(), UV.build().area(1, 18).flush(), UV.build().area(198, 1).flush());
 		this.input = new TextElement(GuiFactory.text("", Color.WHITE), Dim2D.build().pos(2, this.text.dim().height() + inputBox.dim().height() / 2).centerY(true).flush());
 
+		final GuiFrame cursor = GuiFactory.createResizableTexture(this.cursorTexture, Dim2D.build().width(1).height(this.text.getText().font().getHeight("h")).flush(), UV.build().area(1, 1).flush(), UV.build().area(1, 1).flush(), UV.build().area(1, 1).flush());
+		
+		cursor.dim().mod().y(13).x(2).flush();
+		
+		cursor.setVisible(false);
+
 		this.input.events().set("onTyping", new GuiEvent()
 		{
 
 			@Override
 			public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 			{
+				boolean flag = GuiInput.this.isClicked;
+				
 				if (GuiInput.this.isClicked && pool.has(ButtonState.PRESS))
 				{
 					TextElement text = GuiInput.this.input;
 
-					if (pool.has(Keyboard.KEY_BACK))
+					if (pool.has(Keyboard.KEY_BACK) && text.getData().length() > 0)
 					{
-						text.setText(text.getText().substring(0, text.getText().length() - 1));
+						text.setData(text.getData().substring(0, text.getData().length() - 1));
+						GuiInput.this.data.setData(GuiInput.this.data.parse(text.getData()));
 					}
 
 					for (KeyboardInput key : pool)
@@ -78,17 +89,22 @@ public class GuiInput<T> extends GuiFrame
 						if (ChatAllowedCharacters.isAllowedCharacter(key.getChar()))
 						{
 							String keyString = String.valueOf(key.getChar());
-							String newString = text.getText().concat(keyString);
+							String newString = text.getData().concat(keyString);
+							
 							if (GuiInput.this.data.validString(newString))
 							{
 								GuiInput.this.data.setData(GuiInput.this.data.parse(newString));
-								text.setText(newString);
+								text.setData(newString);
 							}
 						}
 					}
+					
+					cursor.dim().mod().x(text.getText().font().getWidth(text.getData()) + 2).flush();
 				}
+				
+				super.onKeyboardInput(pool, input);
 
-				return super.onKeyboardInput(pool, input);
+				return flag;
 			}
 
 			@Override
@@ -106,6 +122,7 @@ public class GuiInput<T> extends GuiFrame
 			protected void onTrue(InputProvider input, MouseInputPool pool)
 			{
 				GuiInput.this.isClicked = true;
+				cursor.setVisible(true);
 			}
 
 			@Override
@@ -114,6 +131,7 @@ public class GuiInput<T> extends GuiFrame
 				if (!input.isHovered(this.getGui().dim()))
 				{
 					GuiInput.this.isClicked = false;
+					cursor.setVisible(false);
 				}
 			}
 
@@ -129,6 +147,8 @@ public class GuiInput<T> extends GuiFrame
 
 		this.content().set("text", this.text);
 		this.content().set("input", this.input);
+		
+		this.content().set("cursor", cursor);
 
 		this.dim().mod().addHeight(this.text.dim().height()).flush();
 	}

@@ -2,7 +2,7 @@ package com.gildedgames.util.ui.util.input;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class FloatInput implements DataInput<Float>
+public class FloatInput extends DataInputBase<Float>
 {
 
 	private float data;
@@ -24,7 +24,7 @@ public class FloatInput implements DataInput<Float>
 	}
 
 	@Override
-	public void setData(Float data)
+	public void set(Float data)
 	{
 		this.data = data;
 	}

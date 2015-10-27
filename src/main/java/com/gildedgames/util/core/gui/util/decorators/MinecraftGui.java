@@ -2,6 +2,8 @@ package com.gildedgames.util.core.gui.util.decorators;
 
 import java.awt.Color;
 
+import net.minecraft.client.Minecraft;
+
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.ui.UiCore;
@@ -13,8 +15,6 @@ import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.util.RectangleElement;
-
-import net.minecraft.client.Minecraft;
 
 public class MinecraftGui extends GuiDecorator<Gui>
 {
@@ -61,12 +61,17 @@ public class MinecraftGui extends GuiDecorator<Gui>
 	@Override
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
+		if (super.onKeyboardInput(pool, input))
+		{
+			return true;
+		}
+		
 		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
 		{
 			UiCore.locate().close();
 		}
-
-		return super.onKeyboardInput(pool, input);
+		
+		return false;
 	}
 
 }

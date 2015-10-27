@@ -2,7 +2,7 @@ package com.gildedgames.util.ui.util.input;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class DoubleInput implements DataInput<Double>
+public class DoubleInput extends DataInputBase<Double>
 {
 
 	private double data;
@@ -24,7 +24,7 @@ public class DoubleInput implements DataInput<Double>
 	}
 
 	@Override
-	public void setData(Double data)
+	public void set(Double data)
 	{
 		this.data = data;
 	}

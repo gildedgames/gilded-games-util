@@ -161,5 +161,24 @@ public class MinecraftItemStackRender extends GuiFrame
             }
         }
     }
+    
+	@Override
+	public boolean query(Object... input)
+	{
+		for (Object obj : input)
+		{
+			if (obj instanceof String)
+			{
+				String string = (String)obj;
+				
+				if (this.getItemStack().getDisplayName().toLowerCase().contains(string.toLowerCase()))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 
 }

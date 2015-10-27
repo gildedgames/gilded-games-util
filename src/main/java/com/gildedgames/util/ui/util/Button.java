@@ -39,7 +39,7 @@ public class Button extends GuiFrame
 	@Override
 	public void initContent(InputProvider input)
 	{
-		this.defaultState.setVisible(true);
+		this.defaultState.setVisible(false);
 		this.hoveredState.setVisible(false);
 		this.clickedState.setVisible(false);
 
@@ -56,10 +56,20 @@ public class Button extends GuiFrame
 		if (this.disabledState != null)
 		{
 			this.disabledState.dim().mod().center(false).resetPos().flush();
-			this.disabledState.setVisible(false);
+			
+			if (!this.isEnabled())
+			{
+				this.disabledState.setVisible(true);
+			}
+			else
+			{
+				this.disabledState.setVisible(false);
+			}
 			
 			this.content().set("disabledState", this.disabledState);
 		}
+		
+		this.defaultState.setVisible(true);
 	}
 
 	@Override

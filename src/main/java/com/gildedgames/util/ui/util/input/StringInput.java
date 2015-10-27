@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.util.input;
 
-public class StringInput implements DataInput<String>
+public class StringInput extends DataInputBase<String>
 {
 
 	private String data;
@@ -22,7 +22,7 @@ public class StringInput implements DataInput<String>
 	}
 
 	@Override
-	public void setData(String data)
+	public void set(String data)
 	{
 		this.data = data;
 	}

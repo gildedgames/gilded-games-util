@@ -210,8 +210,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	@Override
 	public void updateState()
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
