@@ -84,7 +84,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (this.parser.onMouseInput(pool, input))
+		if (input.isHovered(this.getGui().dim()) && this.parser.onMouseInput(pool, input))
 		{
 			return;
 		}
