@@ -1,6 +1,7 @@
 package com.gildedgames.util.ui.util.decorators;
 
 import com.gildedgames.util.core.gui.util.GuiFactory;
+import com.gildedgames.util.ui.common.Decorator;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.rect.Dim2D;
@@ -14,7 +15,7 @@ import com.gildedgames.util.ui.util.TextureElement;
 import com.gildedgames.util.ui.util.rect.RectCollection;
 import com.gildedgames.util.ui.util.rect.RectGetter;
 
-public class ScrollableGui extends GuiFrame
+public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 {
 
 	protected ScrollBar scrollBar;
@@ -130,6 +131,12 @@ public class ScrollableGui extends GuiFrame
 
 		//System.out.println(input.getScreenWidth());
 		//System.out.println(this.backdrop.dim());
+	}
+
+	@Override
+	public GuiFrame getDecoratedElement()
+	{
+		return this.scrolledGui;
 	}
 
 }

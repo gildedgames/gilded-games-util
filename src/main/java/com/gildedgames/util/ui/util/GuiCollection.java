@@ -67,7 +67,7 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 		return this.sorter;
 	}
 
-	private void clearAndProvideContent()
+	public void clearAndProvideContent()
 	{
 		this.events().clear(Gui.class);
 
@@ -140,11 +140,13 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 		}
 	}
 
-	private void sortAndPositionContent()
+	public void sortAndPositionContent()
 	{
 		this.isSorting = true;
-		this.positionContent(this.getSortedViews());
+		
 		this.sortContent();
+		this.positionContent(this.getSortedViews());
+		
 		this.isSorting = false;
 	}
 
@@ -161,6 +163,7 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 	{
 		this.clearAndProvideContent();
 		this.sortAndPositionContent();
+		
 		super.initContent(input);
 	}
 

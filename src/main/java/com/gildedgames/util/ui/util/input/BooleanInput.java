@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.util.input;
 
-public class BooleanInput implements DataInput<Boolean>
+public class BooleanInput extends DataInputBase<Boolean>
 {
 
 	private boolean data;
@@ -22,7 +22,7 @@ public class BooleanInput implements DataInput<Boolean>
 	}
 
 	@Override
-	public void setData(Boolean data)
+	public void set(Boolean data)
 	{
 		this.data = data;
 	}

@@ -36,13 +36,18 @@ public class TextElement extends GuiFrame
 
 		}, ModifierType.AREA);
 	}
+	
+	public Text getText()
+	{
+		return this.text;
+	}
 
-	public void setText(String text)
+	public void setData(String text)
 	{
 		this.text.text = text;
 	}
 
-	public String getText()
+	public String getData()
 	{
 		return this.text.text;
 	}
