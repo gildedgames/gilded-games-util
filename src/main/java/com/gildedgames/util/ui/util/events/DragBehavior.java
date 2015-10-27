@@ -14,8 +14,9 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.events.slots.SlotStack;
 
-public class DragBehavior extends GuiEvent<DraggedState>
+public class DragBehavior extends GuiEvent<SlotStack>
 {
 
 	private List<RectModifier> prevModifiers;

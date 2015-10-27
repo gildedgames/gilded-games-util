@@ -1,9 +1,6 @@
-package com.gildedgames.util.ui.util.events;
+package com.gildedgames.util.ui.util.events.slots;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapper;
+import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -11,17 +8,19 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.events.DragBehavior;
+import com.gildedgames.util.ui.util.events.DragCanvas;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.gildedgames.util.ui.util.factory.Function;
 
-public class DragFactory extends GuiEvent
+public class SlotStackFactory extends GuiEvent
 {
 	
 	private Factory<? extends GuiFrame> iconFactory;
 	
 	private Function<Object, Object> dataFunction;
 
-	public DragFactory(Factory<? extends GuiFrame> iconFactory, Function<Object, Object> dataFunction)
+	public SlotStackFactory(Factory<? extends GuiFrame> iconFactory, Function<Object, Object> dataFunction)
 	{
 		this.iconFactory = iconFactory;
 		this.dataFunction = dataFunction;
@@ -40,18 +39,15 @@ public class DragFactory extends GuiEvent
 		{
 			GuiFrame icon = this.iconFactory.create();
 			
-			DraggedState draggedState = new DraggedState(icon, this.dataFunction.apply(icon));
+			SlotStack stack = new SlotStack(icon, this.dataFunction.apply(icon));
 			
-			draggedState.events().set("dragBehavior", new DragBehavior(), draggedState);
+			stack.events().set("dragBehavior", new DragBehavior(), stack);
+			
+			DragCanvas canvas = DragCanvas.fetch();
 
-			GuiScreen screen = Minecraft.getMinecraft().currentScreen;
-			
-			if (screen instanceof MinecraftGuiWrapper)
+			if (canvas != null)
 			{
-				MinecraftGuiWrapper wrapper = (MinecraftGuiWrapper)screen;
-				
-				wrapper.getFrame().events().set("draggedState", draggedState);
-				//UiCore.locate().getCurrentFrame().events().set("draggedState", draggedState);
+				canvas.setDraggedObject(stack);
 				
 				this.onCreateDraggedState();
 			}
