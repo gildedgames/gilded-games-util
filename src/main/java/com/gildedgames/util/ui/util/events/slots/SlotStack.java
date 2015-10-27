@@ -1,15 +1,15 @@
-package com.gildedgames.util.ui.util.events;
+package com.gildedgames.util.ui.util.events.slots;
 
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class DraggedState extends GuiDecorator<GuiFrame>
+public class SlotStack extends GuiDecorator<GuiFrame>
 {
 	
 	private Object data;
 
-	public DraggedState(GuiFrame element, Object data)
+	public SlotStack(GuiFrame element, Object data)
 	{
 		super(element);
 		

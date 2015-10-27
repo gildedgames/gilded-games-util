@@ -1,11 +1,6 @@
-package com.gildedgames.util.ui.util.events;
+package com.gildedgames.util.ui.util.events.slots;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -13,13 +8,15 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.events.DragBehavior;
+import com.gildedgames.util.ui.util.events.DragCanvas;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.gildedgames.util.ui.util.factory.Function;
 
 public class SlotBehavior extends GuiEvent<GuiFrame>
 {
 
-	private DraggedState slotContents;
+	private SlotStack slotContents;
 	
 	private SlotParser parser;
 	
@@ -29,10 +26,28 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	{
 		this.parser = parser;
 	}
-
-	public void setSlotContents(DraggedState draggedState)
+	
+	public void setSlotContents(SlotStack draggedState)
 	{
-		if (!this.parser.isAllowed(draggedState))
+		this.setSlotContents(draggedState, true);
+	}
+	
+	public void clearSlotContents()
+	{
+		this.slotContents = null;
+		this.content().remove("slotContents");
+
+		this.parser.onContentsChange(SlotBehavior.this, null);
+	}
+
+	public void setSlotContents(SlotStack draggedState, boolean notifyParser)
+	{
+		if (draggedState == null)
+		{
+			return;
+		}
+		
+		if (notifyParser && !this.parser.isAllowed(draggedState))
 		{
 			return;
 		}
@@ -44,10 +59,13 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 
 		this.content().set("slotContents", this.slotContents);
 
-		this.parser.onContentsChange(this.slotContents);
+		if (notifyParser)
+		{
+			this.parser.onContentsChange(this, this.slotContents);
+		}
 	}
 
-	public DraggedState getSlotContents()
+	public SlotStack getSlotContents()
 	{
 		return this.slotContents;
 	}
@@ -66,30 +84,33 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
+		if (this.parser.onMouseInput(pool, input))
+		{
+			return;
+		}
+		
 		super.onMouseInput(pool, input);
 		
 		if (!this.takenContentsOut && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
-			UIContainer topParent = this.content().getTopParent();
+			DragCanvas canvas = DragCanvas.fetch();
 
-			List<Gui> draggables = new ArrayList<Gui>();
-
-			for (UIContainer container : topParent.getAttachedUi().seekAllContent())
+			if (canvas != null)
 			{
-				draggables.addAll(container.queryAll(DragBehavior.class));
-			}
-
-			if (draggables.size() >= 1 && draggables.get(0) instanceof DragBehavior)
-			{
-				DragBehavior behavior = (DragBehavior) draggables.get(0);
-
-				this.setSlotContents(behavior.getGui());
-
-				if (behavior.getGui() instanceof GuiFrame)
+				GuiFrame draggedObject = canvas.getDraggedObject();
+				
+				if (draggedObject instanceof SlotStack)
 				{
-					GuiFrame frame = behavior.getGui();
-
-					frame.events().remove(behavior);
+					SlotStack stack = (SlotStack)draggedObject;
+					
+					if (stack.events().contains("dragBehavior"))
+					{
+						stack.events().remove("dragBehavior");
+						
+						this.setSlotContents(stack);
+						
+						canvas.clearDraggedObject();
+					}
 				}
 			}
 		}
@@ -124,7 +145,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	
 		};
 		
-		this.getGui().events().set("dragFactory", new DragFactory(iconFactory, dataFunction)
+		this.getGui().events().set("dragFactory", new SlotStackFactory(iconFactory, dataFunction)
 		{
 
 			@Override
@@ -137,11 +158,11 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 			public void onCreateDraggedState()
 			{
 				SlotBehavior.this.takenContentsOut = true;
-				
-				SlotBehavior.this.slotContents = null;
-				SlotBehavior.this.content().remove("draggedState");
 
-				SlotBehavior.this.parser.onContentsChange(null);
+				SlotBehavior.this.slotContents = null;
+				SlotBehavior.this.content().remove("slotContents");
+
+				SlotBehavior.this.parser.onContentsChange(SlotBehavior.this, null);
 			}
 
 		});
