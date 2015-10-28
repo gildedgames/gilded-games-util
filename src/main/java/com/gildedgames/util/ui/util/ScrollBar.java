@@ -93,33 +93,40 @@ public class ScrollBar extends GuiFrame
 		RectSeeker totalHeightMinusBottomButton = new RectGetter()
 		{
 
+			private float topButtonHeight = -1, baseBarHeight = -1;
+
 			@Override
 			public Rect assembleRect()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.dim().height() + ScrollBar.this.baseBar.dim().height()).flush();
+				this.topButtonHeight = ScrollBar.this.topButton.dim().height();
+				this.baseBarHeight = ScrollBar.this.baseBar.dim().height();
+
+				return Dim2D.build().y(this.topButtonHeight + this.baseBarHeight).flush();
 			}
 
 			@Override
 			public boolean shouldReassemble()
 			{
-				return true;
+				return ScrollBar.this.topButton.dim().height() != this.topButtonHeight || ScrollBar.this.baseBar.dim().height() != this.baseBarHeight;
 			}
 
 		};
 
 		RectSeeker topButtonHeight = new RectGetter()
 		{
+			private float topButtonHeight = -1;
 
 			@Override
 			public Rect assembleRect()
 			{
-				return Dim2D.build().y(ScrollBar.this.topButton.dim().height()).flush();
+				this.topButtonHeight = ScrollBar.this.topButton.dim().height();
+				return Dim2D.build().y(this.topButtonHeight).flush();
 			}
 
 			@Override
 			public boolean shouldReassemble()
 			{
-				return true;
+				return ScrollBar.this.topButton.dim().height() != this.topButtonHeight;
 			}
 
 		};
