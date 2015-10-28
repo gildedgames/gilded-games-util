@@ -1,5 +1,6 @@
 package com.gildedgames.util.core.gui.util;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
 
 import com.gildedgames.util.GGHelper;
+import com.gildedgames.util.core.gui.util.events.MinecraftHoveredDesc;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
 import com.gildedgames.util.ui.common.Ui;
@@ -109,6 +111,8 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 		for (ItemStack stack : this.stackTypes.createStacks())
 		{
 			final MinecraftButtonItemStack button = new MinecraftButtonItemStack(stack);
+			
+			button.events().set("description", new MinecraftHoveredDesc(GuiFactory.text(stack.getDisplayName(), Color.WHITE)));
 
 			button.events().set("draggableBehavior", new SlotStackFactory(new Factory<MinecraftItemStackRender>()
 			{
