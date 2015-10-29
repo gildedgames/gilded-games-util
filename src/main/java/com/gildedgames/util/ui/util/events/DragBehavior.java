@@ -3,7 +3,6 @@ package com.gildedgames.util.ui.util.events;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.BuildIntoRectHolder;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
 import com.gildedgames.util.ui.data.rect.RectModifier;
@@ -32,9 +31,9 @@ public class DragBehavior extends GuiEvent<SlotStack>
 	public void initEvent()
 	{
 		Gui gui = this.getGui();
-		
+
 		ModDim2D dim = gui.dim();
-		
+
 		dim.clear(ModifierType.POS);
 	}
 
@@ -44,14 +43,14 @@ public class DragBehavior extends GuiEvent<SlotStack>
 		super.draw(graphics, input);
 
 		Gui gui = this.getGui();
-		
+
 		ModDim2D dim = gui.dim();
-		
+
 		BuildIntoRectHolder mod = dim.mod();
-		
-		mod.center(true).pos(Pos2D.flush(input.getMouseX(), input.getMouseY())).flush();
+
+		mod.center(true).pos(input.getMouseX(), input.getMouseY()).flush();
 	}
-	
+
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
@@ -64,7 +63,7 @@ public class DragBehavior extends GuiEvent<SlotStack>
 				//frame.events().remove("draggedState");
 			}
 		}
-		
+
 		super.onMouseInput(pool, input);
 	}
 

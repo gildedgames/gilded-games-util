@@ -1,7 +1,6 @@
 package com.gildedgames.util.ui.graphics;
 
 import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 
 public interface Graphics2D
@@ -16,7 +15,7 @@ public interface Graphics2D
 	 */
 	void drawText(String text, Rect dim, DrawingData data);
 
-	void drawLine(Pos2D startPos, Pos2D endPos, DrawingData drawingData);
+	void drawLine(int startX, int startY, int endX, int endY, DrawingData drawingData);
 
 	void drawRectangle(Rect dim, DrawingData data);
 
