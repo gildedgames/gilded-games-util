@@ -10,6 +10,8 @@ import com.gildedgames.util.ui.input.InputProvider;
 public class GuiCanvas extends GuiFrame
 {
 
+	private boolean disableDepth;
+	
 	public GuiCanvas()
 	{
 		
@@ -24,11 +26,25 @@ public class GuiCanvas extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		if (this.disableDepth)
+		{
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+		}
+		else
+		{
+			GL11.glTranslatef(0, 0, 550.0F);
+		}
 		
 		super.draw(graphics, input);
 		
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		if (this.disableDepth)
+		{
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+		}
+		else
+		{
+			GL11.glTranslatef(0, 0, 550.0F);
+		}
 	}
 	
 	public <T extends GuiFrame> T get(String key)
@@ -59,6 +75,11 @@ public class GuiCanvas extends GuiFrame
 	
 	public static GuiCanvas fetch(String key)
 	{
+		return GuiCanvas.fetch(key, true);
+	}
+	
+	public static GuiCanvas fetch(String key, boolean disableDepth)
+	{
 		if (UiCore.locate().hasFrame())
 		{
 			GuiFrame currentFrame = UiCore.locate().getCurrentFrame();
@@ -69,6 +90,8 @@ public class GuiCanvas extends GuiFrame
 			}
 			
 			GuiCanvas canvas = currentFrame.events().get(key, GuiCanvas.class);
+			
+			canvas.disableDepth = disableDepth;
 			
 			return canvas;
 		}

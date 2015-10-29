@@ -14,7 +14,11 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
+import com.gildedgames.util.ui.util.InputHelper;
+import com.gildedgames.util.ui.util.InputHelper.InputCondition;
+import com.gildedgames.util.ui.util.events.slots.SlotBehavior;
 import com.gildedgames.util.ui.util.events.slots.SlotStack;
+import com.gildedgames.util.ui.util.events.slots.SlotStackFactory;
 
 public class DragBehavior extends GuiEvent<SlotStack>
 {
@@ -55,17 +59,28 @@ public class DragBehavior extends GuiEvent<SlotStack>
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		super.onMouseInput(pool, input);
-		
-		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+		final boolean hoveringSlot = InputHelper.isHovered(new InputCondition()
 		{
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
+
+			@Override
+			public boolean isMet(Gui gui)
+			{
+				return gui != null && gui.isVisible() && gui.isEnabled() && (gui.events().contains(SlotBehavior.class) || gui.events().contains(SlotStackFactory.class));
+			}
+			
+		}, input);
+		
+		if (pool.has(ButtonState.PRESS) && !hoveringSlot)
+		{
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
 
 			if (canvas != null)
 			{
-				//canvas.remove("draggedObject", this);
+				canvas.remove("draggedObject");
 			}
 		}
+		
+		super.onMouseInput(pool, input);
 	}
 
 	@Override

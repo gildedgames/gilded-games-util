@@ -5,7 +5,6 @@ import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
@@ -34,18 +33,30 @@ public class SlotStackFactory extends GuiEvent
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (this.isActive() && input.isHovered(this.getGui().dim()) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+		if (this.isActive(pool, input) && input.isHovered(this.getGui().dim()) && pool.has(ButtonState.PRESS))
 		{
-			GuiFrame icon = this.iconFactory.create();
-			
-			SlotStack stack = new SlotStack(icon, this.dataFunction.apply(icon));
-			
-			stack.events().set("dragBehavior", new DragBehavior(), stack);
-			
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
 
 			if (canvas != null)
 			{
+				GuiFrame icon = this.iconFactory.create();
+				
+				SlotStack stack = new SlotStack(icon, this.dataFunction.apply(icon));
+				
+				stack.events().set("dragBehavior", new DragBehavior(), stack);
+				
+				stack.dim().mod().pos(input.getMouseX(), input.getMouseY()).flush();
+
+				if (canvas.get("draggedObject") != null)
+				{
+					if (this.shouldRemoveDragged(stack))
+					{
+						canvas.remove("draggedObject");
+					}
+						
+					return;
+				}
+				
 				canvas.set("draggedObject", stack);
 				
 				this.onCreateDraggedState();
@@ -55,7 +66,12 @@ public class SlotStackFactory extends GuiEvent
 		super.onMouseInput(pool, input);
 	}
 	
-	public boolean isActive()
+	public boolean isActive(MouseInputPool pool, InputProvider input)
+	{
+		return true;
+	}
+	
+	public boolean shouldRemoveDragged(SlotStack createdStack)
 	{
 		return true;
 	}
