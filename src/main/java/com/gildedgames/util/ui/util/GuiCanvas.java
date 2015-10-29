@@ -31,6 +31,11 @@ public class GuiCanvas extends GuiFrame
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 	
+	public <T extends GuiFrame> T get(String key)
+	{
+		return (T) this.content().get(key);
+	}
+	
 	public <T extends GuiFrame> void set(String key, T obj)
 	{
 		if (this.content().get(key) != obj)

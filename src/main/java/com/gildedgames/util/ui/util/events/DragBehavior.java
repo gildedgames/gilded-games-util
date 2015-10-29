@@ -14,6 +14,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.slots.SlotStack;
 
 public class DragBehavior extends GuiEvent<SlotStack>
@@ -55,17 +56,17 @@ public class DragBehavior extends GuiEvent<SlotStack>
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.RELEASE))
+		super.onMouseInput(pool, input);
+		
+		if (pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 		{
-			//GuiFrame frame = ObjectFilter.cast(this.getGui().seekContent().getParentUi(), GuiFrame.class);
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
 
-			//if (frame != null)
+			if (canvas != null)
 			{
-				//frame.events().remove("draggedState");
+				//canvas.remove("draggedObject", this);
 			}
 		}
-		
-		super.onMouseInput(pool, input);
 	}
 
 	@Override

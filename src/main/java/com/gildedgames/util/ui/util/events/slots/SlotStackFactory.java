@@ -1,6 +1,5 @@
 package com.gildedgames.util.ui.util.events.slots;
 
-import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -8,8 +7,8 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
-import com.gildedgames.util.ui.util.events.DragCanvas;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.gildedgames.util.ui.util.factory.Function;
 
@@ -43,11 +42,11 @@ public class SlotStackFactory extends GuiEvent
 			
 			stack.events().set("dragBehavior", new DragBehavior(), stack);
 			
-			DragCanvas canvas = DragCanvas.fetch();
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
 
 			if (canvas != null)
 			{
-				canvas.setDraggedObject(stack);
+				canvas.set("draggedObject", stack);
 				
 				this.onCreateDraggedState();
 			}
