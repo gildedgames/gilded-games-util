@@ -5,6 +5,7 @@ import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.GuiCanvas;
+import com.gildedgames.util.ui.util.ScreenDimUtil;
 import com.gildedgames.util.ui.util.Text;
 import com.gildedgames.util.ui.util.TextElement;
 
@@ -43,7 +44,13 @@ public class MinecraftHoveredDesc extends GuiEvent
 		super.draw(graphics, input);
 		
 		this.textElement.dim().mod().x(input.getMouseX() + 12).y(input.getMouseY() - 12).flush();
-		this.background.dim().mod().x(input.getMouseX() + 12).y(input.getMouseY() - 12).flush();
+		this.background.dim().mod().x(input.getMouseX() + 12).y(input.getMouseY() - 12).flush();  
+		
+		if (!ScreenDimUtil.isInsideScreen(input, this.dim()))
+		{
+			this.textElement.dim().mod().x(input.getMouseX() - 12 - this.text.scaledWidth()).y(input.getMouseY() - 12).flush();
+			this.background.dim().mod().x(input.getMouseX() - 12 - this.text.scaledWidth()).y(input.getMouseY() - 12).flush();
+		}
 		
 		if (input.isHovered(this.getGui()))
 		{

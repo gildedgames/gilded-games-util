@@ -3,10 +3,21 @@ package com.gildedgames.util.ui.util;
 import org.lwjgl.opengl.Display;
 
 import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class ScreenDimUtil
 {
+	
+	public static boolean isInsideScreen(InputProvider input, Rect rect)
+	{
+		if (rect.maxX() > input.getScreenWidth() || rect.maxY() > input.getScreenHeight())
+		{
+			return false;
+		}
+		
+		return true;
+	}
 	
 	public static Pos2D convertToOpenGL(InputProvider input, Pos2D pos)
 	{

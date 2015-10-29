@@ -8,8 +8,8 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
-import com.gildedgames.util.ui.util.events.DragCanvas;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.gildedgames.util.ui.util.factory.Function;
 
@@ -93,11 +93,11 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 		
 		if (!this.takenContentsOut && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
-			DragCanvas canvas = DragCanvas.fetch();
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
 
 			if (canvas != null)
 			{
-				GuiFrame draggedObject = canvas.getDraggedObject();
+				GuiFrame draggedObject = canvas.get("draggedObject");
 				
 				if (draggedObject instanceof SlotStack)
 				{
@@ -109,7 +109,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 						
 						this.setSlotContents(stack);
 						
-						canvas.clearDraggedObject();
+						canvas.remove("draggedObject");
 					}
 				}
 			}
