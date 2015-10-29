@@ -4,6 +4,7 @@ import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.client.GuiCreateGroup;
+import com.gildedgames.util.group.client.GuiEditGroup;
 import com.gildedgames.util.group.client.GuiGroups;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.tab.common.util.TabGeneric;
@@ -28,7 +29,7 @@ public class TabGroup extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return UiCore.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class);
+		return UiCore.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class);
 	}
 
 	@Override
@@ -38,6 +39,10 @@ public class TabGroup extends TabGeneric
 		if (member.groupsInFor(GroupCore.locate().getDefaultPool()).isEmpty())
 		{
 			UiCore.locate().open("", new MinecraftGui(new GuiGroups(player)));
+		}
+		else
+		{
+			UiCore.locate().open("", new MinecraftGui(new GuiEditGroup(player)));
 		}
 	}
 
