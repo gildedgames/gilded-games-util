@@ -1,8 +1,18 @@
 package com.gildedgames.util.core;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.client.GuiIngame;
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.menu.MenuCore;
 import com.gildedgames.util.menu.client.IMenu;
 import com.gildedgames.util.menu.client.MenuClientEvents;
@@ -16,15 +26,6 @@ import com.gildedgames.util.tab.common.tab.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 //import com.gildedgames.util.ui.TestTab;
 
@@ -48,10 +49,12 @@ public class ClientProxy extends ServerProxy
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilEvents utilEvents = new UtilEvents();
+		super.preInit(event);
+		
+		UtilClientEvents utilEvents = new UtilClientEvents();
 		UtilCore.registerEventHandler(utilEvents);
 
-		UtilCore.registerEventHandler(this.MinecraftTickInfo);
+		UtilCore.registerEventHandler(MinecraftGuiViewer.instance().getTickInfo());
 
 		MenuClientEvents menuClientEvents = new MenuClientEvents();
 		UtilCore.registerEventHandler(menuClientEvents);

@@ -2,7 +2,6 @@ package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
 import com.gildedgames.util.ui.data.TickInfo;
@@ -16,7 +15,7 @@ public class MinecraftGuiViewer implements GuiViewer
 	
 	private final InputProvider Input = new MinecraftInputProvider(Minecraft.getMinecraft());
 	
-	private final TickInfo TickInfo = UtilCore.proxy.MinecraftTickInfo;
+	private final TickInfo TickInfo = new MinecraftGuiWrapperEvents();
 	
 	private final Graphics2D Graphics = new MinecraftGraphics2D(Minecraft.getMinecraft());
 	

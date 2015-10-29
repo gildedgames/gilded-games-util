@@ -1,8 +1,5 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapperEvents;
-import com.gildedgames.util.ui.data.TickInfo;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -15,8 +12,6 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 public class ServerProxy implements ICore
 {
-
-	public final TickInfo MinecraftTickInfo = new MinecraftGuiWrapperEvents();
 
 	public EntityPlayer getPlayer()
 	{
@@ -31,9 +26,9 @@ public class ServerProxy implements ICore
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilEvents utilEvents = new UtilEvents();
-
-		UtilCore.registerEventHandler(utilEvents);
+		UtilServerEvents events = new UtilServerEvents();
+		
+		UtilCore.registerEventHandler(events);
 	}
 
 	@Override
