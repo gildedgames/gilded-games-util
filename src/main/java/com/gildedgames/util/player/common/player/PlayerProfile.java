@@ -128,7 +128,7 @@ public class PlayerProfile implements IPlayerProfile
 			buf.writeLong(this.uuid.getMostSignificantBits());
 			buf.writeLong(this.uuid.getLeastSignificantBits());
 
-			boolean hasUsername = StringUtils.isEmpty(this.username);
+			boolean hasUsername = !StringUtils.isEmpty(this.username);
 			buf.writeBoolean(hasUsername);
 			if (hasUsername)
 			{

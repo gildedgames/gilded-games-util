@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.graphics.Sprite;
@@ -65,11 +64,11 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		GlStateManager.scale(dim.scale(), dim.scale(), 0);
 
-		GlStateManager.translate((dim.width() / 2) + dim.rotation().originX(), (dim.height() / 2) + dim.rotation().originY(), 0);
+		GlStateManager.translate((dim.width() / 2) + dim.originX(), (dim.height() / 2) + dim.originY(), 0);
 
-		GlStateManager.rotate(dim.rotation().degrees(), 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(dim.degrees(), 0.0F, 0.0F, 1.0F);
 
-		GlStateManager.translate(-(dim.width() / 2) - dim.rotation().originX(), -(dim.height() / 2) - dim.rotation().originY(), 0);
+		GlStateManager.translate(-(dim.width() / 2) - dim.originX(), -(dim.height() / 2) - dim.originY(), 0);
 
 		GlStateManager.color(1, 1, 1, data.getAlpha());
 
@@ -96,7 +95,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawLine(Pos2D startPos, Pos2D endPos, DrawingData drawingData)
+	public void drawLine(int startX, int startY, int endX, int endY, DrawingData drawingData)
 	{
 
 	}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.BuildIntoRectHolder;
 import com.gildedgames.util.ui.data.rect.RectHolder;
 
@@ -75,16 +74,6 @@ public class RectFunnel
 		for (BuildIntoRectHolder modifier : this.modifiers)
 		{
 			modifier.width(width);
-		}
-
-		return this;
-	}
-
-	public RectFunnel pos(Pos2D position)
-	{
-		for (BuildIntoRectHolder modifier : this.modifiers)
-		{
-			modifier.pos(position);
 		}
 
 		return this;
@@ -230,11 +219,11 @@ public class RectFunnel
 		return this;
 	}
 
-	public RectFunnel addPos(Pos2D pos)
+	public RectFunnel addPos(float x, float y)
 	{
 		for (BuildIntoRectHolder modifier : this.modifiers)
 		{
-			modifier.addPos(pos);
+			modifier.addPos(x, y);
 		}
 
 		return this;

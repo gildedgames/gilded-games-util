@@ -1,6 +1,5 @@
 package com.gildedgames.util.ui.data.rect;
 
-
 public class BuildWithRectHolder
 {
 
@@ -13,52 +12,55 @@ public class BuildWithRectHolder
 		this.builder = builder;
 		this.buildWith = buildWith;
 	}
-	
+
 	public BuildWithRectHolder rotation()
 	{
-		this.builder.rotation = this.buildWith.dim().originalState().rotation();
-		
+		this.builder.degrees = this.buildWith.dim().originalState().degrees();
+		this.builder.originX = this.buildWith.dim().originalState().originX();
+		this.builder.originY = this.buildWith.dim().originalState().originY();
+
 		return this;
 	}
 
 	public BuildWithRectHolder degrees()
 	{
-		this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.dim().originalState().rotation()).degrees().flush();
+		this.builder.degrees = this.buildWith.dim().originalState().degrees();
 
 		return this;
 	}
 
 	public BuildWithRectHolder origin()
 	{
-		this.builder.rotation = this.builder.rotation.clone().origin(this.buildWith.dim().originalState().origin()).flush();
+		this.builder.originX = this.buildWith.dim().originalState().originX();
+		this.builder.originY = this.buildWith.dim().originalState().originY();
 
 		return this;
 	}
 
 	public BuildWithRectHolder originX()
 	{
-		this.builder.rotation = this.builder.rotation.clone().originX(this.buildWith.dim().originalState().origin().x()).flush();
+		this.builder.originX = this.buildWith.dim().originalState().originX();
 
 		return this;
 	}
 
 	public BuildWithRectHolder originY()
 	{
-		this.builder.rotation = this.builder.rotation.clone().originY(this.buildWith.dim().originalState().origin().y()).flush();
+		this.builder.originY = this.buildWith.dim().originalState().originY();
 
 		return this;
 	}
 
 	public BuildWithRectHolder rotateCW()
 	{
-		this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.dim().originalState().rotation()).addDegrees().flush();
+		this.builder.degrees += this.buildWith.dim().originalState().degrees();
 
 		return this;
 	}
 
 	public BuildWithRectHolder rotateCCW()
 	{
-		this.builder.rotation = this.builder.rotation.buildWith(this.buildWith.dim().originalState().rotation()).subtractDegrees().flush();
+		this.builder.degrees -= this.buildWith.dim().originalState().degrees();
 
 		return this;
 	}
@@ -86,7 +88,8 @@ public class BuildWithRectHolder
 
 	public BuildWithRectHolder pos()
 	{
-		this.builder.pos = this.buildWith.dim().originalState().pos();
+		this.builder.posX = this.buildWith.dim().originalState().x();
+		this.builder.posY = this.buildWith.dim().originalState().y();
 
 		return this;
 	}
@@ -121,14 +124,14 @@ public class BuildWithRectHolder
 
 	public BuildWithRectHolder y()
 	{
-		this.builder.pos(this.builder.pos.clone().y(this.buildWith.dim().originalState().y()).flush());
+		this.builder.posY = this.buildWith.dim().originalState().y();
 
 		return this;
 	}
 
 	public BuildWithRectHolder x()
 	{
-		this.builder.pos(this.builder.pos.clone().x(this.buildWith.dim().originalState().x()).flush());
+		this.builder.posX = this.buildWith.dim().originalState().x();
 
 		return this;
 	}
@@ -163,14 +166,14 @@ public class BuildWithRectHolder
 
 	public BuildWithRectHolder addX()
 	{
-		this.builder.pos(this.builder.pos.clone().addX(this.buildWith.dim().originalState().x()).flush());
+		this.builder.posX += this.buildWith.dim().originalState().x();
 
 		return this;
 	}
 
 	public BuildWithRectHolder addY()
 	{
-		this.builder.pos(this.builder.pos.clone().addY(this.buildWith.dim().originalState().y()).flush());
+		this.builder.posY += this.buildWith.dim().originalState().y();
 
 		return this;
 	}

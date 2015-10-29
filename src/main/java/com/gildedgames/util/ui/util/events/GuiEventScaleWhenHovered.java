@@ -1,16 +1,14 @@
 package com.gildedgames.util.ui.util.events;
 
-import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public class GuiEventScaleWhenHovered extends GuiEvent
 {
-	
+
 	private final float selectedScale, originalScale;
-	
+
 	public GuiEventScaleWhenHovered(float originalScale, float selectedScale)
 	{
 		this.selectedScale = selectedScale;
@@ -20,9 +18,7 @@ public class GuiEventScaleWhenHovered extends GuiEvent
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		Pos2D mousePos = Pos2D.flush(input.getMouseX(), input.getMouseY());
-		
-		if (this.getGui().dim().intersects(mousePos))
+		if (this.getGui().dim().intersects(input.getMouseX(), input.getMouseY()))
 		{
 			this.getGui().dim().mod().scale(this.selectedScale).flush();
 		}
@@ -35,7 +31,7 @@ public class GuiEventScaleWhenHovered extends GuiEvent
 	@Override
 	public void initEvent()
 	{
-		
+
 	}
-	
+
 }
