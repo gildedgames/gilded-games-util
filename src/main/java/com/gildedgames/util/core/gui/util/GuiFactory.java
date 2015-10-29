@@ -3,10 +3,6 @@ package com.gildedgames.util.core.gui.util;
 import java.awt.Color;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -27,6 +23,10 @@ import com.gildedgames.util.ui.util.TextBox;
 import com.gildedgames.util.ui.util.TextureElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.ui.util.rect.RectCollection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class GuiFactory
 {
@@ -63,7 +63,7 @@ public class GuiFactory
 		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(30).area(10, 10).flush());
 		Sprite buttonClickedSprite = new Sprite(SCROLL_BAR, UV.build().minU(40).area(10, 10).flush());
 
-		Rect newDim = Dim2D.build().pos(dim.pos()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
+		Rect newDim = Dim2D.build().pos(dim.x(), dim.y()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
@@ -81,7 +81,7 @@ public class GuiFactory
 		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(60).area(10, 10).flush());
 		Sprite buttonClickedSprite = new Sprite(SCROLL_BAR, UV.build().minU(70).area(10, 10).flush());
 
-		Rect newDim = Dim2D.build().pos(dim.pos()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
+		Rect newDim = Dim2D.build().pos(dim.x(), dim.y()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
@@ -95,7 +95,7 @@ public class GuiFactory
 
 	public static GuiFrame button(Pos2D pos, float width, String text, boolean centered)
 	{
-		Rect dim = Dim2D.build().area(width, 20).center(centered).pos(pos).flush();
+		Rect dim = Dim2D.build().area(width, 20).center(centered).pos(pos.x(), pos.y()).flush();
 
 		Gui button = new MinecraftButton(dim, text);
 

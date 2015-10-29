@@ -3,17 +3,17 @@ package com.gildedgames.util.ui.data.rect;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.Rotation2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class Dim2D implements Rect
 {
 
-	final Pos2D pos, maxPos;
+	final float posX, posY, maxPosX, maxPosY;
 
-	final Rotation2D rotation;
+	final float degrees;
+
+	final float originX, originY;
 
 	final float width, height;
 
@@ -28,7 +28,8 @@ public class Dim2D implements Rect
 
 	Dim2D(RectBuilder builder)
 	{
-		this.pos = builder.pos;
+		this.posX = builder.posX;
+		this.posY = builder.posY;
 
 		this.width = builder.width;
 		this.height = builder.height;
@@ -38,9 +39,13 @@ public class Dim2D implements Rect
 		this.centeredX = builder.centeredX;
 		this.centeredY = builder.centeredY;
 
-		this.rotation = builder.rotation;
+		this.degrees = builder.degrees;
 
-		this.maxPos = this.pos.clone().add(this.width(), this.height()).flush();
+		this.originX = builder.originX;
+		this.originY = builder.originY;
+
+		this.maxPosX = this.posX + this.width;
+		this.maxPosY = this.posY + this.height;
 	}
 
 	@Override
@@ -50,21 +55,21 @@ public class Dim2D implements Rect
 	}
 
 	@Override
-	public Rotation2D rotation()
-	{
-		return this.rotation;
-	}
-
-	@Override
 	public float degrees()
 	{
-		return this.rotation().degrees();
+		return this.degrees;
 	}
 
 	@Override
-	public Pos2D origin()
+	public float originX()
 	{
-		return this.rotation().origin();
+		return this.originX;
+	}
+
+	@Override
+	public float originY()
+	{
+		return this.originY;
 	}
 
 	@Override
@@ -74,39 +79,27 @@ public class Dim2D implements Rect
 	}
 
 	@Override
-	public Pos2D pos()
-	{
-		return this.pos;
-	}
-
-	@Override
-	public Pos2D maxPos()
-	{
-		return this.maxPos;
-	}
-
-	@Override
 	public float maxX()
 	{
-		return this.maxPos().x();
+		return this.maxPosX;
 	}
 
 	@Override
 	public float maxY()
 	{
-		return this.maxPos().y();
+		return this.maxPosY;
 	}
 
 	@Override
 	public float x()
 	{
-		return this.pos().x();
+		return this.posX;
 	}
 
 	@Override
 	public float y()
 	{
-		return this.pos().y();
+		return this.posY;
 	}
 
 	@Override
@@ -134,9 +127,9 @@ public class Dim2D implements Rect
 	}
 
 	@Override
-	public boolean intersects(Pos2D pos)
+	public boolean intersects(float x, float y)
 	{
-		return this.intersects(Dim2D.build().pos(pos).flush());
+		return x >= this.x() && y >= this.y() && x < this.maxX() && y < this.maxY();
 	}
 
 	@Override
@@ -148,9 +141,7 @@ public class Dim2D implements Rect
 	@Override
 	public boolean isHovered(InputProvider input)
 	{
-		Pos2D mousePos = Pos2D.flush(input.getMouseX(), input.getMouseY());
-
-		return this.intersects(mousePos);
+		return this.intersects(input.getMouseX(), input.getMouseY());
 	}
 
 	@Override
@@ -222,7 +213,7 @@ public class Dim2D implements Rect
 				float maxX = Math.max(preview.x() + preview.width(), dim.x() + dim.width());
 				float maxY = Math.max(preview.y() + preview.height(), dim.y() + dim.height());
 
-				result.pos(Pos2D.flush(minX, minY)).area(maxX - minX, maxY - minY);
+				result.pos(minX, minY).area(maxX - minX, maxY - minY);
 
 				overallScale += dim.scale();
 
@@ -240,7 +231,7 @@ public class Dim2D implements Rect
 	{
 		String link = ", ";
 
-		return this.pos().toString() + link + "Area() Width: '" + this.width() + "', Height: '" + this.height() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale() + "'";
+		return "X " + this.posX + " Y " + this.posY + link + "Area() Width: '" + this.width() + "', Height: '" + this.height() + "'" + link + "Centered() X: '" + this.centeredX + "', Y: '" + this.centeredY + "'" + link + "Scale() Value: '" + this.scale() + "'";
 	}
 
 	@Override
@@ -263,7 +254,9 @@ public class Dim2D implements Rect
 			return false;
 		}
 
-		if (!dim.pos().equals(this.pos()) || dim.scale() != this.scale() || dim.isCenteredX() != this.centeredX || dim.isCenteredY() != this.centeredY || dim.width() != this.width() || dim.height() != this.height() || dim.rotation() != this.rotation())
+		if (dim.x() != this.x() || dim.y() != this.y() || dim.scale() != this.scale() || dim.isCenteredX() != this.centeredX
+				|| dim.isCenteredY() != this.centeredY || dim.width() != this.width() || dim.height() != this.height()
+				|| dim.degrees() != this.degrees() || dim.originX() != this.originX() || dim.originY() != this.originY())
 		{
 			return false;
 		}
