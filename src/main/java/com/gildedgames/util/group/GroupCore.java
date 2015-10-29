@@ -1,5 +1,16 @@
 package com.gildedgames.util.group;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
 import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
@@ -28,17 +39,6 @@ import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.player.PlayerCore;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
 public class GroupCore implements ICore
 {
 
@@ -61,30 +61,25 @@ public class GroupCore implements ICore
 		return GroupCore.INSTANCE.serviceLocator.server();
 	}
 
-	/**
-	 * Register a new GroupPool.
-	 * @param client The GroupPool the client should use. You'll 
-	 * almost always want to use GroupPoolClient
-	 * @param server The GroupPool the server should use. You'll
-	 * almost always want to use GroupPoolServer
-	 */
-	public static void registerGroupPool(GroupPool client, GroupPool server)
-	{
-		client().registerPool(client);
-		server().registerPool(server);
-	}
-
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 
-		GroupPool client = this.serviceLocator.client().getDefaultPool();
-		GroupPool server = this.serviceLocator.server().getDefaultPool();
-
-		client.addListener(new NotificationsPoolHook());
-
-		registerGroupPool(client, server);
+		if (UtilCore.getSide().isClient())
+		{
+			GroupPool client = this.serviceLocator.client().getDefaultPool();
+			
+			client.addListener(new NotificationsPoolHook());
+			
+			client().registerPool(client);
+		}
+		else
+		{
+			GroupPool server = this.serviceLocator.server().getDefaultPool();
+			
+			server().registerPool(server);
+		}
 
 		UtilCore.NETWORK.registerPacket(PacketAddGroup.class);
 		UtilCore.NETWORK.registerPacket(PacketAddInvite.class);
