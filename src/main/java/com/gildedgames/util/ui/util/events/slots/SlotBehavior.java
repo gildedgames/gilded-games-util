@@ -6,7 +6,6 @@ import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
@@ -80,20 +79,20 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 			this.slotContents.dim().mod().center(true).flush();
 		}
 	}
-	
+
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
-		if (input.isHovered(this.getGui().dim()) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && this.parser.onMouseInput(pool, input))
+		if (input.isHovered(this.getGui().dim()) && pool.has(ButtonState.PRESS) && this.parser.onMouseInput(pool, input))
 		{
 			return;
 		}
 		
 		super.onMouseInput(pool, input);
 		
-		if (!this.takenContentsOut && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
+		if (!this.takenContentsOut && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas");
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
 
 			if (canvas != null)
 			{
@@ -105,11 +104,20 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 					
 					if (stack.events().contains("dragBehavior"))
 					{
+						SlotStack original = this.getSlotContents();
+						
 						stack.events().remove("dragBehavior");
 						
 						this.setSlotContents(stack);
 						
 						canvas.remove("draggedObject");
+						
+						if (original != null)
+						{
+							original.events().set("dragBehavior", new DragBehavior(), original);
+
+							canvas.set("draggedObject", original);
+						}
 					}
 				}
 			}
@@ -127,8 +135,6 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 			@Override
 			public GuiFrame create()
 			{
-				SlotBehavior.this.getSlotContents().events().set("dragBehavior", new DragBehavior(), SlotBehavior.this.getSlotContents());
-				
 				return SlotBehavior.this.getSlotContents();
 			}
 
@@ -147,11 +153,17 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 		
 		this.getGui().events().set("dragFactory", new SlotStackFactory(iconFactory, dataFunction)
 		{
+			
+			@Override
+			public boolean shouldRemoveDragged(SlotStack createdStack)
+			{
+				return false;
+			}
 
 			@Override
-			public boolean isActive()
+			public boolean isActive(MouseInputPool pool, InputProvider input)
 			{
-				return SlotBehavior.this.getSlotContents() != null;
+				return SlotBehavior.this.getSlotContents() != null && (!input.isHovered(this.getGui().dim()) || !SlotBehavior.this.parser.onMouseInput(pool, input));
 			}
 
 			@Override

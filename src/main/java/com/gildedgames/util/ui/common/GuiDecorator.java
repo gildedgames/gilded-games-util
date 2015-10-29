@@ -275,14 +275,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	@Override
 	public UIContainerEvents events()
 	{
-		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
-		
-		if (frame != null)
-		{
-			return frame.events();
-		}
-		
-		return null;
+		return this.element.events();
 	}
 	
 	@Override

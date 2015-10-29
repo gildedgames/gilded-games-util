@@ -20,7 +20,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.util.ScreenDimUtil;
+import com.gildedgames.util.ui.util.InputHelper;
 import com.gildedgames.util.ui.util.SkinButton;
 import com.gildedgames.util.ui.util.TextElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
@@ -52,7 +52,7 @@ public class GuiEditGroup extends GuiFrame
 		//buttons.put("title", new TextElement(GuiFactory.text(UtilCore.translate("gui.grouplist"), Color.white, 2.3f), Pos2D.flush(), false));
 		final RadioButtonSet groups = new RadioButtonSet(Pos2D.flush(), 100, positioner, new PlayersContent(this.group));
 
-		ScrollableGui scrollGroups = new ScrollableGui(Dim2D.build().pos(ScreenDimUtil.getCenter(input)).center(true).area(200, 200).flush(), groups);
+		ScrollableGui scrollGroups = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), groups);
 
 		this.content().set("groups", scrollGroups);
 

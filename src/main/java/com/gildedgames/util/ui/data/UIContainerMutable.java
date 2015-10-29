@@ -29,7 +29,7 @@ public class UIContainerMutable extends UIContainer
 	{
 		if (element == null)
 		{
-			this.elements.put(key, null);
+			this.elements.remove(key);
 			
 			return;
 		}

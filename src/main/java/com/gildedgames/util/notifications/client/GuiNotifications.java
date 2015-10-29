@@ -21,7 +21,7 @@ import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCollection;
-import com.gildedgames.util.ui.util.ScreenDimUtil;
+import com.gildedgames.util.ui.util.InputHelper;
 import com.gildedgames.util.ui.util.TextElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -50,7 +50,7 @@ public class GuiNotifications extends GuiFrame
 
 		GuiCollection notifications = new GuiCollection(Pos2D.flush(), 100, positioner, content);
 
-		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(ScreenDimUtil.getCenter(input)).center(true).area(200, 200).flush(), notifications);
+		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), notifications);
 
 		this.content().set("notifications", scrollNotifications);
 
