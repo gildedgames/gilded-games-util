@@ -9,19 +9,19 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
 import com.gildedgames.util.ui.util.factory.Factory;
-import com.gildedgames.util.ui.util.factory.Function;
+import com.google.common.base.Function;
 
 public class SlotStackFactory extends GuiEvent
 {
 	
 	private Factory<? extends GuiFrame> iconFactory;
 	
-	private Function<Object, Object> dataFunction;
+	private Function<GuiFrame, Object> dataFactory;
 
-	public SlotStackFactory(Factory<? extends GuiFrame> iconFactory, Function<Object, Object> dataFunction)
+	public SlotStackFactory(Factory<? extends GuiFrame> iconFactory, Function<GuiFrame, Object> dataFactory)
 	{
 		this.iconFactory = iconFactory;
-		this.dataFunction = dataFunction;
+		this.dataFactory = dataFactory;
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class SlotStackFactory extends GuiEvent
 			{
 				GuiFrame icon = this.iconFactory.create();
 				
-				SlotStack stack = new SlotStack(icon, this.dataFunction.apply(icon));
+				SlotStack stack = new SlotStack(icon, this.dataFactory.apply(icon));
 				
 				stack.events().set("dragBehavior", new DragBehavior(), stack);
 				
