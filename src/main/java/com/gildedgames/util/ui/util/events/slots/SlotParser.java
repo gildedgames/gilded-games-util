@@ -3,12 +3,12 @@ package com.gildedgames.util.ui.util.events.slots;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseInputPool;
 
-public interface SlotParser
+public interface SlotParser<E>
 {
 
-	boolean isAllowed(SlotStack state);
+	boolean isAllowed(SlotStack<E> state);
 	
-	void onContentsChange(SlotBehavior slot, SlotStack newContents);
+	void onContentsChange(SlotBehavior<E> slot, SlotStack<E> newContents);
 	
 	/**
 	 * Return true to cancel the normal slot behavior on mouse input.

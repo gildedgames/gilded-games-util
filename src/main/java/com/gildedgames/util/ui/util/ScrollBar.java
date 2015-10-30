@@ -90,7 +90,7 @@ public class ScrollBar extends GuiFrame
 
 		this.grabbableBar = new RepeatableGui(Dim2D.build().area(this.grabbableBarTexture.dim().width(), 20).flush(), this.grabbableBarTexture);
 
-		RectSeeker totalHeightMinusBottomButton = new RectGetter()
+		RectSeeker totalHeightMinusBottomButton = new RectGetter<Object>()
 		{
 
 			private float topButtonHeight = -1, baseBarHeight = -1;

@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.util.events.slots;
 
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
@@ -11,14 +12,14 @@ import com.gildedgames.util.ui.util.events.DragBehavior;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.google.common.base.Function;
 
-public class SlotStackFactory extends GuiEvent
+public class SlotStackFactory<T> extends GuiEvent<Gui>
 {
 	
-	private Factory<? extends GuiFrame> iconFactory;
+	private Function<T, GuiFrame> iconFactory;
 	
-	private Function<GuiFrame, Object> dataFactory;
+	private Factory<T> dataFactory;
 
-	public SlotStackFactory(Factory<? extends GuiFrame> iconFactory, Function<GuiFrame, Object> dataFactory)
+	public SlotStackFactory(Function<T, GuiFrame> iconFactory, Factory<T> dataFactory)
 	{
 		this.iconFactory = iconFactory;
 		this.dataFactory = dataFactory;
@@ -39,11 +40,12 @@ public class SlotStackFactory extends GuiEvent
 
 			if (canvas != null)
 			{
-				GuiFrame icon = this.iconFactory.create();
+				T data = this.dataFactory.create();
+				GuiFrame icon = this.iconFactory.apply(data);
 				
-				SlotStack stack = new SlotStack(icon, this.dataFactory.apply(icon));
+				SlotStack<T> stack = new SlotStack<T>(icon, data);
 				
-				stack.events().set("dragBehavior", new DragBehavior(), stack);
+				stack.events().set("dragBehavior", new DragBehavior<T>(), stack);
 				
 				stack.dim().mod().pos(input.getMouseX(), input.getMouseY()).flush();
 
@@ -71,7 +73,7 @@ public class SlotStackFactory extends GuiEvent
 		return true;
 	}
 	
-	public boolean shouldRemoveDragged(SlotStack createdStack)
+	public boolean shouldRemoveDragged(SlotStack<T> createdStack)
 	{
 		return true;
 	}

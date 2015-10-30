@@ -11,7 +11,6 @@ import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.InputHelper;
@@ -20,7 +19,7 @@ import com.gildedgames.util.ui.util.events.slots.SlotBehavior;
 import com.gildedgames.util.ui.util.events.slots.SlotStack;
 import com.gildedgames.util.ui.util.events.slots.SlotStackFactory;
 
-public class DragBehavior extends GuiEvent<SlotStack>
+public class DragBehavior<T> extends GuiEvent<SlotStack<T>>
 {
 
 	private List<RectModifier> prevModifiers;

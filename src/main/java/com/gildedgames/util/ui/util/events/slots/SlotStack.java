@@ -4,19 +4,19 @@ import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class SlotStack extends GuiDecorator<GuiFrame>
+public class SlotStack<T> extends GuiDecorator<GuiFrame>
 {
 	
-	private Object data;
+	private T data;
 
-	public SlotStack(GuiFrame element, Object data)
+	public SlotStack(GuiFrame element, T data)
 	{
 		super(element);
 		
 		this.data = data;
 	}
 	
-	public Object getData()
+	public T getData()
 	{
 		return this.data;
 	}

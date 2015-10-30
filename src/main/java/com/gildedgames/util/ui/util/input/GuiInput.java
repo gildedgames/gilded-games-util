@@ -9,6 +9,7 @@ import org.lwjgl.input.Keyboard;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.rect.Dim2D;
@@ -66,7 +67,7 @@ public class GuiInput<T> extends GuiFrame
 		
 		cursor.setVisible(false);
 
-		this.input.events().set("onTyping", new GuiEvent()
+		this.input.events().set("onTyping", new GuiEvent<Gui>()
 		{
 
 			@Override
