@@ -10,7 +10,7 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.util.GuiCanvas;
 import com.gildedgames.util.ui.util.events.DragBehavior;
 import com.gildedgames.util.ui.util.factory.Factory;
-import com.gildedgames.util.ui.util.factory.Function;
+import com.google.common.base.Function;
 
 public class SlotBehavior extends GuiEvent<GuiFrame>
 {
@@ -140,11 +140,11 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 
 		};
 
-		Function<Object, Object> dataFunction = new Function<Object, Object>()
+		Function<GuiFrame, Object> dataFunction = new Function<GuiFrame, Object>()
 		{
 
 			@Override
-			public Object apply(Object input)
+			public Object apply(GuiFrame input)
 			{
 				return SlotBehavior.this.getSlotContents().getData();
 			}

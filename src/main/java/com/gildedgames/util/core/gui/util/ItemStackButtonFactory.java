@@ -14,12 +14,13 @@ import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.gui.util.events.MinecraftHoveredDesc;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
+import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.util.events.slots.SlotStackFactory;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
 import com.gildedgames.util.ui.util.factory.Factory;
-import com.gildedgames.util.ui.util.factory.Function;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 
 public class ItemStackButtonFactory implements ContentFactory<Ui>
@@ -95,12 +96,12 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 
 	private StackTypes stackTypes;
 	
-	private Function<Object, Object> dataFunction;
+	private Function<GuiFrame, Object> dataFactory;
 
-	public ItemStackButtonFactory(StackTypes stackTypes, Function<Object, Object> dataFunction)
+	public ItemStackButtonFactory(StackTypes stackTypes, Function<GuiFrame, Object> dataFactory)
 	{
 		this.stackTypes = stackTypes;
-		this.dataFunction = dataFunction;
+		this.dataFactory = dataFactory;
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 					return new MinecraftItemStackRender(button.getItemStack());
 				}
 
-			}, this.dataFunction));
+			}, this.dataFactory));
 
 			buttons.put(stack.getUnlocalizedName(), button);
 		}
