@@ -23,7 +23,7 @@ import com.gildedgames.util.ui.util.factory.Factory;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 
-public class ItemStackButtonFactory implements ContentFactory<Ui>
+public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 {
 
 	public static enum StackTypes
@@ -96,9 +96,9 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 
 	private StackTypes stackTypes;
 	
-	private Function<GuiFrame, Object> dataFactory;
+	private Function<ItemStack, T> dataFactory;
 
-	public ItemStackButtonFactory(StackTypes stackTypes, Function<GuiFrame, Object> dataFactory)
+	public ItemStackButtonFactory(StackTypes stackTypes, Function<ItemStack, T> dataFactory)
 	{
 		this.stackTypes = stackTypes;
 		this.dataFactory = dataFactory;
@@ -115,16 +115,26 @@ public class ItemStackButtonFactory implements ContentFactory<Ui>
 			
 			button.events().set("description", new MinecraftHoveredDesc(GuiFactory.text(stack.getDisplayName(), Color.WHITE)));
 
-			button.events().set("draggableBehavior", new SlotStackFactory(new Factory<MinecraftItemStackRender>()
+			button.events().set("draggableBehavior", new SlotStackFactory<T>(new Function<T, GuiFrame>()
 			{
 
 				@Override
-				public MinecraftItemStackRender create()
+				public GuiFrame apply(T input)
 				{
 					return new MinecraftItemStackRender(button.getItemStack());
 				}
 
-			}, this.dataFactory));
+			},
+			new Factory<T>()
+			{
+
+				@Override
+				public T create()
+				{
+					return ItemStackButtonFactory.this.dataFactory.apply(button.getItemStack());
+				}
+				
+			}));
 
 			buttons.put(stack.getUnlocalizedName(), button);
 		}

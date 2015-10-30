@@ -67,12 +67,13 @@ public class NBTHelper
 
 	public static void setIOList(String key, List<? extends IO<IOBridge, IOBridge>> list, NBTTagCompound tag)
 	{
-		IOUtil.setIOList(key, list, NBTBridge.factory, new NBTBridge(tag));
+		IOUtil.setCollection(key, list, NBTBridge.factory, new NBTBridge(tag));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends IO<IOBridge, IOBridge>> List<T> getIOList(String key, NBTTagCompound tag)
 	{
-		return IOUtil.getIOList(key, NBTBridge.factory, new NBTBridge(tag));
+		return (List<T>) IOUtil.getCollection(key, NBTBridge.factory, new NBTBridge(tag));
 	}
 
 	public static <T extends NBT> void writeOutputObject(T object, ByteBuf byteBuf)

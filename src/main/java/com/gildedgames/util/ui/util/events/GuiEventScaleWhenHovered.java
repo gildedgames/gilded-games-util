@@ -1,10 +1,11 @@
 package com.gildedgames.util.ui.util.events;
 
+import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.event.GuiEvent;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class GuiEventScaleWhenHovered extends GuiEvent
+public class GuiEventScaleWhenHovered extends GuiEvent<Gui>
 {
 
 	private final float selectedScale, originalScale;

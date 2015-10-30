@@ -43,13 +43,15 @@ public class WorldServices
 	{
 		for (IWorld wrapper : this.worldWrappers)
 		{
-			if (wrapper.isWrapperFor(dimId, this.isRemote))
+			if (wrapper != null && wrapper.isWrapperFor(dimId, this.isRemote))
 			{
 				return wrapper;
 			}
 		}
+		
 		IWorld world = this.wrapperFactory.create(dimId, this.isRemote);
 		this.worldWrappers.add(world);
+		
 		return world;
 	}
 

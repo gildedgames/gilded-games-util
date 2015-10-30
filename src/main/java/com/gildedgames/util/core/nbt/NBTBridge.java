@@ -189,11 +189,6 @@ public class NBTBridge implements IOBridge
 	{
 		IOManager manager = IOCore.io().getManager(classToWrite);
 
-		if (manager == null)
-		{
-			System.out.println("HELLOOOOOOOOOOOOOOO!!!!! " + classToWrite);
-		}
-
 		int classID = manager.getRegistry().getID(classToWrite);
 
 		this.setString("IOManagerID" + key, manager.getID());

@@ -1,14 +1,19 @@
 package com.gildedgames.util.io_manager.util;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
@@ -18,33 +23,93 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-
 public class IOUtil
 {
 
 	private final static ByteBufFactory bufFactory = new ByteBufFactory();
+	
+	public static <I, O> void setCollection(String key, Collection<? extends IO<IOBridge, IOBridge>> collection, IOBridge output)
+	{
+		output.setInteger(key + "collectionSize", collection.size());
 
-	public static <I, O> void setIOList(String key, List<? extends IO<I, O>> list, IOFactory<I, O> factory, O output)
+		int count = 0;
+		
+		for (IO<IOBridge, IOBridge> obj : collection)
+		{
+			output.setIO(key + "IO" + count, obj);
+
+			count++;
+		}
+	}
+	
+	public static <T extends IO<IOBridge, IOBridge>> Collection<T> getCollection(String key, IOBridge input)
+	{
+		int listSize = input.getInteger(key + "collectionSize");
+
+		List<T> list = new ArrayList<T>(listSize);
+
+		for (int count = 0; count < listSize; count++)
+		{
+			T obj = input.getIO(key + "IO" + count);
+
+			list.add(obj);
+		}
+
+		return list;
+	}
+	
+	public static <I, O> void setArray(String key, IO<IOBridge, IOBridge>[] array, IOBridge output)
+	{
+		output.setInteger(key + "arraySize", array.length);
+
+		int count = 0;
+		
+		for (IO<IOBridge, IOBridge> obj : array)
+		{
+			output.setIO(key + "IO" + count, obj);
+
+			count++;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends IO<IOBridge, IOBridge>> T[] getArray(String key, IOBridge input)
+	{
+		int listSize = input.getInteger(key + "arraySize");
+
+		List<T> list = new ArrayList<T>(listSize);
+
+		for (int count = 0; count < listSize; count++)
+		{
+			T obj = input.getIO(key + "IO" + count);
+
+			list.add(obj);
+		}
+
+		return (T[]) list.toArray();
+	}
+
+	public static <I, O> void setCollection(String key, Collection<? extends IO<I, O>> collection, IOFactory<I, O> factory, O output)
 	{
 		IOBridge outputBridge = factory.createOutputBridge(output);
 
-		outputBridge.setInteger(key + "listSize", list.size());
+		outputBridge.setInteger(key + "collectionSize", collection.size());
 
-		for (int count = 0; count < list.size(); count++)
+		int count = 0;
+		
+		for (IO<I, O> obj : collection)
 		{
-			IO<I, O> obj = list.get(count);
-
 			IOCore.io().set(key + "IO" + count, output, factory, obj);
+		
+			count++;
 		}
 	}
 
-	public static <I, O, T extends IO<I, O>> List<T> getIOList(String key, IOFactory<I, O> factory, I input)
+	public static <I, O, T extends IO<I, O>> Collection<T> getCollection(String key, IOFactory<I, O> factory, I input)
 	{
 		IOBridge inputBridge = factory.createInputBridge(input);
 
-		int listSize = inputBridge.getInteger(key + "listSize");
+		int listSize = inputBridge.getInteger(key + "collectionSize");
 
 		List<T> list = new ArrayList<T>(listSize);
 
@@ -228,12 +293,13 @@ public class IOUtil
 
 	public static void writeIOList(List<? extends IO<IOBridge, IOBridge>> list, ByteBuf buf)
 	{
-		IOUtil.setIOList("", list, ByteBufBridge.factory, new ByteBufBridge(buf));
+		IOUtil.setCollection("", list, ByteBufBridge.factory, new ByteBufBridge(buf));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends IO<IOBridge, IOBridge>> List<T> readIOList(ByteBuf buf)
 	{
-		return IOUtil.getIOList("", ByteBufBridge.factory, new ByteBufBridge(buf));
+		return (List<T>) IOUtil.getCollection("", ByteBufBridge.factory, new ByteBufBridge(buf));
 	}
 
 	private static class FilenameFilterExtension implements FilenameFilter

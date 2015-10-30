@@ -12,21 +12,21 @@ import com.gildedgames.util.ui.util.events.DragBehavior;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.google.common.base.Function;
 
-public class SlotBehavior extends GuiEvent<GuiFrame>
+public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 {
 
-	private SlotStack slotContents;
+	private SlotStack<T> slotContents;
 	
-	private SlotParser parser;
+	private SlotParser<T> parser;
 	
 	private boolean takenContentsOut;
 
-	public SlotBehavior(SlotParser parser)
+	public SlotBehavior(SlotParser<T> parser)
 	{
 		this.parser = parser;
 	}
 	
-	public void setSlotContents(SlotStack draggedState)
+	public void setSlotContents(SlotStack<T> draggedState)
 	{
 		this.setSlotContents(draggedState, true);
 	}
@@ -39,7 +39,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 		this.parser.onContentsChange(SlotBehavior.this, null);
 	}
 
-	public void setSlotContents(SlotStack draggedState, boolean notifyParser)
+	public void setSlotContents(SlotStack<T> draggedState, boolean notifyParser)
 	{
 		if (draggedState == null)
 		{
@@ -64,7 +64,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 		}
 	}
 
-	public SlotStack getSlotContents()
+	public SlotStack<T> getSlotContents()
 	{
 		return this.slotContents;
 	}
@@ -100,11 +100,12 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 				
 				if (draggedObject instanceof SlotStack)
 				{
-					SlotStack stack = (SlotStack)draggedObject;
+					@SuppressWarnings("unchecked")
+					SlotStack<T> stack = (SlotStack<T>)draggedObject;
 					
 					if (stack.events().contains("dragBehavior"))
 					{
-						SlotStack original = this.getSlotContents();
+						SlotStack<T> original = this.getSlotContents();
 						
 						stack.events().remove("dragBehavior");
 						
@@ -114,7 +115,7 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 						
 						if (original != null)
 						{
-							original.events().set("dragBehavior", new DragBehavior(), original);
+							original.events().set("dragBehavior", new DragBehavior<T>(), original);
 
 							canvas.set("draggedObject", original);
 						}
@@ -129,33 +130,33 @@ public class SlotBehavior extends GuiEvent<GuiFrame>
 	@Override
 	public void initEvent()
 	{
-		Factory<GuiFrame> iconFactory = new Factory<GuiFrame>()
+		Function<T, GuiFrame> iconFactory = new Function<T, GuiFrame>()
 		{
 
 			@Override
-			public GuiFrame create()
+			public GuiFrame apply(T input)
 			{
 				return SlotBehavior.this.getSlotContents();
 			}
 
 		};
 
-		Function<GuiFrame, Object> dataFunction = new Function<GuiFrame, Object>()
+		Factory<T> dataFunction = new Factory<T>()
 		{
 
 			@Override
-			public Object apply(GuiFrame input)
+			public T create()
 			{
 				return SlotBehavior.this.getSlotContents().getData();
 			}
 	
 		};
 		
-		this.getGui().events().set("dragFactory", new SlotStackFactory(iconFactory, dataFunction)
+		this.getGui().events().set("dragFactory", new SlotStackFactory<T>(iconFactory, dataFunction)
 		{
 			
 			@Override
-			public boolean shouldRemoveDragged(SlotStack createdStack)
+			public boolean shouldRemoveDragged(SlotStack<T> createdStack)
 			{
 				return false;
 			}
