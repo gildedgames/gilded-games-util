@@ -5,20 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.group.GroupCore;
-import com.gildedgames.util.instances.InstanceCore;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.notifications.NotificationCore;
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.spawning.SpawningCore;
-import com.gildedgames.util.tab.TabCore;
-import com.gildedgames.util.testutil.TestCore;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.world.WorldCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -41,6 +27,19 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
+import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.instances.InstanceCore;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.menu.MenuCore;
+import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.spawning.SpawningCore;
+import com.gildedgames.util.tab.TabCore;
+import com.gildedgames.util.universe.UniverseCore;
+import com.gildedgames.util.world.WorldCore;
 
 @Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
 public class UtilCore implements ICore
@@ -77,8 +76,6 @@ public class UtilCore implements ICore
 		this.cores.add(new SpawningCore());
 		this.cores.add(InstanceCore.INST);
 		this.cores.add(NotificationCore.INSTANCE);
-
-		this.cores.add(TestCore.INST);
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
