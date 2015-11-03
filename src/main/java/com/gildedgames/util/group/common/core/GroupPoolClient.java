@@ -9,7 +9,6 @@ import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 //Basically just asks the server to do his work for him :) :) :)
@@ -70,7 +69,7 @@ public class GroupPoolClient extends GroupPool
 			return;
 		}
 
-		if (inviting.equals(Minecraft.getMinecraft().thePlayer))
+		if (inviting.equals(UtilCore.proxy.getPlayer()))
 		{
 			UtilCore.print("Tried to invite as a different player!");
 			return;
@@ -162,7 +161,7 @@ public class GroupPoolClient extends GroupPool
 
 	private GroupMember thePlayer()
 	{
-		return GroupMember.get(Minecraft.getMinecraft().thePlayer);
+		return GroupMember.get(UtilCore.proxy.getPlayer());
 	}
 
 	@Override

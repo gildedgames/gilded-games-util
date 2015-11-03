@@ -7,7 +7,6 @@ import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.notifications.NotificationCore;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -59,12 +58,12 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 
 	private void sendPopup(String message)
 	{
-		this.sendPopup(message, Minecraft.getMinecraft().thePlayer);
+		this.sendPopup(message, UtilCore.proxy.getPlayer());
 	}
 
 	private void sendPopup(String message, EntityPlayer player)
 	{
-		NotificationCore.sendPopup(message, player, Minecraft.getMinecraft().thePlayer);
+		NotificationCore.sendPopup(message, player, UtilCore.proxy.getPlayer());
 	}
 
 	@Override
