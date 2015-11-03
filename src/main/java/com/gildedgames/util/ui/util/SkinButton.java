@@ -3,6 +3,11 @@ package com.gildedgames.util.ui.util;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -13,11 +18,6 @@ import com.gildedgames.util.ui.graphics.Sprite.UV;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 
 public class SkinButton extends GuiFrame
 {
@@ -55,7 +55,7 @@ public class SkinButton extends GuiFrame
 		}
 
 		AssetLocation asset = new MinecraftAssetLocation(location);
-		Sprite sprite = new Sprite(asset, UV.build().min(8f, 8f).max(16, 16f).flush());
+		Sprite sprite = Sprite.createWithArea(asset, UV.build().min(8f, 8f).max(16, 16f).flush(), 64, 64);
 		this.content().set("head", GuiFactory.texture(sprite));
 	}
 
