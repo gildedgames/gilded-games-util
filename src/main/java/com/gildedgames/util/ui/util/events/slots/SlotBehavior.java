@@ -92,7 +92,7 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 		
 		if (!this.takenContentsOut && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", 550.0F);
 
 			if (canvas != null)
 			{

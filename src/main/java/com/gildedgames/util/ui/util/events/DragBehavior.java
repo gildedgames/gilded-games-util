@@ -71,7 +71,7 @@ public class DragBehavior<T> extends GuiEvent<SlotStack<T>>
 		
 		if (pool.has(ButtonState.PRESS) && !hoveringSlot)
 		{
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", 550.0F);
 
 			if (canvas != null)
 			{
