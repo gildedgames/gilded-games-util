@@ -20,6 +20,7 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiPolling;
 import com.gildedgames.util.ui.util.InputHelper;
 import com.gildedgames.util.ui.util.SkinButton;
 import com.gildedgames.util.ui.util.TextElement;
@@ -31,6 +32,7 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiPositionerList;
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiEditGroup extends GuiFrame
@@ -69,7 +71,7 @@ public class GuiEditGroup extends GuiFrame
 			}
 		});
 
-		this.content().set("create", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.create"))
+		this.content().set("create", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.remove"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -77,7 +79,21 @@ public class GuiEditGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					UiCore.locate().open("", new MinecraftGui(new GuiCreateGroup()));
+					GroupCore.locate().getDefaultPool().remove(GuiEditGroup.this.group);
+					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+					{
+						@Override
+						protected boolean condition()
+						{
+							return GroupCore.locate().getDefaultPool().get(GuiEditGroup.this.group.getName()) == null;
+						}
+
+						@Override
+						protected void onCondition()
+						{
+							UiCore.locate().open("", new MinecraftGui(new GuiGroups(Minecraft.getMinecraft().thePlayer)));
+						}
+					}));
 				}
 			}
 		});
@@ -119,7 +135,7 @@ public class GuiEditGroup extends GuiFrame
 		public void initContent(InputProvider input)
 		{
 			super.initContent(input);
-			
+
 			this.content().set("head", new SkinButton(this.player, 2, 2));
 			this.content().set("username", new TextElement(GuiFactory.text(this.player.getCommandSenderName(), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 		}

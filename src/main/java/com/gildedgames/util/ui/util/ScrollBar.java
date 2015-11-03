@@ -199,6 +199,10 @@ public class ScrollBar extends GuiFrame
 
 			float baseBarPercentage = this.contentArea.dim().height() < this.dim().height() ? 0f : (float) contentAndScrollHeightDif / this.contentArea.dim().height();
 
+			if (this.baseBar == null)
+			{
+				int i = 0;
+			}
 			float barHeight = this.baseBar.dim().height() - (int) (this.baseBar.dim().height() * baseBarPercentage);
 
 			this.grabbableBar.dim().mod().height(Math.max(10, barHeight)).flush();

@@ -7,10 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
@@ -22,6 +18,10 @@ import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.GuiViewer;
 import com.gildedgames.util.ui.util.factory.Factory;
 import com.google.common.collect.ImmutableList;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class UiServices
 {
@@ -226,13 +226,16 @@ public class UiServices
 				if (wrapped instanceof MinecraftGui)
 				{
 					MinecraftGui mcGui = (MinecraftGui) wrapped;
-					return mcGui.getDecoratedElement().getClass().equals(frame);
+					if (mcGui.getDecoratedElement().getClass().equals(frame))
+					{
+						return true;
+					}
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean hasFrame()
 	{
 		return this.getCurrentFrame() != null;
