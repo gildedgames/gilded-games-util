@@ -119,6 +119,7 @@ public class GuiEditGroup extends GuiFrame
 		public void initContent(InputProvider input)
 		{
 			super.initContent(input);
+			
 			this.content().set("head", new SkinButton(this.player, 2, 2));
 			this.content().set("username", new TextElement(GuiFactory.text(this.player.getCommandSenderName(), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 		}

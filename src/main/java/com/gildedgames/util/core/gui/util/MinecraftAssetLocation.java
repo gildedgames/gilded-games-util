@@ -1,10 +1,10 @@
 package com.gildedgames.util.core.gui.util;
 
+import net.minecraft.util.ResourceLocation;
+
 import org.apache.commons.lang3.Validate;
 
 import com.gildedgames.util.ui.data.AssetLocation;
-
-import net.minecraft.util.ResourceLocation;
 
 public class MinecraftAssetLocation implements AssetLocation
 {
@@ -29,6 +29,30 @@ public class MinecraftAssetLocation implements AssetLocation
 		this.domain = location.getResourceDomain();
 		this.path = location.getResourcePath();
 	}
+	
+	@Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        else if (obj instanceof ResourceLocation)
+        {
+        	ResourceLocation resourcelocation = (ResourceLocation)obj;
+        	
+            return this.domain.equals(resourcelocation.getResourceDomain()) && this.path.equals(resourcelocation.getResourcePath());
+        }
+        else if (obj instanceof AssetLocation)
+        {
+        	AssetLocation asset = (AssetLocation)obj;
+        	
+        	return this.domain.equals(asset.getDomain()) && this.path.equals(asset.getPath());
+        }
+        
+        return false;
+    }
+
 
 	@Override
 	public String getDomain()

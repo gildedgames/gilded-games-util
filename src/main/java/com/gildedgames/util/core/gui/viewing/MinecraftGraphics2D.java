@@ -201,7 +201,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		void draw();
 	}
-
+	
 	private static class DrawSprite implements DrawInner
 	{
 
