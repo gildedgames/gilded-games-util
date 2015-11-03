@@ -1,14 +1,15 @@
 package com.gildedgames.util.group.client;
 
-import net.minecraft.client.Minecraft;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault.PermissionType;
+import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
@@ -16,8 +17,11 @@ import com.gildedgames.util.ui.input.ButtonState;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.ui.util.GuiPolling;
 import com.gildedgames.util.ui.util.input.GuiInput;
 import com.gildedgames.util.ui.util.input.StringInput;
+
+import net.minecraft.client.Minecraft;
 
 public class GuiCreateGroup extends GuiFrame
 {
@@ -40,7 +44,21 @@ public class GuiCreateGroup extends GuiFrame
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && !StringUtils.isEmpty(nameInput.getData()))
 				{
 					GroupCore.locate().getDefaultPool().create(nameInput.getData(), Minecraft.getMinecraft().thePlayer, new GroupPermsDefault(GroupCore.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer), permission.type));
-					Minecraft.getMinecraft().displayGuiScreen(null);
+					final GroupMember member = GroupCore.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer);
+					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+					{
+						@Override
+						protected boolean condition()
+						{
+							return !member.groupsInFor(GroupCore.locate().getDefaultPool()).isEmpty();
+						}
+
+						@Override
+						protected void onCondition()
+						{
+							UiCore.locate().open("", new MinecraftGui(new GuiEditGroup(Minecraft.getMinecraft().thePlayer)));
+						}
+					}));
 				}
 			}
 		});
