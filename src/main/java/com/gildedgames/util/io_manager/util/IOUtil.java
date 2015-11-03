@@ -1,7 +1,5 @@
 package com.gildedgames.util.io_manager.util;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -13,8 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
 import com.gildedgames.util.io_manager.IOCore;
@@ -23,17 +19,20 @@ import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.player.common.player.IPlayerProfile;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+
 public class IOUtil
 {
 
 	private final static ByteBufFactory bufFactory = new ByteBufFactory();
-	
+
 	public static <I, O> void setCollection(String key, Collection<? extends IO<IOBridge, IOBridge>> collection, IOBridge output)
 	{
 		output.setInteger(key + "collectionSize", collection.size());
 
 		int count = 0;
-		
+
 		for (IO<IOBridge, IOBridge> obj : collection)
 		{
 			output.setIO(key + "IO" + count, obj);
@@ -41,7 +40,7 @@ public class IOUtil
 			count++;
 		}
 	}
-	
+
 	public static <T extends IO<IOBridge, IOBridge>> Collection<T> getCollection(String key, IOBridge input)
 	{
 		int listSize = input.getInteger(key + "collectionSize");
@@ -57,13 +56,13 @@ public class IOUtil
 
 		return list;
 	}
-	
+
 	public static <I, O> void setArray(String key, IO<IOBridge, IOBridge>[] array, IOBridge output)
 	{
 		output.setInteger(key + "arraySize", array.length);
 
 		int count = 0;
-		
+
 		for (IO<IOBridge, IOBridge> obj : array)
 		{
 			output.setIO(key + "IO" + count, obj);
@@ -71,7 +70,7 @@ public class IOUtil
 			count++;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T extends IO<IOBridge, IOBridge>> T[] getArray(String key, IOBridge input)
 	{
@@ -96,11 +95,11 @@ public class IOUtil
 		outputBridge.setInteger(key + "collectionSize", collection.size());
 
 		int count = 0;
-		
+
 		for (IO<I, O> obj : collection)
 		{
 			IOCore.io().set(key + "IO" + count, output, factory, obj);
-		
+
 			count++;
 		}
 	}
@@ -265,12 +264,12 @@ public class IOUtil
 
 	public static UUID getUUID(NBTTagCompound tag, String name)
 	{
-		return new UUID(tag.getLong(name + "most"), tag.getLong("least"));
+		return new UUID(tag.getLong(name + "most"), tag.getLong(name + "least"));
 	}
 
 	public static UUID getUUID(IOBridge tag, String name)
 	{
-		return new UUID(tag.getLong(name + "most"), tag.getLong("least"));
+		return new UUID(tag.getLong(name + "most"), tag.getLong(name + "least"));
 	}
 
 	public static <T extends IO<ByteBuf, ByteBuf>> T readIO(ByteBuf buf)
