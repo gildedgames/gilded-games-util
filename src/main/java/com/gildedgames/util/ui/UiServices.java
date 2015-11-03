@@ -44,7 +44,7 @@ public class UiServices
 
 	public static enum RenderOrder
 	{
-		PRE, NORMAL, POST;
+		PRE, POST;
 	}
 
 	public static class RegisteredOverlay extends Overlay
@@ -173,7 +173,7 @@ public class UiServices
 
 	public void registerOverlay(String uniqueSaveName, Factory<GuiFrame> factory, GuiViewer viewer)
 	{
-		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.NORMAL);
+		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.POST);
 	}
 
 	public void registerOverlay(String uniqueSaveName, Factory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
@@ -183,7 +183,7 @@ public class UiServices
 
 	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
-		this.overlay(uniqueSaveName, frame, viewer, RenderOrder.NORMAL);
+		this.overlay(uniqueSaveName, frame, viewer, RenderOrder.POST);
 	}
 
 	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)

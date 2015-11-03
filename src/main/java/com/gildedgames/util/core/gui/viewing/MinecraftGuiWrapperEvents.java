@@ -1,7 +1,17 @@
 package com.gildedgames.util.core.gui.viewing;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.UiServices.Overlay;
@@ -17,14 +27,6 @@ import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.input.MouseMotion;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class MinecraftGuiWrapperEvents implements TickInfo
 {
@@ -183,11 +185,15 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 			GuiViewer viewer = overlay.getViewer();
 			RenderOrder renderOrder = overlay.getRenderOrder();
 
-			if (renderOrder == desiredOrder)
+			if (renderOrder.equals(desiredOrder))
 			{
-				viewer.getInputProvider().refreshResolution();
+				GL11.glPushMatrix();
+
+				GL11.glTranslatef(0.0F, 0.0F, -100.0F);
 
 				frame.draw(viewer.getGraphics(), viewer.getInputProvider());
+
+				GL11.glPopMatrix();
 			}
 		}
 	}
@@ -206,19 +212,19 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void renderGameOverlayPre(RenderGameOverlayEvent.Pre event)
 	{
-		this.renderOverlays(RenderOrder.PRE);
-	}
-
-	@SubscribeEvent(priority = EventPriority.NORMAL)
-	public void renderGameOverlay(RenderGameOverlayEvent event)
-	{
-		this.renderOverlays(RenderOrder.NORMAL);
+		if (event.type == ElementType.TEXT)
+		{
+			this.renderOverlays(RenderOrder.PRE);
+		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderGameOverlayPost(RenderGameOverlayEvent.Post event)
 	{
-		this.renderOverlays(RenderOrder.POST);
+		if (event.type == ElementType.TEXT)
+		{
+			this.renderOverlays(RenderOrder.POST);
+		}
 	}
 
 	@Override

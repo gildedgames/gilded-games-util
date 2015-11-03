@@ -11,11 +11,11 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.nbt.NBTBridge;
+import com.gildedgames.util.core.util.GGHelper;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.core.GroupPool;

@@ -1,4 +1,4 @@
-package com.gildedgames.util;
+package com.gildedgames.util.core.util;
 
 import java.io.File;
 import java.io.FileInputStream;

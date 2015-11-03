@@ -48,6 +48,7 @@ public class MinecraftTextBackground extends GuiFrame
 	{
 		int zLevel = 0;
 		
+		GL11.glPushMatrix();
 		final float f = (par5 >> 24 & 255) / 255.0F;
 		final float f1 = (par5 >> 16 & 255) / 255.0F;
 		final float f2 = (par5 >> 8 & 255) / 255.0F;
@@ -57,7 +58,7 @@ public class MinecraftTextBackground extends GuiFrame
 		final float f6 = (par6 >> 8 & 255) / 255.0F;
 		final float f7 = (par6 & 255) / 255.0F;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
+		//GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -71,9 +72,10 @@ public class MinecraftTextBackground extends GuiFrame
 		tessellator.addVertex(maxX, maxY, zLevel);
 		Tessellator.getInstance().draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
+		//GL11.glDisable(GL11.GL_BLEND);
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
 	}
 	
 }

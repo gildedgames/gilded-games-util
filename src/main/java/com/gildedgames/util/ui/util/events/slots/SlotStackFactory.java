@@ -36,7 +36,7 @@ public class SlotStackFactory<T> extends GuiEvent<Gui>
 	{
 		if (this.isActive(pool, input) && input.isHovered(this.getGui().dim()) && pool.has(ButtonState.PRESS))
 		{
-			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", false);
+			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", 550.0F);
 
 			if (canvas != null)
 			{

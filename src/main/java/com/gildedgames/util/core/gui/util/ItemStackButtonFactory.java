@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameData;
 
-import com.gildedgames.util.GGHelper;
 import com.gildedgames.util.core.gui.util.events.MinecraftHoveredDesc;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
+import com.gildedgames.util.core.util.GGHelper;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
