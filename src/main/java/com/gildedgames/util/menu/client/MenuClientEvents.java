@@ -39,6 +39,8 @@ public class MenuClientEvents
 	private Minecraft mc = Minecraft.getMinecraft();
 
 	private File configSaveLocation;
+	
+	private boolean firstTick = true;
 
 	public static class MenuConfig implements NBT
 	{
@@ -90,7 +92,10 @@ public class MenuClientEvents
 
 		menu.onOpen();
 
-		Mouse.setCursorPosition(mouseX, mouseY);
+		if (!firstTick)
+		{
+			Mouse.setCursorPosition(mouseX, mouseY);
+		}
 
 		if (!shouldSaveToConfig)
 		{
@@ -163,11 +168,16 @@ public class MenuClientEvents
 		}
 	}
 
+	
 	@SubscribeEvent
 	public void tickStart(TickEvent.ClientTickEvent event)
 	{
 		if (event.phase == TickEvent.Phase.START)
 		{
+			if (firstTick)
+			{
+				firstTick = false;
+			}
 			IMenu menu = MenuCore.locate().getCurrentMenu();
 
 			if (menu != null)
