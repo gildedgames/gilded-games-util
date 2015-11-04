@@ -1,13 +1,13 @@
 package com.gildedgames.util.group.common.permissions;
 
 import java.util.Random;
+import java.util.UUID;
 
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.util.IOUtil;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 public class GroupPermsDefault implements IGroupPerms
 {
@@ -121,7 +121,9 @@ public class GroupPermsDefault implements IGroupPerms
 
 	}
 
-	private GroupMember owner;
+	private UUID owner;
+
+	private String ownerUsername;
 
 	private PermissionType type = PermissionType.OPEN;
 
@@ -132,7 +134,8 @@ public class GroupPermsDefault implements IGroupPerms
 
 	public GroupPermsDefault(GroupMember creating, PermissionType type)
 	{
-		this.owner = creating;
+		this.owner = creating.getProfile().getUUID();
+		this.ownerUsername = creating.getProfile().getUsername();
 		this.type = type;
 	}
 
@@ -140,24 +143,26 @@ public class GroupPermsDefault implements IGroupPerms
 	public void write(IOBridge output)
 	{
 		output.setString("permtype", this.type.name());
-		IOUtil.setUUID(this.owner.getProfile().getUUID(), output, "owner");
+		IOUtil.setUUID(this.owner, output, "owner");
+		output.setString("ownerUsername", this.ownerUsername);
 	}
 
 	@Override
 	public void read(IOBridge input)
 	{
 		this.type = PermissionType.valueOf(input.getString("permtype"));
-		this.owner = GroupMember.get(IOUtil.getUUID(input, "owner"));
+		this.owner = IOUtil.getUUID(input, "owner");
+		this.ownerUsername = input.getString("ownerUsername");
 	}
 
 	@Override
 	public void onMemberRemoved(Group group, GroupMember member)
 	{
-		if (member.equals(this.owner) && group.getMemberData().size() > 0)
+		if (member.getProfile().getUUID().equals(this.owner) && group.getMemberData().size() > 0)
 		{
 			Random random = member.getProfile().getEntity().getRNG();
 			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
-			//This isn't synced to the clients!
+			this.ownerUsername = GroupCore.locate().getPlayers().get(this.owner).getProfile().getUsername();
 		}
 	}
 
@@ -176,19 +181,19 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canInvite(Group group, GroupMember member, GroupMember inviter)
 	{
-		return this.type.canEveryoneInvite() || inviter.equals(this.owner);
+		return this.type.canEveryoneInvite() || inviter.getProfile().getUUID().equals(this.owner);
 	}
 
 	@Override
 	public boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing)
 	{
-		return changing.equals(this.owner);
+		return changing.getProfile().getUUID().equals(this.owner);
 	}
 
 	@Override
 	public boolean canJoin(Group group, GroupMember member)
 	{
-		return !this.type.requiresInvite() || group.hasMemberData() && group.getMemberData().contains(member);
+		return !this.type.requiresInvite() || group.hasMemberData() && group.getMemberData().contains(member.getProfile().getUUID());
 	}
 
 	@Override
@@ -200,24 +205,29 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canRemoveGroup(Group group, GroupMember remover)
 	{
-		return remover.equals(this.owner);
+		return remover.getProfile().getUUID().equals(this.owner);
 	}
 
 	@Override
 	public boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover)
 	{
-		return remover.equals(this.owner);
-	}
-
-	public EntityPlayer getOwner()
-	{
-		return this.owner.getProfile().getEntity();
+		return remover.equals(toRemove) || remover.getProfile().getUUID().equals(this.owner);
 	}
 
 	@Override
-	public GroupMember owner()
+	public UUID owner()
 	{
 		return this.owner;
+	}
+
+	public String ownerUsername()
+	{
+		GroupMember member = GroupCore.locate().getPlayers().get(this.owner);
+		if (member.getProfile().isLoggedIn())
+		{
+			this.ownerUsername = member.getProfile().getUsername();
+		}
+		return this.ownerUsername;
 	}
 
 }

@@ -297,7 +297,10 @@ public class UiServices
 
 		viewer.close(this.currentFrame);
 
-		this.currentFrame.onClose(viewer.getInputProvider());
+		if (this.currentFrame == null)
+		{
+			this.currentFrame.onClose(viewer.getInputProvider());
+		}
 
 		this.currentFrame = null;
 		this.currentUniqueSaveName = null;

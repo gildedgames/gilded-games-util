@@ -14,23 +14,23 @@ import com.gildedgames.util.ui.util.GuiCollection;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
 import com.gildedgames.util.ui.util.transform.GuiPositioner;
 
-public class RadioButtonSet extends GuiCollection<RadioButton>
+public class RadioButtonSet<T extends RadioButton> extends GuiCollection<T>
 {
 
-	private List<RadioButton> buttons = new ArrayList<RadioButton>();
+	private List<T> buttons = new ArrayList<T>();
 
-	public RadioButtonSet(GuiPositioner positioner, ContentFactory<RadioButton>... contentProviders)
+	public RadioButtonSet(GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		super(positioner, contentProviders);
 	}
 
-	public RadioButtonSet(Pos2D pos, int width, GuiPositioner positioner, ContentFactory<RadioButton>... contentProviders)
+	public RadioButtonSet(Pos2D pos, int width, GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		super(pos, width, positioner, contentProviders);
 	}
 
 	@Override
-	protected void onElementAdded(final RadioButton element)
+	protected void onElementAdded(final T element)
 	{
 		super.onElementAdded(element);
 
@@ -43,7 +43,7 @@ public class RadioButtonSet extends GuiCollection<RadioButton>
 			{
 				element.setOn(true);
 
-				for (RadioButton rButton : RadioButtonSet.this.buttons)
+				for (T rButton : RadioButtonSet.this.buttons)
 				{
 					if (rButton != element)
 					{
@@ -68,16 +68,16 @@ public class RadioButtonSet extends GuiCollection<RadioButton>
 	 * Confirms the selection of the currently
 	 * active radio button.
 	 */
-	public void confirm()
+	public T getSelected()
 	{
-		for (RadioButton rButton : RadioButtonSet.this.buttons)
+		for (T rButton : RadioButtonSet.this.buttons)
 		{
 			if (rButton.isOn())
 			{
-				rButton.onConfirmed();
-				return;
+				return rButton;
 			}
 		}
+		return null;
 	}
 
 }

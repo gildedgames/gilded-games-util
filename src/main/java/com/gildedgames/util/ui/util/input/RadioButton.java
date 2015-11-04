@@ -41,11 +41,6 @@ public class RadioButton extends GuiFrame
 
 	}
 
-	public void onConfirmed()
-	{
-
-	}
-
 	public void setOn(boolean on)
 	{
 		this.on = on;

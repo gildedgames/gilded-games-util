@@ -1,5 +1,7 @@
 package com.gildedgames.util.group.common.permissions;
 
+import java.util.UUID;
+
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -26,6 +28,6 @@ public interface IGroupPerms extends IO<IOBridge, IOBridge>
 
 	void onMemberRemoved(Group group, GroupMember removed);
 
-	GroupMember owner();
+	UUID owner();
 
 }

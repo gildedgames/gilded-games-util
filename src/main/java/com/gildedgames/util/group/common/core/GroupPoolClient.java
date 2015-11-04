@@ -2,6 +2,7 @@ package com.gildedgames.util.group.common.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupPoolListener;
@@ -41,7 +42,7 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void removeMember(EntityPlayer player, Group group)
+	public void removeMember(UUID player, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{

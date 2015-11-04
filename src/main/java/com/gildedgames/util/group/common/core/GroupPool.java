@@ -2,8 +2,10 @@ package com.gildedgames.util.group.common.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
@@ -149,7 +151,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	public abstract void addMember(EntityPlayer player, Group group);
 
-	public abstract void removeMember(EntityPlayer player, Group group);
+	public abstract void removeMember(UUID player, Group group);
 
 	public abstract void invite(EntityPlayer invited, EntityPlayer inviter, Group group);
 
@@ -167,11 +169,11 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		return true;
 	}
 
-	protected boolean assertMemberIn(Group group, EntityPlayer player)
+	protected boolean assertMemberIn(Group group, UUID player)
 	{
-		if (!group.hasMemberData() || !group.getMemberData().contains(GroupMember.get(player)))
+		if (!group.hasMemberData() || !group.getMemberData().contains(player))
 		{
-			UtilCore.print("Member is not in the group like excepted. Group: " + group.getName() + " player: " + player.getCommandSenderName());
+			UtilCore.print("Member is not in the group like excepted. Group: " + group.getName() + " player: " + GroupCore.locate().getPlayers().get(player).getProfile().getUsername());
 			return false;
 		}
 		return true;

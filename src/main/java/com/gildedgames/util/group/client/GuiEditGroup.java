@@ -2,13 +2,16 @@ package com.gildedgames.util.group.client;
 
 import java.awt.Color;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
+import com.gildedgames.util.core.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -26,7 +29,6 @@ import com.gildedgames.util.ui.util.SkinButton;
 import com.gildedgames.util.ui.util.TextElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
-import com.gildedgames.util.ui.util.input.RadioButton;
 import com.gildedgames.util.ui.util.input.RadioButtonSet;
 import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiPositionerList;
@@ -39,9 +41,12 @@ public class GuiEditGroup extends GuiFrame
 {
 	private Group group;
 
+	private GroupMember groupMember;
+
 	public GuiEditGroup(EntityPlayer player)
 	{
-		this.group = GroupCore.locate().getPlayers().get(player).groupsInFor(GroupCore.locate().getDefaultPool()).get(0);
+		this.groupMember = GroupCore.locate().getPlayers().get(player);
+		this.group = this.groupMember.groupsInFor(GroupCore.locate().getDefaultPool()).get(0);
 	}
 
 	@Override
@@ -51,27 +56,85 @@ public class GuiEditGroup extends GuiFrame
 
 		GuiPositioner positioner = new GuiPositionerList(0);
 
-		//buttons.put("title", new TextElement(GuiFactory.text(UtilCore.translate("gui.grouplist"), Color.white, 2.3f), Pos2D.flush(), false));
-		final RadioButtonSet groups = new RadioButtonSet(Pos2D.flush(), 100, positioner, new PlayersContent(this.group));
+		this.content().set("name", new TextElement(GuiFactory.text(this.group.getName(), Color.white, 1.3f), Dim2D.build().pos(70, 100).flush()));
+		final RadioButtonSet<PlayerButton> players = new RadioButtonSet<PlayerButton>(Pos2D.flush(), 100, positioner, new PlayersContent(this.group));
 
-		ScrollableGui scrollGroups = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), groups);
+		ScrollableGui scrollPlayers = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), players);
 
-		this.content().set("groups", scrollGroups);
+		this.content().set("players", scrollPlayers);
 
-		this.content().set("join", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilCore.translate("gui.join"))
+		IGroupPerms permissions = this.group.getPermissions();
+
+		if (permissions.canRemoveMember(this.group, null, this.groupMember))
 		{
-			@Override
-			public void onMouseInput(MouseInputPool pool, InputProvider input)
+			this.content().set("removeMember", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilCore.translate("gui.removemember"))
 			{
-				super.onMouseInput(pool, input);
-				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+				@Override
+				public void onMouseInput(MouseInputPool pool, InputProvider input)
 				{
-					groups.confirm();
+					super.onMouseInput(pool, input);
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+					{
+						UUID selected = players.getSelected().uuid;
+						final Group g = GuiEditGroup.this.group;
+						final GroupMember toRemove = GroupCore.locate().getPlayers().get(selected);
+						final GroupMember removing = GuiEditGroup.this.groupMember;
+						if (g.getPermissions().canRemoveMember(g, toRemove, removing))
+						{
+							GroupCore.locate().getDefaultPool().removeMember(selected, g);
+
+							UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+							{
+								@Override
+								protected boolean condition()
+								{
+									return !g.hasMemberData() || !g.getMemberData().contains(toRemove.getProfile().getUUID()) || GroupCore.locate().getDefaultPool().get(g.getName()) == null;
+								}
+
+								@Override
+								protected void onCondition()
+								{
+									ClientProxy.GROUP_TAB.onOpen(removing.getProfile().getEntity());
+								}
+							}));
+						}
+					}
 				}
-			}
-		});
+			});
+		}
 
-		this.content().set("create", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.remove"))
+		if (permissions.canRemoveGroup(this.group, this.groupMember))
+		{
+			this.content().set("disband", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.disband"))
+			{
+				@Override
+				public void onMouseInput(MouseInputPool pool, InputProvider input)
+				{
+					super.onMouseInput(pool, input);
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+					{
+						GroupCore.locate().getDefaultPool().remove(GuiEditGroup.this.group);
+
+						UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+						{
+							@Override
+							protected boolean condition()
+							{
+								return GuiEditGroup.this.group.getParentPool().get(GuiEditGroup.this.group.getName()) == null;
+							}
+
+							@Override
+							protected void onCondition()
+							{
+								UiCore.locate().open("", new MinecraftGui(new GuiGroups(Minecraft.getMinecraft().thePlayer)));
+							}
+						}));
+					}
+				}
+			});
+		}
+
+		this.content().set("leave", new MinecraftButton(Dim2D.build().pos(290, 200).area(75, 20).flush(), UtilCore.translate("gui.leave"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -79,13 +142,14 @@ public class GuiEditGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					GroupCore.locate().getDefaultPool().remove(GuiEditGroup.this.group);
+					GroupCore.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getProfile().getUUID(), GuiEditGroup.this.group);
+
 					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
 					{
 						@Override
 						protected boolean condition()
 						{
-							return GroupCore.locate().getDefaultPool().get(GuiEditGroup.this.group.getName()) == null;
+							return !GuiEditGroup.this.group.hasMemberData() || !GuiEditGroup.this.group.getMemberData().contains(Minecraft.getMinecraft().thePlayer.getPersistentID());
 						}
 
 						@Override
@@ -97,9 +161,22 @@ public class GuiEditGroup extends GuiFrame
 				}
 			}
 		});
+
+		this.content().set("invite", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilCore.translate("gui.invite"))
+		{
+			@Override
+			public void onMouseInput(MouseInputPool pool, InputProvider input)
+			{
+				super.onMouseInput(pool, input);
+				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+				{
+					//UiCore.locate().open("", new MinecraftGui(new GuiInviteToGroup(GuiEditGroup.this.group)));
+				}
+			}
+		});
 	}
 
-	private static class PlayersContent implements ContentFactory<RadioButton>
+	private static class PlayersContent implements ContentFactory<PlayerButton>
 	{
 		private Group group;
 
@@ -109,12 +186,12 @@ public class GuiEditGroup extends GuiFrame
 		}
 
 		@Override
-		public LinkedHashMap<String, RadioButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
+		public LinkedHashMap<String, PlayerButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
-			LinkedHashMap<String, RadioButton> buttons = new LinkedHashMap<String, RadioButton>();
-			for (GroupMember member : this.group.getMemberData().getMembers())
+			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<String, PlayerButton>();
+			for (GroupMember member : this.group.getMemberData().onlineMembers())
 			{
-				buttons.put(member.getProfile().getUsername(), new PlayerButton(member.getProfile().getEntity()));
+				buttons.put(member.getProfile().getUsername(), new PlayerButton(member.getProfile().getUUID(), member.getProfile().getUsername()));
 			}
 
 			return buttons;
@@ -123,12 +200,15 @@ public class GuiEditGroup extends GuiFrame
 
 	private static class PlayerButton extends RadioButtonDefault
 	{
-		private EntityPlayer player;
+		private UUID uuid;
 
-		public PlayerButton(EntityPlayer player)
+		private String username;
+
+		public PlayerButton(UUID uuid, String username)
 		{
 			super(175, 20);
-			this.player = player;
+			this.uuid = uuid;
+			this.username = username;
 		}
 
 		@Override
@@ -136,15 +216,8 @@ public class GuiEditGroup extends GuiFrame
 		{
 			super.initContent(input);
 
-			this.content().set("head", new SkinButton(this.player, 2, 2));
-			this.content().set("username", new TextElement(GuiFactory.text(this.player.getCommandSenderName(), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
-		}
-
-		@Override
-		public void onConfirmed()
-		{
-			// TODO Auto-generated method stub
-			super.onConfirmed();
+			this.content().set("head", new SkinButton(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfo(this.uuid).getGameProfile(), 2, 2));
+			this.content().set("username", new TextElement(GuiFactory.text(this.username, new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 		}
 	}
 }
