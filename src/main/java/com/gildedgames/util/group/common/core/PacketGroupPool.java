@@ -27,6 +27,7 @@ public class PacketGroupPool extends CustomPacket<PacketGroupPool>
 	public void fromBytes(ByteBuf buf)
 	{
 		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
+		this.pool.clear();
 		int size = buf.readInt();
 		ByteBufBridge bridge = new ByteBufBridge(buf);
 		for (int i = 0; i < size; i++)

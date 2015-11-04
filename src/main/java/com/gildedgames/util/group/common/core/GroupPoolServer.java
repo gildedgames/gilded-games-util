@@ -1,6 +1,7 @@
 package com.gildedgames.util.group.common.core;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.common.IGroupSettings;
@@ -69,15 +70,15 @@ public class GroupPoolServer extends GroupPool
 	}
 
 	@Override
-	public void removeMember(EntityPlayer player, Group group)
+	public void removeMember(UUID player, Group group)
 	{
 		if (!this.assertValidGroup(group) || !this.assertMemberIn(group, player))
 		{
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		this.removeMemberDirectly(group, member);
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
+		this.removeMemberDirectly(group, member);
 
 		group.getPermissions().onMemberRemoved(group, member);
 
@@ -141,7 +142,7 @@ public class GroupPoolServer extends GroupPool
 			List<Group> oldGroups = member.groupsInFor(this);
 			if (!oldGroups.isEmpty())
 			{
-				this.removeMember(member.getProfile().getEntity(), oldGroups.get(0));
+				this.removeMember(member.getProfile().getUUID(), oldGroups.get(0));
 			}
 		}
 	}

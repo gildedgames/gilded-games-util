@@ -1,8 +1,8 @@
 package com.gildedgames.util.ui.util;
 
+import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
-
-import net.minecraft.client.Minecraft;
 
 public abstract class GuiPolling extends GuiFrame
 {
@@ -21,7 +21,14 @@ public abstract class GuiPolling extends GuiFrame
 						Thread.sleep(100L);
 						if (GuiPolling.this.condition())
 						{
-							GuiPolling.this.onCondition();
+							UtilCore.proxy.addScheduledTask(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									GuiPolling.this.onCondition();
+								}
+							});
 							return;
 						}
 						i++;
@@ -30,7 +37,7 @@ public abstract class GuiPolling extends GuiFrame
 				catch (InterruptedException e)
 				{
 				}
-				Minecraft.getMinecraft().displayGuiScreen(null);
+				UiCore.locate().close();
 			}
 		});
 		t.start();

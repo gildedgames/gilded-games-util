@@ -1,6 +1,7 @@
 package com.gildedgames.util.group.common.notifications;
 
 import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupInfo;
@@ -51,7 +52,7 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	{
 		if (group.getPermissions() instanceof GroupPermsDefault)
 		{
-			return ((GroupPermsDefault) group.getPermissions()).getOwner();
+			return GroupCore.locate().getPlayers().get(((GroupPermsDefault) group.getPermissions()).owner()).getProfile().getEntity();
 		}
 		return null;
 	}

@@ -32,7 +32,7 @@ public class PacketRemoveMember extends PacketMemberAction<PacketRemoveMember>
 			UtilCore.print("Player " + player.getCommandSenderName() + " tried to remove " + message.member.getProfile().getUsername() + " but did not have the permissions.");
 			return;
 		}
-		message.pool.removeMember(message.member.getProfile().getEntity(), message.group);
+		message.pool.removeMember(message.member.getProfile().getUUID(), message.group);
 	}
 
 }

@@ -84,19 +84,25 @@ public class GroupMember implements IPlayerHook
 	{
 		if (player.worldObj.isRemote)
 		{
+			this.groups.clear();
+			this.invitations.clear();
 			return;
 		}
 		for (GroupPool pool : GroupCore.locate().getPools())
 		{
 			UtilCore.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.getProfile().getEntity());
-		}
-		for (Group joined : this.groups)
-		{
-			UtilCore.NETWORK.sendTo(new PacketJoin(joined.getParentPool(), joined), (EntityPlayerMP) this.profile.getEntity());
-		}
-		for (Group invited : this.invitations)
-		{
-			UtilCore.NETWORK.sendTo(new PacketAddInvite(invited.getParentPool(), invited, this, this), (EntityPlayerMP) this.profile.getEntity());
+			UUID uuid = this.getProfile().getUUID();
+			for (Group group : pool.getGroups())
+			{
+				if (group.getMemberData().contains(uuid))
+				{
+					UtilCore.NETWORK.sendTo(new PacketJoin(group.getParentPool(), group), (EntityPlayerMP) this.profile.getEntity());
+				}
+				else if (group.getMemberData().isInvited(uuid))
+				{
+					UtilCore.NETWORK.sendTo(new PacketAddInvite(group.getParentPool(), group, this, this), (EntityPlayerMP) this.profile.getEntity());
+				}
+			}
 		}
 	}
 

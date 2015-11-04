@@ -44,7 +44,7 @@ public final class Group implements IO<IOBridge, IOBridge>
 		if (input.getBoolean("hasMemberData"))
 		{
 			this.members = new MemberData();
-			this.members.readAndAdd(this, input);
+			this.members.read(input);
 		}
 	}
 

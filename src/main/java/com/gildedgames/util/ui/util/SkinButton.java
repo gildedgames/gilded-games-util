@@ -3,11 +3,6 @@ package com.gildedgames.util.ui.util;
 import java.util.Map;
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
-
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -16,23 +11,29 @@ import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.graphics.Sprite;
 import com.gildedgames.util.ui.graphics.Sprite.UV;
 import com.gildedgames.util.ui.input.InputProvider;
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ResourceLocation;
+
 public class SkinButton extends GuiFrame
 {
-	private final EntityPlayer player;
+	private final GameProfile profile;
 
-	public SkinButton(EntityPlayer player, int x, int y)
+	public SkinButton(GameProfile profile, int x, int y)
 	{
 		super(Dim2D.build().area(8, 8).pos(x, y).flush());
-		this.player = player;
+		this.profile = profile;
 	}
 
-	public SkinButton(EntityPlayer player)
+	public SkinButton(GameProfile profile)
 	{
 		super(Dim2D.build().area(8, 8).flush());
-		this.player = player;
+		this.profile = profile;
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class SkinButton extends GuiFrame
 		super.initContent(input);
 
 		Minecraft minecraft = Minecraft.getMinecraft();
-		Map map = minecraft.getSkinManager().loadSkinFromCache(this.player.getGameProfile());
+		Map map = minecraft.getSkinManager().loadSkinFromCache(this.profile);
 		ResourceLocation location;
 
 		if (map.containsKey(Type.SKIN))
@@ -50,7 +51,7 @@ public class SkinButton extends GuiFrame
 		}
 		else
 		{
-			UUID uuid = EntityPlayer.getUUID(this.player.getGameProfile());
+			UUID uuid = EntityPlayer.getUUID(this.profile);
 			location = DefaultPlayerSkin.getDefaultSkin(uuid);
 		}
 

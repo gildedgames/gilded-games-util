@@ -227,8 +227,6 @@ public class ScrollBar extends GuiFrame
 	private void setScrollPercentage(float percentage)
 	{
 		this.scrollPercentage = this.contentArea.dim().height() < this.dim().height() ? 0f : Math.max(0.0F, Math.min(percentage, 1.0F));
-
-		int i = 0;
 	}
 
 	private void increaseScrollPercentage(float percentage)

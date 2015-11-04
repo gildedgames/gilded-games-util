@@ -3,6 +3,7 @@ package com.gildedgames.util.group.common.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.GroupCore;
@@ -13,11 +14,16 @@ import com.gildedgames.util.io_manager.util.IOUtil;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+/**
+ * The Iterator is over the online members only.
+ * @author Emile
+ *
+ */
 public class MemberData implements Iterable<GroupMember>
 {
-	private final List<GroupMember> members = new ArrayList<GroupMember>();
+	private final List<UUID> members = new ArrayList<UUID>();
 
-	private final List<GroupMember> invitedMembers = new ArrayList<GroupMember>();
+	private final List<UUID> invitedMembers = new ArrayList<UUID>();
 
 	private List<IGroupHook> hooks = new ArrayList<IGroupHook>();
 
@@ -32,41 +38,17 @@ public class MemberData implements Iterable<GroupMember>
 		output.setInteger("memberSize", memberSize);
 		for (int i = 0; i < memberSize; i++)
 		{
-			IOUtil.setUUID(this.members.get(i).getProfile().getUUID(), output, "member" + i);
+			IOUtil.setUUID(this.members.get(i), output, "member" + i);
 		}
 
 		int invitedSize = this.invitedMembers.size();
 		output.setInteger("inviteSize", invitedSize);
 		for (int i = 0; i < invitedSize; i++)
 		{
-			IOUtil.setUUID(this.invitedMembers.get(i).getProfile().getUUID(), output, "invited" + i);
+			IOUtil.setUUID(this.invitedMembers.get(i), output, "invited" + i);
 		}
 
 		IOUtil.setIOList("hooks", this.hooks, output);
-	}
-
-	public void readAndAdd(Group group, IOBridge input)
-	{
-		this.members.clear();
-		this.invitedMembers.clear();
-
-		int memberSize = input.getInteger("memberSize");
-		for (int i = 0; i < memberSize; i++)
-		{
-			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "member" + i));
-			this.members.add(member);
-			member.joinGroup(group);
-		}
-
-		int invitedSize = input.getInteger("inviteSize");
-		for (int i = 0; i < invitedSize; i++)
-		{
-			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "invited" + i));
-			this.invitedMembers.add(member);
-			member.addInvite(group);
-		}
-
-		this.hooks = IOUtil.getIOList("hooks", input);
 	}
 
 	public void read(IOBridge input)
@@ -77,14 +59,13 @@ public class MemberData implements Iterable<GroupMember>
 		int memberSize = input.getInteger("memberSize");
 		for (int i = 0; i < memberSize; i++)
 		{
-			this.members.add(GroupMember.get(IOUtil.getUUID(input, "member" + i)));
+			this.members.add(IOUtil.getUUID(input, "member" + i));
 		}
 
 		int invitedSize = input.getInteger("inviteSize");
 		for (int i = 0; i < invitedSize; i++)
 		{
-			GroupMember member = GroupMember.get(IOUtil.getUUID(input, "invited" + i));
-			this.invitedMembers.add(member);
+			this.invitedMembers.add(IOUtil.getUUID(input, "invited" + i));
 		}
 
 		this.hooks = IOUtil.getIOList("hooks", input);
@@ -100,7 +81,7 @@ public class MemberData implements Iterable<GroupMember>
 			return;
 		}
 
-		this.members.add(member);
+		this.members.add(member.getProfile().getUUID());
 
 		for (IGroupHook hook : this.hooks)
 		{
@@ -112,7 +93,7 @@ public class MemberData implements Iterable<GroupMember>
 	{
 		if (this.assertMember(member))
 		{
-			this.members.remove(member);
+			this.members.remove(member.getProfile().getUUID());
 			for (IGroupHook hook : this.hooks)
 			{
 				hook.onMemberRemoved(member);
@@ -133,7 +114,7 @@ public class MemberData implements Iterable<GroupMember>
 			hook.onMemberInvited(member);
 		}
 
-		this.invitedMembers.add(member);
+		this.invitedMembers.add(member.getProfile().getUUID());
 	}
 
 	protected void removeInvitation(GroupMember member)
@@ -160,7 +141,7 @@ public class MemberData implements Iterable<GroupMember>
 
 	protected boolean assertMember(GroupMember member)
 	{
-		if (!this.members.contains(member))
+		if (!this.members.contains(member.getProfile().getUUID()))
 		{
 			UtilCore.print("Trying to do something with a player who is not a member");
 			return false;
@@ -176,12 +157,12 @@ public class MemberData implements Iterable<GroupMember>
 	@Override
 	public Iterator<GroupMember> iterator()
 	{
-		return this.members.iterator();
+		return this.onlineMembers().iterator();
 	}
 
-	public boolean contains(GroupMember groupMember)
+	public boolean contains(UUID uuid)
 	{
-		return this.members.contains(groupMember);
+		return this.members.contains(uuid);
 	}
 
 	public int size()
@@ -189,18 +170,37 @@ public class MemberData implements Iterable<GroupMember>
 		return this.members.size();
 	}
 
-	public List<GroupMember> getMembers()
+	public List<GroupMember> onlineMembers()
 	{
-		return new ArrayList<GroupMember>(this.members);
+		List<GroupMember> onlineMembers = new ArrayList<GroupMember>();
+		for (UUID uuid : this.members)
+		{
+			GroupMember member = GroupCore.locate().getPlayers().get(uuid);
+			if (member.getProfile().getEntity() != null && member.getProfile().isLoggedIn())
+			{
+				onlineMembers.add(member);
+			}
+		}
+		return onlineMembers;
+	}
+
+	public List<UUID> getMembers()
+	{
+		return this.members;
+	}
+
+	public List<UUID> getInvitations()
+	{
+		return this.invitedMembers;
 	}
 
 	public boolean isInvited(EntityPlayer player)
 	{
-		return this.isInvited(GroupCore.locate().getPlayers().get(player));
+		return this.isInvited(player.getPersistentID());
 	}
 
-	public boolean isInvited(GroupMember player)
+	public boolean isInvited(UUID uuid)
 	{
-		return !this.members.contains(player) && this.invitedMembers.contains(player);
+		return !this.members.contains(uuid) && this.invitedMembers.contains(uuid);
 	}
 }

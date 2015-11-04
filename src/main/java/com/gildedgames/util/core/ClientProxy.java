@@ -1,14 +1,5 @@
 package com.gildedgames.util.core;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.client.GuiIngame;
@@ -27,6 +18,15 @@ import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
 import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+
 //import com.gildedgames.util.ui.TestTab;
 
 public class ClientProxy extends ServerProxy
@@ -40,6 +40,8 @@ public class ClientProxy extends ServerProxy
 
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
 
+	public static final ITab GROUP_TAB = new TabGroup();
+
 	@Override
 	public EntityPlayer getPlayer()
 	{
@@ -50,7 +52,7 @@ public class ClientProxy extends ServerProxy
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		super.preInit(event);
-		
+
 		UtilClientEvents utilEvents = new UtilClientEvents();
 		UtilCore.registerEventHandler(utilEvents);
 
@@ -71,7 +73,7 @@ public class ClientProxy extends ServerProxy
 
 		TabGroupHandler socialTab = new TabGroupHandler();
 		socialTab.getSide(Side.CLIENT).add(new TabChat());
-		socialTab.getSide(Side.CLIENT).add(new TabGroup());
+		socialTab.getSide(Side.CLIENT).add(GROUP_TAB);
 		socialTab.getSide(Side.CLIENT).add(new TabNotifications());
 		TabAPI.INSTANCE.register(socialTab);
 	}
