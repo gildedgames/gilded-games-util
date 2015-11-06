@@ -297,7 +297,7 @@ public class UiServices
 
 		viewer.close(this.currentFrame);
 
-		if (this.currentFrame == null)
+		if (this.currentFrame != null)
 		{
 			this.currentFrame.onClose(viewer.getInputProvider());
 		}
