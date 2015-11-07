@@ -1,22 +1,21 @@
 package com.gildedgames.util.notifications.common.util;
 
+import java.util.UUID;
+
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractNotificationMessage implements INotificationMessage
 {
-	private EntityPlayer sender, receiver;
+	private UUID sender, receiver;
 
 	protected AbstractNotificationMessage()
 	{
 
 	}
 
-	public AbstractNotificationMessage(EntityPlayer sender, EntityPlayer receiver)
+	public AbstractNotificationMessage(UUID sender, UUID receiver)
 	{
 		this.sender = sender;
 		this.receiver = receiver;
@@ -29,9 +28,9 @@ public abstract class AbstractNotificationMessage implements INotificationMessag
 		output.setBoolean("senderKnown", senderKnown);
 		if (senderKnown)
 		{
-			IOUtil.setUUID(this.sender.getUniqueID(), output, "sender");
+			IOUtil.setUUID(this.sender, output, "sender");
 		}
-		IOUtil.setUUID(this.receiver.getUniqueID(), output, "receiver");
+		IOUtil.setUUID(this.receiver, output, "receiver");
 		this.writeMessage(output);
 	}
 
@@ -42,22 +41,22 @@ public abstract class AbstractNotificationMessage implements INotificationMessag
 	{
 		if (input.getBoolean("senderKnown"))
 		{
-			this.sender = NotificationCore.playerFromUUID(IOUtil.getUUID(input, "sender"));
+			this.sender = IOUtil.getUUID(input, "sender");
 		}
-		this.receiver = NotificationCore.playerFromUUID(IOUtil.getUUID(input, "receiver"));
+		this.receiver = IOUtil.getUUID(input, "receiver");
 		this.readMessage(input);
 	}
 
 	protected abstract void readMessage(IOBridge input);
 
 	@Override
-	public EntityPlayer getReceiver()
+	public UUID getReceiver()
 	{
 		return this.receiver;
 	}
 
 	@Override
-	public EntityPlayer getSender()
+	public UUID getSender()
 	{
 		return this.sender;
 	}

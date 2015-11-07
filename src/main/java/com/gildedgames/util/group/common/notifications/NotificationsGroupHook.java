@@ -26,7 +26,7 @@ public class NotificationsGroupHook implements IGroupHook
 
 	private void sendPopup(String message, GroupMember about)
 	{
-		NotificationCore.sendPopup(message, about.getProfile().getEntity(), Minecraft.getMinecraft().thePlayer);
+		NotificationCore.sendPopup(message, about.getProfile().getUUID(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
 	}
 
 	@Override

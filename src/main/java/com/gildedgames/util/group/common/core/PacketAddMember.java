@@ -1,8 +1,8 @@
 package com.gildedgames.util.group.common.core;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.gildedgames.util.group.common.player.GroupMember;
+
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketAddMember extends PacketMemberAction<PacketAddMember>
 {
@@ -25,7 +25,7 @@ public class PacketAddMember extends PacketMemberAction<PacketAddMember>
 	@Override
 	public void handleServerSide(PacketAddMember message, EntityPlayer player)
 	{
-		message.pool.addMember(message.member.getProfile().getEntity(), message.group);
+		message.pool.addMember(message.member.getProfile().getUUID(), message.group);
 	}
 
 }

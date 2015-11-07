@@ -1,11 +1,10 @@
 package com.gildedgames.util.notifications.common.core;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 public interface INotificationMessage extends IO<IOBridge, IOBridge>
 {
@@ -21,13 +20,13 @@ public interface INotificationMessage extends IO<IOBridge, IOBridge>
 	 */
 	String getDescription();
 
-	EntityPlayer getReceiver();
+	UUID getReceiver();
 
 	/**
 	 * Returns the sender of this notification.
 	 * Return null if the sender is not a player.
 	 */
-	EntityPlayer getSender();
+	UUID getSender();
 
 	/**
 	 * Returns the responses to this notification. 

@@ -1,11 +1,10 @@
 package com.gildedgames.util.group.common.core;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-
-import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.util.IOUtil;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 {
@@ -45,7 +44,7 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 	@Override
 	public void handleServerSide(PacketAddInvite message, EntityPlayer player)
 	{
-		message.pool.invite(message.member.getProfile().getEntity(), player, message.group);
+		message.pool.invite(message.member.getProfile().getUUID(), player.getGameProfile().getId(), message.group);
 	}
 
 }

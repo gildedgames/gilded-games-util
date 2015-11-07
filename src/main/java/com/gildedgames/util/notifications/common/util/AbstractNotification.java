@@ -1,22 +1,22 @@
 package com.gildedgames.util.notifications.common.util;
 
+import java.util.UUID;
+
 import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotification;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class AbstractNotification implements INotification
 {
-	private EntityPlayer sender, receiver;
+	private UUID sender, receiver;
 
 	protected AbstractNotification()
 	{
 
 	}
 
-	public AbstractNotification(EntityPlayer sender, EntityPlayer receiver)
+	public AbstractNotification(UUID sender, UUID receiver)
 	{
 		this.sender = sender;
 		this.receiver = receiver;
@@ -29,9 +29,9 @@ public abstract class AbstractNotification implements INotification
 		output.writeBoolean(senderKnown);
 		if (senderKnown)
 		{
-			IOUtil.writeUUID(this.sender.getUniqueID(), output);
+			IOUtil.writeUUID(this.sender, output);
 		}
-		IOUtil.writeUUID(this.receiver.getUniqueID(), output);
+		IOUtil.writeUUID(this.receiver, output);
 	}
 
 	@Override
@@ -39,19 +39,19 @@ public abstract class AbstractNotification implements INotification
 	{
 		if (input.readBoolean())
 		{
-			this.sender = NotificationCore.playerFromUUID(IOUtil.readUUID(input));
+			this.sender = IOUtil.readUUID(input);
 		}
-		this.receiver = NotificationCore.playerFromUUID(IOUtil.readUUID(input));
+		this.receiver = IOUtil.readUUID(input);
 	}
 
 	@Override
-	public EntityPlayer getReceiver()
+	public UUID getReceiver()
 	{
 		return this.receiver;
 	}
 
 	@Override
-	public EntityPlayer getSender()
+	public UUID getSender()
 	{
 		return this.sender;
 	}

@@ -1,9 +1,10 @@
 package com.gildedgames.util.notifications.common.core;
 
+import java.util.UUID;
+
 import com.gildedgames.util.io_manager.io.IO;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 
 public interface INotification extends IO<ByteBuf, ByteBuf>
 {
@@ -12,9 +13,9 @@ public interface INotification extends IO<ByteBuf, ByteBuf>
 	 */
 	String getName();
 
-	EntityPlayer getReceiver();
+	UUID getReceiver();
 
-	EntityPlayer getSender();
+	UUID getSender();
 
 	/**
 	 * You can return null to just display the popup

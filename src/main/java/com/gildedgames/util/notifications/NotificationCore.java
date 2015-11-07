@@ -60,12 +60,12 @@ public class NotificationCore implements ICore
 		locate().getDispatcher().sendNotification(notification);
 	}
 
-	public static void sendPopup(String message, EntityPlayer sender, EntityPlayer receiver)
+	public static void sendPopup(String message, UUID sender, UUID receiver)
 	{
 		locate().getDispatcher().sendNotification(new PopupNotification(message, sender, receiver));
 	}
 
-	public static void sendMessage(String title, String message, EntityPlayer sender, EntityPlayer receiver)
+	public static void sendMessage(String title, String message, UUID sender, UUID receiver)
 	{
 		locate().getDispatcher().sendNotification(new MessageNotification(title, message, sender, receiver));
 	}

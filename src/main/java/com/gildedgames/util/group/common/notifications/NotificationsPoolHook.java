@@ -1,5 +1,7 @@
 package com.gildedgames.util.group.common.notifications;
 
+import java.util.UUID;
+
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
@@ -7,8 +9,6 @@ import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.notifications.NotificationCore;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Client sided only. Sends notifications to the player to
@@ -48,23 +48,23 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 		}
 	}
 
-	private EntityPlayer getOwner(Group group)
+	private UUID getOwner(Group group)
 	{
 		if (group.getPermissions() instanceof GroupPermsDefault)
 		{
-			return GroupCore.locate().getPlayers().get(((GroupPermsDefault) group.getPermissions()).owner()).getProfile().getEntity();
+			return GroupCore.locate().getPlayers().get(((GroupPermsDefault) group.getPermissions()).owner()).getProfile().getUUID();
 		}
 		return null;
 	}
 
 	private void sendPopup(String message)
 	{
-		this.sendPopup(message, UtilCore.proxy.getPlayer());
+		this.sendPopup(message, UtilCore.proxy.getPlayer().getGameProfile().getId());
 	}
 
-	private void sendPopup(String message, EntityPlayer player)
+	private void sendPopup(String message, UUID uuid)
 	{
-		NotificationCore.sendPopup(message, player, UtilCore.proxy.getPlayer());
+		NotificationCore.sendPopup(message, uuid, UtilCore.proxy.getPlayer().getGameProfile().getId());
 	}
 
 	@Override
@@ -80,9 +80,9 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	}
 
 	@Override
-	public void onInvited(Group group, EntityPlayer inviter)
+	public void onInvited(Group group, UUID inviter)
 	{
-		this.sendPopup(UtilCore.translate("group.invited") + " " + group.getName(), inviter);
+		NotificationCore.sendNotification(new NotificationMessageInvited(inviter, UtilCore.proxy.getPlayer().getGameProfile().getId(), group));
 	}
 
 	@Override

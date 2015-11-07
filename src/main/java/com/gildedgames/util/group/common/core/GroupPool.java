@@ -149,13 +149,13 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	public abstract Group create(String name, EntityPlayer creating, IGroupPerms perms);
 
-	public abstract void addMember(EntityPlayer player, Group group);
+	public abstract void addMember(UUID player, Group group);
 
 	public abstract void removeMember(UUID player, Group group);
 
-	public abstract void invite(EntityPlayer invited, EntityPlayer inviter, Group group);
+	public abstract void invite(UUID invited, UUID inviter, Group group);
 
-	public abstract void removeInvitation(EntityPlayer player, Group group);
+	public abstract void removeInvitation(UUID player, Group group);
 
 	public abstract void remove(Group group);
 

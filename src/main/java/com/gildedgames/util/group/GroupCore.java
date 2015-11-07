@@ -1,8 +1,5 @@
 package com.gildedgames.util.group;
 
-
-
-
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
@@ -24,7 +21,7 @@ import com.gildedgames.util.group.common.core.PacketRemoveGroup;
 import com.gildedgames.util.group.common.core.PacketRemoveInvitation;
 import com.gildedgames.util.group.common.core.PacketRemoveInvite;
 import com.gildedgames.util.group.common.core.PacketRemoveMember;
-import com.gildedgames.util.group.common.notifications.NotificationInvited;
+import com.gildedgames.util.group.common.notifications.NotificationMessageInvited;
 import com.gildedgames.util.group.common.notifications.NotificationsPoolHook;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -99,9 +96,9 @@ public class GroupCore implements ICore
 		registry.registerClass(Group.class, 6495);
 		registry.registerClass(GroupInfo.class, 6496);
 		registry.registerClass(MemberData.class, 6497);
-		registry.registerClass(NotificationInvited.class, 6498);
 		registry.registerClass(GroupPermsDefault.class, 6499);
 		registry.registerClass(GroupMember.class, 6500);
+		registry.registerClass(NotificationMessageInvited.class, 6502);
 	}
 
 	@Override

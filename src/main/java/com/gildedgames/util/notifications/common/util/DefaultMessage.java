@@ -2,11 +2,10 @@ package com.gildedgames.util.notifications.common.util;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.notifications.common.core.INotificationResponse;
-
-import net.minecraft.entity.player.EntityPlayer;
 
 public class DefaultMessage extends AbstractNotificationMessage
 {
@@ -18,7 +17,7 @@ public class DefaultMessage extends AbstractNotificationMessage
 
 	}
 
-	public DefaultMessage(String title, String message, EntityPlayer receiver, EntityPlayer sender)
+	public DefaultMessage(String title, String message, UUID receiver, UUID sender)
 	{
 		super(receiver, sender);
 		this.title = title;

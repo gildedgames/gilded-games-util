@@ -70,7 +70,11 @@ public class NotificationServicesClient extends NotificationServices
 			this.drawTexturedModalRect(0, y, 96, 202, 160, 32);
 
 			int textOffsetX = 45;
-			String senderName = "To: " + toDisplay.getReceiver().getCommandSenderName() + (toDisplay.getSender() != null ? " From: " + toDisplay.getSender().getCommandSenderName() : "");
+
+			String receiver = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(toDisplay.getReceiver()).getGameProfile().getName();
+			String sender = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(toDisplay.getSender()).getGameProfile().getName();
+
+			String senderName = "To: " + receiver + (toDisplay.getSender() != null ? " From: " + sender : "");
 
 			mc.fontRendererObj.drawString(toDisplay.getName(), textOffsetX, y + 7, -256);
 			mc.fontRendererObj.drawString(senderName, textOffsetX, y + 18, -1);

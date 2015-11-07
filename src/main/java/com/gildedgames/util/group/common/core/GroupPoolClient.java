@@ -31,7 +31,7 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void addMember(EntityPlayer player, Group group)
+	public void addMember(UUID player, Group group)
 	{
 		if (!super.assertValidGroup(group))
 		{
@@ -63,16 +63,16 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void invite(EntityPlayer player, EntityPlayer inviting, Group group)
+	public void invite(UUID player, UUID inviting, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
 			return;
 		}
 
-		if (inviting.equals(UtilCore.proxy.getPlayer()))
+		if (player.equals(UtilCore.proxy.getPlayer().getGameProfile().getId()))
 		{
-			UtilCore.print("Tried to invite as a different player!");
+			UtilCore.print("Tried to invite client themselves a different player!");
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
@@ -80,7 +80,7 @@ public class GroupPoolClient extends GroupPool
 	}
 
 	@Override
-	public void removeInvitation(EntityPlayer player, Group group)
+	public void removeInvitation(UUID player, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
@@ -123,7 +123,7 @@ public class GroupPoolClient extends GroupPool
 		this.thePlayer().addInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
-			listener.onInvited(group, inviter.getProfile().getEntity());
+			listener.onInvited(group, inviter.getProfile().getUUID());
 		}
 	}
 

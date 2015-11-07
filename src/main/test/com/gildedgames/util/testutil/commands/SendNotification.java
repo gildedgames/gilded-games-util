@@ -48,7 +48,7 @@ public class SendNotification implements ICommand
 		if (icommandsender instanceof EntityPlayerMP)
 		{
 			EntityPlayerMP player = (EntityPlayerMP) icommandsender;
-			NotificationCore.sendMessage(astring[0], astring[1], player, player);
+			NotificationCore.sendMessage(astring[0], astring[1], player.getGameProfile().getId(), player.getGameProfile().getId());
 		}
 	}
 
