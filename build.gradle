@@ -102,22 +102,20 @@ artifacts {
 
 uploadArchives {
     if (file("secrets.properties").exists()) {
-        repositories {
-            mavenDeployer {
-                configuration = configurations.deployerJars
+        repositories.mavenDeployer {
+            configuration = configurations.deployerJars
 
-                ext.secrets = new Properties()
-                secrets.load(new FileInputStream("secrets.properties"))
-                
-                repository (url: secrets["upload_url"]) {
-                    authentication(userName: secrets["username"], password: secrets["password"])
-                }
-
-                def jenkinsBuildNum = System.getenv().BUILD_NUMBER
-
-                pom.version = project.version + (jenkinsBuildNum != null ? "_" + jenkinsBuildNum : "")
-                pom.artifactId = "util"
+            ext.secrets = new Properties()
+            secrets.load(new FileInputStream("secrets.properties"))
+            
+            repository (url: secrets["upload_url"]) {
+                authentication(userName: secrets["username"], password: secrets["password"])
             }
+
+            def jenkinsBuildNum = System.getenv().BUILD_NUMBER
+
+            pom.version = project.version + (jenkinsBuildNum != null ? "_" + jenkinsBuildNum : "")
+            pom.artifactId = "util"
         }
     }
 }    
