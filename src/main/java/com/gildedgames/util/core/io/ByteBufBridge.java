@@ -1,17 +1,26 @@
 package com.gildedgames.util.core.io;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import java.util.Collections;
+import java.util.List;
 
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.factory.IOFactory;
+import com.gildedgames.util.io_manager.factory.IOObserver;
+import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.overhead.IOManager;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class ByteBufBridge implements IOBridge
 {
-	
+
 	protected ByteBuf buf;
-	
+
+	public final static ByteBufBridgeFactory factory = new ByteBufBridgeFactory();
+
 	public ByteBufBridge(ByteBuf buf)
 	{
 		this.buf = buf;
@@ -99,13 +108,23 @@ public class ByteBufBridge implements IOBridge
 		if (array == null)
 		{
 			this.buf.writeBoolean(false);
-			
+
 			return;
 		}
-		
+
 		this.buf.writeBoolean(true);
 		this.buf.writeInt(array.length);
 		this.buf.writeBytes(array);
+	}
+
+	@Override
+	public void setIO(String key, IO<IOBridge, IOBridge> io)
+	{
+		this.buf.writeBoolean(io != null);
+		if (io != null)
+		{
+			IOCore.io().set("", this, factory, io);
+		}
 	}
 
 	@Override
@@ -157,11 +176,11 @@ public class ByteBufBridge implements IOBridge
 		{
 			return null;
 		}
-		
+
 		final int amount = this.buf.readInt();
 		final byte[] bytes = new byte[amount];
 		this.buf.readBytes(bytes);
-		
+
 		return bytes;
 	}
 
@@ -169,6 +188,51 @@ public class ByteBufBridge implements IOBridge
 	public boolean getBoolean(String key)
 	{
 		return this.buf.readBoolean();
+	}
+
+	@Override
+	public <T extends IO<IOBridge, IOBridge>> T getIO(String key)
+	{
+		if (this.buf.readBoolean())
+		{
+			return IOCore.io().get("", this, factory);
+		}
+		return null;
+	}
+
+	public static class ByteBufBridgeFactory implements IOFactory<IOBridge, IOBridge>
+	{
+
+		@Override
+		public IOBridge createInput(byte[] reading)
+		{
+			return new ByteBufBridge(Unpooled.copiedBuffer(reading));
+		}
+
+		@Override
+		public IOBridge createOutput()
+		{
+			return new ByteBufBridge(Unpooled.buffer());
+		}
+
+		@Override
+		public IOBridge createInputBridge(IOBridge input)
+		{
+			return input;
+		}
+
+		@Override
+		public IOBridge createOutputBridge(IOBridge output)
+		{
+			return output;
+		}
+
+		@Override
+		public List<IOObserver<IOBridge, IOBridge>> getObservers()
+		{
+			return Collections.emptyList();
+		}
+
 	}
 
 }

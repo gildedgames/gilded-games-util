@@ -1,6 +1,7 @@
 package com.gildedgames.util.tab.common.util;
 
 import com.gildedgames.util.tab.common.TabAPI;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface ITab
 {
-	
+
 	/**
 	 * This is the name which is displayed upon hovering over this {@link ITab} or when it is currently selected. Note that this is
 	 * unlocalized and will be translated to the correct value if your mod uses a language file.
@@ -54,7 +55,7 @@ public interface ITab
 	 * @param side The game's current networking Side.
 	 */
 	void onClose(EntityPlayer player);
-	
+
 	/**
 	 * This is the current {@link Container} linked to this {@link ITab} upon opening it. Returns null if this {@link ITab} does
 	 * not have an associated {@link Container}.

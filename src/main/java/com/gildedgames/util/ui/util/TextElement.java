@@ -1,7 +1,6 @@
 package com.gildedgames.util.ui.util;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
@@ -14,9 +13,9 @@ public class TextElement extends GuiFrame
 
 	private final Text text;
 
-	public TextElement(Text text, Pos2D pos, boolean centered)
+	public TextElement(Text text, Rect rect)
 	{
-		super(Dim2D.build().pos(pos).scale(text.scale).centerX(centered).flush());
+		super(Dim2D.build(rect).scale(text.scale).flush());
 
 		this.text = text;
 
@@ -26,7 +25,7 @@ public class TextElement extends GuiFrame
 			@Override
 			public Rect assembleRect()
 			{
-				return Dim2D.build().width(TextElement.this.text.scaledWidth()).height(TextElement.this.text.scaledHeight()).flush();
+				return Dim2D.build().width(TextElement.this.text.width()).height(TextElement.this.text.height()).flush();
 			}
 
 			@Override
@@ -35,15 +34,20 @@ public class TextElement extends GuiFrame
 				return true;
 			}
 
-		}, ModifierType.X, ModifierType.AREA);
+		}, ModifierType.AREA);
+	}
+	
+	public Text getText()
+	{
+		return this.text;
 	}
 
-	public void setText(String text)
+	public void setData(String text)
 	{
 		this.text.text = text;
 	}
 
-	public String getText()
+	public String getData()
 	{
 		return this.text.text;
 	}

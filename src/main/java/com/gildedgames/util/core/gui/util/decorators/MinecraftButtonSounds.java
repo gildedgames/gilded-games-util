@@ -22,7 +22,7 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
 	
 	public MinecraftButtonSounds(Gui view)
 	{
-		this(view, new MouseInput(MouseButton.LEFT, ButtonState.PRESSED));
+		this(view, new MouseInput(MouseButton.LEFT, ButtonState.PRESS));
 	}
 	
 	public MinecraftButtonSounds(Gui decoratedView, MouseInput event)

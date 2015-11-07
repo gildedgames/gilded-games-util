@@ -2,6 +2,8 @@ package com.gildedgames.util.collections;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
@@ -89,5 +91,17 @@ public class CollectionHelper
 			min = Math.min(min, size.apply(el));
 		}
 		return min;
+	}
+
+	public static <K, V> K getKey(Map<K, V> map, V value)
+	{
+		for (Entry<K, V> entry : map.entrySet())
+		{
+			if (entry.getValue().equals(value))
+			{
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 }

@@ -22,16 +22,23 @@ public class UIContainerMutable extends UIContainer
 
 	public void displayDim(RectHolder holder)
 	{
-		this.elements.put("displayDim", new RectangleElement(holder, new DrawingData(Color.PINK)));
+		this.elements.put("displayDim", new RectangleElement(holder.dim(), new DrawingData(Color.PINK)));
 	}
 
 	public void set(String key, Ui element)
 	{
+		if (element == null)
+		{
+			this.elements.remove(key);
+			
+			return;
+		}
+		
 		RectHolder gui = ObjectFilter.cast(element, RectHolder.class);
 		RectHolder parentModifier = ObjectFilter.cast(this.getAttachedUi(), RectHolder.class);
-
+		
 		element.seekContent().parentUi = this.getAttachedUi();
-
+		
 		if (gui != null && gui.dim().mod() != null && parentModifier != null)
 		{
 			gui.dim().add(parentModifier, ModifierType.POS, ModifierType.SCALE);
@@ -78,9 +85,9 @@ public class UIContainerMutable extends UIContainer
 		}
 	}
 
-	public void setAll(Map<String, Ui> elements)
+	public void setAll(Map<String, ? extends Ui> elements)
 	{
-		for (Map.Entry<String, Ui> entry : elements.entrySet())
+		for (Map.Entry<String, ? extends Ui> entry : elements.entrySet())
 		{
 			this.set(entry.getKey(), entry.getValue());
 		}

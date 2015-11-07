@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
-import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.Rotation2D;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -65,7 +63,7 @@ public class ModDim2D implements Rect
 		{
 
 			@Override
-			public void notifyDimChange()
+			public void notifyDimChange(List<ModifierType> types)
 			{
 				ModDim2D.this.refreshModifiedState();
 			}
@@ -135,10 +133,14 @@ public class ModDim2D implements Rect
 	 */
 	protected void refreshModifiedState()
 	{
-		Rotation2D rotation = this.originalState.rotation();
+		Rect oldModifiedState = this.modifiedState;
+
+		float degrees = this.originalState.degrees();
+
 		float scale = this.originalState.scale();
 
-		Pos2D pos = this.originalState.pos();
+		float posX = this.originalState.x();
+		float posY = this.originalState.y();
 
 		float width = this.originalState.width();
 		float height = this.originalState.height();
@@ -159,7 +161,7 @@ public class ModDim2D implements Rect
 
 			if (modifier.getType().equals(ModifierType.ROTATION))
 			{
-				rotation = rotation.buildWith(modifyingWith.dim().rotation()).addDegrees().flush();
+				degrees += modifyingWith.dim().degrees();
 			}
 
 			if (modifier.getType().equals(ModifierType.SCALE))
@@ -169,12 +171,12 @@ public class ModDim2D implements Rect
 
 			if (modifier.getType().equals(ModifierType.X))
 			{
-				pos = pos.clone().addX(modifyingWith.dim().pos().x()).flush();
+				posX += modifyingWith.dim().x();
 			}
 
 			if (modifier.getType().equals(ModifierType.Y))
 			{
-				pos = pos.clone().addY(modifyingWith.dim().pos().y()).flush();
+				posY += modifyingWith.dim().y();
 			}
 
 			if (modifier.getType().equals(ModifierType.WIDTH))
@@ -193,9 +195,10 @@ public class ModDim2D implements Rect
 		width *= this.originalState.scale();
 		height *= this.originalState.scale();
 
-		pos = pos.clone().subtract(offsetX, offsetY).flush();
+		posX -= offsetX;
+		posY -= offsetY;
 
-		this.modifiedState = Dim2D.build(this.originalState).pos(pos).area(width, height).rotation(rotation).scale(scale).flush();
+		this.modifiedState = Dim2D.build(this.originalState).pos(posX, posY).area(width, height).degrees(degrees).scale(scale).flush();
 
 		if (this.preventRecursion)
 		{
@@ -204,12 +207,40 @@ public class ModDim2D implements Rect
 
 		this.preventRecursion = true;
 
+		List<ModifierType> changedTypes = ModDim2D.getChangedTypes(oldModifiedState, this.modifiedState);
+
 		for (RectListener listener : this.listeners)
 		{
-			listener.notifyDimChange();
+			listener.notifyDimChange(changedTypes);
 		}
 
 		this.preventRecursion = false;
+	}
+
+	public static List<ModifierType> getChangedTypes(Rect r1, Rect r2)
+	{
+		List<ModifierType> types = new ArrayList<ModifierType>();
+		if (r1.x() != r2.x())
+		{
+			types.add(ModifierType.X);
+		}
+		if (r1.y() != r2.y())
+		{
+			types.add(ModifierType.Y);
+		}
+		if (r1.width() != r2.width())
+		{
+			types.add(ModifierType.WIDTH);
+		}
+		if (r1.height() != r2.height())
+		{
+			types.add(ModifierType.HEIGHT);
+		}
+		if (r1.degrees() != r2.degrees())
+		{
+			types.add(ModifierType.ROTATION);
+		}
+		return types;
 	}
 
 	public Collection<RectModifier> mods()
@@ -405,39 +436,27 @@ public class ModDim2D implements Rect
 	}
 
 	@Override
-	public Rotation2D rotation()
-	{
-		return this.modifiedState().rotation();
-	}
-
-	@Override
 	public float degrees()
 	{
 		return this.modifiedState().degrees();
 	}
 
 	@Override
-	public Pos2D origin()
+	public float originX()
 	{
-		return this.modifiedState().origin();
+		return this.modifiedState().originX();
+	}
+
+	@Override
+	public float originY()
+	{
+		return this.modifiedState().originY();
 	}
 
 	@Override
 	public float scale()
 	{
 		return this.modifiedState().scale();
-	}
-
-	@Override
-	public Pos2D pos()
-	{
-		return this.modifiedState().pos();
-	}
-
-	@Override
-	public Pos2D maxPos()
-	{
-		return this.modifiedState().maxPos();
 	}
 
 	@Override
@@ -489,9 +508,9 @@ public class ModDim2D implements Rect
 	}
 
 	@Override
-	public boolean intersects(Pos2D pos)
+	public boolean intersects(float x, float y)
 	{
-		return this.modifiedState().intersects(pos);
+		return this.modifiedState().intersects(x, y);
 	}
 
 	@Override
@@ -510,6 +529,12 @@ public class ModDim2D implements Rect
 	public RectBuilder rebuild()
 	{
 		return this.modifiedState().rebuild();
+	}
+
+	@Override
+	public String toString()
+	{
+		return this.modifiedState.toString();
 	}
 
 }

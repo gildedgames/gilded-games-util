@@ -73,7 +73,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 		{
 			Gui gui = (Gui)this.getAttachedUi();
 			
-			if (gui.query(input))
+			if (input.length == 0 || gui.query(input))
 			{
 				guis.add(gui);
 			}
@@ -91,7 +91,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 				guis.addAll(container.queryAll(input));
 			}
 
-			if (element.query(input))
+			if (input.length == 0 ||element.query(input))
 			{
 				guis.add(element);
 			}
@@ -108,6 +108,19 @@ public class UIContainer implements Iterable<Ui>, NBT
 	public boolean contains(Ui element)
 	{
 		return this.map().containsValue(element);
+	}
+	
+	public boolean contains(Class<? extends Ui> clazz)
+	{
+		for (Ui ui : this.elements.values())
+		{
+			if (ui.getClass().isAssignableFrom(clazz))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	public int size()

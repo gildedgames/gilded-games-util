@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.data;
 
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.event.GuiEvent;
@@ -22,6 +23,22 @@ public class UIContainerEvents extends UIContainerMutable
 			
 			event.setGui(gui);
 		}
+		
+		element.init(MinecraftGuiViewer.instance().getInputProvider());
+		
+		super.set(key, element);
+	}
+
+	public void set(String key, Ui element, Gui attachedGui)
+	{
+		if (element instanceof GuiEvent)
+		{
+			GuiEvent event = (GuiEvent)element;
+
+			event.setGui(attachedGui);
+		}
+		
+		element.init(MinecraftGuiViewer.instance().getInputProvider());
 		
 		super.set(key, element);
 	}

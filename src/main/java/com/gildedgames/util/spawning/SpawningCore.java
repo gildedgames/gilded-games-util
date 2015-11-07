@@ -3,6 +3,10 @@ package com.gildedgames.util.spawning;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.spawning.util.DefaultSpawnSettings;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,13 +23,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.group.GroupCore;
-import com.gildedgames.util.spawning.util.DefaultSpawnSettings;
-
 public class SpawningCore implements ICore
 {
-	
+
 	private static List<SpawnManager> spawnManagers = new ArrayList<SpawnManager>();
 
 	public static SpawnManager createAndRegisterSpawnManager(int dimensionId)
@@ -124,6 +124,13 @@ public class SpawningCore implements ICore
 	@Override
 	public void serverStarted(FMLServerStartedEvent event)
 	{
+
+	}
+
+	@Override
+	public void flushData()
+	{
+		// TODO Auto-generated method stub
 
 	}
 

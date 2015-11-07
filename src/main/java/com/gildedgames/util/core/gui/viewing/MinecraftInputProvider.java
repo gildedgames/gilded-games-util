@@ -1,16 +1,13 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.rect.RectCollection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 
 public class MinecraftInputProvider implements InputProvider
 {
@@ -18,7 +15,7 @@ public class MinecraftInputProvider implements InputProvider
 	protected Minecraft mc;
 
 	protected float screenWidth, screenHeight, scaleFactor, xOffset, yOffset;
-	
+
 	protected ScaledResolution resolution;
 
 	public MinecraftInputProvider(Minecraft mc)
@@ -37,7 +34,7 @@ public class MinecraftInputProvider implements InputProvider
 	{
 		this.scaleFactor = scaleFactor;
 	}
-	
+
 	@Override
 	public void refreshResolution()
 	{
@@ -48,7 +45,7 @@ public class MinecraftInputProvider implements InputProvider
 	public float getScreenWidth()
 	{
 		this.refreshResolution();
-		
+
 		return this.resolution.getScaledWidth();
 	}
 
@@ -56,7 +53,7 @@ public class MinecraftInputProvider implements InputProvider
 	public float getScreenHeight()
 	{
 		this.refreshResolution();
-		
+
 		return this.resolution.getScaledHeight();
 	}
 
@@ -133,5 +130,5 @@ public class MinecraftInputProvider implements InputProvider
 
 		return this.isHovered(holder.dim());
 	}
-	
+
 }
