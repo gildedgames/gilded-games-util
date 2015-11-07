@@ -1,16 +1,13 @@
 package com.gildedgames.util.io_manager.io;
 
-import com.gildedgames.util.io_manager.factory.IOFactory;
-
-
 public interface IOSyncable<I, O>
 {
-	
+
 	public static enum SyncSide
 	{
 		CLIENT
 		{
-			
+
 			@Override
 			public boolean isClient()
 			{
@@ -22,7 +19,7 @@ public interface IOSyncable<I, O>
 			{
 				return false;
 			}
-			
+
 		},
 		SERVER
 		{
@@ -38,13 +35,13 @@ public interface IOSyncable<I, O>
 			{
 				return true;
 			}
-			
+
 		};
-		
+
 		public abstract boolean isClient();
-		
+
 		public abstract boolean isServer();
-		
+
 	}
 
 	/**
@@ -60,12 +57,12 @@ public interface IOSyncable<I, O>
 	 * @param output Output object to write data to.
 	 * @param to Which side the syncing process will send this information to.
 	 */
-	public void syncTo(O output, SyncSide to); 
+	public void syncTo(O output, SyncSide to);
 
 	/**
 	 * @param input Input object to read data from.
 	 * @param from Which side the syncing process has received this information from.
 	 */
 	public void syncFrom(I input, SyncSide from);
-	
+
 }

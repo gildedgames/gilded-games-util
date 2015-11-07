@@ -1,5 +1,6 @@
 package com.gildedgames.util.core.nbt;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,19 +10,51 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
+import com.gildedgames.util.instances.BlockPosDimension;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.util.IOUtil;
+import com.google.common.collect.AbstractIterator;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 
-import com.gildedgames.util.instances.BlockPosDimension;
-import com.google.common.collect.AbstractIterator;
-
 public class NBTHelper
 {
+
+	public static <T extends NBT> T readInputObject(ByteBuf buf)
+	{
+		NBTTagCompound tag = readInputNBT(buf);
+		return IOCore.io().get("a", tag, new NBTFactory());
+	}
+
+	public static NBTTagCompound readInputNBT(ByteBuf buf)
+	{
+		int size = buf.readInt();
+		byte[] array = new byte[size];
+		buf.readBytes(array);
+		ByteArrayInputStream byteArray = new ByteArrayInputStream(array);
+		DataInputStream dataInput = new DataInputStream(byteArray);
+		try
+		{
+			NBTTagCompound tag = readInputNBT(dataInput);
+			dataInput.close();
+			return tag;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return new NBTTagCompound();
+	}
 
 	public static NBTTagCompound readInputNBT(DataInputStream input) throws IOException
 	{
@@ -30,6 +63,41 @@ public class NBTHelper
 			return CompressedStreamTools.read(input);
 		}
 		return null;
+	}
+
+	public static void setIOList(String key, List<? extends IO<IOBridge, IOBridge>> list, NBTTagCompound tag)
+	{
+		IOUtil.setCollection(key, list, NBTBridge.factory, new NBTBridge(tag));
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends IO<IOBridge, IOBridge>> List<T> getIOList(String key, NBTTagCompound tag)
+	{
+		return (List<T>) IOUtil.getCollection(key, NBTBridge.factory, new NBTBridge(tag));
+	}
+
+	public static <T extends NBT> void writeOutputObject(T object, ByteBuf byteBuf)
+	{
+		NBTTagCompound tag = new NBTTagCompound();
+		IOCore.io().set("a", tag, new NBTFactory(), object);
+		NBTHelper.writeOutputNBT(tag, byteBuf);
+	}
+
+	public static void writeOutputNBT(NBTTagCompound tag, ByteBuf byteBuf)
+	{
+		ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+		DataOutputStream dataOutput = new DataOutputStream(byteArray);
+		try
+		{
+			writeOutputNBT(tag, dataOutput);
+			byteBuf.writeBytes(byteArray.toByteArray());
+			dataOutput.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void writeOutputNBT(NBTTagCompound tag, DataOutputStream output) throws IOException
@@ -176,6 +244,16 @@ public class NBTHelper
 		return stackList;
 	}
 
+	public static void setEnum(String key, NBTTagCompound tag, Enum<?> e)
+	{
+		tag.setString(key, e.name());
+	}
+
+	public static <T extends Enum<T>> T getEnum(String key, NBTTagCompound tag, Class<T> clazz)
+	{
+		return Enum.valueOf(clazz, tag.getString(key));
+	}
+
 	public static void setUUID(NBTTagCompound tag, UUID uuid, String key)
 	{
 		tag.setLong(key + "most", uuid.getLeastSignificantBits());
@@ -240,4 +318,5 @@ public class NBTHelper
 		tag.setInteger(key + "z", pos.getZ());
 		tag.setInteger(key + "dimension", pos.dimId());
 	}
+
 }

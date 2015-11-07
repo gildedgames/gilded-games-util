@@ -1,23 +1,6 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_ZERO;
-
 import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
-import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.graphics.Sprite.UV;
-import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
-import com.gildedgames.util.ui.util.rect.RectCollection;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -26,6 +9,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
+import com.gildedgames.util.ui.data.AssetLocation;
+import com.gildedgames.util.ui.data.DrawingData;
+import com.gildedgames.util.ui.data.rect.Rect;
+import com.gildedgames.util.ui.graphics.Graphics2D;
+import com.gildedgames.util.ui.graphics.Sprite;
+import com.gildedgames.util.ui.graphics.Sprite.UV;
+import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
+import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -65,20 +59,27 @@ public class MinecraftGraphics2D implements Graphics2D
 
 		GlStateManager.scale(dim.scale(), dim.scale(), 0);
 
-		GlStateManager.translate((dim.width() / 2) + dim.rotation().originX(), (dim.height() / 2) + dim.rotation().originY(), 0);
+		GlStateManager.translate((dim.width() / 2) + dim.originX(), (dim.height() / 2) + dim.originY(), -2000);
 
-		GlStateManager.rotate(dim.rotation().degrees(), 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(dim.degrees(), 0.0F, 0.0F, 1.0F);
 
-		GlStateManager.translate(-(dim.width() / 2) - dim.rotation().originX(), -(dim.height() / 2) - dim.rotation().originY(), 0);
-
-		GlStateManager.color(1, 1, 1, data.getAlpha());
+		GlStateManager.translate(-(dim.width() / 2) - dim.originX(), -(dim.height() / 2) - dim.originY(), -2000);
 
 		GlStateManager.enableBlend();
 
-		GlStateManager.tryBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-		GL11.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		GlStateManager.color(1.0F, 1.0F, 1.0F, data.getAlpha());
 
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		
+		GlStateManager.enableAlpha();
+		
 		inner.draw();
+
+		GL11.glDisable(GL11.GL_ALPHA_TEST);
+
+		GlStateManager.disableAlpha();
 
 		GlStateManager.popMatrix();
 	}
@@ -96,7 +97,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	}
 
 	@Override
-	public void drawLine(Pos2D startPos, Pos2D endPos, DrawingData drawingData)
+	public void drawLine(int startX, int startY, int endX, int endY, DrawingData drawingData)
 	{
 
 	}
@@ -200,7 +201,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		void draw();
 	}
-
+	
 	private static class DrawSprite implements DrawInner
 	{
 

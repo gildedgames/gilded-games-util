@@ -2,13 +2,19 @@ package com.gildedgames.util.ui.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
+import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.Dim2D;
+import com.gildedgames.util.ui.data.rect.RectHolder;
+import com.gildedgames.util.ui.data.rect.RectListener;
+import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 import com.gildedgames.util.ui.util.factory.ContentFactory;
@@ -16,27 +22,29 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiSorter;
 import com.google.common.collect.ImmutableMap;
 
-public class GuiCollection extends GuiFrame
+public class GuiCollection<T extends Ui> extends GuiFrame
 {
 
 	protected GuiPositioner positioner;
 
 	protected GuiSorter sorter;
 
-	protected List<ContentFactory> contentProviders = new ArrayList<ContentFactory>();
+	protected List<ContentFactory<T>> contentProviders = new ArrayList<ContentFactory<T>>();
 
-	public GuiCollection(GuiPositioner positioner, ContentFactory... contentProviders)
+	private boolean isSorting;
+
+	public GuiCollection(GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		this(Pos2D.flush(), 0, positioner, contentProviders);
 	}
 
-	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory... contentProviders)
+	public GuiCollection(Pos2D pos, int width, GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{
 		super(Dim2D.build().pos(pos).width(width).flush());
 
 		this.positioner = positioner;
 
-		this.contentProviders.addAll(Arrays.<ContentFactory> asList(contentProviders));
+		this.contentProviders.addAll(Arrays.<ContentFactory<T>> asList(contentProviders));
 	}
 
 	public void setPositioner(GuiPositioner positioner)
@@ -59,17 +67,42 @@ public class GuiCollection extends GuiFrame
 		return this.sorter;
 	}
 
-	private void clearAndProvideContent()
+	public void clearAndProvideContent()
 	{
 		this.events().clear(Gui.class);
 
-		for (ContentFactory contentProvider : this.contentProviders)
+		for (ContentFactory<T> contentProvider : this.contentProviders)
 		{
 			if (contentProvider != null)
 			{
-				this.events().setAll(contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim()));
+				LinkedHashMap<String, T> elements = contentProvider.provideContent(ImmutableMap.copyOf(this.events().map()), this.dim());
+				for (Entry<String, T> entry : elements.entrySet())
+				{
+					RectHolder holder = ObjectFilter.cast(entry.getValue(), RectHolder.class);
+					if (holder != null)
+					{
+						holder.dim().addListener(new RectListener()
+						{
+							@Override
+							public void notifyDimChange(List<ModifierType> modifier)
+							{
+								if (!modifier.isEmpty() && !modifier.contains(ModifierType.X) && !modifier.contains(ModifierType.Y) && GuiCollection.this.isSorting)
+								{
+									GuiCollection.this.sortAndPositionContent();
+								}
+							}
+						});
+					}
+					this.onElementAdded(entry.getValue());
+				}
+				this.events().setAll(elements);
 			}
 		}
+	}
+
+	protected void onElementAdded(T element)
+	{
+
 	}
 
 	private void positionContent(List<Gui> views)
@@ -107,10 +140,14 @@ public class GuiCollection extends GuiFrame
 		}
 	}
 
-	private void sortAndPositionContent()
+	public void sortAndPositionContent()
 	{
-		this.positionContent(this.getSortedViews());
+		this.isSorting = true;
+		
 		this.sortContent();
+		this.positionContent(this.getSortedViews());
+		
+		this.isSorting = false;
 	}
 
 	private List<Gui> getSortedViews()
@@ -121,18 +158,11 @@ public class GuiCollection extends GuiFrame
 		return sortedViews;
 	}
 
-	public void refresh()
-	{
-		this.clearAndProvideContent();
-		this.sortAndPositionContent();
-	}
-
 	@Override
 	public void initContent(InputProvider input)
 	{
-		this.refresh();
-
-		//this.getDimensions().set(this.getListeners().getCombinedDimensions());
+		this.clearAndProvideContent();
+		this.sortAndPositionContent();
 		
 		super.initContent(input);
 	}

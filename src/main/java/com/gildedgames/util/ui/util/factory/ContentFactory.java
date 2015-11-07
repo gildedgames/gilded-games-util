@@ -6,9 +6,9 @@ import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.google.common.collect.ImmutableMap;
 
-public interface ContentFactory
+public interface ContentFactory<T extends Ui>
 {
 
-	LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea);
-	
+	LinkedHashMap<String, T> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea);
+
 }

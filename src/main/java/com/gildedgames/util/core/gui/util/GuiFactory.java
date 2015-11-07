@@ -3,10 +3,6 @@ package com.gildedgames.util.core.gui.util;
 import java.awt.Color;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -27,6 +23,10 @@ import com.gildedgames.util.ui.util.TextBox;
 import com.gildedgames.util.ui.util.TextureElement;
 import com.gildedgames.util.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.ui.util.rect.RectCollection;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 
 public class GuiFactory
 {
@@ -59,11 +59,11 @@ public class GuiFactory
 
 	public static GuiFrame upArrowButton(Rect dim)
 	{
-		Sprite buttonDefaultSprite = new Sprite(SCROLL_BAR, UV.build().minU(20).area(10, 10).flush());
-		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(30).area(10, 10).flush());
-		Sprite buttonClickedSprite = new Sprite(SCROLL_BAR, UV.build().minU(40).area(10, 10).flush());
+		Sprite buttonDefaultSprite = Sprite.create(SCROLL_BAR, UV.build().minU(20).area(10, 10).flush());
+		Sprite buttonHoveredSprite = Sprite.create(SCROLL_BAR, UV.build().minU(30).area(10, 10).flush());
+		Sprite buttonClickedSprite = Sprite.create(SCROLL_BAR, UV.build().minU(40).area(10, 10).flush());
 
-		Rect newDim = Dim2D.build().pos(dim.pos()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
+		Rect newDim = Dim2D.build().pos(dim.x(), dim.y()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
@@ -77,11 +77,11 @@ public class GuiFactory
 
 	public static GuiFrame downArrowButton(Rect dim)
 	{
-		Sprite buttonDefaultSprite = new Sprite(SCROLL_BAR, UV.build().minU(50).area(10, 10).flush());
-		Sprite buttonHoveredSprite = new Sprite(SCROLL_BAR, UV.build().minU(60).area(10, 10).flush());
-		Sprite buttonClickedSprite = new Sprite(SCROLL_BAR, UV.build().minU(70).area(10, 10).flush());
+		Sprite buttonDefaultSprite = Sprite.create(SCROLL_BAR, UV.build().minU(50).area(10, 10).flush());
+		Sprite buttonHoveredSprite = Sprite.create(SCROLL_BAR, UV.build().minU(60).area(10, 10).flush());
+		Sprite buttonClickedSprite = Sprite.create(SCROLL_BAR, UV.build().minU(70).area(10, 10).flush());
 
-		Rect newDim = Dim2D.build().pos(dim.pos()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
+		Rect newDim = Dim2D.build().pos(dim.x(), dim.y()).area(10, 10).center(dim.isCenteredX(), dim.isCenteredY()).flush();
 
 		Button button = new Button(newDim, new TextureElement(buttonDefaultSprite, newDim), new TextureElement(buttonHoveredSprite, newDim), new TextureElement(buttonClickedSprite, newDim));
 
@@ -95,7 +95,7 @@ public class GuiFactory
 
 	public static GuiFrame button(Pos2D pos, float width, String text, boolean centered)
 	{
-		Rect dim = Dim2D.build().area(width, 20).center(centered).pos(pos).flush();
+		Rect dim = Dim2D.build().area(width, 20).center(centered).pos(pos.x(), pos.y()).flush();
 
 		Gui button = new MinecraftButton(dim, text);
 
@@ -119,8 +119,8 @@ public class GuiFactory
 
 	public static ScrollBar scrollBar(Pos2D pos, float height, Rect scrollableArea, boolean centered)
 	{
-		Sprite bar = new Sprite(SCROLL_BAR, UV.build().min(0, 0).area(10, 10).flush());
-		Sprite base = new Sprite(SCROLL_BAR, UV.build().min(10, 0).area(10, 10).flush());
+		Sprite bar = Sprite.create(SCROLL_BAR, UV.build().min(0, 0).area(10, 10).flush());
+		Sprite base = Sprite.create(SCROLL_BAR, UV.build().min(10, 0).area(10, 10).flush());
 
 		Rect spriteDimensions = Dim2D.build().area(10, 10).center(centered).flush();
 		Rect barDimensions = Dim2D.build().area(10, height).center(centered).flush();
@@ -150,6 +150,11 @@ public class GuiFactory
 		return GuiFactory.scrollBar(Pos2D.flush(), 0, Dim2D.flush());
 	}
 
+	public static TextureElement streamedTexture(Sprite sprite)
+	{
+		return new TextureElement(sprite, Dim2D.flush());
+	}
+
 	public static TextureElement texture(Sprite sprite)
 	{
 		return new TextureElement(sprite, Dim2D.flush());
@@ -167,21 +172,21 @@ public class GuiFactory
 
 	public static TextureElement texture(AssetLocation asset, UV uv)
 	{
-		Sprite sprite = new Sprite(asset, uv);
+		Sprite sprite = Sprite.create(asset, uv);
 
 		return GuiFactory.texture(sprite, Dim2D.build().area(uv.width(), uv.height()).flush());
 	}
 
 	public static TextureElement texture(AssetLocation asset, Rect dim)
 	{
-		Sprite sprite = new Sprite(asset);
+		Sprite sprite = Sprite.create(asset);
 
 		return GuiFactory.texture(sprite, dim.rebuild().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
 	}
 
 	public static TextureElement createResizableTexture(AssetLocation asset, Rect dim, UV corners, UV verticalSides, UV horizontalSides)
 	{
-		return GuiFactory.texture(new Sprite(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);
+		return GuiFactory.texture(Sprite.create(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);
 	}
 
 	public static TextureElement createTexture(AssetLocation asset)

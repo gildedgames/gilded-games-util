@@ -11,12 +11,6 @@ import java.util.zip.ZipFile;
 
 import javax.imageio.ImageIO;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.overhead.IOManager;
@@ -25,6 +19,12 @@ import com.gildedgames.util.io_manager.util.IOManagerDefault;
 import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.world.common.WorldHookPool;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 public class UtilServices
 {
@@ -60,10 +60,15 @@ public class UtilServices
 		return this.io;
 	}
 
+	public IORegistry getIORegistry()
+	{
+		return this.getIOManager().getRegistry();
+	}
+
 	public IResource getResourceFrom(AssetLocation asset)
 	{
 		ResourceLocation resource = new ResourceLocation(asset.getDomain(), asset.getPath());
-		
+
 		try
 		{
 			return Minecraft.getMinecraft().getResourceManager().getResource(resource);
@@ -72,7 +77,7 @@ public class UtilServices
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -83,9 +88,9 @@ public class UtilServices
 		{
 			return this.getResourceFrom(asset).getInputStream();
 		}
-		
-		File source = null;		
-		
+
+		File source = null;
+
 		String path = "assets/" + asset.getDomain() + "/" + asset.getPath();
 
 		for (ModContainer container : Loader.instance().getActiveModList())
@@ -111,7 +116,7 @@ public class UtilServices
 
 		return null;
 	}
-	
+
 	public BufferedImage getBufferedImage(AssetLocation asset)
 	{
 		try
@@ -126,7 +131,7 @@ public class UtilServices
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

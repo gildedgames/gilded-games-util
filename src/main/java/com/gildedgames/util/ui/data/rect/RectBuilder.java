@@ -1,13 +1,12 @@
 package com.gildedgames.util.ui.data.rect;
 
 import com.gildedgames.util.ui.data.Pos2D;
-import com.gildedgames.util.ui.data.Rotation2D;
 import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public class RectBuilder
 {
 
-	protected Pos2D pos = Pos2D.flush();
+	protected float posX, posY;
 
 	protected float width, height;
 
@@ -15,7 +14,9 @@ public class RectBuilder
 
 	protected float scale = 1.0F;
 
-	protected Rotation2D rotation = Rotation2D.flush();
+	protected float degrees;
+
+	protected float originX, originY;
 
 	public RectBuilder()
 	{
@@ -44,7 +45,8 @@ public class RectBuilder
 
 	public RectBuilder set(Rect rect)
 	{
-		this.pos = rect.pos();
+		this.posX = rect.x();
+		this.posY = rect.y();
 
 		this.width = rect.width();
 		this.height = rect.height();
@@ -54,69 +56,59 @@ public class RectBuilder
 		this.centeredX = rect.isCenteredX();
 		this.centeredY = rect.isCenteredY();
 
-		this.rotation = rect.rotation();
-		return this;
-	}
-
-	public RectBuilder rotation(Rotation2D rotation)
-	{
-		this.rotation = rotation;
-
+		this.degrees = rect.degrees();
+		this.originX = rect.originX();
+		this.originY = rect.originY();
 		return this;
 	}
 
 	public RectBuilder degrees(float degrees)
 	{
-		this.rotation = this.rotation.clone().degrees(degrees).flush();
-
-		return this;
-	}
-
-	public RectBuilder origin(Pos2D origin)
-	{
-		this.rotation = this.rotation.clone().origin(origin).flush();
+		this.degrees = degrees;
 
 		return this;
 	}
 
 	public RectBuilder origin(float x, float y)
 	{
-		this.rotation = this.rotation.clone().origin(x, y).flush();
+		this.originX = x;
+		this.originY = y;
 
 		return this;
 	}
 
 	public RectBuilder originX(float x)
 	{
-		this.rotation = this.rotation.clone().originX(x).flush();
+		this.originX = x;
 
 		return this;
 	}
 
 	public RectBuilder originY(float y)
 	{
-		this.rotation = this.rotation.clone().originY(y).flush();
+		this.originY = y;
 
 		return this;
 	}
 
 	public RectBuilder addDegrees(float degrees)
 	{
-		this.rotation = this.rotation.clone().addDegrees(degrees).flush();
+		this.degrees += degrees;
 
 		return this;
 	}
 
 	public RectBuilder subtractDegrees(float degrees)
 	{
-		this.rotation = this.rotation.clone().subtractDegrees(degrees).flush();
+		this.degrees -= degrees;
 
 		return this;
 	}
 
 	public RectBuilder resetPos()
 	{
-		this.pos = Pos2D.flush();
+		this.posX = 0;
+		this.posY = 0;
 
 		return this;
 	}
@@ -142,16 +134,17 @@ public class RectBuilder
 		return this;
 	}
 
-	public RectBuilder pos(Pos2D position)
+	public RectBuilder pos(float x, float y)
 	{
-		this.pos = position;
-
+		this.posX = x;
+		this.posY = y;
 		return this;
 	}
 
-	public RectBuilder pos(float x, float y)
+	public RectBuilder pos(Pos2D pos)
 	{
-		this.pos = Pos2D.flush(x, y);
+		this.posX = pos.x();
+		this.posY = pos.y();
 
 		return this;
 	}
@@ -182,12 +175,14 @@ public class RectBuilder
 
 	public RectBuilder y(float y)
 	{
-		return this.pos(this.pos.clone().y(y).flush());
+		this.posY = y;
+		return this;
 	}
 
 	public RectBuilder x(float x)
 	{
-		return this.pos(this.pos.clone().x(x).flush());
+		this.posX = x;
+		return this;
 	}
 
 	public RectBuilder center(boolean centered)
@@ -219,17 +214,19 @@ public class RectBuilder
 
 	public RectBuilder addX(float x)
 	{
-		return this.pos(this.pos.clone().addX(x).flush());
+		this.posX += x;
+		return this;
 	}
 
 	public RectBuilder addY(float y)
 	{
-		return this.pos(this.pos.clone().addY(y).flush());
+		this.posY += y;
+		return this;
 	}
 
-	public RectBuilder addPos(Pos2D pos)
+	public RectBuilder addPos(float x, float y)
 	{
-		return this.addX(pos.x()).addY(pos.y());
+		return this.addX(x).addY(y);
 	}
 
 	/**

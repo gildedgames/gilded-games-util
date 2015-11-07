@@ -1,11 +1,8 @@
 package com.gildedgames.util.menu.client;
 
-import com.gildedgames.util.core.ClientProxy;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTFactory;
-import com.gildedgames.util.core.nbt.NBTFile;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.menu.MenuCore;
+import java.io.File;
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -17,10 +14,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Mouse;
 
-import java.io.File;
-import java.io.IOException;
+import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTFactory;
+import com.gildedgames.util.core.nbt.NBTFile;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.menu.MenuCore;
 
 public class MenuClientEvents
 {
@@ -35,6 +37,8 @@ public class MenuClientEvents
 	private final Minecraft mc = Minecraft.getMinecraft();
 
 	private final File configSaveLocation;
+	
+	private boolean firstTick = true;
 
 	public static class MenuConfig implements NBT
 	{
@@ -86,7 +90,10 @@ public class MenuClientEvents
 
 		menu.onOpen();
 
-		Mouse.setCursorPosition(mouseX, mouseY);
+		if (!this.firstTick)
+		{
+			Mouse.setCursorPosition(mouseX, mouseY);
+		}
 
 		if (!shouldSaveToConfig)
 		{
@@ -156,6 +163,11 @@ public class MenuClientEvents
 	{
 		if (event.phase == TickEvent.Phase.START)
 		{
+			if (this.firstTick)
+			{
+				this.firstTick = false;
+			}
+			
 			IMenu menu = MenuCore.locate().getCurrentMenu();
 
 			if (menu != null)

@@ -9,9 +9,7 @@ import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
 import com.gildedgames.util.ui.data.UIContainerMutable;
-import com.gildedgames.util.ui.data.rect.BuildIntoRectHolder;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
-import com.gildedgames.util.ui.data.rect.RectBuilder;
 import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -22,7 +20,7 @@ import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.GuiProcessingHelper;
 
 
-public abstract class GuiDecorator<T extends Ui> extends GuiFrame
+public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Decorator<T>
 {
 
 	private T element;
@@ -32,9 +30,41 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 		this.element = element;
 	}
 	
+	@Override
 	public T getDecoratedElement()
 	{
 		return this.element;
+	}
+	
+	public <D> D findDecoratedElement(Class<? extends D> clazz)
+	{
+		Object element = this.getDecoratedElement();
+		
+		while (element != null)
+		{
+			if (element.getClass().isAssignableFrom(clazz))
+			{
+				return (D) element;
+			}
+			
+			if (element instanceof Decorator)
+			{
+				Decorator decorator = (Decorator)element;
+				
+				element = decorator.getDecoratedElement();
+				
+				if (element == null)
+				{
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -245,14 +275,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame
 	@Override
 	public UIContainerEvents events()
 	{
-		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
-		
-		if (frame != null)
-		{
-			return frame.events();
-		}
-		
-		return null;
+		return this.element.events();
 	}
 	
 	@Override

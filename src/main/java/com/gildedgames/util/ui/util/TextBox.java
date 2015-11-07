@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.Pos2D;
+import com.gildedgames.util.ui.data.rect.Dim2D;
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -19,11 +19,11 @@ public class TextBox extends GuiFrame
 	public TextBox(Rect dim, boolean centerFormat, Text... text)
 	{
 		super(dim);
-		
+
 		this.text = text;
 		this.centerFormat = centerFormat;
 	}
-	
+
 	public void setText(Text... text)
 	{
 		this.text = text;
@@ -36,14 +36,14 @@ public class TextBox extends GuiFrame
 		int textHeight = 0;
 
 		float halfWidth = this.dim().width() / 2;
-		
+
 		for (Text t : this.text)
 		{
 			if (t.text == null || t.text.isEmpty())
 			{
 				continue;
 			}
-			
+
 			final String[] strings = t.text.split("/n");
 
 			final List<String> stringList = new ArrayList<String>(strings.length);
@@ -56,16 +56,16 @@ public class TextBox extends GuiFrame
 				for (final String s : newStrings)
 				{
 					TextElement textElement;
-					
+
 					if (this.centerFormat)
 					{
-						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(halfWidth, textHeight), true);
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Dim2D.build().pos(halfWidth, textHeight).centerX(true).flush());
 					}
 					else
 					{
-						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Pos2D.flush(0, textHeight), false);
+						textElement = new TextElement(new Text(s, t.drawingData.getColor(), t.scale, t.font), Dim2D.build().pos(0, textHeight).flush());
 					}
-					
+
 					this.content().set(String.valueOf(i), textElement);
 
 					textHeight += 1.1f * t.scaledHeight();
@@ -75,7 +75,7 @@ public class TextBox extends GuiFrame
 		}
 
 		this.dim().mod().height(textHeight).flush();
-		
+
 		super.initContent(input);
 	}
 

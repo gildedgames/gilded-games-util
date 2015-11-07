@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.util.decorators;
 
+import com.gildedgames.util.ui.common.Decorator;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.rect.ModDim2D;
@@ -8,7 +9,7 @@ import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
-public class RepeatableGui extends GuiFrame
+public class RepeatableGui extends GuiFrame implements Decorator<GuiFrame>
 {
 
 	protected ScissorableGui repeatedGui;
@@ -62,6 +63,12 @@ public class RepeatableGui extends GuiFrame
 		}
 
 		this.repeatedGui.dim().set(oldDim);
+	}
+
+	@Override
+	public GuiFrame getDecoratedElement()
+	{
+		return this.repeatedGui;
 	}
 
 }

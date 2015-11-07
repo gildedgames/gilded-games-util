@@ -16,10 +16,16 @@ public class WorldMinecraftFactoryClient implements IWorldFactory<WorldMinecraft
 
 		World world = Minecraft.getMinecraft().theWorld;
 
+		if (world == null || world.provider == null)
+		{
+			return null;
+		}
+		
 		if (world.provider.getDimensionId() == dimId)
 		{
 			return new WorldMinecraft(world);
 		}
+		
 		throw new RuntimeException("Tried to access world with Dimension id " + dimId + " on the client, but that's not where the player is.");
 	}
 

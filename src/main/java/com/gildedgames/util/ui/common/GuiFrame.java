@@ -3,6 +3,8 @@ package com.gildedgames.util.ui.common;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gildedgames.util.ui.data.TickInfo;
 import com.gildedgames.util.ui.data.UIContainer;
 import com.gildedgames.util.ui.data.UIContainerEvents;
@@ -16,8 +18,6 @@ import com.gildedgames.util.ui.input.MouseInputPool;
 import com.gildedgames.util.ui.listeners.KeyboardListener;
 import com.gildedgames.util.ui.listeners.MouseListener;
 import com.gildedgames.util.ui.util.GuiProcessingHelper;
-
-import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiFrame implements Gui, KeyboardListener, MouseListener
 {
@@ -48,6 +48,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		return this.mainContent;
 	}
 
+	@Override
 	public UIContainerEvents events()
 	{
 		return this.events;
@@ -112,10 +113,17 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 		this.initContent(input);
 
 		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
+
+		this.postInit(input);
 	}
 
 	@Override
 	public void initContent(InputProvider input)
+	{
+
+	}
+
+	protected void postInit(InputProvider input)
 	{
 
 	}
@@ -203,8 +211,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	@Override
 	public void updateState()
 	{
-		// TODO Auto-generated method stub
-
+		
 	}
 
 }
