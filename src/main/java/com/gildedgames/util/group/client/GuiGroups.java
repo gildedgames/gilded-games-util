@@ -68,14 +68,14 @@ public class GuiGroups extends GuiFrame
 				{
 					final Group group = groups.getSelected().group;
 					final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-					GroupCore.locate().getDefaultPool().addMember(player, group);
+					GroupCore.locate().getDefaultPool().addMember(player.getGameProfile().getId(), group);
 
 					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
 					{
 						@Override
 						protected boolean condition()
 						{
-							return group.hasMemberData() && group.getMemberData().contains(player.getPersistentID());
+							return group.hasMemberData() && group.getMemberData().contains(player.getGameProfile().getId());
 						}
 
 						@Override

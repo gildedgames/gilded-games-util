@@ -29,6 +29,7 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.ui.util.transform.GuiPositionerList;
 import com.google.common.collect.ImmutableMap;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiNotifications extends GuiFrame
@@ -99,7 +100,9 @@ public class GuiNotifications extends GuiFrame
 			this.content().set("button", new MinecraftButton(Dim2D.build().buildWith(this).area().flush(), ""));
 			this.content().set("title", new TextElement(GuiFactory.text(this.message.getTitle(), new Color(0xE5E5E5)), Dim2D.build().pos(1, 2).flush()));
 			this.content().set("from", new TextElement(GuiFactory.text(UtilCore.translate("gui.from"), Color.BLACK, 0.75f), Dim2D.build().pos(1, 12).flush()));
-			this.content().set("username", new TextElement(GuiFactory.text(this.message.getSender().getCommandSenderName(), new Color(0x8FE639), 0.75f), Dim2D.build().pos(18, 12).flush()));
+
+			String senderName = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(this.message.getSender()).getGameProfile().getName();
+			this.content().set("username", new TextElement(GuiFactory.text(senderName, new Color(0x8FE639), 0.75f), Dim2D.build().pos(18, 12).flush()));
 		}
 
 		@Override

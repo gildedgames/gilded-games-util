@@ -47,13 +47,13 @@ public class GroupPoolServer extends GroupPool
 
 		UtilCore.NETWORK.sendToAll(new PacketAddGroup(this, groupInfo));
 
-		this.addMember(creating, group);
+		this.addMember(creating.getGameProfile().getId(), group);
 
 		return group;
 	}
 
 	@Override
-	public void addMember(EntityPlayer player, Group group)
+	public void addMember(UUID player, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
@@ -64,7 +64,7 @@ public class GroupPoolServer extends GroupPool
 		{
 			this.leaveOldGroup(member);
 			UtilCore.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
-			UtilCore.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) player);
+			UtilCore.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getProfile().getEntity());
 			this.addMemberDirectly(group, member);
 		}
 	}
@@ -100,7 +100,7 @@ public class GroupPoolServer extends GroupPool
 	}
 
 	@Override
-	public void invite(EntityPlayer player, EntityPlayer inviter, Group group)
+	public void invite(UUID player, UUID inviter, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
@@ -110,16 +110,16 @@ public class GroupPoolServer extends GroupPool
 		GroupMember inviterG = GroupMember.get(inviter);
 		if (!group.getPermissions().canInvite(group, member, inviterG))
 		{
-			UtilCore.print("Player " + player.getCommandSenderName() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
+			UtilCore.print("Player " + inviterG.getProfile().getUsername() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
 			return;
 		}
 		this.inviteDirectly(group, member, inviterG);
 		UtilCore.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
-		UtilCore.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) player);
+		UtilCore.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getProfile().getEntity());
 	}
 
 	@Override
-	public void removeInvitation(EntityPlayer player, Group group)
+	public void removeInvitation(UUID player, Group group)
 	{
 		if (!this.assertValidGroup(group))
 		{
@@ -128,7 +128,7 @@ public class GroupPoolServer extends GroupPool
 		GroupMember member = GroupMember.get(player);
 		this.removeInvitationDirectly(group, member);
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
-		UtilCore.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) player);
+		UtilCore.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getProfile().getEntity());
 	}
 
 	/**

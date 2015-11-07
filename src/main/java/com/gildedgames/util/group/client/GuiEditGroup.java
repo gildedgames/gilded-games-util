@@ -75,29 +75,29 @@ public class GuiEditGroup extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
-						UUID selected = players.getSelected().uuid;
-						final Group g = GuiEditGroup.this.group;
-						final GroupMember toRemove = GroupCore.locate().getPlayers().get(selected);
-						final GroupMember removing = GuiEditGroup.this.groupMember;
-						if (g.getPermissions().canRemoveMember(g, toRemove, removing))
+						if (players.getSelected() == null)
 						{
-							GroupCore.locate().getDefaultPool().removeMember(selected, g);
-
-							UiCore.locate().open("", new MinecraftGui(new GuiPolling()
-							{
-								@Override
-								protected boolean condition()
-								{
-									return !g.hasMemberData() || !g.getMemberData().contains(toRemove.getProfile().getUUID()) || GroupCore.locate().getDefaultPool().get(g.getName()) == null;
-								}
-
-								@Override
-								protected void onCondition()
-								{
-									ClientProxy.GROUP_TAB.onOpen(removing.getProfile().getEntity());
-								}
-							}));
+							return;
 						}
+						final UUID selected = players.getSelected().uuid;
+						final Group g = GuiEditGroup.this.group;
+						final GroupMember removing = GuiEditGroup.this.groupMember;
+						GroupCore.locate().getDefaultPool().removeMember(selected, g);
+
+						UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+						{
+							@Override
+							protected boolean condition()
+							{
+								return !g.hasMemberData() || !g.getMemberData().contains(selected) || GroupCore.locate().getDefaultPool().get(g.getName()) == null;
+							}
+
+							@Override
+							protected void onCondition()
+							{
+								ClientProxy.GROUP_TAB.onOpen(removing.getProfile().getEntity());
+							}
+						}));
 					}
 				}
 			});
@@ -149,7 +149,7 @@ public class GuiEditGroup extends GuiFrame
 						@Override
 						protected boolean condition()
 						{
-							return !GuiEditGroup.this.group.hasMemberData() || !GuiEditGroup.this.group.getMemberData().contains(Minecraft.getMinecraft().thePlayer.getPersistentID());
+							return !GuiEditGroup.this.group.hasMemberData() || !GuiEditGroup.this.group.getMemberData().contains(Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
 						}
 
 						@Override
@@ -162,18 +162,21 @@ public class GuiEditGroup extends GuiFrame
 			}
 		});
 
-		this.content().set("invite", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilCore.translate("gui.invite"))
+		if (permissions.canInvite(this.group, null, this.groupMember))
 		{
-			@Override
-			public void onMouseInput(MouseInputPool pool, InputProvider input)
+			this.content().set("invite", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilCore.translate("gui.invite"))
 			{
-				super.onMouseInput(pool, input);
-				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+				@Override
+				public void onMouseInput(MouseInputPool pool, InputProvider input)
 				{
-					//UiCore.locate().open("", new MinecraftGui(new GuiInviteToGroup(GuiEditGroup.this.group)));
+					super.onMouseInput(pool, input);
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+					{
+						UiCore.locate().open("", new MinecraftGui(new GuiInvite(GuiEditGroup.this.groupMember, GuiEditGroup.this.group)));
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	private static class PlayersContent implements ContentFactory<PlayerButton>

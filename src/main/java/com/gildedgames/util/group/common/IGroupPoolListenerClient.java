@@ -1,8 +1,8 @@
 package com.gildedgames.util.group.common;
 
-import com.gildedgames.util.group.common.core.Group;
+import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
+import com.gildedgames.util.group.common.core.Group;
 
 public interface IGroupPoolListenerClient<T extends IGroupHook> extends IGroupPoolListener<T>
 {
@@ -24,7 +24,7 @@ public interface IGroupPoolListenerClient<T extends IGroupHook> extends IGroupPo
 	 * @param group
 	 * @param inviter
 	 */
-	void onInvited(Group group, EntityPlayer inviter);
+	void onInvited(Group group, UUID inviter);
 
 	void onInviteRemoved(Group group);
 }

@@ -13,6 +13,8 @@ import java.util.UUID;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
+import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -299,6 +301,17 @@ public class IOUtil
 	public static <T extends IO<IOBridge, IOBridge>> List<T> readIOList(ByteBuf buf)
 	{
 		return (List<T>) IOUtil.getCollection("", ByteBufBridge.factory, new ByteBufBridge(buf));
+	}
+
+	public static Group getGroup(IOBridge bridge, String key)
+	{
+		return GroupCore.locate().getPoolFromID(bridge.getString(key + "p")).get(bridge.getString(key + "g"));
+	}
+
+	public static void setGroup(IOBridge bridge, String key, Group group)
+	{
+		bridge.setString(key + "p", group.getParentPool().getID());
+		bridge.setString(key + "g", group.getName());
 	}
 
 	private static class FilenameFilterExtension implements FilenameFilter

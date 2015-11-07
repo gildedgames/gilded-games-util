@@ -68,13 +68,17 @@ public class GuiNotification extends GuiFrame
 		{
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
 			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Dim2D.flush()));
-			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + this.message.getSender().getCommandSenderName(), Color.YELLOW), Dim2D.flush()));
+
+			String senderName = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(this.message.getSender()).getGameProfile().getName();
+
+			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + senderName, Color.YELLOW), Dim2D.flush()));
 			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));
 
 			int i = 0;
 			for (INotificationResponse response : this.message.getResponses())
 			{
 				buttons.put(Integer.toString(i), new ResponseButton(this.message, response, i));
+				i++;
 			}
 
 			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), UtilCore.translate("gui.back"))
@@ -107,6 +111,7 @@ public class GuiNotification extends GuiFrame
 			super(Dim2D.build().area(175, 20).flush());
 			this.message = message;
 			this.response = response;
+			this.index = index;
 		}
 
 		@Override

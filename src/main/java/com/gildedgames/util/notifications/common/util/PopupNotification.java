@@ -1,9 +1,10 @@
 package com.gildedgames.util.notifications.common.util;
 
+import java.util.UUID;
+
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public class PopupNotification extends AbstractNotification
@@ -15,7 +16,7 @@ public class PopupNotification extends AbstractNotification
 
 	}
 
-	public PopupNotification(String message, EntityPlayer sender, EntityPlayer receiver)
+	public PopupNotification(String message, UUID sender, UUID receiver)
 	{
 		super(sender, receiver);
 		this.message = message;
