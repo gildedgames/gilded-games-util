@@ -1,13 +1,14 @@
 package com.gildedgames.util.core.gui.viewing;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectHolder;
 import com.gildedgames.util.ui.input.InputProvider;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 
 public class MinecraftInputProvider implements InputProvider
 {
@@ -129,6 +130,25 @@ public class MinecraftInputProvider implements InputProvider
 		}
 
 		return this.isHovered(holder.dim());
+	}
+
+	@Override
+	public void setMouseX(float x)
+	{
+		Mouse.setCursorPosition((int) ((x / this.getScreenWidth() * this.mc.displayWidth)), Mouse.getY());
+	}
+
+	@Override
+	public void setMouseY(float y)
+	{
+		Mouse.setCursorPosition(Mouse.getX(), Display.getHeight() - (int) (y / this.getScreenHeight() * this.mc.displayHeight + 1));
+	}
+
+	@Override
+	public void setMouse(float x, float y)
+	{
+		this.setMouseX(x);
+		this.setMouseY(y);
 	}
 
 }

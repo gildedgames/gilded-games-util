@@ -2,7 +2,6 @@ package com.gildedgames.util.ui.input;
 
 import com.gildedgames.util.ui.data.rect.Rect;
 import com.gildedgames.util.ui.data.rect.RectHolder;
-import com.gildedgames.util.ui.util.rect.RectCollection;
 
 public interface InputProvider
 {
@@ -18,6 +17,12 @@ public interface InputProvider
 	float getMouseX();
 	
 	float getMouseY();
+	
+	void setMouseX(float x);
+	
+	void setMouseY(float y);
+	
+	void setMouse(float x, float y);
 	
 	boolean isHovered(Rect dim);
 	

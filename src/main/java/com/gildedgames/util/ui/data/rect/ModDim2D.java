@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
+import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.ui.input.InputProvider;
 
@@ -535,6 +536,24 @@ public class ModDim2D implements Rect
 	public String toString()
 	{
 		return this.modifiedState.toString();
+	}
+
+	@Override
+	public float centerX()
+	{
+		return this.modifiedState.centerX();
+	}
+
+	@Override
+	public float centerY()
+	{
+		return this.modifiedState.centerY();
+	}
+
+	@Override
+	public Pos2D center()
+	{
+		return this.modifiedState.center();
 	}
 
 }

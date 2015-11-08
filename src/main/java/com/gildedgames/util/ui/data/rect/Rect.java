@@ -1,5 +1,6 @@
 package com.gildedgames.util.ui.data.rect;
 
+import com.gildedgames.util.ui.data.Pos2D;
 import com.gildedgames.util.ui.input.InputProvider;
 
 public interface Rect
@@ -18,6 +19,12 @@ public interface Rect
 	float maxX();
 
 	float maxY();
+	
+	float centerX();
+	
+	float centerY();
+	
+	Pos2D center();
 
 	float x();
 
