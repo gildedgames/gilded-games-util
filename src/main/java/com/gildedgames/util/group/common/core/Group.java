@@ -1,5 +1,7 @@
 package com.gildedgames.util.group.common.core;
 
+import java.util.UUID;
+
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -76,6 +78,11 @@ public final class Group implements IO<IOBridge, IOBridge>
 	public IGroupPerms getPermissions()
 	{
 		return this.groupInfo.getPermissions();
+	}
+
+	public UUID getUUID()
+	{
+		return this.groupInfo.getUUID();
 	}
 
 	public GroupInfo getGroupInfo()

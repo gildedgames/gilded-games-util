@@ -3,8 +3,6 @@ package com.gildedgames.util.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.fml.relauncher.Side;
-
 import com.gildedgames.util.group.common.core.GroupPool;
 import com.gildedgames.util.group.common.core.GroupPoolClient;
 import com.gildedgames.util.group.common.core.GroupPoolServer;
@@ -13,6 +11,8 @@ import com.gildedgames.util.group.common.player.GroupMemberFactory;
 import com.gildedgames.util.group.common.util.DefaultSettings;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerHookPool;
+
+import net.minecraftforge.fml.relauncher.Side;
 
 public class GroupServices
 {

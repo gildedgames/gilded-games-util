@@ -60,6 +60,7 @@ public class MinecraftButton extends GuiFrame
 	{
 		super.draw(graphics, input);
 
+		this.button.displayString = this.text;
 		this.button.drawButton(mc, (int) input.getMouseX(), (int) input.getMouseY());
 
 		this.button.xPosition = (int) this.dim().x();

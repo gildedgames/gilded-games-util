@@ -177,6 +177,22 @@ public class GuiEditGroup extends GuiFrame
 				}
 			});
 		}
+
+		if (permissions.canEditGroupInfo(this.group, this.groupMember.getProfile().getUUID()))
+		{
+			this.content().set("edit", new MinecraftButton(Dim2D.build().pos(310, 130).area(75, 20).flush(), UtilCore.translate("gui.edit"))
+			{
+				@Override
+				public void onMouseInput(MouseInputPool pool, InputProvider input)
+				{
+					super.onMouseInput(pool, input);
+					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
+					{
+						UiCore.locate().open("", new MinecraftGui(new GuiEditInfo(GuiEditGroup.this.group)));
+					}
+				}
+			});
+		}
 	}
 
 	private static class PlayersContent implements ContentFactory<PlayerButton>

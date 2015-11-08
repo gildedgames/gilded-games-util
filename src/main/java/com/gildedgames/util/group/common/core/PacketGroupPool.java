@@ -45,7 +45,7 @@ public class PacketGroupPool extends CustomPacket<PacketGroupPool>
 		ByteBufUtils.writeUTF8String(buf, this.pool.getID());
 		ByteBufBridge bridge = new ByteBufBridge(buf);
 		buf.writeInt(this.pool.groups.size());
-		for (Group group : this.pool.groups)
+		for (Group group : this.pool.groups.values())
 		{
 			bridge.setIO("", group.getGroupInfo());
 		}

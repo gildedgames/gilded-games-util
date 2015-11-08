@@ -5,6 +5,7 @@ import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.client.GuiCreateGroup;
 import com.gildedgames.util.group.client.GuiEditGroup;
+import com.gildedgames.util.group.client.GuiEditInfo;
 import com.gildedgames.util.group.client.GuiGroups;
 import com.gildedgames.util.group.client.GuiInvite;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -30,7 +31,7 @@ public class TabGroup extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return UiCore.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class);
+		return UiCore.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class, GuiEditInfo.class);
 	}
 
 	@Override

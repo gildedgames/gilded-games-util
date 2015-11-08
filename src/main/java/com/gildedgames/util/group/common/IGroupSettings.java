@@ -5,4 +5,6 @@ public interface IGroupSettings
 	boolean canPlayerJoinMultipleGroups();
 
 	boolean groupRemovedWhenEmpty();
+
+	boolean duplicateNamesAllowed();
 }

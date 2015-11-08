@@ -25,7 +25,7 @@ public class GroupPoolClient extends GroupPool
 	@Override
 	public Group create(String name, EntityPlayer creating, IGroupPerms perms)
 	{
-		GroupInfo groupInfo = new GroupInfo(name, perms);
+		GroupInfo groupInfo = new GroupInfo(UUID.randomUUID(), name, perms);
 		UtilCore.NETWORK.sendToServer(new PacketAddGroup(this, groupInfo));
 		return null;
 	}
@@ -93,6 +93,16 @@ public class GroupPoolClient extends GroupPool
 		}
 		GroupMember member = GroupMember.get(player);
 		UtilCore.NETWORK.sendToServer(new PacketRemoveInvite(this, group, member));
+	}
+
+	@Override
+	public void changeGroupInfo(UUID changing, Group group, GroupInfo newInfo)
+	{
+		if (!this.assertValidGroup(group))
+		{
+			return;
+		}
+		UtilCore.NETWORK.sendToServer(new PacketChangeGroupInfo(changing, group, newInfo));
 	}
 
 	@Override

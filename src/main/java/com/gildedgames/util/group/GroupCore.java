@@ -78,7 +78,7 @@ public class GroupCore implements ICore
 		UtilCore.NETWORK.registerPacket(PacketAddGroup.class);
 		UtilCore.NETWORK.registerPacket(PacketAddInvite.class);
 		UtilCore.NETWORK.registerPacket(PacketAddMember.class);
-		UtilCore.NETWORK.registerPacket(PacketChangeGroupInfo.class, Side.CLIENT);
+		UtilCore.NETWORK.registerPacket(PacketChangeGroupInfo.class);
 		UtilCore.NETWORK.registerPacket(PacketChangeOwner.class, Side.SERVER);
 		UtilCore.NETWORK.registerPacket(PacketInvite.class, Side.CLIENT);
 		UtilCore.NETWORK.registerPacket(PacketJoin.class, Side.CLIENT);
