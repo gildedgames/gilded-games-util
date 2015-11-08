@@ -3,6 +3,7 @@ package com.gildedgames.util.group.common.permissions;
 import java.util.Random;
 import java.util.UUID;
 
+import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -156,11 +157,11 @@ public class GroupPermsDefault implements IGroupPerms
 	}
 
 	@Override
-	public void onMemberRemoved(Group group, GroupMember member)
+	public void onMemberRemoved(Group group, UUID member)
 	{
-		if (member.getProfile().getUUID().equals(this.owner) && group.getMemberData().size() > 0)
+		if (member.equals(this.owner) && group.getMemberData().size() > 0)
 		{
-			Random random = member.getProfile().getEntity().getRNG();
+			Random random = new Random();
 			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
 			this.ownerUsername = GroupCore.locate().getPlayers().get(this.owner).getProfile().getUsername();
 		}
@@ -191,9 +192,9 @@ public class GroupPermsDefault implements IGroupPerms
 	}
 
 	@Override
-	public boolean canJoin(Group group, GroupMember member)
+	public boolean canJoin(Group group, UUID member)
 	{
-		return !this.type.requiresInvite() || group.hasMemberData() && group.getMemberData().contains(member.getProfile().getUUID());
+		return !this.type.requiresInvite() || group.hasMemberData() && group.getMemberData().contains(member);
 	}
 
 	@Override
@@ -230,4 +231,20 @@ public class GroupPermsDefault implements IGroupPerms
 		return this.ownerUsername;
 	}
 
+	@Override
+	public boolean canEditGroupInfo(Group group, UUID editing)
+	{
+		return editing.equals(this.owner);
+	}
+
+	@Override
+	public boolean equals(Object arg0)
+	{
+		GroupPermsDefault perms = ObjectFilter.cast(arg0, GroupPermsDefault.class);
+		if (perms != null)
+		{
+			return perms.type == this.type && perms.owner.equals(this.owner);
+		}
+		return false;
+	}
 }

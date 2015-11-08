@@ -1,7 +1,10 @@
 package com.gildedgames.util.group.common.core;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.gildedgames.util.core.UtilCore;
@@ -21,7 +24,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	protected final String id;
 
-	protected List<Group> groups = new ArrayList<Group>();
+	protected Map<UUID, Group> groups = new HashMap<UUID, Group>();
 
 	protected List<IGroupPoolListener<?>> listeners = new ArrayList<IGroupPoolListener<?>>();
 
@@ -40,14 +43,9 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		return this.id;
 	}
 
-	public List<Group> getGroups()
+	public Collection<Group> getGroups()
 	{
-		return this.groups;
-	}
-
-	public void setGroups(List<Group> groups)
-	{
-		this.groups = groups;
+		return this.groups.values();
 	}
 
 	public void clear()
@@ -72,7 +70,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void addGroupDirectly(Group group)
 	{
 		UtilCore.debugPrint("Adding group " + group.getName());
-		this.groups.add(group);
+		this.groups.put(group.getUUID(), group);
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
 			listener.onGroupAdded(group);
@@ -96,10 +94,14 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		}
 	}
 
+	/**
+	 * @param group Group to change info for
+	 * @param groupInfo New Groupinfo instance
+	 */
 	protected void changeGroupInfoDirectly(Group group, GroupInfo groupInfo)
 	{
 		UtilCore.debugPrint("Changing info of group " + group.getName());
-		GroupInfo infoOld = new GroupInfo(group.getName(), group.getPermissions());
+		GroupInfo infoOld = group.getGroupInfo();
 		group.setGroupInfo(groupInfo);
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
@@ -159,9 +161,11 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	public abstract void remove(Group group);
 
+	public abstract void changeGroupInfo(UUID changing, Group group, GroupInfo newInfo);
+
 	protected boolean assertValidGroup(Group group)
 	{
-		if (!this.groups.contains(group))
+		if (!this.groups.containsKey(group.getUUID()))
 		{
 			UtilCore.print("Trying to manage group that is not in this pool: " + group.getName());
 			return false;
@@ -181,7 +185,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	public Group get(String name)
 	{
-		for (Group group : this.groups)
+		for (Group group : this.groups.values())
 		{
 			if (group.getName().equalsIgnoreCase(name))
 			{
@@ -192,16 +196,25 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 		return null;
 	}
 
+	public Group get(UUID uuid)
+	{
+		return this.groups.get(uuid);
+	}
+
 	@Override
 	public void read(IOBridge input)
 	{
-		this.groups = IOUtil.getIOList("groups", input);
+		List<Group> groups = IOUtil.getIOList("groups", input);
+		for (Group group : groups)
+		{
+			this.groups.put(group.getUUID(), group);
+		}
 	}
 
 	@Override
 	public void write(IOBridge output)
 	{
-		IOUtil.setIOList("groups", this.groups, output);
+		IOUtil.setIOList("groups", new ArrayList<Group>(this.groups.values()), output);
 	}
 
 }

@@ -17,4 +17,10 @@ public class DefaultSettings implements IGroupSettings
 		return true;
 	}
 
+	@Override
+	public boolean duplicateNamesAllowed()
+	{
+		return false;
+	}
+
 }

@@ -1,11 +1,14 @@
 package com.gildedgames.util.group.common.core;
 
+import java.util.UUID;
+
 import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.group.GroupCore;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupInfo>
+public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupInfo>
 {
 	private GroupInfo groupInfo;
 
@@ -14,9 +17,9 @@ public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupIn
 
 	}
 
-	public PacketChangeGroupInfo(GroupPool pool, Group group, GroupInfo groupInfo)
+	public PacketChangeGroupInfo(UUID uuid, Group group, GroupInfo groupInfo)
 	{
-		super(pool, group);
+		super(group.getParentPool(), group, GroupCore.locate().getPlayers().get(uuid));
 		this.groupInfo = groupInfo;
 	}
 
@@ -43,7 +46,7 @@ public class PacketChangeGroupInfo extends PacketGroupAction<PacketChangeGroupIn
 	@Override
 	public void handleServerSide(PacketChangeGroupInfo message, EntityPlayer player)
 	{
-		throw new IllegalStateException();
+		message.pool.changeGroupInfo(message.member.getProfile().getUUID(), message.group, message.groupInfo);
 	}
 
 }

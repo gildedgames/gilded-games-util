@@ -18,7 +18,7 @@ public interface IGroupPerms extends IO<IOBridge, IOBridge>
 
 	boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing);
 
-	boolean canJoin(Group group, GroupMember member);
+	boolean canJoin(Group group, UUID member);
 
 	boolean isVisible(Group group);
 
@@ -26,7 +26,9 @@ public interface IGroupPerms extends IO<IOBridge, IOBridge>
 
 	boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover);
 
-	void onMemberRemoved(Group group, GroupMember removed);
+	void onMemberRemoved(Group group, UUID removed);
+
+	boolean canEditGroupInfo(Group group, UUID editing);
 
 	UUID owner();
 

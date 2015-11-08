@@ -305,13 +305,13 @@ public class IOUtil
 
 	public static Group getGroup(IOBridge bridge, String key)
 	{
-		return GroupCore.locate().getPoolFromID(bridge.getString(key + "p")).get(bridge.getString(key + "g"));
+		return GroupCore.locate().getPoolFromID(bridge.getString(key + "p")).get(getUUID(bridge, key + "u"));
 	}
 
 	public static void setGroup(IOBridge bridge, String key, Group group)
 	{
 		bridge.setString(key + "p", group.getParentPool().getID());
-		bridge.setString(key + "g", group.getName());
+		setUUID(group.getUUID(), bridge, key + "u");
 	}
 
 	private static class FilenameFilterExtension implements FilenameFilter

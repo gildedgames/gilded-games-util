@@ -25,18 +25,21 @@ public class GroupPoolServer extends GroupPool
 	@Override
 	public Group create(String name, EntityPlayer creating, IGroupPerms perms)
 	{
-		for (Group group : this.groups)
+		if (!this.settings.duplicateNamesAllowed())
 		{
-			if (group.getName().equals(name))
+			for (Group group : this.groups.values())
 			{
-				UtilCore.print("Tried to add group " + name + " but it already existed");
-				return null;
+				if (group.getName().equals(name))
+				{
+					UtilCore.print("Tried to add group " + name + " but it already existed");
+					return null;
+				}
 			}
 		}
 
 		Group group = new Group(this);
 
-		GroupInfo groupInfo = new GroupInfo(name, perms);
+		GroupInfo groupInfo = new GroupInfo(UUID.randomUUID(), name, perms);
 		group.setGroupInfo(groupInfo);
 
 		MemberData memberData = new MemberData();
@@ -59,9 +62,9 @@ public class GroupPoolServer extends GroupPool
 		{
 			return;
 		}
-		GroupMember member = GroupMember.get(player);
-		if (group.getPermissions().canJoin(group, member))//Maybe put this check in PacketAddMember/
+		if (group.getPermissions().canJoin(group, player))//Maybe put this check in PacketAddMember/
 		{
+			GroupMember member = GroupMember.get(player);
 			this.leaveOldGroup(member);
 			UtilCore.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
 			UtilCore.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getProfile().getEntity());
@@ -80,9 +83,9 @@ public class GroupPoolServer extends GroupPool
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
 		this.removeMemberDirectly(group, member);
 
-		group.getPermissions().onMemberRemoved(group, member);
+		group.getPermissions().onMemberRemoved(group, player);
 
-		if (this.settings.groupRemovedWhenEmpty() && group.getMemberData().size() == 0 && this.groups.contains(group))
+		if (this.settings.groupRemovedWhenEmpty() && group.getMemberData().size() == 0 && this.groups.containsKey(group.getUUID()))
 		{
 			this.remove(group);
 		}
@@ -129,6 +132,22 @@ public class GroupPoolServer extends GroupPool
 		this.removeInvitationDirectly(group, member);
 		UtilCore.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
 		UtilCore.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getProfile().getEntity());
+	}
+
+	@Override
+	public void changeGroupInfo(UUID changing, Group group, GroupInfo newInfo)
+	{
+		if (!this.assertValidGroup(group))
+		{
+			return;
+		}
+		if (!group.getPermissions().canEditGroupInfo(group, changing))
+		{
+			return;
+		}
+		GroupInfo finalInfo = new GroupInfo(group.getUUID(), newInfo.getName(), newInfo.getPermissions());
+		this.changeGroupInfoDirectly(group, finalInfo);
+		UtilCore.NETWORK.sendToAll(new PacketChangeGroupInfo(changing, group, finalInfo));
 	}
 
 	/**

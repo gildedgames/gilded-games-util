@@ -117,7 +117,7 @@ public class GuiGroups extends GuiFrame
 			LinkedHashMap<String, GroupButton> buttons = new LinkedHashMap<String, GroupButton>();
 			for (Group group : GroupCore.locate().getDefaultPool().getGroups())
 			{
-				if (group.getPermissions().canJoin(group, this.member))
+				if (group.getPermissions().isVisible(group))
 				{
 					buttons.put(group.getName(), new GroupButton(group));
 				}
