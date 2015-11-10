@@ -2,6 +2,7 @@ package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.MathHelper;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -135,13 +136,13 @@ public class MinecraftInputProvider implements InputProvider
 	@Override
 	public void setMouseX(float x)
 	{
-		Mouse.setCursorPosition((int) ((x / this.getScreenWidth() * this.mc.displayWidth)), Mouse.getY());
+		Mouse.setCursorPosition(MathHelper.floor_float((x / this.getScreenWidth() * this.mc.displayWidth)), Mouse.getY());
 	}
 
 	@Override
 	public void setMouseY(float y)
 	{
-		Mouse.setCursorPosition(Mouse.getX(), Display.getHeight() - (int) (y / this.getScreenHeight() * this.mc.displayHeight + 1));
+		Mouse.setCursorPosition(Mouse.getX(), Display.getHeight() - MathHelper.floor_float((y / this.getScreenHeight() * this.mc.displayHeight + 1)));
 	}
 
 	@Override
