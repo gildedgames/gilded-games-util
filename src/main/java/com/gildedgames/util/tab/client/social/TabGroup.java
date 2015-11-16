@@ -40,7 +40,7 @@ public class TabGroup extends TabGeneric
 		GroupMember member = GroupCore.locate().getPlayers().get(player);
 		if (member.groupsInFor(GroupCore.locate().getDefaultPool()).isEmpty())
 		{
-			UiCore.locate().open("", new MinecraftGui(new GuiGroups(player)));
+			UiCore.locate().open("", new MinecraftGui(new GuiGroups()));
 		}
 		else
 		{

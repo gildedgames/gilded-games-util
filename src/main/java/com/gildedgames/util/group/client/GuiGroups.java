@@ -11,7 +11,6 @@ import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
-import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
@@ -37,11 +36,8 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class GuiGroups extends GuiFrame
 {
-	private GroupMember member;
-
-	public GuiGroups(EntityPlayer player)
+	public GuiGroups()
 	{
-		this.member = GroupCore.locate().getPlayers().get(player);
 	}
 
 	@Override
@@ -52,7 +48,7 @@ public class GuiGroups extends GuiFrame
 		GuiPositioner positioner = new GuiPositionerList(0);
 
 		//buttons.put("title", new TextElement(GuiFactory.text(UtilCore.translate("gui.grouplist"), Color.white, 2.3f), Pos2D.flush(), false));
-		final RadioButtonSet<GroupButton> groups = new RadioButtonSet<GroupButton>(Pos2D.flush(), 100, positioner, new GroupsButtonContent(this.member));
+		final RadioButtonSet<GroupButton> groups = new RadioButtonSet<GroupButton>(Pos2D.flush(), 100, positioner, new GroupsButtonContent());
 
 		ScrollableGui scrollGroups = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), groups);
 
@@ -104,13 +100,6 @@ public class GuiGroups extends GuiFrame
 
 	private static class GroupsButtonContent implements ContentFactory<GroupButton>
 	{
-		private GroupMember member;
-
-		public GroupsButtonContent(GroupMember member)
-		{
-			this.member = member;
-		}
-
 		@Override
 		public LinkedHashMap<String, GroupButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
