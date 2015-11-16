@@ -126,7 +126,7 @@ public class GuiEditGroup extends GuiFrame
 							@Override
 							protected void onCondition()
 							{
-								UiCore.locate().open("", new MinecraftGui(new GuiGroups(Minecraft.getMinecraft().thePlayer)));
+								UiCore.locate().open("", new MinecraftGui(new GuiGroups()));
 							}
 						}));
 					}
@@ -155,7 +155,7 @@ public class GuiEditGroup extends GuiFrame
 						@Override
 						protected void onCondition()
 						{
-							UiCore.locate().open("", new MinecraftGui(new GuiGroups(Minecraft.getMinecraft().thePlayer)));
+							UiCore.locate().open("", new MinecraftGui(new GuiGroups()));
 						}
 					}));
 				}
