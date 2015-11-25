@@ -258,10 +258,15 @@ public class IOUtil
 		tag.setLong(key + "least", uuid.getLeastSignificantBits());
 	}
 
-	public static void setUUID(UUID uuid, IOBridge tag, String key)
+	public static void setUUID(UUID uuid, IOBridge bridge, String key)
 	{
-		tag.setLong(key + "most", uuid.getMostSignificantBits());
-		tag.setLong(key + "least", uuid.getLeastSignificantBits());
+		bridge.setLong(key + "most", uuid.getMostSignificantBits());
+		bridge.setLong(key + "least", uuid.getLeastSignificantBits());
+	}
+	
+	public static void setUUID(IPlayerProfile profile, IOBridge bridge, String name)
+	{
+		setUUID(profile.getUUID(), bridge, name);
 	}
 
 	public static UUID getUUID(NBTTagCompound tag, String name)
