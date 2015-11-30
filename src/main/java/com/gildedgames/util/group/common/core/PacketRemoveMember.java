@@ -29,7 +29,7 @@ public class PacketRemoveMember extends PacketMemberAction<PacketRemoveMember>
 	{
 		if (!message.group.getPermissions().canRemoveMember(message.group, message.member, GroupMember.get(player)))
 		{
-			UtilCore.print("Player " + player.getCommandSenderName() + " tried to remove " + message.member.getProfile().getUsername() + " but did not have the permissions.");
+			UtilCore.print("Player " + player.getName() + " tried to remove " + message.member.getProfile().getUsername() + " but did not have the permissions.");
 			return;
 		}
 		message.pool.removeMember(message.member.getProfile().getUUID(), message.group);

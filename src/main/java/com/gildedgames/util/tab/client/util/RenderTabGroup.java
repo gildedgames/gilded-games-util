@@ -64,7 +64,7 @@ public class RenderTabGroup extends Gui
 		}
 		
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(mc);
 
 		int xPosition = (scaledresolution.getScaledWidth() - 28 * tabGroup.getEnabledTabs().size()) / 2;
 		int yPosition = 13;
@@ -127,7 +127,7 @@ public class RenderTabGroup extends Gui
 	public ITab getHoveredTab(ITabGroup tabGroup)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(mc);
 
 		int x = Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth;
 		int y = scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1;

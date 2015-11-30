@@ -28,7 +28,7 @@ public class PacketRemoveGroup extends PacketGroupAction<PacketRemoveGroup>
 	{
 		if (!message.group.getPermissions().canRemoveGroup(message.group, GroupMember.get(player)))
 		{
-			UtilCore.print("Player " + player.getCommandSenderName() + " tried to remove " + message.group.getName() + " but did not have the permissions.");
+			UtilCore.print("Player " + player.getName() + " tried to remove " + message.group.getName() + " but did not have the permissions.");
 			return;
 		}
 		message.pool.remove(message.group);

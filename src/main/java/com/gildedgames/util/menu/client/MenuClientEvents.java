@@ -174,7 +174,7 @@ public class MenuClientEvents
 			{
 				if (this.mc.currentScreen != null && this.mc.currentScreen.getClass() == menu.getMenuClass())
 				{
-					final ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+					final ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 
 					int scaledWidth = scaledresolution.getScaledWidth();
 					int scaledHeight = scaledresolution.getScaledHeight();
@@ -230,7 +230,7 @@ public class MenuClientEvents
 
 			if (menu != null && this.mc.currentScreen != null && this.mc.currentScreen.getClass() == menu.getMenuClass())
 			{
-				final ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+				final ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 
 				int scaledWidth = scaledresolution.getScaledWidth();
 				int scaledHeight = scaledresolution.getScaledHeight();

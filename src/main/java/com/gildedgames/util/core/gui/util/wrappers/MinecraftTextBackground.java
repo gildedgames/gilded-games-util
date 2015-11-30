@@ -3,6 +3,8 @@ package com.gildedgames.util.core.gui.util.wrappers;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import org.lwjgl.opengl.GL11;
 
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -63,13 +65,11 @@ public class MinecraftTextBackground extends GuiFrame
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		final WorldRenderer tessellator = Tessellator.getInstance().getWorldRenderer();
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(f1, f2, f3, f);
-		tessellator.addVertex(maxX, minY, zLevel);
-		tessellator.addVertex(minX, minY, zLevel);
-		tessellator.setColorRGBA_F(f5, f6, f7, f4);
-		tessellator.addVertex(minX, maxY, zLevel);
-		tessellator.addVertex(maxX, maxY, zLevel);
+		tessellator.begin(7, DefaultVertexFormats.POSITION_COLOR);
+		tessellator.pos(maxX, minY, zLevel).color(f1, f2, f3, f).endVertex();
+		tessellator.pos(minX, minY, zLevel).color(f1, f2, f3, f).endVertex();
+		tessellator.pos(minX, maxY, zLevel).color(f5, f6, f7, f4).endVertex();
+		tessellator.pos(maxX, maxY, zLevel).color(f5, f6, f7, f4).endVertex();
 		Tessellator.getInstance().draw();
 		GL11.glShadeModel(GL11.GL_FLAT);
 		//GL11.glDisable(GL11.GL_BLEND);
