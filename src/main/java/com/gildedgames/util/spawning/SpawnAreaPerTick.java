@@ -107,7 +107,7 @@ public class SpawnAreaPerTick extends SpawnArea
 				return false;
 			}
 		};
-		final List<EntityLivingBase> listOfEntitiesInArea = world.getEntitiesWithinAABB(Entity.class, bb, entitySelector);
+		final List<EntityLivingBase> listOfEntitiesInArea = world.getEntitiesWithinAABB(EntityLivingBase.class, bb, entitySelector);
 
 		final int entitiesInArea = listOfEntitiesInArea.size();
 

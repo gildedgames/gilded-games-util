@@ -130,11 +130,10 @@ public class GuiInvite extends GuiFrame
 		{
 			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<String, PlayerButton>();
 
-			for (Object o : Minecraft.getMinecraft().thePlayer.sendQueue.func_175106_d())
+			for (NetworkPlayerInfo info : Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap())
 			{
-				NetworkPlayerInfo info = (NetworkPlayerInfo) o;
-
 				GameProfile profile = info.getGameProfile();
+
 				if (!profile.getId().equals(this.player.getGameProfile().getId()) && !this.group.getMemberData().contains(profile.getId()))
 				{
 					buttons.put(profile.getName(), new PlayerButton(profile.getId(), profile.getName(), this.group.getMemberData().isInvited(profile.getId())));

@@ -40,7 +40,7 @@ public class MinecraftInputProvider implements InputProvider
 	@Override
 	public void refreshResolution()
 	{
-		this.resolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+		this.resolution = new ScaledResolution(this.mc);
 	}
 
 	@Override

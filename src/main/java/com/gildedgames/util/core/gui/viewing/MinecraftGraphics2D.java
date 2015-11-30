@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -131,13 +132,11 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.shadeModel(7425);
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.startDrawingQuads();
-		worldrenderer.setColorRGBA_F(f1, f2, f3, f);
-		worldrenderer.addVertex(right, top, this.zLevel);
-		worldrenderer.addVertex(left, top, this.zLevel);
-		worldrenderer.setColorRGBA_F(f5, f6, f7, f4);
-		worldrenderer.addVertex(left, bottom, this.zLevel);
-		worldrenderer.addVertex(right, bottom, this.zLevel);
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+		worldrenderer.pos(right, top, this.zLevel).color(f1, f2, f3, f).endVertex();
+		worldrenderer.pos(left, top, this.zLevel).color(f1, f2, f3, f).endVertex();
+		worldrenderer.pos(left, bottom, this.zLevel).color(f5, f6, f7, f4).endVertex();
+		worldrenderer.pos(right, bottom, this.zLevel).color(f5, f6, f7, f4).endVertex();
 		tessellator.draw();
 		GlStateManager.shadeModel(7424);
 		GlStateManager.disableBlend();
@@ -151,11 +150,11 @@ public class MinecraftGraphics2D implements Graphics2D
 		double f5 = 1.0D / textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertexWithUV(x, y + height, 0.0D, u * f4, (v + (float) height) * f5);
-		worldrenderer.addVertexWithUV(x + width, y + height, 0.0D, (u + (float) width) * f4, (v + (float) height) * f5);
-		worldrenderer.addVertexWithUV(x + width, y, 0.0D, (u + (float) width) * f4, v * f5);
-		worldrenderer.addVertexWithUV(x, y, 0.0D, u * f4, v * f5);
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		worldrenderer.pos(x, y + height, 0.0D).tex(u * f4, (v + (float) height) * f5).endVertex();
+		worldrenderer.pos(x + width, y + height, 0.0D).tex((u + (float) width) * f4, (v + (float) height) * f5).endVertex();
+		worldrenderer.pos(x + width, y, 0.0D).tex((u + (float) width) * f4, v * f5).endVertex();
+		worldrenderer.pos(x, y, 0.0D).tex(u * f4, v * f5).endVertex();
 		tessellator.draw();
 	}
 
@@ -187,11 +186,11 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.disableTexture2D();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.color(f, f1, f2, f3);
-		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertex(left, bottom, 0.0D);
-		worldrenderer.addVertex(right, bottom, 0.0D);
-		worldrenderer.addVertex(right, top, 0.0D);
-		worldrenderer.addVertex(left, top, 0.0D);
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+		worldrenderer.pos(left, bottom, 0.0D);
+		worldrenderer.pos(right, bottom, 0.0D);
+		worldrenderer.pos(right, top, 0.0D);
+		worldrenderer.pos(left, top, 0.0D);
 		tessellator.draw();
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();

@@ -1,12 +1,6 @@
 package com.gildedgames.util.core.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import com.gildedgames.util.core.UtilCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,9 +11,15 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockPos.MutableBlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * This class contains simple static methods that are useful in Minecraft
@@ -94,12 +94,12 @@ public class GGHelper
 		tag.setTag(key, newTag);
 	}
 
-	public static Iterable<BlockPos> getInBox(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
+	public static Iterable<MutableBlockPos> getInBox(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
 	{
 		return BlockPos.getAllInBoxMutable(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
 	}
 
-	public static Iterable<BlockPos> getInBox(AxisAlignedBB boundingBox)
+	public static Iterable<MutableBlockPos> getInBox(AxisAlignedBB boundingBox)
 	{
 		return getInBox((int) boundingBox.minX, (int) boundingBox.minY, (int) boundingBox.minZ, (int) boundingBox.maxX, (int) boundingBox.maxY, (int) boundingBox.maxZ);
 	}

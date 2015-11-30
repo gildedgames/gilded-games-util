@@ -32,7 +32,7 @@ public class PlayerProfile implements IPlayerProfile
 
 		this.setUUID(player.getUniqueID());
 
-		this.username = player.getCommandSenderName();
+		this.username = player.getName();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class PlayerProfile implements IPlayerProfile
 
 			if (this.username == null)
 			{
-				this.username = this.player.getCommandSenderName();
+				this.username = this.player.getName();
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package com.gildedgames.util.notifications;
 
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -97,11 +98,11 @@ public class NotificationServicesClient extends NotificationServices
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.getInstance();
 		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-		worldrenderer.startDrawingQuads();
-		worldrenderer.addVertexWithUV(x + 0, y + height, 0, (textureX + 0) * f, (textureY + height) * f1);
-		worldrenderer.addVertexWithUV(x + width, y + height, 0, (textureX + width) * f, (textureY + height) * f1);
-		worldrenderer.addVertexWithUV(x + width, y + 0, 0, (textureX + width) * f, (textureY + 0) * f1);
-		worldrenderer.addVertexWithUV(x + 0, y + 0, 0, (textureX + 0) * f, (textureY + 0) * f1);
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		worldrenderer.pos(x, y + height, 0).tex((textureX) * f, (textureY + height) * f1).endVertex();
+		worldrenderer.pos(x + width, y + height, 0).tex((textureX + width) * f, (textureY + height) * f1).endVertex();
+		worldrenderer.pos(x + width, y, 0).tex((textureX + width) * f, (textureY) * f1).endVertex();
+		worldrenderer.pos(x, y, 0).tex((textureX) * f, (textureY) * f1).endVertex();
 		tessellator.draw();
 	}
 

@@ -1,44 +1,30 @@
 buildscript {
     repositories {
         jcenter()
-
         maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
         }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
 
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
+apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.8-r1"
+ext.config = loadConfig(file('build.properties'))
+
+version = config.mod_version
 group = "com.gildedgames.util"
 archivesBaseName = "GildedGamesUtil"
 
 minecraft {
-    version = "1.8-11.14.3.1521"
+    version = config.forge_version
+    mappings = config.forge_mappings
+
     runDir = "eclipse"
-
-    mappings = "stable_16"
 }
-
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from (sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from (sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
 
 configurations {
     shade
@@ -58,6 +44,18 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
+processResources {
+    from (sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    from (sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
 jar {
     manifest {
         attributes 'FMLAT': 'forge_at.cfg', 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin', 'FMLCorePluginContainsFMLMod': 'true'
@@ -68,4 +66,19 @@ jar {
             exclude 'META-INF', 'META-INF/**'
         }
     }
+}
+
+idea {
+	module {
+		inheritOutputDirs = true
+	}
+}
+
+def loadConfig(File config) {
+	config.withReader {
+		def properties = new Properties()
+		properties.load(it)
+
+		return (new ConfigSlurper().parse(properties))
+	}
 }
