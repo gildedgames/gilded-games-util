@@ -44,7 +44,7 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 
 		this.positioner = positioner;
 
-		this.contentProviders.addAll(Arrays.<ContentFactory<T>> asList(contentProviders));
+		this.contentProviders.addAll(Arrays.asList(contentProviders));
 	}
 
 	public void setPositioner(GuiPositioner positioner)

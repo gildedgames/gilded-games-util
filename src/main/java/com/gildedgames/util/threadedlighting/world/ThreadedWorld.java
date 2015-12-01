@@ -154,7 +154,7 @@ public class ThreadedWorld extends WorldClient implements Runnable
 			{
 				try
 				{
-					Thread.currentThread().sleep(10 - time);
+					Thread.sleep(10 - time);
 				}
 				catch (InterruptedException e)
 				{

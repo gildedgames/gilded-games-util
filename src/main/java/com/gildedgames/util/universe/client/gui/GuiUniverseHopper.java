@@ -164,7 +164,7 @@ public class GuiUniverseHopper extends GuiScreen
 	{
 		if (keyCode == ClientProxy.keyBindHopUniverse.getKeyCode() || keyCode == this.mc.gameSettings.keyBindInventory.getKeyCode())
 		{
-			this.mc.displayGuiScreen((GuiScreen)null);
+			this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen == null)
             {

@@ -52,7 +52,7 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	{
 		if (group.getPermissions() instanceof GroupPermsDefault)
 		{
-			return GroupCore.locate().getPlayers().get(((GroupPermsDefault) group.getPermissions()).owner()).getProfile().getUUID();
+			return GroupCore.locate().getPlayers().get(group.getPermissions().owner()).getProfile().getUUID();
 		}
 		return null;
 	}

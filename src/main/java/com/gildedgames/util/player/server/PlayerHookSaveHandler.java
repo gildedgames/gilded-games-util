@@ -138,7 +138,7 @@ public class PlayerHookSaveHandler
 
 		for (int i = 0; i < configManager.playerEntityList.size(); ++i)
 		{
-			EntityPlayerMP player = (EntityPlayerMP) configManager.playerEntityList.get(i);
+			EntityPlayerMP player = configManager.playerEntityList.get(i);
 
 			this.writePlayerData(player.getUniqueID(), PlayerCore.locate().getPools());
 		}

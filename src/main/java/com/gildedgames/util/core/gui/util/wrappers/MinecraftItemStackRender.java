@@ -125,33 +125,29 @@ public class MinecraftItemStackRender extends GuiFrame
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
-                crashreportcategory.addCrashSectionCallable("Item Type", new Callable()
+                crashreportcategory.addCrashSectionCallable("Item Type", new Callable<String>()
                 {
-                    private static final String __OBFID = "CL_00001004";
                     public String call()
                     {
                         return String.valueOf(stack.getItem());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item Aux", new Callable()
+                crashreportcategory.addCrashSectionCallable("Item Aux", new Callable<String>()
                 {
-                    private static final String __OBFID = "CL_00001005";
                     public String call()
                     {
                         return String.valueOf(stack.getMetadata());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item NBT", new Callable()
+                crashreportcategory.addCrashSectionCallable("Item NBT", new Callable<String>()
                 {
-                    private static final String __OBFID = "CL_00001006";
                     public String call()
                     {
                         return String.valueOf(stack.getTagCompound());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item Foil", new Callable()
+                crashreportcategory.addCrashSectionCallable("Item Foil", new Callable<String>()
                 {
-                    private static final String __OBFID = "CL_00001007";
                     public String call()
                     {
                         return String.valueOf(stack.hasEffect());

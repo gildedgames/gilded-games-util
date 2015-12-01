@@ -314,7 +314,7 @@ public class UiServices
 		}
 		else
 		{
-			this.saveLocation = new File(UtilCore.instance.getWorldDirectory(), "mod-config\\ui\\");
+			this.saveLocation = new File(UtilCore.getWorldDirectory(), "mod-config\\ui\\");
 		}
 	}
 

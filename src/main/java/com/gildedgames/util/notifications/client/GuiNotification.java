@@ -45,9 +45,9 @@ public class GuiNotification extends GuiFrame
 	{
 		super.initContent(input);
 		GuiPositioner positioner = new GuiPositionerList(0);
-		ContentFactory content = new NotificationContent(this.message);
+		ContentFactory<Ui> content = new NotificationContent(this.message);
 
-		GuiCollection notifications = new GuiCollection(Pos2D.flush(), 100, positioner, content);
+		GuiCollection<Ui> notifications = new GuiCollection<Ui>(Pos2D.flush(), 100, positioner, content);
 
 		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), notifications);
 

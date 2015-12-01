@@ -75,29 +75,13 @@ public class IORegistryDefault implements IORegistry
 
 			return instance;
 		}
-		catch (final InstantiationException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IllegalAccessException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final IllegalArgumentException e)
-		{
-			e.printStackTrace();
-		}
-		catch (final InvocationTargetException e)
+		catch (final InstantiationException | IllegalAccessException | InvocationTargetException | IllegalArgumentException | SecurityException e)
 		{
 			e.printStackTrace();
 		}
 		catch (final NoSuchMethodException e)
 		{
 			throw new ClassMissingInitException(registeredClass);
-		}
-		catch (final SecurityException e)
-		{
-			e.printStackTrace();
 		}
 
 		return instance;

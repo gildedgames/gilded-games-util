@@ -23,7 +23,7 @@ public abstract class MouseEvent extends GuiEvent
 	{
 		super();
 		
-		this.eventList = Arrays.<MouseInput>asList(events);
+		this.eventList = Arrays.asList(events);
 	}
 	
 	public MouseEvent(List<MouseInput> events)

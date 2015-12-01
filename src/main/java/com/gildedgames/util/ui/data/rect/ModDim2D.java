@@ -2,6 +2,7 @@ package com.gildedgames.util.ui.data.rect;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -271,10 +272,7 @@ public class ModDim2D implements Rect
 		}
 
 		List<ModifierType> list = new ArrayList<ModifierType>();
-		for (ModifierType type : types)
-		{
-			list.add(type);
-		}
+		Collections.addAll(list, types);
 
 		final List<ModifierType> filteredTypes = this.filterModifierTypes(list);
 		this.modifiers = ObjectFilter.getTypesFrom(this.modifiers, new FilterCondition<RectModifier>(this.modifiers)
@@ -367,10 +365,7 @@ public class ModDim2D implements Rect
 	{
 		List<ModifierType> list = new ArrayList<ModifierType>();
 		list.add(manda);
-		for (ModifierType type : types)
-		{
-			list.add(type);
-		}
+		Collections.addAll(list, types);
 		return list;
 	}
 
