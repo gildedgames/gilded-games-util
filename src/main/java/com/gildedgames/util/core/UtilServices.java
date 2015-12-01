@@ -82,7 +82,7 @@ public class UtilServices
 	}
 
 	@SuppressWarnings("resource")
-	public InputStream getStreamFromAsset(AssetLocation asset) throws ZipException, IOException
+	public InputStream getStreamFromAsset(AssetLocation asset) throws IOException
 	{
 		if (asset.getDomain().equals("minecraft"))
 		{
@@ -122,10 +122,6 @@ public class UtilServices
 		try
 		{
 			return ImageIO.read(UtilCore.locate().getStreamFromAsset(asset));
-		}
-		catch (ZipException e)
-		{
-			e.printStackTrace();
 		}
 		catch (IOException e)
 		{

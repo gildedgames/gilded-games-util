@@ -9,7 +9,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 
 public class ChunkMap<T>
 {
-	private LongHashMap map = new LongHashMap();
+	private LongHashMap<T> map = new LongHashMap<T>();
 
 	private List<T> values = new ArrayList<T>();
 
@@ -30,13 +30,13 @@ public class ChunkMap<T>
 
 	public T get(int chunkX, int chunkZ)
 	{
-		return (T) this.map.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
+		return this.map.getValueByKey(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
 	}
 
 	public T put(int chunkX, int chunkZ, T value)
 	{
 		long hash = ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ);
-		T old = (T) this.map.getValueByKey(hash);
+		T old = this.map.getValueByKey(hash);
 		this.map.add(hash, value);
 		this.values.add(value);
 		return old;
@@ -44,7 +44,7 @@ public class ChunkMap<T>
 
 	public T remove(int chunkX, int chunkZ)
 	{
-		T ob = (T) this.map.remove(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
+		T ob = this.map.remove(ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ));
 		this.values.remove(ob);
 		return ob;
 	}

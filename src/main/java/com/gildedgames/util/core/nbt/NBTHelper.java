@@ -151,10 +151,6 @@ public class NBTHelper
 
 			outputStream.close();
 		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
 		catch (final IOException e)
 		{
 			e.printStackTrace();
@@ -172,10 +168,6 @@ public class NBTHelper
 			inputStream.close();
 
 			return tag;
-		}
-		catch (final FileNotFoundException e)
-		{
-			e.printStackTrace();
 		}
 		catch (final IOException e)
 		{
