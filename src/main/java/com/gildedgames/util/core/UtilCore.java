@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.gildedgames.util.core.io.NetworkWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -45,7 +45,7 @@ import com.gildedgames.util.world.WorldCore;
 public class UtilCore implements ICore
 {
 
-	public static final String MOD_ID = "gilded-games-util";
+	public static final String MOD_ID = "gildedgamesutil";
 
 	public static final String VERSION = "1.8-1.0";
 
@@ -54,7 +54,7 @@ public class UtilCore implements ICore
 	@Instance(UtilCore.MOD_ID)
 	public static UtilCore instance;
 
-	@SidedProxy(clientSide = "com.gildedgames.util.core.ClientProxy", serverSide = "com.gildedgames.util.core.ServerProxy")
+	@SidedProxy(clientSide = "com.gildedgames.util.core.client.ClientProxy", serverSide = "com.gildedgames.util.core.ServerProxy")
 	public static ServerProxy proxy;
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
@@ -67,15 +67,19 @@ public class UtilCore implements ICore
 
 	public UtilCore()
 	{
-		this.cores.add(PlayerCore.INSTANCE);
-		this.cores.add(WorldCore.INSTANCE);
-		this.cores.add(MenuCore.INSTANCE);
-		this.cores.add(TabCore.INSTANCE);
-		this.cores.add(UniverseCore.INSTANCE);
-		this.cores.add(GroupCore.INSTANCE);
-		this.cores.add(new SpawningCore());
-		this.cores.add(InstanceCore.INST);
-		this.cores.add(NotificationCore.INSTANCE);
+		this.registerCore(PlayerCore.INSTANCE);
+		this.registerCore(WorldCore.INSTANCE);
+		this.registerCore(TabCore.INSTANCE);
+		this.registerCore(UniverseCore.INSTANCE);
+		this.registerCore(GroupCore.INSTANCE);
+		this.registerCore(new SpawningCore());
+		this.registerCore(InstanceCore.INSTANCE);
+		this.registerCore(NotificationCore.INSTANCE);
+
+		if (UtilCore.isClient())
+		{
+			this.registerCore(MenuCore.INSTANCE);
+		}
 
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
@@ -327,7 +331,6 @@ public class UtilCore implements ICore
 	public static void registerEventHandler(Object o)
 	{
 		MinecraftForge.EVENT_BUS.register(o);
-		FMLCommonHandler.instance().bus().register(o);
 	}
 
 }

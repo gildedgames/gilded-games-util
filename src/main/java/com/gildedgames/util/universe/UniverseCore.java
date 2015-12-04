@@ -4,6 +4,7 @@ import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.universe.client.UniverseClientHandler;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.networking.packets.TravelUniversePacket;
 import com.gildedgames.util.universe.common.player.PlayerUniverse;
@@ -46,6 +47,11 @@ public class UniverseCore implements ICore
 		UniverseAPI.instance().register(UniverseAPI.instance().getMinecraftUniverseID(), UniverseAPI.instance().getMinecraftUniverse());
 
 		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
+
+		if (UtilCore.isClient())
+		{
+			UtilCore.registerEventHandler(new UniverseClientHandler());
+		}
 	}
 
 	@Override

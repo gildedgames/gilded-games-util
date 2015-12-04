@@ -17,7 +17,7 @@ public class UtilServerEvents
 
 	private int tickCounter = 0;
 
-	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	@SubscribeEvent(receiveCanceled = true)
 	public void onEvent(PopulateChunkEvent.Post event)
 	{
 		Chunk chunk = event.world.getChunkFromChunkCoords(event.chunkX, event.chunkZ);
@@ -56,7 +56,7 @@ public class UtilServerEvents
 			IOCore.io().dispatchDirtySyncables(SyncSide.SERVER);
 			this.tickCounter++;
 		}
-		if (event.phase == TickEvent.Phase.END)
+		else if (event.phase == TickEvent.Phase.END)
 		{
 			if (this.tickCounter % (1200 * 3) == 0)
 			{

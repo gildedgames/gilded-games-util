@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.client.ClientProxy;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
@@ -78,7 +78,7 @@ public class MenuClientEvents
 	{
 		if (menu == null)
 		{
-			menu = ClientProxy.MINECRAFT_MENU;
+			menu = MenuCore.MINECRAFT_MENU;
 		}
 
 		int mouseX = Mouse.getX();
@@ -149,7 +149,7 @@ public class MenuClientEvents
 			}
 			else
 			{
-				this.openMenu(ClientProxy.MINECRAFT_MENU);
+				this.openMenu(MenuCore.MINECRAFT_MENU);
 			}
 		}
 		else if (menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))

@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.common.tab;
 
-import com.gildedgames.util.core.SpriteGeneric;
+import com.gildedgames.util.core.client.SpriteGeneric;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.util.ITab;
 import net.minecraft.client.Minecraft;
@@ -14,8 +14,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-
-import java.util.Arrays;
 
 /**
  * The {@link ITab} representation of the Minecraft's vanilla Inventory {@link GuiScreen}

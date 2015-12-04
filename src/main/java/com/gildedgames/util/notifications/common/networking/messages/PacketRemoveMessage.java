@@ -1,6 +1,6 @@
 package com.gildedgames.util.notifications.common.networking.messages;
 
-import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.notifications.NotificationCore;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;

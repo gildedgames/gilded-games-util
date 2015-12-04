@@ -1,6 +1,6 @@
 package com.gildedgames.util.group.common.core;
 
-import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.group.GroupCore;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
