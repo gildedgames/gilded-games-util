@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.client.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;

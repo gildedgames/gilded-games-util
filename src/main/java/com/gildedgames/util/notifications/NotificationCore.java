@@ -33,8 +33,8 @@ import net.minecraftforge.fml.relauncher.Side;
 public class NotificationCore implements ICore
 {
 
-	@SidedProxy(modId = UtilCore.MOD_ID, clientSide = "com.gildedgames.util.notifications.ClientProxy", serverSide = "com.gildedgames.util.notifications.ServerProxy")
-	public static ServerProxy proxy;
+	@SidedProxy(modId = UtilCore.MOD_ID, clientSide = "com.gildedgames.util.notifications.client.ClientProxy", serverSide = "com.gildedgames.util.notifications.CommonProxy")
+	public static CommonProxy proxy;
 
 	private SidedObject<NotificationServices> serviceLocator;
 
@@ -89,6 +89,8 @@ public class NotificationCore implements ICore
 		UtilCore.NETWORK.registerPacket(PacketNotification.class);
 		UtilCore.NETWORK.registerPacket(PacketRemoveMessage.class);
 		UtilCore.NETWORK.registerPacket(PacketClickedResponse.class, Side.SERVER);
+
+		proxy.preInit(event);
 	}
 
 	@Override

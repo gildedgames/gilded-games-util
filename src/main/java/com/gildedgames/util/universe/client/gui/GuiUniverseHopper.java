@@ -12,7 +12,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.client.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.universe.UniverseCore;
 import com.gildedgames.util.universe.common.UniverseAPI;

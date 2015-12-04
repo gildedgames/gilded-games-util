@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.universe.common.UniverseAPI;
 import com.gildedgames.util.universe.common.util.IUniverse;
 

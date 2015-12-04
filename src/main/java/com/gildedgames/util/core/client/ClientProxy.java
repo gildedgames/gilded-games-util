@@ -1,13 +1,10 @@
-package com.gildedgames.util.core;
+package com.gildedgames.util.core.client;
 
+import com.gildedgames.util.core.ServerProxy;
+import com.gildedgames.util.core.UtilCore;
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.core.client.GuiIngame;
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
-import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.menu.client.IMenu;
-import com.gildedgames.util.menu.client.MenuClientEvents;
-import com.gildedgames.util.menu.client.util.MenuMinecraft;
 import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.client.social.TabChat;
 import com.gildedgames.util.tab.client.social.TabGroup;
@@ -38,8 +35,6 @@ public class ClientProxy extends ServerProxy
 
 	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
 
-	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
-
 	public static final ITab GROUP_TAB = new TabGroup();
 
 	@Override
@@ -57,10 +52,6 @@ public class ClientProxy extends ServerProxy
 		UtilCore.registerEventHandler(utilEvents);
 
 		UtilCore.registerEventHandler(MinecraftGuiViewer.instance().getTickInfo());
-
-		MenuClientEvents menuClientEvents = new MenuClientEvents();
-		UtilCore.registerEventHandler(menuClientEvents);
-		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
 
 		TabClientEvents clientEvents = new TabClientEvents();
 		UtilCore.registerEventHandler(clientEvents);

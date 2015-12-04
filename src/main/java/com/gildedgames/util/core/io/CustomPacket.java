@@ -1,5 +1,6 @@
-package com.gildedgames.util.core;
+package com.gildedgames.util.core.io;
 
+import com.gildedgames.util.core.UtilCore;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

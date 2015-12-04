@@ -2,8 +2,8 @@ package com.gildedgames.util.tab.client.social;
 
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
-import com.gildedgames.util.notifications.client.GuiNotification;
-import com.gildedgames.util.notifications.client.GuiNotifications;
+import com.gildedgames.util.notifications.client.gui.GuiNotification;
+import com.gildedgames.util.notifications.client.gui.GuiNotifications;
 import com.gildedgames.util.tab.common.util.TabGeneric;
 import com.gildedgames.util.ui.UiCore;
 

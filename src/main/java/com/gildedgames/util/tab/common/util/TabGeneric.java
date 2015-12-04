@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.common.util;
 
-import com.gildedgames.util.core.SpriteGeneric;
+import com.gildedgames.util.core.client.SpriteGeneric;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;

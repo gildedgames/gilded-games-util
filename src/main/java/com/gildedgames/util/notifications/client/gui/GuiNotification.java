@@ -1,4 +1,4 @@
-package com.gildedgames.util.notifications.client;
+package com.gildedgames.util.notifications.client.gui;
 
 import java.awt.Color;
 import java.util.LinkedHashMap;

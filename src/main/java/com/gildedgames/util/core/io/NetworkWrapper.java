@@ -1,7 +1,8 @@
-package com.gildedgames.util.core;
+package com.gildedgames.util.core.io;
 
 import java.util.List;
 
+import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 

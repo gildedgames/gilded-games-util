@@ -20,7 +20,7 @@ public class InstanceCore implements ICore
 {
 	private SidedObject<InstanceServices> services = new SidedObject<InstanceServices>(new InstanceServices(Side.CLIENT), new InstanceServices(Side.SERVER));
 
-	public static InstanceCore INST = new InstanceCore();
+	public static InstanceCore INSTANCE = new InstanceCore();
 
 	public InstanceServices locate()
 	{

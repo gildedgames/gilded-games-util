@@ -24,7 +24,7 @@ public class NotificationServices
 
 	private NotificationDispatcher dispatcher;
 
-	protected NotificationServices(Side side)
+	public NotificationServices(Side side)
 	{
 		this.side = side;
 	}

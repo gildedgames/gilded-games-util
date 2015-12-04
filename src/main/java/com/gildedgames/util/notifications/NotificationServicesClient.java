@@ -26,7 +26,7 @@ public class NotificationServicesClient extends NotificationServices
 
 	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/notification/notifications.png");
 
-	protected NotificationServicesClient()
+	public NotificationServicesClient()
 	{
 		super(Side.CLIENT);
 	}

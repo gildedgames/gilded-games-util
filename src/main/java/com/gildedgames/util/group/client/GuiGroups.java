@@ -3,7 +3,7 @@ package com.gildedgames.util.group.client;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 
-import com.gildedgames.util.core.ClientProxy;
+import com.gildedgames.util.core.client.ClientProxy;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;

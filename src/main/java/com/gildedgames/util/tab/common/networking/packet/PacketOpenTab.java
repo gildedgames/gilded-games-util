@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.common.networking.packet;
 
-import com.gildedgames.util.core.CustomPacket;
+import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.tab.common.TabAPI;
 import com.gildedgames.util.tab.common.util.ITab;
@@ -14,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class PacketOpenTab extends CustomPacket<PacketOpenTab>

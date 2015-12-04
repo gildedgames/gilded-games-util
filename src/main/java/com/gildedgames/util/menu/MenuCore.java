@@ -2,8 +2,11 @@ package com.gildedgames.util.menu;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.menu.client.IMenu;
 
+import com.gildedgames.util.menu.client.MenuClientEvents;
+import com.gildedgames.util.menu.client.util.MenuMinecraft;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -15,8 +18,9 @@ import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
 public class MenuCore implements ICore
 {
-
 	public static final MenuCore INSTANCE = new MenuCore();
+
+	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
 
 	private final SidedObject<MenuServices> serviceLocator = new SidedObject<MenuServices>(new MenuServices(), new MenuServices());
 
@@ -28,14 +32,15 @@ public class MenuCore implements ICore
 	@Override
 	public void flushData()
 	{
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		UtilCore.registerEventHandler(new MenuClientEvents());
 
+		MenuCore.INSTANCE.registerMenu(MINECRAFT_MENU);
 	}
 
 	@Override

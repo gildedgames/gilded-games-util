@@ -50,11 +50,8 @@ public class PlayerCore implements ICore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		MinecraftForge.EVENT_BUS.register(this.playerHookSaveHandler);
-		FMLCommonHandler.instance().bus().register(this.playerHookSaveHandler);
-
-		MinecraftForge.EVENT_BUS.register(this.playerEventHandler);
-		FMLCommonHandler.instance().bus().register(this.playerEventHandler);
+		UtilCore.registerEventHandler(this.playerHookSaveHandler);
+		UtilCore.registerEventHandler(this.playerEventHandler);
 	}
 
 	@Override
