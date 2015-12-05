@@ -70,6 +70,11 @@ task sourceJar(type: Jar) {
 	from sourceSets.main.allJava
 }
 
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}
 
 publishing {
     publications {
