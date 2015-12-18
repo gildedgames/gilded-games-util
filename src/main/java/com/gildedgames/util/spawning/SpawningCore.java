@@ -31,6 +31,7 @@ import cpw.mods.fml.relauncher.Side;
 
 public class SpawningCore implements ICore
 {
+	
 	private static List<SpawnManager> spawnManagers = new ArrayList<SpawnManager>();
 
 	private IPlayerHookPool<PlayerSpawning> players = new PlayerHookPool<PlayerSpawning>("spawning", new PlayerSpawningFactory(), Side.SERVER);
@@ -135,6 +136,12 @@ public class SpawningCore implements ICore
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 
+	}
+
+	@Override
+	public void flushData()
+	{
+		
 	}
 
 }

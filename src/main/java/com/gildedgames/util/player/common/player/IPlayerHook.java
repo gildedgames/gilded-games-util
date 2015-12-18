@@ -1,13 +1,14 @@
 package com.gildedgames.util.player.common.player;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
 import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.io_manager.networking.ISyncable;
+import com.gildedgames.util.io_manager.io.IOSyncable;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 
-public interface IPlayerHook extends NBT, ISyncable
+public interface IPlayerHook extends NBT, IOSyncable<ByteBuf, ByteBuf>
 {
 
 	@SuppressWarnings("rawtypes")
@@ -16,8 +17,6 @@ public interface IPlayerHook extends NBT, ISyncable
 	void entityInit(EntityPlayer player);
 
 	IPlayerProfile getProfile();
-
-	//void setProfile(IPlayerProfile profile);
 
 	void onUpdate();
 

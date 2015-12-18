@@ -115,4 +115,10 @@ public class PlayerCore implements ICore
 		INSTANCE.serviceLocator.server().registerPlayerHookPool(server);
 	}
 
+	@Override
+	public void flushData()
+	{
+		
+	}
+
 }

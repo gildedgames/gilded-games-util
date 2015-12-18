@@ -1,16 +1,5 @@
 package com.gildedgames.util.io_manager;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -21,6 +10,10 @@ import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class IOFileOverheadCore implements IOFileController
 {
@@ -122,7 +115,10 @@ public class IOFileOverheadCore implements IOFileController
 
 		if (!file.exists())
 		{
-			file.createNewFile();
+			if(!file.createNewFile())
+			{
+				throw new IOException();
+			}
 		}
 
 		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());

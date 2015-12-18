@@ -1,16 +1,6 @@
 package com.gildedgames.util.io_manager.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
+import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -20,6 +10,10 @@ import com.gildedgames.util.io_manager.overhead.ByteChunkPool;
 import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IOSerializer;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class IOFileControllerDefault implements IOFileController
 {
@@ -85,7 +79,7 @@ public class IOFileControllerDefault implements IOFileController
 		
 		chunkPool.readChunks();
 
-		I input = factory.createInput(chunkPool.getChunk("class"));
+		I input = factory.createInput(chunkPool.getChunk("class"));//TODO: If anything ever goes wrong or sth, lol, the input here isn't used :D
 
 		IOSerializer serializer = this.getManager().getSerializer();
 
@@ -114,7 +108,7 @@ public class IOFileControllerDefault implements IOFileController
 
 		Class<?> classToRead = inputBridge.getSerializedClass(DATA_KEY);
 
-		IOSerializer serializer = this.getManager().getSerializer();
+		IOSerializer serializer = IOCore.io().getManager(classToRead).getSerializer();
 
 		IOData<I, O> metadata = serializer.readSubData(chunkPool, factory);
 
@@ -128,12 +122,18 @@ public class IOFileControllerDefault implements IOFileController
 	{
 		if (file.getParentFile() != null)
 		{
-			file.getParentFile().mkdirs();
+			if(!file.getParentFile().mkdirs())
+			{
+				throw new IOException();
+			}
 		}
 
 		if (!file.exists())
 		{
-			file.createNewFile();
+			if(!file.createNewFile())
+			{
+				throw new IOException();
+			}
 		}
 
 		final FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());

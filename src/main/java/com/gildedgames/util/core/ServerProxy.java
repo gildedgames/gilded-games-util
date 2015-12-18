@@ -12,16 +12,23 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
 public class ServerProxy implements ICore
 {
-	
+
 	public EntityPlayer getPlayer()
 	{
 		return null;
 	}
 
+	public void addScheduledTask(Runnable runnable)
+	{
+
+	}
+
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		UtilServerEvents events = new UtilServerEvents();
 		
+		UtilCore.registerEventHandler(events);
 	}
 
 	@Override
@@ -64,6 +71,11 @@ public class ServerProxy implements ICore
 	public void serverStarted(FMLServerStartedEvent event)
 	{
 
+	}
+
+	@Override
+	public void flushData()
+	{
 	}
 
 }

@@ -75,5 +75,11 @@ public class TabCore implements ICore
 	{
 		
 	}
+
+	@Override
+	public void flushData()
+	{
+		
+	}
 	
 }

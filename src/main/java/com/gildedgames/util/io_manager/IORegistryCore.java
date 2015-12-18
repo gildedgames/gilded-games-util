@@ -1,16 +1,16 @@
 package com.gildedgames.util.io_manager;
 
-import java.util.List;
-
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 
+import java.util.List;
+
 public class IORegistryCore implements IORegistry
 {
 
-	private List<IOManager> managers;
+	private final List<IOManager> managers;
 
 	protected IORegistryCore(List<IOManager> managers)
 	{

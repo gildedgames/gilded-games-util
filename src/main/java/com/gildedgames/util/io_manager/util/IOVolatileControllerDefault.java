@@ -23,7 +23,7 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	private IOManager manager;
+	private final IOManager manager;
 
 	public IOVolatileControllerDefault(IOManager manager)
 	{
@@ -44,6 +44,11 @@ public class IOVolatileControllerDefault implements IOVolatileController
 		Class<?> classToReadFrom = inputBridge.getSerializedClass(key);
 
 		final T io = this.cast(this.getManager().getRegistry().create(classToReadFrom, objectConstructors));
+
+		if (io == null)
+		{
+			throw new NullPointerException("Something went wrong trying to create an instance of " + classToReadFrom.getName() + ". Most likely you forgot to create an empty constructor for it.");
+		}
 
 		if (io instanceof IOData)
 		{
@@ -131,9 +136,7 @@ public class IOVolatileControllerDefault implements IOVolatileController
 
 		I input = factory.createInput(outputBridge.getBytes());
 
-		T clone = this.get("clonedObject", input, factory);
-
-		return clone;
+		return this.get("clonedObject", input, factory);
 	}
 
 	@SuppressWarnings("unchecked")

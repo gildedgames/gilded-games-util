@@ -1,12 +1,12 @@
 package com.gildedgames.util.io_manager.overhead;
 
+import com.gildedgames.util.io_manager.exceptions.ByteChunkKeyTakenException;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.gildedgames.util.io_manager.exceptions.ByteChunkKeyTakenException;
 
 public class ByteChunkPool
 {
@@ -33,7 +33,7 @@ public class ByteChunkPool
 	{
 		for (ByteChunk byteChunk : this.chunks)
 		{
-			if (byteChunk != null && byteChunk.equals(key))
+			if (byteChunk != null && byteChunk.getKey().equals(key))
 			{
 				throw new ByteChunkKeyTakenException(key);
 			}

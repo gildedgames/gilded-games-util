@@ -1,10 +1,10 @@
 package com.gildedgames.util.io_manager.overhead;
 
-import java.io.IOException;
-
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
+
+import java.io.IOException;
 
 public interface IOVolatileController
 {

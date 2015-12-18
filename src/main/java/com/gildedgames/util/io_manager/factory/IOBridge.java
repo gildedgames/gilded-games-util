@@ -1,5 +1,7 @@
 package com.gildedgames.util.io_manager.factory;
 
+import com.gildedgames.util.io_manager.io.IO;
+
 public interface IOBridge
 {
 
@@ -27,6 +29,8 @@ public interface IOBridge
 
 	void setByteArray(String key, byte[] value);
 
+	void setIO(String key, IO<IOBridge, IOBridge> io);
+
 	byte getByte(String key);
 
 	short getShort(String key);
@@ -44,5 +48,7 @@ public interface IOBridge
 	byte[] getByteArray(String key);
 
 	boolean getBoolean(String key);
+
+	<T extends IO<IOBridge, IOBridge>> T getIO(String key);
 
 }

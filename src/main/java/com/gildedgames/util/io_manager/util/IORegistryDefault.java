@@ -4,9 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.DefaultConstructor;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
+import com.gildedgames.util.io_manager.exceptions.ClassMissingInitException;
 import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 
@@ -48,7 +48,7 @@ public class IORegistryDefault implements IORegistry
 
 		T instance = null;
 		IConstructor constructor = defaultConstructor;
-		
+
 		for (IConstructor specialConstructor : classConstructors)
 		{
 			if (specialConstructor.isApplicable(registeredClass))
@@ -57,7 +57,7 @@ public class IORegistryDefault implements IORegistry
 				break;
 			}
 		}
-		
+
 		try
 		{
 
@@ -93,8 +93,7 @@ public class IORegistryDefault implements IORegistry
 		}
 		catch (final NoSuchMethodException e)
 		{
-			UtilCore.debugPrint(registeredClass.getCanonicalName() + ".class is missing the empty constructor! Contact code monkeys immediately!");
-			e.printStackTrace();
+			throw new ClassMissingInitException(registeredClass);
 		}
 		catch (final SecurityException e)
 		{

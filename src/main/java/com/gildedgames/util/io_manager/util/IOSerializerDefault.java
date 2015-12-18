@@ -34,7 +34,7 @@ public class IOSerializerDefault implements IOSerializer
 	{
 		return this.parentManager;
 	}
-	
+
 	@Override
 	public <I, O, DATA extends IOData<I, O>> DATA readData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException
 	{
@@ -52,24 +52,24 @@ public class IOSerializerDefault implements IOSerializer
 
 		this.writeMainData(chunkPool, data, factory);
 	}
-	
+
 	@Override
 	public <I, O, DATA extends IOData<I, O>> DATA readSubData(ByteChunkPool chunkPool, IOFactory<I, O> factory) throws IOException
 	{
 		DATA readMetadata = null;
-		
+
 		IOBridge io = factory.createInputBridge(factory.createInput(chunkPool.getChunk("subDataMetadata")));
 
 		int metadataCount = io.getInteger("subDataCount");
-		
+
 		for (int count = 0; count < metadataCount; count++)
 		{
 			I input = factory.createInput(chunkPool.getChunk("subData" + count));
-			
+
 			IOBridge inputBridge = factory.createInputBridge(input);
 
 			Class<?> clazz = inputBridge.getSerializedClass(METADATA_KEY + count);
-			
+
 			@SuppressWarnings("unchecked")
 			DATA subData = (DATA) IOCore.io().create(clazz, defaultConstructor);
 
@@ -85,47 +85,47 @@ public class IOSerializerDefault implements IOSerializer
 
 		return readMetadata;
 	}
-	
+
 	@Override
 	public <I, O, DATA extends IOData<I, O>> void writeSubData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
 	{
 		Optional<IOData<I, O>> metadata = data.getSubData();
 
 		int metadataCount = 0;
-		
+
 		while (metadata != null && metadata.isPresent())
 		{
 			metadata = metadata.get().getSubData();
-			
+
 			metadataCount++;
 		}
-		
+
 		IOBridge io = factory.createOutputBridge(factory.createOutput());
-		
+
 		io.setInteger("subDataCount", metadataCount);
-		
+
 		metadata = data.getSubData();
-		
+
 		chunkPool.setChunk("subDataMetadata", io.getBytes());
-		
+
 		for (int count = 0; count < metadataCount; count++)
 		{
 			IOData<I, O> metadataFile = metadata.get();
 
 			final O output = factory.createOutput();
-			
+
 			IOBridge outputBridge = factory.createOutputBridge(output);
-			
+
 			outputBridge.setSerializedClass(METADATA_KEY + count, metadataFile.getClass());
-			
+
 			metadataFile.write(output);
-			
+
 			chunkPool.setChunk("subData" + count, outputBridge.getBytes());
 
 			metadata = metadataFile.getSubData();
 		}
 	}
-	
+
 	private <I, O, DATA extends IOData<I, O>> DATA readMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory, IConstructor... constructors) throws IOException
 	{
 		I input = factory.createInput(chunkPool.getChunk("mainData"));
@@ -135,16 +135,15 @@ public class IOSerializerDefault implements IOSerializer
 		return data;
 	}
 
-	private <I, O, DATA extends IOData<I, O>> void writeMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory) throws IOException
+	private <I, O, DATA extends IOData<I, O>> void writeMainData(ByteChunkPool chunkPool, DATA data, IOFactory<I, O> factory)
 	{
 		final O output = factory.createOutput();
 
 		IOBridge outputBridge = factory.createOutputBridge(output);
-		
+
 		data.write(output);
 
 		chunkPool.setChunk("mainData", outputBridge.getBytes());
 	}
-
 
 }

@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerNotFoundException;
 import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 
 public class NBTBridge implements IOBridge
@@ -159,6 +160,18 @@ public class NBTBridge implements IOBridge
 
 		this.setString("IOManagerID" + key, manager.getID());
 		this.setInteger(key, classID);
+	}
+
+	@Override
+	public void setIO(String key, IO<IOBridge, IOBridge> io)
+	{
+		
+	}
+
+	@Override
+	public <T extends IO<IOBridge, IOBridge>> T getIO(String key)
+	{
+		return null;
 	}
 
 }

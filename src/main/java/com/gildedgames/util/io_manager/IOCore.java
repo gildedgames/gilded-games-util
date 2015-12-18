@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gildedgames.util.core.SidedObject;
+import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -12,6 +14,8 @@ import com.gildedgames.util.io_manager.factory.ISerializeBehaviour;
 import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.io.IOData;
 import com.gildedgames.util.io_manager.io.IOFile;
+import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
+import com.gildedgames.util.io_manager.io.IOSyncableDispatcher;
 import com.gildedgames.util.io_manager.overhead.IOFileController;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
@@ -24,15 +28,17 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 
 	private static final IOCore INSTANCE = new IOCore();
 
-	private List<IOManager> internalManagers = new ArrayList<IOManager>();
+	private final List<IOManager> internalManagers = new ArrayList<IOManager>();
 
-	protected IOFileController fileComponent;
+	private final SidedObject<List<IOSyncableDispatcher>> syncableDispatchers = new SidedObject<List<IOSyncableDispatcher>>(new ArrayList<IOSyncableDispatcher>(), new ArrayList<IOSyncableDispatcher>());
 
-	protected IOVolatileController volatileComponent;
+	protected final IOFileController fileComponent;
 
-	protected IORegistry registryComponent;
+	protected final IOVolatileController volatileComponent;
 
-	protected IOManager defaultManager;
+	protected final IORegistry registryComponent;
+
+	protected final IOManager defaultManager;
 
 	private IOCore()
 	{
@@ -47,6 +53,36 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 	public static IOCore io()
 	{
 		return IOCore.INSTANCE;
+	}
+
+	public void dispatchDirtySyncables(SyncSide from)
+	{
+		for (IOSyncableDispatcher<?, ?> dispatcher : this.syncableDispatchers.instance())
+		{
+			if (dispatcher != null)
+			{
+				dispatcher.dispatchDirtySyncables(from);
+			}
+		}
+	}
+
+	public IOSyncableDispatcher getDispatcherFromID(String id)
+	{
+		for (IOSyncableDispatcher dispatcher : this.syncableDispatchers.instance())
+		{
+			if (dispatcher != null && dispatcher.getID().equals(id))
+			{
+				return dispatcher;
+			}
+		}
+
+		return null;
+	}
+
+	public void registerDispatcher(IOSyncableDispatcher<?, ?> syncableDispatcher)
+	{
+		this.syncableDispatchers.client().add(syncableDispatcher);
+		this.syncableDispatchers.server().add(syncableDispatcher);
 	}
 
 	/** Recommended to pass along an instance of the default implementation, IORegistryDefault.
@@ -88,6 +124,8 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 				return external;
 			}
 		}
+
+		UtilCore.print("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
 
 		return null;
 	}
@@ -136,8 +174,8 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 
 	/**
 	 * Registers a class to serialize in the default manager.
-	 * Registring through this method is highly discouraged, 
-	 * as there is no guarentee that other clients won't 
+	 * Registering through this method is highly discouraged,
+	 * as there is no guarantee that other clients won't
 	 * register under the same ID.
 	 */
 	@Override

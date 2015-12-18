@@ -48,36 +48,7 @@ public class PlayerSpawning implements IPlayerHook
 	@Override
 	public void markClean()
 	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void writeToClient(ByteBuf buf)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void writeToServer(ByteBuf buf)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void readFromClient(ByteBuf buf)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void readFromServer(ByteBuf buf)
-	{
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -124,6 +95,18 @@ public class PlayerSpawning implements IPlayerHook
 	public void onRespawn()
 	{
 
+	}
+
+	@Override
+	public void syncTo(ByteBuf output, SyncSide to)
+	{
+		
+	}
+
+	@Override
+	public void syncFrom(ByteBuf input, SyncSide from)
+	{
+		
 	}
 
 }

@@ -114,31 +114,25 @@ public class PlayerProfile implements IPlayerProfile
 	}
 
 	@Override
-	public void writeToClient(ByteBuf buf)
+	public void syncTo(ByteBuf buf, SyncSide to)
 	{
-		buf.writeLong(this.uuid.getMostSignificantBits());
-		buf.writeLong(this.uuid.getLeastSignificantBits());
+		if (to.isClient())
+		{
+			buf.writeLong(this.uuid.getMostSignificantBits());
+			buf.writeLong(this.uuid.getLeastSignificantBits());
 
-		buf.writeBoolean(this.isLoggedIn);
+			buf.writeBoolean(this.isLoggedIn);
+		}
 	}
 
 	@Override
-	public void readFromServer(ByteBuf buf)
+	public void syncFrom(ByteBuf buf, SyncSide from)
 	{
-		this.uuid = new UUID(buf.readLong(), buf.readLong());
-		this.isLoggedIn = buf.readBoolean();
-	}
-
-	@Override
-	public void writeToServer(ByteBuf buf)
-	{
-
-	}
-
-	@Override
-	public void readFromClient(ByteBuf buf)
-	{
-
+		if (from.isServer())
+		{
+			this.uuid = new UUID(buf.readLong(), buf.readLong());
+			this.isLoggedIn = buf.readBoolean();
+		}
 	}
 
 	@Override

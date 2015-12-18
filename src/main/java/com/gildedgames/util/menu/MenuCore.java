@@ -83,4 +83,10 @@ public class MenuCore implements ICore
 		this.serviceLocator.client().registerMenu(menu);
 	}
 
+	@Override
+	public void flushData()
+	{
+		
+	}
+
 }
