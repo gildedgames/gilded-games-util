@@ -13,10 +13,10 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-ext.config = loadConfig(file('build.properties'))
-
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
+
+ext.config = loadConfig(file('build.properties'))
 
 version = config.mod_version
 group = "com.gildedgames.util"
@@ -40,7 +40,6 @@ repositories {
 
 dependencies {
     shade 'com.googlecode.efficient-java-matrix-library:ejml:0.25'
-    shade 'org.apache.commons:commons-lang3:3.1'
     shade 'org.jgrapht:jgrapht-core:0.9.1'
     shade 'org.luaj:luaj-jme:3.0.1'
 
