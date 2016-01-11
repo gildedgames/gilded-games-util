@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.gildedgames.util.chunk.ChunkCore;
 import com.gildedgames.util.core.io.NetworkWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -75,6 +76,7 @@ public class UtilCore implements ICore
 		this.registerCore(new SpawningCore());
 		this.registerCore(InstanceCore.INSTANCE);
 		this.registerCore(NotificationCore.INSTANCE);
+		this.registerCore(ChunkCore.INSTANCE);
 
 		if (UtilCore.isClient())
 		{
