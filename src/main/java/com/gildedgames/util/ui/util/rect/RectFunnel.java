@@ -24,7 +24,7 @@ public class RectFunnel
 
 	public static RectFunnel collect(RectHolder... holders)
 	{
-		List<BuildIntoRectHolder> modifiers = new ArrayList<BuildIntoRectHolder>();
+		List<BuildIntoRectHolder> modifiers = new ArrayList<>();
 
 		for (RectHolder holder : holders)
 		{

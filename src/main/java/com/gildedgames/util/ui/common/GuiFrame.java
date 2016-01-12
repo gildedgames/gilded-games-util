@@ -199,7 +199,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	{
 		if (this.containers == null)
 		{
-			this.containers = new ArrayList<UIContainer>();
+			this.containers = new ArrayList<>();
 
 			this.containers.add(this.mainContent);
 			this.containers.add(this.events);

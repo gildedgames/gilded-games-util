@@ -18,7 +18,7 @@ public class UiCore implements ICore
 
 	public final static UiCore INSTANCE = new UiCore();
 
-	private final SidedObject<UiServices> serviceLocator = new SidedObject<UiServices>(new UiServices(Side.CLIENT), new UiServices(Side.SERVER));
+	private final SidedObject<UiServices> serviceLocator = new SidedObject<>(new UiServices(Side.CLIENT), new UiServices(Side.SERVER));
 
 	public static UiServices locate()
 	{

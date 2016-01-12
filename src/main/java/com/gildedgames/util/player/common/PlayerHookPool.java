@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.Side;
 public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 {
 
-	private Map<UUID, T> playerMap = new HashMap<UUID, T>();
+	private Map<UUID, T> playerMap = new HashMap<>();
 
-	private List<UUID> sentRequests = new ArrayList<UUID>();
+	private List<UUID> sentRequests = new ArrayList<>();
 
 	private final String name;
 
@@ -38,8 +38,8 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 	@Override
 	public void clear()
 	{
-		this.playerMap = new HashMap<UUID, T>();
-		this.sentRequests = new ArrayList<UUID>();
+		this.playerMap = new HashMap<>();
+		this.sentRequests = new ArrayList<>();
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class KeyboardInputPool implements Iterable<KeyboardInput>
 	
 	public KeyboardInputPool getFrom(int key)
 	{
-		List<KeyboardInput> events = new ArrayList<KeyboardInput>();
+		List<KeyboardInput> events = new ArrayList<>();
 		
 		for (KeyboardInput event : this)
 		{
@@ -67,7 +67,7 @@ public class KeyboardInputPool implements Iterable<KeyboardInput>
 	
 	public KeyboardInputPool getFrom(char character)
 	{
-		List<KeyboardInput> events = new ArrayList<KeyboardInput>();
+		List<KeyboardInput> events = new ArrayList<>();
 		
 		for (KeyboardInput event : this)
 		{
@@ -82,7 +82,7 @@ public class KeyboardInputPool implements Iterable<KeyboardInput>
 	
 	public KeyboardInputPool getFrom(ButtonState state)
 	{
-		List<KeyboardInput> events = new ArrayList<KeyboardInput>();
+		List<KeyboardInput> events = new ArrayList<>();
 		
 		for (KeyboardInput event : this)
 		{

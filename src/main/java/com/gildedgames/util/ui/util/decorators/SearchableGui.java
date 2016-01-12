@@ -44,7 +44,7 @@ public class SearchableGui extends GuiDecorator<GuiFrame>
 	protected void postInitContent(InputProvider input)
 	{
 		this.searchFieldInput = new StringInput();
-		this.searchField = new GuiInput<String>(this.searchFieldInput, Dim2D.build().area(this.dim().width(), 17).addY(-27).flush(), "Search:");
+		this.searchField = new GuiInput<>(this.searchFieldInput, Dim2D.build().area(this.dim().width(), 17).addY(-27).flush(), "Search:");
 
 		this.content().set("searchField", this.searchField);
 

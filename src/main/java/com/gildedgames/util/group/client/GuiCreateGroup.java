@@ -30,7 +30,7 @@ public class GuiCreateGroup extends GuiFrame
 	public void initContent(InputProvider input)
 	{
 		super.initContent(input);
-		final GuiInput<String> nameInput = new GuiInput<String>(new StringInput(), Dim2D.build().pos(100, 100).area(100, 30).flush(), UtilCore.translate("gui.insertname"), this.defaultName());
+		final GuiInput<String> nameInput = new GuiInput<>(new StringInput(), Dim2D.build().pos(100, 100).area(100, 30).flush(), UtilCore.translate("gui.insertname"), this.defaultName());
 		this.content().set("input", nameInput);
 
 		final PermissionButton permission = new PermissionButton(Dim2D.build().pos(100, 130).area(100, 20).flush());

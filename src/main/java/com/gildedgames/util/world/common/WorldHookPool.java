@@ -15,7 +15,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 
 	private final IWorldHookFactory<W> factory;
 
-	private List<W> hooks = new ArrayList<W>();
+	private List<W> hooks = new ArrayList<>();
 
 	private final String poolName;
 
@@ -89,13 +89,13 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 	@Override
 	public Collection<W> getWorlds()
 	{
-		return new ArrayList<W>(this.hooks);
+		return new ArrayList<>(this.hooks);
 	}
 
 	@Override
 	public void clear()
 	{
-		this.hooks = new ArrayList<W>();
+		this.hooks = new ArrayList<>();
 	}
 
 	private W createHook(IWorld world)

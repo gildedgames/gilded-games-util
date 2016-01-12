@@ -29,7 +29,7 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 
 	protected GuiSorter sorter;
 
-	protected List<ContentFactory<T>> contentProviders = new ArrayList<ContentFactory<T>>();
+	protected List<ContentFactory<T>> contentProviders = new ArrayList<>();
 
 	private boolean isSorting;
 

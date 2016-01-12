@@ -24,9 +24,9 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	protected final String id;
 
-	protected Map<UUID, Group> groups = new HashMap<UUID, Group>();
+	protected Map<UUID, Group> groups = new HashMap<>();
 
-	protected List<IGroupPoolListener<?>> listeners = new ArrayList<IGroupPoolListener<?>>();
+	protected List<IGroupPoolListener<?>> listeners = new ArrayList<>();
 
 	public GroupPool(String id)
 	{
@@ -55,7 +55,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	protected List<IGroupHook> createHooks(Group group)
 	{
-		List<IGroupHook> list = new ArrayList<IGroupHook>(this.listeners.size());
+		List<IGroupHook> list = new ArrayList<>(this.listeners.size());
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
 			IGroupHook hook = listener.createGroupHook(group);
@@ -214,7 +214,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	@Override
 	public void write(IOBridge output)
 	{
-		IOUtil.setIOList("groups", new ArrayList<Group>(this.groups.values()), output);
+		IOUtil.setIOList("groups", new ArrayList<>(this.groups.values()), output);
 	}
 
 }

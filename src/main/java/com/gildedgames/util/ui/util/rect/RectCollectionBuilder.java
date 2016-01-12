@@ -10,9 +10,9 @@ import com.gildedgames.util.ui.data.rect.RectHolder;
 public class RectCollectionBuilder
 {
 
-	private List<RectHolder> holders = new ArrayList<RectHolder>();
+	private List<RectHolder> holders = new ArrayList<>();
 
-	private List<RectSeekable> seekables = new ArrayList<RectSeekable>();
+	private List<RectSeekable> seekables = new ArrayList<>();
 
 	protected RectCollectionBuilder()
 	{

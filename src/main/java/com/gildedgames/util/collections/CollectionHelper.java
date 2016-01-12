@@ -61,7 +61,7 @@ public class CollectionHelper
 	public static <T> int getNextFreeIdFrom(Collection<T> collection, Function<T, Integer> getId, int min)
 	{
 		int expecting = min;
-		final Set<Integer> foundNumbers = new HashSet<Integer>(collection.size());
+		final Set<Integer> foundNumbers = new HashSet<>(collection.size());
 		for (final T data : collection)
 		{
 			foundNumbers.add(getId.apply(data));

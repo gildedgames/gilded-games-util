@@ -44,7 +44,7 @@ public class GroupCore implements ICore
 
 	public final static GroupCore INSTANCE = new GroupCore();
 
-	private final SidedObject<GroupServices> serviceLocator = new SidedObject<GroupServices>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
+	private final SidedObject<GroupServices> serviceLocator = new SidedObject<>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
 
 	public static GroupServices locate()
 	{

@@ -3,7 +3,7 @@ package com.gildedgames.util.io_manager.io;
 public interface IOSyncable<I, O>
 {
 
-	public static enum SyncSide
+	enum SyncSide
 	{
 		CLIENT
 		{
@@ -47,22 +47,22 @@ public interface IOSyncable<I, O>
 	/**
 	 * @return Returns true if this object should sync its data.
 	 */
-	public boolean isDirty();
+	boolean isDirty();
 
-	public void markDirty();
+	void markDirty();
 
-	public void markClean();
+	void markClean();
 
 	/**
 	 * @param output Output object to write data to.
 	 * @param to Which side the syncing process will send this information to.
 	 */
-	public void syncTo(O output, SyncSide to);
+	void syncTo(O output, SyncSide to);
 
 	/**
 	 * @param input Input object to read data from.
 	 * @param from Which side the syncing process has received this information from.
 	 */
-	public void syncFrom(I input, SyncSide from);
+	void syncFrom(I input, SyncSide from);
 
 }

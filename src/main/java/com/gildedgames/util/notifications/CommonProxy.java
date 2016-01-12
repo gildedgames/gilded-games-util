@@ -9,7 +9,7 @@ public class CommonProxy
 {
 	public SidedObject<NotificationServices> createServices()
 	{
-		return new SidedObject<NotificationServices>(new NotificationServices(Side.CLIENT), new NotificationServices(Side.SERVER));
+		return new SidedObject<>(new NotificationServices(Side.CLIENT), new NotificationServices(Side.SERVER));
 	}
 
 	public void preInit(FMLPreInitializationEvent event)

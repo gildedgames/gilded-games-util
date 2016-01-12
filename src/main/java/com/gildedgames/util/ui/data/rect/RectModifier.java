@@ -48,9 +48,9 @@ public class RectModifier
 		return new HashCodeBuilder(97, 37).append(this.modifyWith).append(this.type).toHashCode();
 	}
 
-	public static enum ModifierType
+	public enum ModifierType
 	{
-		X, Y, POS, WIDTH, HEIGHT, AREA, SCALE, ROTATION, CENTERING, ALL;
+		X, Y, POS, WIDTH, HEIGHT, AREA, SCALE, ROTATION, CENTERING, ALL
 	}
 
 }

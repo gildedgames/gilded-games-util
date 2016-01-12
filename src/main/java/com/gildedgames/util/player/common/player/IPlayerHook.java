@@ -2,7 +2,6 @@ package com.gildedgames.util.player.common.player;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.io_manager.io.IOSyncable;

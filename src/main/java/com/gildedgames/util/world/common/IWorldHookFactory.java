@@ -5,8 +5,8 @@ import com.gildedgames.util.world.common.world.IWorld;
 public interface IWorldHookFactory<W extends IWorldHook>
 {
 
-	public W create(IWorld w);
+	W create(IWorld w);
 
-	public IWorld getWorldFor(int dimId);
+	IWorld getWorldFor(int dimId);
 
 }

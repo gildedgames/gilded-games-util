@@ -13,7 +13,7 @@ public class SpawnArea
 
 	protected final List<SpawnEntry> spawnEntries;
 
-	protected final List<ScheduledSpawn> scheduledSpawns = new ArrayList<ScheduledSpawn>();
+	protected final List<ScheduledSpawn> scheduledSpawns = new ArrayList<>();
 
 	protected final SpawnManager spawnManager;
 

@@ -18,7 +18,7 @@ public class InputHelper
 	
 	public static boolean prevResult;
 	
-	public static interface InputCondition
+	public interface InputCondition
 	{
 		
 		boolean isMet(Gui gui);

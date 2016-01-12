@@ -20,7 +20,7 @@ public class TabCore implements ICore
 
 	public static final TabCore INSTANCE = new TabCore();
 
-	private final SidedObject<TabServices> serviceLocator = new SidedObject<TabServices>(new TabServices(), new TabServices());
+	private final SidedObject<TabServices> serviceLocator = new SidedObject<>(new TabServices(), new TabServices());
 
 	public static TabServices locate()
 	{

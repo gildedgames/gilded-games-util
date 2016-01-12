@@ -45,7 +45,7 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 	@Override
 	public List<INotificationResponse> getResponses()
 	{
-		List<INotificationResponse> responses = new ArrayList<INotificationResponse>();
+		List<INotificationResponse> responses = new ArrayList<>();
 		responses.add(new INotificationResponse()
 		{
 			@Override

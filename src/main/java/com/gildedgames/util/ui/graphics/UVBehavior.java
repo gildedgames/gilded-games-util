@@ -23,7 +23,7 @@ public interface UVBehavior
 	 */
 	List<UVDimPair> getDrawnUVsFor(Sprite sprite, RectHolder areaToDraw);
 	
-	public static class UVDimPair
+	class UVDimPair
 	{
 		
 		private final UV uv;
@@ -48,7 +48,7 @@ public interface UVBehavior
 		
 		public static List<Rect> toDims(List<UVDimPair> pairs)
 		{
-			List<Rect> dims = new ArrayList<Rect>();
+			List<Rect> dims = new ArrayList<>();
 			
 			for (UVDimPair pair : pairs)
 			{
@@ -60,7 +60,7 @@ public interface UVBehavior
 		
 		public static List<RectHolder> toDimHolders(List<UVDimPair> pairs)
 		{
-			List<RectHolder> dims = new ArrayList<RectHolder>();
+			List<RectHolder> dims = new ArrayList<>();
 			
 			for (UVDimPair pair : pairs)
 			{

@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class NBTFactory implements IOFactory<NBTTagCompound, NBTTagCompound>
 {
 
-	private final List<IOObserver<NBTTagCompound, NBTTagCompound>> observers = new ArrayList<IOObserver<NBTTagCompound, NBTTagCompound>>();
+	private final List<IOObserver<NBTTagCompound, NBTTagCompound>> observers = new ArrayList<>();
 
 	@Override
 	public NBTTagCompound createInput(byte[] reading)

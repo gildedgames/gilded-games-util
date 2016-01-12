@@ -33,7 +33,7 @@ public class UtilityGL11Debug
 			this.category = init_category;
 			this.fetchCommand = init_fetchCommand;
 		}
-	};
+	}
 
 	public static UtilityGL11Debug instance = new UtilityGL11Debug();
 

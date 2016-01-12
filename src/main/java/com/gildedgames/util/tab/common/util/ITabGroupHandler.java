@@ -5,6 +5,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public interface ITabGroupHandler
 {
 
-	public ITabGroup getSide(Side side);
+	ITabGroup getSide(Side side);
 	
 }

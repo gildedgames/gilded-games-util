@@ -9,9 +9,9 @@ import net.minecraft.world.ChunkCoordIntPair;
 
 public class ChunkMap<T>
 {
-	private LongHashMap<T> map = new LongHashMap<T>();
+	private LongHashMap<T> map = new LongHashMap<>();
 
-	private List<T> values = new ArrayList<T>();
+	private List<T> values = new ArrayList<>();
 
 	public int size()
 	{

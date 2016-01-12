@@ -17,7 +17,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.client.ClientProxy;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;

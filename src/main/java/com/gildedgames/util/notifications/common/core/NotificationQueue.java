@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class NotificationQueue
 {
-	private Queue<INotification> notificationQueue = new LinkedList<INotification>();
+	private Queue<INotification> notificationQueue = new LinkedList<>();
 
 	private long notiTime = 0;
 

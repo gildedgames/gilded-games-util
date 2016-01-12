@@ -15,11 +15,11 @@ public class IORegistryDefault implements IORegistry
 
 	private final static DefaultConstructor defaultConstructor = new DefaultConstructor();
 
-	private final Map<Integer, Class<?>> IDToClassMapping = new HashMap<Integer, Class<?>>();
+	private final Map<Integer, Class<?>> IDToClassMapping = new HashMap<>();
 
-	private final Map<Class<?>, Integer> classToIDMapping = new HashMap<Class<?>, Integer>();
+	private final Map<Class<?>, Integer> classToIDMapping = new HashMap<>();
 
-	private final Map<Class<?>, ISerializeBehaviour<?>> serializeBehaviors = new HashMap<Class<?>, ISerializeBehaviour<?>>();
+	private final Map<Class<?>, ISerializeBehaviour<?>> serializeBehaviors = new HashMap<>();
 
 	public IORegistryDefault()
 	{

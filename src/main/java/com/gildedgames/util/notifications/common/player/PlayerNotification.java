@@ -22,7 +22,7 @@ public class PlayerNotification implements IPlayerHook
 
 	private IPlayerHookPool<PlayerNotification> pool;
 
-	private List<INotificationMessage> notifications = new ArrayList<INotificationMessage>();
+	private List<INotificationMessage> notifications = new ArrayList<>();
 
 	public PlayerNotification(IPlayerProfile profile, IPlayerHookPool<PlayerNotification> pool)
 	{
@@ -95,7 +95,7 @@ public class PlayerNotification implements IPlayerHook
 
 	public List<INotificationMessage> getNotifications()
 	{
-		return new ArrayList<INotificationMessage>(this.notifications);
+		return new ArrayList<>(this.notifications);
 	}
 
 	public INotificationMessage getFromKey(String key)

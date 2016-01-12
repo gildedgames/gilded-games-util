@@ -22,11 +22,11 @@ import com.gildedgames.util.spawning.util.ChunkMap;
 
 public class SpawnManager
 {
-	private final List<SpawnEntry> genSpawningRegister = new ArrayList<SpawnEntry>();
+	private final List<SpawnEntry> genSpawningRegister = new ArrayList<>();
 
-	private final List<SpawnEntry> tickSpawningRegister = new ArrayList<SpawnEntry>();
+	private final List<SpawnEntry> tickSpawningRegister = new ArrayList<>();
 
-	private final List<SpawnCondition> conditionRegister = new ArrayList<SpawnCondition>();
+	private final List<SpawnCondition> conditionRegister = new ArrayList<>();
 
 	//private ChunkMap<SpawnArea> spawnAreaOnGen;
 
@@ -38,7 +38,7 @@ public class SpawnManager
 
 	private final int dimensionId;
 
-	private static List<Block> blacklistedBlocks = new ArrayList<Block>();
+	private static List<Block> blacklistedBlocks = new ArrayList<>();
 
 	private int ticks;
 
@@ -75,7 +75,7 @@ public class SpawnManager
 			}
 		}
 
-		List<SpawnAreaPerTick> toRemove = new ArrayList<SpawnAreaPerTick>();
+		List<SpawnAreaPerTick> toRemove = new ArrayList<>();
 		ChunkMap<SpawnAreaPerTick> spawnAreaPerTick = this.getspawnAreaPerTick();
 		for (final SpawnAreaPerTick area : spawnAreaPerTick.getValues())
 		{
@@ -128,7 +128,7 @@ public class SpawnManager
 					//has bias towards entries earlier in the list.
 					long randomSeed = world.getSeed() + ChunkCoordIntPair.chunkXZ2Int(areaX, areaZ);
 					Random random = new Random(randomSeed);
-					final List<SpawnEntry> shuffledRegistered = new ArrayList<SpawnEntry>(this.tickSpawningRegister);
+					final List<SpawnEntry> shuffledRegistered = new ArrayList<>(this.tickSpawningRegister);
 					Collections.shuffle(shuffledRegistered, random);
 
 					spawnArea = new SpawnAreaPerTick(this, areaX, areaZ, shuffledRegistered);
@@ -162,7 +162,7 @@ public class SpawnManager
 	{
 		if (this.spawnAreaPerTick == null)
 		{
-			this.spawnAreaPerTick = new ChunkMap<SpawnAreaPerTick>();
+			this.spawnAreaPerTick = new ChunkMap<>();
 		}
 
 		return this.spawnAreaPerTick;

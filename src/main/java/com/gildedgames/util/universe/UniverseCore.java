@@ -30,7 +30,7 @@ public class UniverseCore implements ICore
 
 	public static TeleporterGeneric GENERIC_TELEPORTER;
 
-	private final SidedObject<UniverseServices> serviceLocator = new SidedObject<UniverseServices>(new UniverseServices(Side.CLIENT), new UniverseServices(Side.SERVER));
+	private final SidedObject<UniverseServices> serviceLocator = new SidedObject<>(new UniverseServices(Side.CLIENT), new UniverseServices(Side.SERVER));
 
 	public static UniverseServices locate()
 	{

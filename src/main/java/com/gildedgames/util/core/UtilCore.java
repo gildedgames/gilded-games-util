@@ -48,7 +48,7 @@ public class UtilCore implements ICore
 
 	public static final String MOD_ID = "gildedgamesutil";
 
-	public static final String VERSION = "1.8-1.0";
+	public static final String VERSION = "1.8-r1";
 
 	public static final boolean DEBUG_MODE = true;
 
@@ -60,7 +60,7 @@ public class UtilCore implements ICore
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
-	private final List<ICore> cores = new ArrayList<ICore>();
+	private final List<ICore> cores = new ArrayList<>();
 
 	private final SidedObject<UtilServices> serviceLocator;
 
@@ -86,7 +86,7 @@ public class UtilCore implements ICore
 		UtilServices clientLocator = new UtilServices();
 		UtilServices serverLocator = new UtilServices();
 
-		this.serviceLocator = new SidedObject<UtilServices>(clientLocator, serverLocator);
+		this.serviceLocator = new SidedObject<>(clientLocator, serverLocator);
 		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
 

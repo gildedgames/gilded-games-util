@@ -6,7 +6,7 @@ import java.util.List;
 public class TabGroup implements ITabGroup
 {
 	
-	protected final ArrayList<ITab> tabs = new ArrayList<ITab>();
+	protected final ArrayList<ITab> tabs = new ArrayList<>();
 	
 	protected ITab selectedTab, rememberedTab;
 
@@ -78,7 +78,7 @@ public class TabGroup implements ITabGroup
 	@Override
 	public List<ITab> getEnabledTabs()
 	{
-		List<ITab> enabledTabs = new ArrayList<ITab>();
+		List<ITab> enabledTabs = new ArrayList<>();
 
 		for (ITab tabDescription : this.tabs)
 		{

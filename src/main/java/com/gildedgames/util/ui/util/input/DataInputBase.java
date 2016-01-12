@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class DataInputBase<T> implements DataInput<T>
 {
 	
-	private List<DataInputListener<T>> listeners = new ArrayList<DataInputListener<T>>();
+	private List<DataInputListener<T>> listeners = new ArrayList<>();
 
 	@Override
 	public final void setData(T data)

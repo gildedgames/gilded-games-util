@@ -11,7 +11,7 @@ import java.util.List;
 public class ByteChunkPool
 {
 
-	private List<ByteChunk> chunks = new ArrayList<ByteChunk>();
+	private List<ByteChunk> chunks = new ArrayList<>();
 	
 	private int totalSize = 0;
 	
@@ -68,7 +68,7 @@ public class ByteChunkPool
 	{	
 		int chunkAmount = this.input.readInt();
 	
-		this.chunks = new ArrayList<ByteChunk>(chunkAmount);
+		this.chunks = new ArrayList<>(chunkAmount);
 		
 		for (int count = 0; count < chunkAmount; count++)
 		{

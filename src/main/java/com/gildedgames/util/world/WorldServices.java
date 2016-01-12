@@ -12,7 +12,7 @@ public class WorldServices
 
 	private List<IWorldHookPool<?>> worldPools;
 
-	private final List<IWorld> worldWrappers = new ArrayList<IWorld>();
+	private final List<IWorld> worldWrappers = new ArrayList<>();
 
 	private final IWorldFactory<?> wrapperFactory;//Change to use different IWorld wrappers
 
@@ -28,7 +28,7 @@ public class WorldServices
 	{
 		if (this.worldPools == null)
 		{
-			this.worldPools = new ArrayList<IWorldHookPool<?>>();
+			this.worldPools = new ArrayList<>();
 		}
 
 		return this.worldPools;

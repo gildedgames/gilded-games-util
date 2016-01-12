@@ -196,7 +196,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.disableBlend();
 	}
 
-	private static interface DrawInner
+	private interface DrawInner
 	{
 		void draw();
 	}

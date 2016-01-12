@@ -34,7 +34,7 @@ public class GroupServices
 	{
 		if (this.pools == null)
 		{
-			this.pools = new ArrayList<GroupPool>();
+			this.pools = new ArrayList<>();
 		}
 
 		return this.pools;
@@ -62,7 +62,7 @@ public class GroupServices
 	{
 		if (this.players == null)
 		{
-			this.players = new PlayerHookPool<GroupMember>("group", new GroupMemberFactory(), this.side);
+			this.players = new PlayerHookPool<>("group", new GroupMemberFactory(), this.side);
 		}
 
 		return this.players;

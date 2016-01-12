@@ -14,8 +14,8 @@ public class Searching
 	public static <T extends Node> T weightedAStar(ISearchProblem<T> problem, double weight)
 	{
 		T initialState = problem.start();
-		PriorityQueue<T> priorityQueue = new PriorityQueue<T>();
-		HashSet<T> visitedStates = new HashSet<T>();
+		PriorityQueue<T> priorityQueue = new PriorityQueue<>();
+		HashSet<T> visitedStates = new HashSet<>();
 
 		priorityQueue.add(initialState);
 

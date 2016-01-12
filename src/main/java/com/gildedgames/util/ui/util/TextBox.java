@@ -46,7 +46,7 @@ public class TextBox extends GuiFrame
 
 			final String[] strings = t.text.split("/n");
 
-			final List<String> stringList = new ArrayList<String>(strings.length);
+			final List<String> stringList = new ArrayList<>(strings.length);
 			Collections.addAll(stringList, strings);
 
 			for (final String string : stringList)

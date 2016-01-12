@@ -7,9 +7,9 @@ public class StepAStar<T extends Node>
 {
 	private final ISearchProblem<T> problem;
 
-	private final PriorityQueue<T> queue = new PriorityQueue<T>();
+	private final PriorityQueue<T> queue = new PriorityQueue<>();
 
-	private final HashSet<T> visitedStates = new HashSet<T>();
+	private final HashSet<T> visitedStates = new HashSet<>();
 
 	private final double hWeight;
 

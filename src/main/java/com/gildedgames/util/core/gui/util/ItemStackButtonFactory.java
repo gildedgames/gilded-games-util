@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableMap;
 public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 {
 
-	public static enum StackTypes
+	public enum StackTypes
 	{
 
 		BLOCKS
@@ -34,7 +34,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 			@Override
 			List<ItemStack> createStacks()
 			{
-				List<ItemStack> blockStacks = new ArrayList<ItemStack>();
+				List<ItemStack> blockStacks = new ArrayList<>();
 
 				for (final Block block : GameData.getBlockRegistry().typeSafeIterable())//TODO: Make sure this gets all blocks
 				{
@@ -50,7 +50,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 						continue;
 					}
 
-					List<ItemStack> subBlocks = new ArrayList<ItemStack>();
+					List<ItemStack> subBlocks = new ArrayList<>();
 
 					block.getSubBlocks(item, item.getCreativeTab(), subBlocks);
 
@@ -81,7 +81,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 			@Override
 			List<ItemStack> createStacks()
 			{
-				List<ItemStack> stacks = new ArrayList<ItemStack>();
+				List<ItemStack> stacks = new ArrayList<>();
 
 				stacks.addAll(ITEMS.createStacks());
 				stacks.addAll(BLOCKS.createStacks());
@@ -107,7 +107,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 	@Override
 	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 	{
-		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
+		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<>();
 
 		for (ItemStack stack : this.stackTypes.createStacks())
 		{
@@ -115,7 +115,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 			
 			button.events().set("description", new MinecraftHoveredDesc(GuiFactory.text(stack.getDisplayName(), Color.WHITE)));
 
-			button.events().set("draggableBehavior", new SlotStackFactory<T>(new Function<T, GuiFrame>()
+			button.events().set("draggableBehavior", new SlotStackFactory<>(new Function<T, GuiFrame>()
 			{
 
 				@Override
@@ -125,16 +125,16 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 				}
 
 			},
-			new Factory<T>()
-			{
+					new Factory<T>()
+					{
 
-				@Override
-				public T create()
-				{
-					return ItemStackButtonFactory.this.dataFactory.apply(button.getItemStack());
-				}
-				
-			}));
+						@Override
+						public T create()
+						{
+							return ItemStackButtonFactory.this.dataFactory.apply(button.getItemStack());
+						}
+
+					}));
 
 			buttons.put(stack.getUnlocalizedName(), button);
 		}
