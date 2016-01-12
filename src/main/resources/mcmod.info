@@ -1,16 +1,11 @@
 [
 {
-  "modid": "gilded-games-util",
+  "modid": "gildedgamesutil",
   "name": "Gilded Games Utility",
   "description": "A module which supports several major systems that are used between different Gilded Games projects.",
-  "version": "1.8-1.0",
+  "version": "1.8-r1",
   "mcversion": "${mcversion}",
-  "url": "www.gilded-games.com/gilded-games-util/",
-  "updateUrl": "www.gilded-games.com/gilded-games-util/",
-  "authorList": ["Gilded Games"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "url": "www.gildedgames.com/gilded-games-util/",
+  "authorList": ["Gilded Games"]
 }
 ]
