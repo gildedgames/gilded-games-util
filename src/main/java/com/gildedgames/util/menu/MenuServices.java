@@ -9,7 +9,7 @@ import java.util.List;
 public class MenuServices
 {
 
-	protected final List<IMenu> menus = new ArrayList<IMenu>();
+	protected final List<IMenu> menus = new ArrayList<>();
 	
 	protected IMenu current;	
 	
@@ -69,7 +69,7 @@ public class MenuServices
 	
 	public List<IMenu> getRegisteredMenus()
 	{
-		return new ArrayList<IMenu>(this.menus);
+		return new ArrayList<>(this.menus);
 	}
 	
 	public void setCurrentMenu(IMenu menu)

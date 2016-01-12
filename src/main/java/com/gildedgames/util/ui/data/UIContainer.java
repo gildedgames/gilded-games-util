@@ -19,7 +19,7 @@ import com.gildedgames.util.ui.data.rect.Rect;
 public class UIContainer implements Iterable<Ui>, NBT
 {
 
-	protected Map<String, Ui> elements = new LinkedHashMap<String, Ui>();
+	protected Map<String, Ui> elements = new LinkedHashMap<>();
 
 	protected Ui attachedUi;
 	
@@ -57,7 +57,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 	public Map<String, Ui> map()
 	{
-		return new LinkedHashMap<String, Ui>(this.elements);
+		return new LinkedHashMap<>(this.elements);
 	}
 
 	public boolean isEmpty()
@@ -67,7 +67,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 	public List<Gui> queryAll(Object... input)
 	{
-		List<Gui> guis = new ArrayList<Gui>();
+		List<Gui> guis = new ArrayList<>();
 
 		if (this.getAttachedUi() instanceof Gui)
 		{
@@ -130,7 +130,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 	public Rect getCombinedDimensions()
 	{
-		List<Rect> areas = new ArrayList<Rect>();
+		List<Rect> areas = new ArrayList<>();
 
 		this.addCombinedDimensions(this, areas);
 
@@ -160,7 +160,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 	{
 		UIContainer clone = new UIContainer(this.attachedUi);
 
-		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
+		clone.elements = new LinkedHashMap<>(this.elements);
 
 		return clone;
 	}

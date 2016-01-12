@@ -12,7 +12,6 @@ import com.gildedgames.util.ui.input.KeyboardInputPool;
 import com.gildedgames.util.ui.input.MouseButton;
 import com.gildedgames.util.ui.input.MouseInput;
 import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.input.MouseMotion;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

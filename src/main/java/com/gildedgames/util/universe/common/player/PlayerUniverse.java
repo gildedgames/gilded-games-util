@@ -36,7 +36,7 @@ public class PlayerUniverse implements IPlayerHook
 
 	private String universeID = UniverseAPI.instance().getMinecraftUniverseID();
 
-	private final Map<String, EntityPlayer> universeInstances = new HashMap<String, EntityPlayer>();
+	private final Map<String, EntityPlayer> universeInstances = new HashMap<>();
 
 	private final IPlayerHookPool<PlayerUniverse> pool;
 	

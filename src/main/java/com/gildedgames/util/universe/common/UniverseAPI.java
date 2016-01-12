@@ -18,9 +18,9 @@ import com.gildedgames.util.universe.common.util.IUniverseListener;
 public class UniverseAPI
 {
 
-	private final Map<String, IUniverse> universes = new HashMap<String, IUniverse>();
+	private final Map<String, IUniverse> universes = new HashMap<>();
 
-	private final List<IUniverseListener> listeners = new ArrayList<IUniverseListener>();
+	private final List<IUniverseListener> listeners = new ArrayList<>();
 
 	private final IUniverse MINECRAFT = new UniverseMinecraft();
 
@@ -113,7 +113,7 @@ public class UniverseAPI
 
 	public List<IUniverse> getUniverses()
 	{
-		return new ArrayList<IUniverse>(this.universes.values());
+		return new ArrayList<>(this.universes.values());
 	}
 
 	public String getIDFrom(IUniverse universe)

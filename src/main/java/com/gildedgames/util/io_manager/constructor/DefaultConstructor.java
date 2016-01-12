@@ -33,7 +33,7 @@ public class DefaultConstructor implements IConstructor
 
 		@SuppressWarnings("unchecked")
 		final Constructor<T> constr = (Constructor<T>) clazz.getDeclaredConstructors()[0];
-		final List<Object> params = new ArrayList<Object>();
+		final List<Object> params = new ArrayList<>();
 
 		constr.setAccessible(false);
 

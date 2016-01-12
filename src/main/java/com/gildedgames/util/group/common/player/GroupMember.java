@@ -29,9 +29,9 @@ public class GroupMember implements IPlayerHook
 
 	private boolean isDirty;
 
-	private List<Group> groups = new ArrayList<Group>();
+	private List<Group> groups = new ArrayList<>();
 
-	private List<Group> invitations = new ArrayList<Group>();
+	private List<Group> invitations = new ArrayList<>();
 
 	public GroupMember(IPlayerProfile profile, IPlayerHookPool<GroupMember> pool)
 	{
@@ -151,7 +151,7 @@ public class GroupMember implements IPlayerHook
 
 	public List<Group> groupsInFor(GroupPool pool)
 	{
-		List<Group> groups = new ArrayList<Group>();
+		List<Group> groups = new ArrayList<>();
 		for (Group group : this.groups)
 		{
 			if (group.getParentPool().equals(pool))

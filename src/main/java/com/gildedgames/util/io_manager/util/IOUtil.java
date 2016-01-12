@@ -47,7 +47,7 @@ public class IOUtil
 	{
 		int listSize = input.getInteger(key + "collectionSize");
 
-		List<T> list = new ArrayList<T>(listSize);
+		List<T> list = new ArrayList<>(listSize);
 
 		for (int count = 0; count < listSize; count++)
 		{
@@ -78,7 +78,7 @@ public class IOUtil
 	{
 		int listSize = input.getInteger(key + "arraySize");
 
-		List<T> list = new ArrayList<T>(listSize);
+		List<T> list = new ArrayList<>(listSize);
 
 		for (int count = 0; count < listSize; count++)
 		{
@@ -112,7 +112,7 @@ public class IOUtil
 
 		int listSize = inputBridge.getInteger(key + "collectionSize");
 
-		List<T> list = new ArrayList<T>(listSize);
+		List<T> list = new ArrayList<>(listSize);
 
 		for (int count = 0; count < listSize; count++)
 		{
@@ -138,7 +138,7 @@ public class IOUtil
 	{
 		int listSize = input.getInteger(key + "listSize");
 
-		List<T> list = new ArrayList<T>(listSize);
+		List<T> list = new ArrayList<>(listSize);
 
 		for (int count = 0; count < listSize; count++)
 		{
@@ -174,7 +174,7 @@ public class IOUtil
 		IOBridge inputBridge = factory.createInputBridge(input);
 		int size = inputBridge.getInteger(key + "mapSize");
 
-		Map<IO<I, O>, IO<I, O>> map = new HashMap<IO<I, O>, IO<I, O>>(size);
+		Map<IO<I, O>, IO<I, O>> map = new HashMap<>(size);
 
 		for (int count = 0; count < size; count++)
 		{
@@ -195,7 +195,7 @@ public class IOUtil
 		}
 
 		final File[] files = directory.listFiles();
-		final ArrayList<File> fileList = new ArrayList<File>();
+		final ArrayList<File> fileList = new ArrayList<>();
 
 		if (files != null)
 		{
@@ -213,7 +213,7 @@ public class IOUtil
 
 	public static List<File> getFilesWithExtension(File directory, List<String> extensions)
 	{
-		final List<File> files = new ArrayList<File>();
+		final List<File> files = new ArrayList<>();
 		for (final String string : extensions)
 		{
 			final File[] fileArray = getFilesWithExtension(directory, string);

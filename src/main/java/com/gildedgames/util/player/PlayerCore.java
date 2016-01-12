@@ -11,8 +11,6 @@ import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookR
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.server.PlayerHookSaveHandler;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,7 +30,7 @@ public class PlayerCore implements ICore
 
 	public final PlayerEventHandler playerEventHandler = new PlayerEventHandler();
 
-	private final SidedObject<PlayerServices> serviceLocator = new SidedObject<PlayerServices>(new PlayerServices(), new PlayerServices());
+	private final SidedObject<PlayerServices> serviceLocator = new SidedObject<>(new PlayerServices(), new PlayerServices());
 
 	private PlayerCore()
 	{

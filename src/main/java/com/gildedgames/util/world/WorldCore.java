@@ -45,7 +45,7 @@ public class WorldCore implements ICore
 
 		WorldServices serverLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
 
-		this.serviceLocator = new SidedObject<WorldServices>(clientLocator, serverLocator);
+		this.serviceLocator = new SidedObject<>(clientLocator, serverLocator);
 	}
 
 	@Override

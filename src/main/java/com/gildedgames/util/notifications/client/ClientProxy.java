@@ -13,7 +13,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public SidedObject<NotificationServices> createServices()
 	{
-		return new SidedObject<NotificationServices>(new NotificationServicesClient(), new NotificationServices(Side.SERVER));
+		return new SidedObject<>(new NotificationServicesClient(), new NotificationServices(Side.SERVER));
 	}
 
 	public void preInit(FMLPreInitializationEvent event)

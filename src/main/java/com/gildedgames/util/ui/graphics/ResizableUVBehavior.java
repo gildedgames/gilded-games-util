@@ -17,7 +17,7 @@ public class ResizableUVBehavior implements UVBehavior
 	
 	private final UV center;
 	
-	private final List<UVDimPair> drawnUVs = new ArrayList<UVDimPair>();
+	private final List<UVDimPair> drawnUVs = new ArrayList<>();
 	
 	private Rect lastAreaToDraw;
 	

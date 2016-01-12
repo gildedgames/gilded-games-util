@@ -12,7 +12,7 @@ import com.gildedgames.util.io_manager.util.IOUtil;
 
 public class GroupPermsDefault implements IGroupPerms
 {
-	public static enum PermissionType
+	public enum PermissionType
 	{
 		OPEN
 		{

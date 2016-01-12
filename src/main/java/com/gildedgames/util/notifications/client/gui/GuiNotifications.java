@@ -70,7 +70,7 @@ public class GuiNotifications extends GuiFrame
 		@Override
 		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
-			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
+			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<>();
 
 			for (INotificationMessage message : this.player.getNotifications())
 			{

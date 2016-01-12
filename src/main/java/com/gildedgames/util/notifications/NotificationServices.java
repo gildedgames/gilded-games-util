@@ -33,7 +33,7 @@ public class NotificationServices
 	{
 		if (this.players == null)
 		{
-			this.players = new PlayerHookPool<PlayerNotification>("group", new PlayerNotificationFactory(), this.side);
+			this.players = new PlayerHookPool<>("group", new PlayerNotificationFactory(), this.side);
 		}
 
 		return this.players;
@@ -57,7 +57,7 @@ public class NotificationServices
 			{
 				continue;
 			}
-			List<INotificationMessage> toRemove = new ArrayList<INotificationMessage>();
+			List<INotificationMessage> toRemove = new ArrayList<>();
 			for (INotificationMessage message : player.getNotifications())
 			{
 				if (!message.isRelevant())

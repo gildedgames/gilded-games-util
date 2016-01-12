@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class InstanceCore implements ICore
 {
-	private SidedObject<InstanceServices> services = new SidedObject<InstanceServices>(new InstanceServices(Side.CLIENT), new InstanceServices(Side.SERVER));
+	private SidedObject<InstanceServices> services = new SidedObject<>(new InstanceServices(Side.CLIENT), new InstanceServices(Side.SERVER));
 
 	public static InstanceCore INSTANCE = new InstanceCore();
 
@@ -39,14 +39,14 @@ public class InstanceCore implements ICore
 
 	public <T extends Instance> InstanceHandler<T> createServerInstanceHandler(InstanceFactory<T> factory)
 	{
-		InstanceHandler<T> handler = new InstanceHandler<T>(factory);
+		InstanceHandler<T> handler = new InstanceHandler<>(factory);
 		this.services.server().addHandler(handler);
 		return handler;
 	}
 
 	public <T extends Instance> InstanceHandler<T> createClientInstanceHandler(InstanceFactory<T> factory)
 	{
-		InstanceHandler<T> handler = new InstanceHandler<T>(factory);
+		InstanceHandler<T> handler = new InstanceHandler<>(factory);
 		this.services.client().addHandler(handler);
 		return handler;
 	}

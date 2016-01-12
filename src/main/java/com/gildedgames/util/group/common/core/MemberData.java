@@ -21,11 +21,11 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class MemberData implements Iterable<GroupMember>
 {
-	private final List<UUID> members = new ArrayList<UUID>();
+	private final List<UUID> members = new ArrayList<>();
 
-	private final List<UUID> invitedMembers = new ArrayList<UUID>();
+	private final List<UUID> invitedMembers = new ArrayList<>();
 
-	private List<IGroupHook> hooks = new ArrayList<IGroupHook>();
+	private List<IGroupHook> hooks = new ArrayList<>();
 
 	protected void setHooks(List<IGroupHook> hooks)
 	{
@@ -172,7 +172,7 @@ public class MemberData implements Iterable<GroupMember>
 
 	public List<GroupMember> onlineMembers()
 	{
-		List<GroupMember> onlineMembers = new ArrayList<GroupMember>();
+		List<GroupMember> onlineMembers = new ArrayList<>();
 		for (UUID uuid : this.members)
 		{
 			GroupMember member = GroupCore.locate().getPlayers().get(uuid);

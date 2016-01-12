@@ -75,8 +75,6 @@ public class ClientProxy extends ServerProxy
 		ClientRegistry.registerKeyBinding(keyBindHopUniverse);
 
 		//TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
-
-		UtilCore.registerEventHandler(new GuiIngame(Minecraft.getMinecraft()));
 	}
 
 	@Override

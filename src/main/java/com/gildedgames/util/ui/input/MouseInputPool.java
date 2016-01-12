@@ -57,7 +57,7 @@ public class MouseInputPool implements Iterable<MouseInput>
 	
 	public MouseInputPool getFrom(ButtonState state)
 	{
-		List<MouseInput> events = new ArrayList<MouseInput>();
+		List<MouseInput> events = new ArrayList<>();
 		
 		for (MouseInput event : this)
 		{
@@ -72,7 +72,7 @@ public class MouseInputPool implements Iterable<MouseInput>
 	
 	public MouseInputPool getFrom(MouseButton button)
 	{
-		List<MouseInput> events = new ArrayList<MouseInput>();
+		List<MouseInput> events = new ArrayList<>();
 		
 		for (MouseInput event : this)
 		{
@@ -87,7 +87,7 @@ public class MouseInputPool implements Iterable<MouseInput>
 	
 	public MouseInputPool getFrom(MouseMotion motion)
 	{
-		List<MouseInput> events = new ArrayList<MouseInput>();
+		List<MouseInput> events = new ArrayList<>();
 		
 		for (MouseInput event : this)
 		{

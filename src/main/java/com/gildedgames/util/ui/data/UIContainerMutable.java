@@ -54,7 +54,7 @@ public class UIContainerMutable extends UIContainer
 
 	public void remove(Ui element)
 	{
-		List<String> keysToRemove = new ArrayList<String>();
+		List<String> keysToRemove = new ArrayList<>();
 
 		for (Map.Entry<String, Ui> entry : this.elements.entrySet())
 		{
@@ -108,7 +108,7 @@ public class UIContainerMutable extends UIContainer
 	{
 		UIContainerMutable clone = new UIContainerMutable(this.attachedUi);
 
-		clone.elements = new LinkedHashMap<String, Ui>(this.elements);
+		clone.elements = new LinkedHashMap<>(this.elements);
 
 		return clone;
 	}

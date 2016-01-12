@@ -23,7 +23,7 @@ public class PlayerServices
 	{
 		if (this.playerHookPools == null)
 		{
-			this.playerHookPools = new ArrayList<IPlayerHookPool<?>>();
+			this.playerHookPools = new ArrayList<>();
 		}
 
 		return this.playerHookPools;

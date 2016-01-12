@@ -43,7 +43,7 @@ public class SlotStackFactory<T> extends GuiEvent<Gui>
 				T data = this.dataFactory.create();
 				GuiFrame icon = this.iconFactory.apply(data);
 				
-				SlotStack<T> stack = new SlotStack<T>(icon, data);
+				SlotStack<T> stack = new SlotStack<>(icon, data);
 				
 				stack.events().set("dragBehavior", new DragBehavior<T>(), stack);
 				

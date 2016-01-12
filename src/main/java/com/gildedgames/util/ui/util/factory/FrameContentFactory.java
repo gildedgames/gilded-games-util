@@ -23,7 +23,7 @@ public class FrameContentFactory implements ContentFactory<Ui>
 	@Override
 	public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 	{
-		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
+		LinkedHashMap<String, Ui> buttons = new LinkedHashMap<>();
 
 		for (int count = 0; count < this.buttonCount; count++)
 		{

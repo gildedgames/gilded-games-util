@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 public class SpawningCore implements ICore
 {
 
-	private static List<SpawnManager> spawnManagers = new ArrayList<SpawnManager>();
+	private static List<SpawnManager> spawnManagers = new ArrayList<>();
 
 	public static SpawnManager createAndRegisterSpawnManager(int dimensionId)
 	{
@@ -42,7 +42,7 @@ public class SpawningCore implements ICore
 
 	public static List<SpawnManager> getSpawnManagersFor(int dimensionId)
 	{
-		List<SpawnManager> selected = new ArrayList<SpawnManager>();
+		List<SpawnManager> selected = new ArrayList<>();
 		for (SpawnManager spawnManager : spawnManagers)
 		{
 			if (spawnManager.getDimensionId() == dimensionId)

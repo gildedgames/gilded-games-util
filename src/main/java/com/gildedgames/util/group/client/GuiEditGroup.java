@@ -57,7 +57,7 @@ public class GuiEditGroup extends GuiFrame
 		GuiPositioner positioner = new GuiPositionerList(0);
 
 		this.content().set("name", new TextElement(GuiFactory.text(this.group.getName(), Color.white, 1.3f), Dim2D.build().pos(70, 100).flush()));
-		final RadioButtonSet<PlayerButton> players = new RadioButtonSet<PlayerButton>(Pos2D.flush(), 100, positioner, new PlayersContent(this.group));
+		final RadioButtonSet<PlayerButton> players = new RadioButtonSet<>(Pos2D.flush(), 100, positioner, new PlayersContent(this.group));
 
 		ScrollableGui scrollPlayers = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), players);
 
@@ -207,7 +207,7 @@ public class GuiEditGroup extends GuiFrame
 		@Override
 		public LinkedHashMap<String, PlayerButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
-			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<String, PlayerButton>();
+			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<>();
 			for (GroupMember member : this.group.getMemberData().onlineMembers())
 			{
 				buttons.put(member.getProfile().getUsername(), new PlayerButton(member.getProfile().getUUID(), member.getProfile().getUsername()));

@@ -28,7 +28,7 @@ public class GuiSorterSearch implements GuiSorter
 			return list;
 		}
 		
-		List<Gui> result = new ArrayList<Gui>();
+		List<Gui> result = new ArrayList<>();
 
 		for (Gui view : list)
 		{

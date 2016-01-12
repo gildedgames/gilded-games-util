@@ -10,8 +10,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.Arrays;
-
 public class TabUniverseHopper extends TabGeneric
 {
 	

@@ -1,7 +1,6 @@
 package com.gildedgames.util.spawning;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import net.minecraft.entity.Entity;

@@ -48,7 +48,7 @@ public class GuiGroups extends GuiFrame
 		GuiPositioner positioner = new GuiPositionerList(0);
 
 		//buttons.put("title", new TextElement(GuiFactory.text(UtilCore.translate("gui.grouplist"), Color.white, 2.3f), Pos2D.flush(), false));
-		final RadioButtonSet<GroupButton> groups = new RadioButtonSet<GroupButton>(Pos2D.flush(), 100, positioner, new GroupsButtonContent());
+		final RadioButtonSet<GroupButton> groups = new RadioButtonSet<>(Pos2D.flush(), 100, positioner, new GroupsButtonContent());
 
 		ScrollableGui scrollGroups = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), groups);
 
@@ -103,7 +103,7 @@ public class GuiGroups extends GuiFrame
 		@Override
 		public LinkedHashMap<String, GroupButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
-			LinkedHashMap<String, GroupButton> buttons = new LinkedHashMap<String, GroupButton>();
+			LinkedHashMap<String, GroupButton> buttons = new LinkedHashMap<>();
 			for (Group group : GroupCore.locate().getDefaultPool().getGroups())
 			{
 				if (group.getPermissions().isVisible(group))

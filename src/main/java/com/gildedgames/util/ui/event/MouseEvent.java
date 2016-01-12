@@ -15,7 +15,7 @@ public abstract class MouseEvent extends GuiEvent
 
 	private final Collection<MouseInput> eventList;
 	
-	private final List<MouseInputBehavior> behaviors = new ArrayList<MouseInputBehavior>();
+	private final List<MouseInputBehavior> behaviors = new ArrayList<>();
 	
 	protected int scrollDifference;
 	

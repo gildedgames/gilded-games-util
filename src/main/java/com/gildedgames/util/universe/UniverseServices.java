@@ -32,7 +32,7 @@ public class UniverseServices
 	{
 		if (this.players == null)
 		{
-			this.players = new PlayerHookPool<PlayerUniverse>("universe", new PlayerUniverseFactory(), this.side);
+			this.players = new PlayerHookPool<>("universe", new PlayerUniverseFactory(), this.side);
 		}
 
 		return this.players;

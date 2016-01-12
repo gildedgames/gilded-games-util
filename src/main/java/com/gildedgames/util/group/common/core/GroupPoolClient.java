@@ -159,7 +159,7 @@ public class GroupPoolClient extends GroupPool
 
 	private List<IGroupPoolListenerClient<?>> getClientListeners()
 	{
-		List<IGroupPoolListenerClient<?>> listeners = new ArrayList<IGroupPoolListenerClient<?>>();
+		List<IGroupPoolListenerClient<?>> listeners = new ArrayList<>();
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
 			if (listener instanceof IGroupPoolListenerClient)

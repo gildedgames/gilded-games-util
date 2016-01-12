@@ -47,7 +47,7 @@ public class GuiNotification extends GuiFrame
 		GuiPositioner positioner = new GuiPositionerList(0);
 		ContentFactory<Ui> content = new NotificationContent(this.message);
 
-		GuiCollection<Ui> notifications = new GuiCollection<Ui>(Pos2D.flush(), 100, positioner, content);
+		GuiCollection<Ui> notifications = new GuiCollection<>(Pos2D.flush(), 100, positioner, content);
 
 		ScrollableGui scrollNotifications = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), notifications);
 
@@ -66,7 +66,7 @@ public class GuiNotification extends GuiFrame
 		@Override
 		public LinkedHashMap<String, Ui> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
-			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<String, Ui>();
+			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<>();
 			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Dim2D.flush()));
 
 			String senderName = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(this.message.getSender()).getGameProfile().getName();

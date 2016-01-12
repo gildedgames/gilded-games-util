@@ -17,7 +17,7 @@ import com.gildedgames.util.ui.util.transform.GuiPositioner;
 public class RadioButtonSet<T extends RadioButton> extends GuiCollection<T>
 {
 
-	private List<T> buttons = new ArrayList<T>();
+	private List<T> buttons = new ArrayList<>();
 
 	public RadioButtonSet(GuiPositioner positioner, ContentFactory<T>... contentProviders)
 	{

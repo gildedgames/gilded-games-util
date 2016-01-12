@@ -26,8 +26,8 @@ public class CSPSolver
 	{
 		//Initialize
 		Collection<? extends IConstraint<VAR>> constraints = problem.constraints();
-		Map<VAR, List<Object>> domains = new HashMap<VAR, List<Object>>(problem.variables().size());
-		Multigraph<VAR, IConstraint<VAR>> graph = new Multigraph<VAR, IConstraint<VAR>>(new EdgeFactory<VAR, IConstraint<VAR>>()
+		Map<VAR, List<Object>> domains = new HashMap<>(problem.variables().size());
+		Multigraph<VAR, IConstraint<VAR>> graph = new Multigraph<>(new EdgeFactory<VAR, IConstraint<VAR>>()
 		{
 			@Override
 			public IConstraint<VAR> createEdge(VAR sourceVertex, VAR targetVertex)
@@ -41,10 +41,10 @@ public class CSPSolver
 			graph.addVertex(var);
 		}
 
-		Set<IConstraint<VAR>> addedConstraints = new HashSet<IConstraint<VAR>>();
+		Set<IConstraint<VAR>> addedConstraints = new HashSet<>();
 		for (VAR var : problem.variables())
 		{
-			List<Object> domain = new ArrayList<Object>(problem.domain(var));
+			List<Object> domain = new ArrayList<>(problem.domain(var));
 			domains.put(var, domain);
 			for (IConstraint<VAR> constraint : constraints)
 			{
@@ -95,8 +95,8 @@ public class CSPSolver
 	{
 		Collection<? extends VAR> vars = problem.variables();
 
-		List<VAR> assigned = new ArrayList<VAR>();
-		List<VAR> unassigned = new ArrayList<VAR>();
+		List<VAR> assigned = new ArrayList<>();
+		List<VAR> unassigned = new ArrayList<>();
 		for (VAR var : vars)
 		{
 			int domainSize = domains.get(var).size();
@@ -116,7 +116,7 @@ public class CSPSolver
 
 		if (unassigned.isEmpty())
 		{
-			Map<VAR, Object> result = new HashMap<VAR, Object>(vars.size());
+			Map<VAR, Object> result = new HashMap<>(vars.size());
 			for (VAR var : vars)
 			{
 				result.put(var, domains.get(var).get(0));
@@ -134,7 +134,7 @@ public class CSPSolver
 		{
 			var = problem.selectNextVar(unassigned, domains, lastAssigned);
 		}
-		List<IConstraint<VAR>> toCheck = new ArrayList<IConstraint<VAR>>();
+		List<IConstraint<VAR>> toCheck = new ArrayList<>();
 
 		//Find the constraints that have this var in its scope
 		for (IConstraint<VAR> constraint : problem.constraints())
@@ -176,10 +176,10 @@ public class CSPSolver
 			{
 				continue;
 			}
-			Map<VAR, List<Object>> newDomains = new HashMap<VAR, List<Object>>(domains.size());
+			Map<VAR, List<Object>> newDomains = new HashMap<>(domains.size());
 			for (Entry<VAR, List<Object>> entry : domains.entrySet())
 			{
-				newDomains.put(entry.getKey(), new ArrayList<Object>(entry.getValue()));
+				newDomains.put(entry.getKey(), new ArrayList<>(entry.getValue()));
 			}
 
 			//Remove everything from the domain except the chosen value.

@@ -34,17 +34,17 @@ public class UiServices
 
 	private GuiFrame currentFrame;
 
-	private List<GuiFrame> openingFrames = new ArrayList<GuiFrame>();
+	private List<GuiFrame> openingFrames = new ArrayList<>();
 
-	private List<GuiFrame> closingFrames = new ArrayList<GuiFrame>();
+	private List<GuiFrame> closingFrames = new ArrayList<>();
 
-	private Map<String, Overlay> overlays = new LinkedHashMap<String, Overlay>();
+	private Map<String, Overlay> overlays = new LinkedHashMap<>();
 
-	private Map<String, RegisteredOverlay> registeredOverlays = new LinkedHashMap<String, RegisteredOverlay>();
+	private Map<String, RegisteredOverlay> registeredOverlays = new LinkedHashMap<>();
 
-	public static enum RenderOrder
+	public enum RenderOrder
 	{
-		PRE, POST;
+		PRE, POST
 	}
 
 	public static class RegisteredOverlay extends Overlay

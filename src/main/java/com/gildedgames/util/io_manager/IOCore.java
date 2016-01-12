@@ -28,7 +28,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 
 	private static final IOCore INSTANCE = new IOCore();
 
-	private final List<IOManager> internalManagers = new ArrayList<IOManager>();
+	private final List<IOManager> internalManagers = new ArrayList<>();
 
 	private final SidedObject<List<IOSyncableDispatcher>> syncableDispatchers = new SidedObject<List<IOSyncableDispatcher>>(new ArrayList<IOSyncableDispatcher>(), new ArrayList<IOSyncableDispatcher>());
 

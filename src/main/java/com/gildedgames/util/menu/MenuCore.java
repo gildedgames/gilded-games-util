@@ -22,7 +22,7 @@ public class MenuCore implements ICore
 
 	public static final IMenu MINECRAFT_MENU = new MenuMinecraft();
 
-	private final SidedObject<MenuServices> serviceLocator = new SidedObject<MenuServices>(new MenuServices(), new MenuServices());
+	private final SidedObject<MenuServices> serviceLocator = new SidedObject<>(new MenuServices(), new MenuServices());
 
 	public MenuCore()
 	{

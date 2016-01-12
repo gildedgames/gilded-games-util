@@ -20,7 +20,7 @@ public enum TabAPI
 
 	INSTANCE;
 
-	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<Integer, ITabGroupHandler>();
+	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<>();
 
 	private ITabGroupHandler activeGroup;
 

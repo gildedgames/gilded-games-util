@@ -19,9 +19,9 @@ import com.gildedgames.util.ui.input.InputProvider;
 public class ModDim2D implements Rect
 {
 
-	private List<RectModifier> modifiers = new ArrayList<RectModifier>();
+	private List<RectModifier> modifiers = new ArrayList<>();
 
-	private List<RectListener> listeners = new ArrayList<RectListener>();
+	private List<RectListener> listeners = new ArrayList<>();
 
 	/**
 	 * Originalstate: Non-modified rectangle value without modifiers, the base values
@@ -121,8 +121,8 @@ public class ModDim2D implements Rect
 
 	public ModDim2D set(ModDim2D modDim)
 	{
-		this.modifiers = new ArrayList<RectModifier>(modDim.modifiers);
-		this.listeners = new ArrayList<RectListener>(modDim.listeners);
+		this.modifiers = new ArrayList<>(modDim.modifiers);
+		this.listeners = new ArrayList<>(modDim.listeners);
 		this.originalState = modDim.originalState;
 		this.modifiedState = modDim.modifiedState;
 		this.buildInto.set(this.originalState);
@@ -221,7 +221,7 @@ public class ModDim2D implements Rect
 
 	public static List<ModifierType> getChangedTypes(Rect r1, Rect r2)
 	{
-		List<ModifierType> types = new ArrayList<ModifierType>();
+		List<ModifierType> types = new ArrayList<>();
 		if (r1.x() != r2.x())
 		{
 			types.add(ModifierType.X);
@@ -271,7 +271,7 @@ public class ModDim2D implements Rect
 			return this;
 		}
 
-		List<ModifierType> list = new ArrayList<ModifierType>();
+		List<ModifierType> list = new ArrayList<>();
 		Collections.addAll(list, types);
 
 		final List<ModifierType> filteredTypes = this.filterModifierTypes(list);
@@ -363,7 +363,7 @@ public class ModDim2D implements Rect
 
 	private List<ModifierType> toList(ModifierType manda, ModifierType... types)
 	{
-		List<ModifierType> list = new ArrayList<ModifierType>();
+		List<ModifierType> list = new ArrayList<>();
 		list.add(manda);
 		Collections.addAll(list, types);
 		return list;

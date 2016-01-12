@@ -14,25 +14,25 @@ public class DoubleKeyMap<K, V>
 
 	public DoubleKeyMap()
 	{
-		this.map = new HashMap<Tuple<K, K>, V>();
+		this.map = new HashMap<>();
 	}
 
 	public DoubleKeyMap(int capacity)
 	{
-		this.map = new HashMap<Tuple<K, K>, V>(capacity);
+		this.map = new HashMap<>(capacity);
 	}
 
 	public V put(K key1, K key2, V value)
 	{
 		V old = this.remove(key1, key2);
-		this.map.put(new Tuple<K, K>(key1, key2), value);
+		this.map.put(new Tuple<>(key1, key2), value);
 		return old;
 	}
 
 	public V get(K key1, K key2)
 	{
-		Tuple<K, K> t1 = new Tuple<K, K>(key1, key2);
-		Tuple<K, K> t2 = new Tuple<K, K>(key2, key1);
+		Tuple<K, K> t1 = new Tuple<>(key1, key2);
+		Tuple<K, K> t2 = new Tuple<>(key2, key1);
 		if (this.map.containsKey(t1))
 		{
 			return this.map.get(t1);
@@ -42,8 +42,8 @@ public class DoubleKeyMap<K, V>
 
 	public V remove(K key1, K key2)
 	{
-		Tuple<K, K> t1 = new Tuple<K, K>(key1, key2);
-		Tuple<K, K> t2 = new Tuple<K, K>(key2, key1);
+		Tuple<K, K> t1 = new Tuple<>(key1, key2);
+		Tuple<K, K> t2 = new Tuple<>(key2, key1);
 		if (this.map.containsKey(t1))
 		{
 			return this.map.remove(t1);
@@ -53,8 +53,8 @@ public class DoubleKeyMap<K, V>
 
 	public boolean containsKey(K key1, K key2)
 	{
-		Tuple<K, K> t1 = new Tuple<K, K>(key1, key2);
-		Tuple<K, K> t2 = new Tuple<K, K>(key2, key1);
+		Tuple<K, K> t1 = new Tuple<>(key1, key2);
+		Tuple<K, K> t2 = new Tuple<>(key2, key1);
 		return this.map.containsKey(t1) || this.map.containsKey(t2);
 	}
 }

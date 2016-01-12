@@ -54,7 +54,7 @@ public class ObjectFilter
 	@SuppressWarnings("unchecked")
 	public static <T, K> Map<K, T> getTypesFromKeys(Map<?, ?> map, Class<? extends K> keyClass, Class<? extends T> typeClass)
 	{
-		Map<K, T> returnMap = new HashMap<K, T>();
+		Map<K, T> returnMap = new HashMap<>();
 
 		for (Map.Entry<?, ?> entry : map.entrySet())
 		{
@@ -73,7 +73,7 @@ public class ObjectFilter
 	@SuppressWarnings("unchecked")
 	public static <T, K> Map<K, T> getTypesFromValues(Map<?, ?> map, Class<? extends K> keyClass, Class<? extends T> typeClass)
 	{
-		Map<K, T> returnMap = new HashMap<K, T>();
+		Map<K, T> returnMap = new HashMap<>();
 
 		for (Map.Entry<?, ?> entry : map.entrySet())
 		{
@@ -97,7 +97,7 @@ public class ObjectFilter
 	@SuppressWarnings("unchecked")
 	public static <T> List<T> getTypesFrom(Collection<?> list, Class<? extends T> typeClass)
 	{
-		List<T> returnList = new ArrayList<T>();
+		List<T> returnList = new ArrayList<>();
 
 		for (Object obj : list)
 		{
@@ -112,7 +112,7 @@ public class ObjectFilter
 
 	public static <T> List<T> getTypesFrom(Collection<T> list, FilterCondition<T> condition)
 	{
-		List<T> returnList = new ArrayList<T>();
+		List<T> returnList = new ArrayList<>();
 
 		for (T obj : list)
 		{
