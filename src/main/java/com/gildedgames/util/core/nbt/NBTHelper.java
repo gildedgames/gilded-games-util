@@ -215,7 +215,7 @@ public class NBTHelper
 
 	public static ItemStack[] decodeStackList(NBTTagList tagList)
 	{
-		ItemStack stackList[] = new ItemStack[8];
+		ItemStack stackList[] = new ItemStack[tagList.tagCount()];
 
 		for (int i = 0; i < tagList.tagCount(); ++i)
 		{
