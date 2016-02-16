@@ -2,7 +2,7 @@ package com.gildedgames.util.group.common.core;
 
 import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.io.ByteBufBridge;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
+		this.pool = GroupModule.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
 		this.groupInfo = (new ByteBufBridge(buf)).getIO("");
 	}
 

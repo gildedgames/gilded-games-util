@@ -3,7 +3,7 @@ package com.gildedgames.util.notifications.common.core;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.notifications.NotificationModule;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
 
 import net.minecraft.client.Minecraft;
@@ -39,7 +39,7 @@ public class NotificationQueue
 
 	private PlayerNotification thePlayer()
 	{
-		return NotificationCore.getPlayerNotifications(Minecraft.getMinecraft().thePlayer);
+		return NotificationModule.getPlayerNotifications(Minecraft.getMinecraft().thePlayer);
 	}
 
 	public INotification activeNotification()

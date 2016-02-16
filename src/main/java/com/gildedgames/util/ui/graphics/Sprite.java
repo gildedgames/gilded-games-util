@@ -2,7 +2,7 @@ package com.gildedgames.util.ui.graphics;
 
 import java.awt.image.BufferedImage;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.ui.data.AssetLocation;
 
 public class Sprite
@@ -27,7 +27,7 @@ public class Sprite
 
 		if (calculateArea)
 		{
-			BufferedImage image = UtilCore.locate().getBufferedImage(asset);
+			BufferedImage image = UtilModule.locate().getBufferedImage(asset);
 
 			this.uv = UV.build().width(image.getWidth()).height(image.getHeight()).flush();
 
@@ -58,7 +58,7 @@ public class Sprite
 		
 		if (calculateArea)
 		{
-			BufferedImage image = UtilCore.locate().getBufferedImage(asset);
+			BufferedImage image = UtilModule.locate().getBufferedImage(asset);
 
 			this.assetWidth = image.getWidth();
 			this.assetHeight = image.getHeight();

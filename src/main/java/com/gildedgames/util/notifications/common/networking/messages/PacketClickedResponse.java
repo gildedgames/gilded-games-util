@@ -1,9 +1,9 @@
 package com.gildedgames.util.notifications.common.networking.messages;
 
 import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.notifications.NotificationModule;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.core.INotificationResponse;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
@@ -31,13 +31,13 @@ public class PacketClickedResponse extends CustomPacket<PacketClickedResponse>
 	{
 		this.notification = notification;
 		this.responseIndex = responseIndex;
-		this.player = NotificationCore.getPlayerNotifications(notification.getReceiver());
+		this.player = NotificationModule.getPlayerNotifications(notification.getReceiver());
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.player = NotificationCore.getPlayerNotifications(IOUtil.readUUID(buf));
+		this.player = NotificationModule.getPlayerNotifications(IOUtil.readUUID(buf));
 		this.notification = this.player.getFromKey(ByteBufUtils.readUTF8String(buf));
 		this.responseIndex = buf.readInt();
 	}
@@ -63,7 +63,7 @@ public class PacketClickedResponse extends CustomPacket<PacketClickedResponse>
 		if (response.onClicked(player))
 		{
 			message.player.removeNotification(message.notification);
-			UtilCore.NETWORK.sendTo(new PacketRemoveMessage(message.notification), (EntityPlayerMP) player);
+			UtilModule.NETWORK.sendTo(new PacketRemoveMessage(message.notification), (EntityPlayerMP) player);
 		}
 	}
 

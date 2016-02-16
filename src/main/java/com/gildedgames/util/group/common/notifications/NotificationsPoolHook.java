@@ -2,13 +2,13 @@ package com.gildedgames.util.group.common.notifications;
 
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupInfo;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.notifications.NotificationModule;
 
 /**
  * Client sided only. Sends notifications to the player to
@@ -40,11 +40,11 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	{
 		if (!infoOld.getName().equals(infoNew.getName()))
 		{
-			this.sendPopup(UtilCore.translate("group.namechanged") + " " + infoNew.getName(), this.getOwner(group));
+			this.sendPopup(UtilModule.translate("group.namechanged") + " " + infoNew.getName(), this.getOwner(group));
 		}
 		else
 		{
-			this.sendPopup(UtilCore.translate("group.changedperms") + " " + UtilCore.translate(infoNew.getPermissions().getName()), this.getOwner(group));
+			this.sendPopup(UtilModule.translate("group.changedperms") + " " + UtilModule.translate(infoNew.getPermissions().getName()), this.getOwner(group));
 		}
 	}
 
@@ -52,43 +52,43 @@ public class NotificationsPoolHook implements IGroupPoolListenerClient<Notificat
 	{
 		if (group.getPermissions() instanceof GroupPermsDefault)
 		{
-			return GroupCore.locate().getPlayers().get(group.getPermissions().owner()).getProfile().getUUID();
+			return GroupModule.locate().getPlayers().get(group.getPermissions().owner()).getProfile().getUUID();
 		}
 		return null;
 	}
 
 	private void sendPopup(String message)
 	{
-		this.sendPopup(message, UtilCore.proxy.getPlayer().getGameProfile().getId());
+		this.sendPopup(message, UtilModule.proxy.getPlayer().getGameProfile().getId());
 	}
 
 	private void sendPopup(String message, UUID uuid)
 	{
-		NotificationCore.sendPopup(message, uuid, UtilCore.proxy.getPlayer().getGameProfile().getId());
+		NotificationModule.sendPopup(message, uuid, UtilModule.proxy.getPlayer().getGameProfile().getId());
 	}
 
 	@Override
 	public void onJoin(Group group)
 	{
-		this.sendPopup(UtilCore.translate("group.joined" + " " + group.getName()));
+		this.sendPopup(UtilModule.translate("group.joined" + " " + group.getName()));
 	}
 
 	@Override
 	public void onLeave(Group group)
 	{
-		this.sendPopup(UtilCore.translate("group.left" + " " + group.getName()));
+		this.sendPopup(UtilModule.translate("group.left" + " " + group.getName()));
 	}
 
 	@Override
 	public void onInvited(Group group, UUID inviter)
 	{
-		NotificationCore.sendNotification(new NotificationMessageInvited(inviter, UtilCore.proxy.getPlayer().getGameProfile().getId(), group));
+		NotificationModule.sendNotification(new NotificationMessageInvited(inviter, UtilModule.proxy.getPlayer().getGameProfile().getId(), group));
 	}
 
 	@Override
 	public void onInviteRemoved(Group group)
 	{
-		this.sendPopup(UtilCore.translate("group.inviteremoved") + " " + group.getName());
+		this.sendPopup(UtilModule.translate("group.inviteremoved") + " " + group.getName());
 	}
 
 }

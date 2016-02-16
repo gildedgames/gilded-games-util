@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapper;
@@ -152,7 +152,7 @@ public class UiServices
 			RenderOrder renderOrder = overlay.getRenderOrder();
 			//TODO: renderOrder isn't used
 
-			UiCore.locate().overlay(uniqueSaveName, factory.create(), viewer);
+			UiModule.locate().overlay(uniqueSaveName, factory.create(), viewer);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class UiServices
 		{
 			String uniqueSaveName = entry.getKey();
 
-			UiCore.locate().removeOverlay(uniqueSaveName);
+			UiModule.locate().removeOverlay(uniqueSaveName);
 		}
 	}
 
@@ -314,7 +314,7 @@ public class UiServices
 		}
 		else
 		{
-			this.saveLocation = new File(UtilCore.getWorldDirectory(), "mod-config\\ui\\");
+			this.saveLocation = new File(UtilModule.getWorldDirectory(), "mod-config\\ui\\");
 		}
 	}
 

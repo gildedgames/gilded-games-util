@@ -3,14 +3,14 @@ package com.gildedgames.util.notifications.client.gui;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.core.INotificationResponse;
 import com.gildedgames.util.notifications.common.networking.messages.PacketClickedResponse;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -71,7 +71,7 @@ public class GuiNotification extends GuiFrame
 
 			String senderName = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(this.message.getSender()).getGameProfile().getName();
 
-			buttons.put("sender", new TextElement(GuiFactory.text(UtilCore.translate("gui.from") + senderName, Color.YELLOW), Dim2D.flush()));
+			buttons.put("sender", new TextElement(GuiFactory.text(UtilModule.translate("gui.from") + senderName, Color.YELLOW), Dim2D.flush()));
 			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));
 
 			int i = 0;
@@ -81,7 +81,7 @@ public class GuiNotification extends GuiFrame
 				i++;
 			}
 
-			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), UtilCore.translate("gui.back"))
+			buttons.put("back", new MinecraftButton(Dim2D.build().area(175, 20).flush(), UtilModule.translate("gui.back"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -89,7 +89,7 @@ public class GuiNotification extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
-						UiCore.locate().open("", new MinecraftGui(new GuiNotifications(Minecraft.getMinecraft().thePlayer)));
+						UiModule.locate().open("", new MinecraftGui(new GuiNotifications(Minecraft.getMinecraft().thePlayer)));
 					}
 				}
 			});
@@ -128,8 +128,8 @@ public class GuiNotification extends GuiFrame
 			super.onMouseInput(pool, input);
 			if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 			{
-				UtilCore.NETWORK.sendToServer(new PacketClickedResponse(this.message, this.index));
-				this.response.openScreenAfterClicked(UiCore.locate().getGuiScreen());
+				UtilModule.NETWORK.sendToServer(new PacketClickedResponse(this.message, this.index));
+				this.response.openScreenAfterClicked(UiModule.locate().getGuiScreen());
 			}
 		}
 	}

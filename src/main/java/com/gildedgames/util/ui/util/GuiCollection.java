@@ -153,9 +153,8 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 	private List<Gui> getSortedViews()
 	{
 		List<Gui> filteredViews = ObjectFilter.getTypesFrom(this.events().elements(), Gui.class);
-		List<Gui> sortedViews = this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 
-		return sortedViews;
+		return this.sorter != null ? this.sorter.sortList(filteredViews) : filteredViews;
 	}
 
 	@Override

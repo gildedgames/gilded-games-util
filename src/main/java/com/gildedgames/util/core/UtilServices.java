@@ -32,11 +32,6 @@ public class UtilServices
 
 	private static final String MANAGER_NAME = "GildedGamesUtil";
 
-	public UtilServices()
-	{
-
-	}
-
 	private void startIOManager()
 	{
 		this.io = new IOManagerDefault(MANAGER_NAME);
@@ -120,7 +115,7 @@ public class UtilServices
 	{
 		try
 		{
-			return ImageIO.read(UtilCore.locate().getStreamFromAsset(asset));
+			return ImageIO.read(UtilModule.locate().getStreamFromAsset(asset));
 		}
 		catch (IOException e)
 		{

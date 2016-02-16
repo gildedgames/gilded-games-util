@@ -1,8 +1,8 @@
 package com.gildedgames.util.tab.common.networking.packet;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.tab.common.TabAPI;
+import com.gildedgames.util.tab.TabModule;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
 import com.gildedgames.util.tab.common.util.ITabGroupHandler;
@@ -30,7 +30,7 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 	public PacketOpenTab(ITab tab)
 	{
 
-		for (Object o : TabAPI.INSTANCE.getRegisteredTabGroups().entrySet())
+		for (Object o : TabModule.api().getRegisteredTabGroups().entrySet())
 		{
 			Map.Entry<Integer, TabGroupHandler> pairs = (Map.Entry) o;
 
@@ -98,9 +98,9 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 		{
 			EntityPlayerMP entityPlayer = (EntityPlayerMP) player;
 
-			if (this.tabGroupIndex < TabAPI.INSTANCE.getRegisteredTabGroups().size())
+			if (this.tabGroupIndex < TabModule.api().getRegisteredTabGroups().size())
 			{
-				ITabGroupHandler tabGroupHandler = TabAPI.INSTANCE.getRegisteredTabGroups().get(this.tabGroupIndex);
+				ITabGroupHandler tabGroupHandler = TabModule.api().getRegisteredTabGroups().get(this.tabGroupIndex);
 				
 				if (tabGroupHandler == null)
 				{
@@ -125,7 +125,7 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 						entityPlayer.openContainer = container;
 						entityPlayer.openContainer.windowId = windowID;
 	
-						UtilCore.NETWORK.sendTo(new PacketOpenTab(this.tabGroupIndex, this.tabIndex, windowID), entityPlayer);
+						UtilModule.NETWORK.sendTo(new PacketOpenTab(this.tabGroupIndex, this.tabIndex, windowID), entityPlayer);
 					}
 					
 					tab.onOpen(player);

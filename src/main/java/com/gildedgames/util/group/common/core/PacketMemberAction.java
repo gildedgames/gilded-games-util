@@ -1,7 +1,7 @@
 package com.gildedgames.util.group.common.core;
 
 import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
@@ -31,7 +31,7 @@ public abstract class PacketMemberAction<T extends PacketMemberAction<T>> extend
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = GroupCore.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
+		this.pool = GroupModule.locate().getPoolFromID(ByteBufUtils.readUTF8String(buf));
 		this.group = this.pool.get(IOUtil.readUUID(buf));
 		this.member = GroupMember.get(IOUtil.readUUID(buf));
 	}

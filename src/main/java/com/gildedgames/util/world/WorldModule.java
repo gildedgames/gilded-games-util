@@ -1,8 +1,8 @@
 package com.gildedgames.util.world;
 
-import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.world.common.IWorldHook;
 import com.gildedgames.util.world.common.IWorldHookPool;
 import com.gildedgames.util.world.common.WorldEventHandler;
@@ -12,29 +12,24 @@ import com.gildedgames.util.world.common.world.WorldMinecraftFactoryServer;
 
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
-public class WorldCore implements ICore
+public class WorldModule extends Module
 {
 
-	public static final WorldCore INSTANCE = new WorldCore();
+	public static final WorldModule INSTANCE = new WorldModule();
 
 	//Change the factories here to use different IWorlds throughout the workspace
 	private final SidedObject<WorldServices> serviceLocator;
 
 	private final WorldEventHandler worldEventHandler = new WorldEventHandler();
 
-	public WorldCore()
+	public WorldModule()
 	{
 		WorldServices clientLocator = null;
 
-		if (UtilCore.isServer())
+		if (UtilModule.isServer())
 		{
 			clientLocator = new WorldServices(false, new WorldMinecraftFactoryServer());
 		}
@@ -49,21 +44,9 @@ public class WorldCore implements ICore
 	}
 
 	@Override
-	public void preInit(FMLPreInitializationEvent event)
-	{
-
-	}
-
-	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		UtilCore.registerEventHandler(this.worldEventHandler);
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-
+		UtilModule.registerEventHandler(this.worldEventHandler);
 	}
 
 	@Override
@@ -74,35 +57,10 @@ public class WorldCore implements ICore
 	}
 
 	@Override
-	public void serverStopping(FMLServerStoppingEvent event)
-	{
-
-	}
-
-	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
 		this.serviceLocator.client().reset();
 		this.serviceLocator.server().reset();
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarted(FMLServerStartedEvent event)
-	{
-
-	}
-
-	@Override
-	public void flushData()
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
@@ -69,7 +69,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	protected void addGroupDirectly(Group group)
 	{
-		UtilCore.debugPrint("Adding group " + group.getName());
+		UtilModule.debugPrint("Adding group " + group.getName());
 		this.groups.put(group.getUUID(), group);
 		for (IGroupPoolListener<?> listener : this.listeners)
 		{
@@ -79,7 +79,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 
 	protected void removeGroupDirectly(Group group)
 	{
-		UtilCore.debugPrint("Removing group " + group.getName());
+		UtilModule.debugPrint("Removing group " + group.getName());
 		this.groups.remove(group);
 		if (group.hasMemberData())
 		{
@@ -100,7 +100,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	 */
 	protected void changeGroupInfoDirectly(Group group, GroupInfo groupInfo)
 	{
-		UtilCore.debugPrint("Changing info of group " + group.getName());
+		UtilModule.debugPrint("Changing info of group " + group.getName());
 		GroupInfo infoOld = group.getGroupInfo();
 		group.setGroupInfo(groupInfo);
 		for (IGroupPoolListener<?> listener : this.listeners)
@@ -112,7 +112,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void addMemberDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilCore.debugPrint("Adding member " + member.getProfile().getUsername() + " to group " + group.getName());
+		UtilModule.debugPrint("Adding member " + member.getProfile().getUsername() + " to group " + group.getName());
 		member.joinGroup(group);
 		group.getMemberData().join(member);
 	}
@@ -120,7 +120,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void removeMemberDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilCore.debugPrint("Removing member " + member.getProfile().getUsername() + " from group " + group.getName());
+		UtilModule.debugPrint("Removing member " + member.getProfile().getUsername() + " from group " + group.getName());
 		member.leaveGroup(group);
 		group.getMemberData().leave(member);
 	}
@@ -128,7 +128,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void inviteDirectly(Group group, GroupMember member, GroupMember inviter)
 	{
 		this.assertHasMemberData(group);
-		UtilCore.debugPrint("Inviting member " + member.getProfile().getUsername() + " to group " + group.getName());
+		UtilModule.debugPrint("Inviting member " + member.getProfile().getUsername() + " to group " + group.getName());
 		group.getMemberData().invite(member);
 		member.addInvite(group);
 	}
@@ -136,7 +136,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void removeInvitationDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilCore.debugPrint("Removing invitation of member " + member.getProfile().getUsername() + " from group " + group.getName());
+		UtilModule.debugPrint("Removing invitation of member " + member.getProfile().getUsername() + " from group " + group.getName());
 		group.getMemberData().removeInvitation(member);
 		member.removeInvite(group);
 	}
@@ -167,7 +167,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	{
 		if (!this.groups.containsKey(group.getUUID()))
 		{
-			UtilCore.print("Trying to manage group that is not in this pool: " + group.getName());
+			UtilModule.print("Trying to manage group that is not in this pool: " + group.getName());
 			return false;
 		}
 		return true;
@@ -177,7 +177,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	{
 		if (!group.hasMemberData() || !group.getMemberData().contains(player))
 		{
-			UtilCore.print("Member is not in the group like excepted. Group: " + group.getName() + " player: " + GroupCore.locate().getPlayers().get(player).getProfile().getUsername());
+			UtilModule.print("Member is not in the group like excepted. Group: " + group.getName() + " player: " + GroupModule.locate().getPlayers().get(player).getProfile().getUsername());
 			return false;
 		}
 		return true;

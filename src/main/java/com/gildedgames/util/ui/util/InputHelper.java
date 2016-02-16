@@ -2,9 +2,9 @@ package com.gildedgames.util.ui.util;
 
 import java.util.List;
 
+import com.gildedgames.util.ui.UiModule;
 import org.lwjgl.opengl.Display;
 
-import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -32,9 +32,9 @@ public class InputHelper
 			prevMouseX = input.getMouseX();
 			prevMouseY = input.getMouseY();
 			
-			if (UiCore.locate().hasFrame())
+			if (UiModule.locate().hasFrame())
 			{
-				GuiFrame frame = UiCore.locate().getCurrentFrame();
+				GuiFrame frame = UiModule.locate().getCurrentFrame();
 				
 				List<Gui> guis = frame.seekContent().queryAll();
 				
@@ -61,12 +61,7 @@ public class InputHelper
 	
 	public static boolean isInsideScreen(InputProvider input, Rect rect)
 	{
-		if (rect.maxX() > input.getScreenWidth() || rect.maxY() > input.getScreenHeight())
-		{
-			return false;
-		}
-		
-		return true;
+		return !(rect.maxX() > input.getScreenWidth() || rect.maxY() > input.getScreenHeight());
 	}
 	
 	public static Pos2D convertToOpenGL(InputProvider input, Pos2D pos)

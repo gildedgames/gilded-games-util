@@ -1,6 +1,6 @@
 package com.gildedgames.util.core.util;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -106,7 +106,7 @@ public class GGHelper
 
 	public static NBTTagCompound readNBTFromFile(String fileName)
 	{
-		return readNBTFromFile(new File(UtilCore.getWorldDirectory(), fileName));
+		return readNBTFromFile(new File(UtilModule.getWorldDirectory(), fileName));
 	}
 
 	public static NBTTagCompound readNBTFromFile(File file)
@@ -129,7 +129,7 @@ public class GGHelper
 
 	public static void writeNBTToFile(NBTTagCompound tag, String fileName)
 	{
-		writeNBTToFile(tag, new File(UtilCore.getWorldDirectory(), fileName));
+		writeNBTToFile(tag, new File(UtilModule.getWorldDirectory(), fileName));
 	}
 
 	public static void writeNBTToFile(NBTTagCompound tag, File file)

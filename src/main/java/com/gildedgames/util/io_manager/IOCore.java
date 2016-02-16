@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.io_manager.constructor.IConstructor;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.factory.IOFactory;
@@ -125,7 +125,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 			}
 		}
 
-		UtilCore.print("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
+		UtilModule.print("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
 
 		return null;
 	}

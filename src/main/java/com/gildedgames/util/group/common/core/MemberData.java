@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.IGroupHook;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -77,7 +77,7 @@ public class MemberData implements Iterable<GroupMember>
 
 		if (this.members.contains(member.getProfile().getUUID()))
 		{
-			UtilCore.print("Tried to join group but player " + member.getProfile().getUsername() + " was already in it");
+			UtilModule.print("Tried to join group but player " + member.getProfile().getUsername() + " was already in it");
 			return;
 		}
 
@@ -105,7 +105,7 @@ public class MemberData implements Iterable<GroupMember>
 	{
 		if (this.members.contains(member.getProfile().getUUID()))
 		{
-			UtilCore.print("Tried to invite player who is already a member: " + member.getProfile().getUsername());
+			UtilModule.print("Tried to invite player who is already a member: " + member.getProfile().getUsername());
 			return;
 		}
 
@@ -121,13 +121,13 @@ public class MemberData implements Iterable<GroupMember>
 	{
 		if (this.members.contains(member.getProfile().getUUID()))
 		{
-			UtilCore.print("Tried to remove invitation of a player who is already a member: " + member.getProfile().getUsername());
+			UtilModule.print("Tried to remove invitation of a player who is already a member: " + member.getProfile().getUsername());
 			return;
 		}
 
 		if (!this.invitedMembers.contains(member.getProfile().getUUID()))
 		{
-			UtilCore.print("Tried to remove invitation of a player who wasn't invited: " + member.getProfile().getUsername());
+			UtilModule.print("Tried to remove invitation of a player who wasn't invited: " + member.getProfile().getUsername());
 			return;
 		}
 
@@ -143,7 +143,7 @@ public class MemberData implements Iterable<GroupMember>
 	{
 		if (!this.members.contains(member.getProfile().getUUID()))
 		{
-			UtilCore.print("Trying to do something with a player who is not a member");
+			UtilModule.print("Trying to do something with a player who is not a member");
 			return false;
 		}
 		return true;
@@ -175,7 +175,7 @@ public class MemberData implements Iterable<GroupMember>
 		List<GroupMember> onlineMembers = new ArrayList<>();
 		for (UUID uuid : this.members)
 		{
-			GroupMember member = GroupCore.locate().getPlayers().get(uuid);
+			GroupMember member = GroupModule.locate().getPlayers().get(uuid);
 			if (member.getProfile().getEntity() != null && member.getProfile().isLoggedIn())
 			{
 				onlineMembers.add(member);

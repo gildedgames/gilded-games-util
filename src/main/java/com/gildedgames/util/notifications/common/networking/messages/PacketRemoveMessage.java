@@ -1,8 +1,8 @@
 package com.gildedgames.util.notifications.common.networking.messages;
 
 import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.notifications.NotificationModule;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
 
@@ -50,12 +50,12 @@ public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 	public void handleServerSide(PacketRemoveMessage message, EntityPlayer player)
 	{
 		INotificationMessage noti = this.removeFromHook(message, player);
-		UtilCore.NETWORK.sendTo(new PacketRemoveMessage(noti), (EntityPlayerMP) player);
+		UtilModule.NETWORK.sendTo(new PacketRemoveMessage(noti), (EntityPlayerMP) player);
 	}
 
 	private INotificationMessage removeFromHook(PacketRemoveMessage message, EntityPlayer player)
 	{
-		PlayerNotification hook = NotificationCore.getPlayerNotifications(player);
+		PlayerNotification hook = NotificationModule.getPlayerNotifications(player);
 		INotificationMessage noti = hook.getFromKey(message.messageKey);
 		hook.removeNotification(noti);
 		return noti;

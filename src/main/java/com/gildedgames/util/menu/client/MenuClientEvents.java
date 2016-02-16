@@ -3,6 +3,7 @@ package com.gildedgames.util.menu.client;
 import java.io.File;
 import java.io.IOException;
 
+import com.gildedgames.util.menu.MenuModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -21,7 +22,6 @@ import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.menu.MenuCore;
 
 public class MenuClientEvents
 {
@@ -77,13 +77,13 @@ public class MenuClientEvents
 	{
 		if (menu == null)
 		{
-			menu = MenuCore.MINECRAFT_MENU;
+			menu = MenuModule.MINECRAFT_MENU;
 		}
 
 		int mouseX = Mouse.getX();
 		int mouseY = Mouse.getY();
 
-		MenuCore.locate().setCurrentMenu(menu);
+		MenuModule.locate().setCurrentMenu(menu);
 
 		this.mc.displayGuiScreen(menu.getNewInstance());
 
@@ -123,9 +123,9 @@ public class MenuClientEvents
 			return;
 		}
 
-		IMenu menu = MenuCore.locate().getCurrentMenu();
+		IMenu menu = MenuModule.locate().getCurrentMenu();
 
-		IMenu hooked = MenuCore.locate().fromGui(gui);
+		IMenu hooked = MenuModule.locate().getMenuFromScreen(gui);
 
 		if ((gui instanceof GuiMainMenu || hooked != null) && menu == null || gui.getClass() == GuiMainMenu.class && menu.getMenuClass() != GuiMainMenu.class)
 		{
@@ -139,7 +139,7 @@ public class MenuClientEvents
 
 					IOCore.io().readFile(this.configSaveLocation, new NBTFile(this.configSaveLocation, config, MenuConfig.class), new NBTFactory());
 
-					this.openMenu(MenuCore.locate().getMenuFromID(config.menuID), false);
+					this.openMenu(MenuModule.locate().getMenuFromID(config.menuID), false);
 				}
 				catch (IOException e)
 				{
@@ -148,12 +148,12 @@ public class MenuClientEvents
 			}
 			else
 			{
-				this.openMenu(MenuCore.MINECRAFT_MENU);
+				this.openMenu(MenuModule.MINECRAFT_MENU);
 			}
 		}
 		else if (menu != null && !gui.getClass().isAssignableFrom(menu.getMenuClass()))
 		{
-			MenuCore.locate().setCurrentMenu(null);
+			MenuModule.locate().setCurrentMenu(null);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class MenuClientEvents
 				this.firstTick = false;
 			}
 			
-			IMenu menu = MenuCore.locate().getCurrentMenu();
+			IMenu menu = MenuModule.locate().getCurrentMenu();
 
 			if (menu != null)
 			{
@@ -189,18 +189,11 @@ public class MenuClientEvents
 
 						boolean rightButtonMoused = customButtons ? menu.getRightButton().isMousedOver(mouseX, mouseY) : this.rightButton.isMouseOver();
 
-						if (Mouse.getEventButtonState() && MenuCore.locate().getRegisteredMenus().size() > 1 && (leftButtonMoused || rightButtonMoused))
+						if (Mouse.getEventButtonState() && MenuModule.locate().getRegisteredMenus().size() > 1 && (leftButtonMoused || rightButtonMoused))
 						{
 							this.leftButton.playPressSound(this.mc.getSoundHandler());
 
-							if (leftButtonMoused)
-							{
-								this.openMenu(MenuCore.locate().getPreviousMenu());
-							}
-							else
-							{
-								this.openMenu(MenuCore.locate().getNextMenu());
-							}
+							this.openMenu(leftButtonMoused ? MenuModule.locate().getPrevMenu() : MenuModule.locate().getNextMenu());
 						}
 						else if (Minecraft.getMinecraft().currentScreen != null)
 						{
@@ -225,7 +218,7 @@ public class MenuClientEvents
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			IMenu menu = MenuCore.locate().getCurrentMenu();
+			IMenu menu = MenuModule.locate().getCurrentMenu();
 
 			if (menu != null && this.mc.currentScreen != null && this.mc.currentScreen.getClass() == menu.getMenuClass())
 			{
@@ -237,7 +230,7 @@ public class MenuClientEvents
 				final int mouseX = Mouse.getX() * scaledWidth / this.mc.displayWidth;
 				final int mouseY = scaledHeight - Mouse.getY() * scaledHeight / this.mc.displayHeight - 1;
 
-				boolean disabled = MenuCore.locate().getRegisteredMenus().size() <= 1;
+				boolean disabled = MenuModule.locate().getRegisteredMenus().size() <= 1;
 
 				if (!disabled)
 				{

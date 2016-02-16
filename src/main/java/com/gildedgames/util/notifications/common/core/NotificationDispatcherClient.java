@@ -2,8 +2,8 @@ package com.gildedgames.util.notifications.common.core;
 
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.notifications.NotificationModule;
 import com.gildedgames.util.notifications.common.networking.messages.PacketNotification;
 
 import net.minecraft.client.Minecraft;
@@ -24,11 +24,11 @@ public class NotificationDispatcherClient extends NotificationDispatcher
 		EntityPlayer thePlayer = Minecraft.getMinecraft().thePlayer;
 		if (notification.getMessage() == null && player.equals(thePlayer.getGameProfile().getId()))
 		{
-			NotificationCore.locate().queueNotificationForDisplay(notification);
+			NotificationModule.locate().queueNotificationForDisplay(notification);
 		}
 		else
 		{
-			UtilCore.NETWORK.sendToServer(new PacketNotification(notification, NotificationCore.getPlayerNotifications(player)));
+			UtilModule.NETWORK.sendToServer(new PacketNotification(notification, NotificationModule.getPlayerNotifications(player)));
 		}
 	}
 

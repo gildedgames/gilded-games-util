@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookRequest;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.PlayerProfile;
@@ -81,7 +81,7 @@ public class PlayerHookPool<T extends IPlayerHook> implements IPlayerHookPool<T>
 			{
 				if (!this.sentRequests.contains(uuid))
 				{
-					UtilCore.NETWORK.sendToServer(new MessagePlayerHookRequest(this, uuid));
+					UtilModule.NETWORK.sendToServer(new MessagePlayerHookRequest(this, uuid));
 					this.sentRequests.add(uuid);
 				}
 			}

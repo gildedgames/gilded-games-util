@@ -1,6 +1,6 @@
 package com.gildedgames.util.world.common;
 
-import com.gildedgames.util.world.WorldCore;
+import com.gildedgames.util.world.WorldModule;
 import com.gildedgames.util.world.common.world.IWorld;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -69,7 +69,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 			}
 		}
 
-		return this.createHook(WorldCore.get(world));
+		return this.createHook(WorldModule.get(world));
 	}
 
 	@Override

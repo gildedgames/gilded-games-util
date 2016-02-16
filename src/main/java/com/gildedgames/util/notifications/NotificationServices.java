@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.notifications.common.core.NotificationDispatcher;
@@ -68,7 +68,7 @@ public class NotificationServices
 			for (INotificationMessage remove : toRemove)
 			{
 				player.removeNotification(remove);
-				UtilCore.NETWORK.sendTo(new PacketRemoveMessage(remove), (EntityPlayerMP) player.getProfile().getEntity());
+				UtilModule.NETWORK.sendTo(new PacketRemoveMessage(remove), (EntityPlayerMP) player.getProfile().getEntity());
 			}
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -163,7 +163,7 @@ public class GroupPermsDefault implements IGroupPerms
 		{
 			Random random = new Random();
 			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
-			this.ownerUsername = GroupCore.locate().getPlayers().get(this.owner).getProfile().getUsername();
+			this.ownerUsername = GroupModule.locate().getPlayers().get(this.owner).getProfile().getUsername();
 		}
 	}
 
@@ -223,7 +223,7 @@ public class GroupPermsDefault implements IGroupPerms
 
 	public String ownerUsername()
 	{
-		GroupMember member = GroupCore.locate().getPlayers().get(this.owner);
+		GroupMember member = GroupModule.locate().getPlayers().get(this.owner);
 		if (member.getProfile().isLoggedIn())
 		{
 			this.ownerUsername = member.getProfile().getUsername();
@@ -241,10 +241,6 @@ public class GroupPermsDefault implements IGroupPerms
 	public boolean equals(Object arg0)
 	{
 		GroupPermsDefault perms = ObjectFilter.cast(arg0, GroupPermsDefault.class);
-		if (perms != null)
-		{
-			return perms.type == this.type && perms.owner.equals(this.owner);
-		}
-		return false;
+		return perms != null && perms.type == this.type && perms.owner.equals(this.owner);
 	}
 }

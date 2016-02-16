@@ -1,7 +1,8 @@
 package com.gildedgames.util.core.client;
 
 import com.gildedgames.util.core.ServerProxy;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.tab.TabModule;
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
@@ -9,11 +10,10 @@ import com.gildedgames.util.tab.client.TabClientEvents;
 import com.gildedgames.util.tab.client.social.TabChat;
 import com.gildedgames.util.tab.client.social.TabGroup;
 import com.gildedgames.util.tab.client.social.TabNotifications;
-import com.gildedgames.util.tab.common.TabAPI;
-import com.gildedgames.util.tab.common.tab.TabBackpack;
+import com.gildedgames.util.tab.common.TabApiImpl;
+import com.gildedgames.util.tab.client.inventory.TabBackpack;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.TabGroupHandler;
-import com.gildedgames.util.universe.client.gui.TabUniverseHopper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -33,8 +33,6 @@ public class ClientProxy extends ServerProxy
 
 	public static final KeyBinding keyBindHopUniverse = new KeyBinding(StatCollector.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
 
-	public static final ITab UNIVERSE_HOPPER_TAB = new TabUniverseHopper();
-
 	public static final ITab GROUP_TAB = new TabGroup();
 
 	@Override
@@ -49,24 +47,19 @@ public class ClientProxy extends ServerProxy
 		super.preInit(event);
 
 		UtilClientEvents utilEvents = new UtilClientEvents();
-		UtilCore.registerEventHandler(utilEvents);
+		UtilModule.registerEventHandler(utilEvents);
 
-		UtilCore.registerEventHandler(MinecraftGuiViewer.instance().getTickInfo());
+		UtilModule.registerEventHandler(MinecraftGuiViewer.instance().getTickInfo());
 
 		TabClientEvents clientEvents = new TabClientEvents();
-		UtilCore.registerEventHandler(clientEvents);
-
-		TabAPI.setBackpackTab(new TabBackpack());
-		TabAPI.getInventoryGroup().getSide(Side.CLIENT).add(TabAPI.getBackpackTab());
-
-		TabAPI.INSTANCE.register(TabAPI.getInventoryGroup());
-		TabAPI.getInventoryGroup().getSide(Side.CLIENT).add(UNIVERSE_HOPPER_TAB);
+		UtilModule.registerEventHandler(clientEvents);
 
 		TabGroupHandler socialTab = new TabGroupHandler();
 		socialTab.getSide(Side.CLIENT).add(new TabChat());
 		socialTab.getSide(Side.CLIENT).add(GROUP_TAB);
 		socialTab.getSide(Side.CLIENT).add(new TabNotifications());
-		TabAPI.INSTANCE.register(socialTab);
+
+		TabModule.api().registerGroup(socialTab);
 	}
 
 	@Override

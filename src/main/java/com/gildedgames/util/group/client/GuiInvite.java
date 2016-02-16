@@ -4,14 +4,14 @@ import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.player.GroupMember;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -63,7 +63,7 @@ public class GuiInvite extends GuiFrame
 
 		this.content().set("players", scrollPlayers);
 
-		this.content().set("invite", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilCore.translate("gui.invite"))
+		this.content().set("invite", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilModule.translate("gui.invite"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -78,27 +78,27 @@ public class GuiInvite extends GuiFrame
 					final UUID selected = players.getSelected().uuid;
 					final Group g = GuiInvite.this.group;
 					final GroupMember inviting = GuiInvite.this.groupMember;
-					GroupCore.locate().getDefaultPool().invite(selected, inviting.getProfile().getUUID(), g);
+					GroupModule.locate().getDefaultPool().invite(selected, inviting.getProfile().getUUID(), g);
 
-					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
 						@Override
 						protected boolean condition()
 						{
-							return !g.hasMemberData() || g.getMemberData().isInvited(selected) || GroupCore.locate().getDefaultPool().get(g.getName()) == null;
+							return !g.hasMemberData() || g.getMemberData().isInvited(selected) || GroupModule.locate().getDefaultPool().get(g.getName()) == null;
 						}
 
 						@Override
 						protected void onCondition()
 						{
-							UiCore.locate().open("", new MinecraftGui(new GuiInvite(GuiInvite.this.groupMember, GuiInvite.this.group)));
+							UiModule.locate().open("", new MinecraftGui(new GuiInvite(GuiInvite.this.groupMember, GuiInvite.this.group)));
 						}
 					}));
 				}
 			}
 		});
 
-		this.content().set("back", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilCore.translate("gui.back"))
+		this.content().set("back", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilModule.translate("gui.back"))
 		{
 
 			@Override
@@ -107,7 +107,7 @@ public class GuiInvite extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					UiCore.locate().open("", new MinecraftGui(new GuiEditGroup(GuiInvite.this.groupMember.getProfile().getEntity())));
+					UiModule.locate().open("", new MinecraftGui(new GuiEditGroup(GuiInvite.this.groupMember.getProfile().getEntity())));
 				}
 			}
 		});
@@ -169,7 +169,7 @@ public class GuiInvite extends GuiFrame
 			this.content().set("username", new TextElement(GuiFactory.text(this.username, new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 			if (this.invited)
 			{
-				this.content().set("invited", new TextElement(GuiFactory.text(UtilCore.translate("gui.alreadyinvited"), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(45, 12).flush()));
+				this.content().set("invited", new TextElement(GuiFactory.text(UtilModule.translate("gui.alreadyinvited"), new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(45, 12).flush()));
 			}
 		}
 	}

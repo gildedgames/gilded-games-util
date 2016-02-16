@@ -1,10 +1,10 @@
 package com.gildedgames.util.core.io;
 
+import com.gildedgames.util.core.UtilModule;
 import io.netty.buffer.ByteBuf;
 
 import java.util.Map;
 
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.io_manager.io.IOSyncable;
 import com.gildedgames.util.io_manager.io.IOSyncable.SyncSide;
 import com.gildedgames.util.io_manager.io.IOSyncableDispatcher;
@@ -47,11 +47,11 @@ public class MCSyncableDispatcher implements IOSyncableDispatcher<ByteBuf, ByteB
 			{
 				if (from.isClient())
 				{
-					UtilCore.NETWORK.sendToServer(new MessageSyncToServer(this, syncable));
+					UtilModule.NETWORK.sendToServer(new MessageSyncToServer(this, syncable));
 				}
 				else
 				{
-					UtilCore.NETWORK.sendToServer(new MessageSyncToClient(this, syncable));
+					UtilModule.NETWORK.sendToServer(new MessageSyncToClient(this, syncable));
 				}
 			}
 		}

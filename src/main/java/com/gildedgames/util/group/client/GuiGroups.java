@@ -3,15 +3,15 @@ package com.gildedgames.util.group.client;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.client.ClientProxy;
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.permissions.GroupPermsDefault;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -54,7 +54,7 @@ public class GuiGroups extends GuiFrame
 
 		this.content().set("groups", scrollGroups);
 
-		this.content().set("join", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilCore.translate("gui.join"))
+		this.content().set("join", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilModule.translate("gui.join"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -64,9 +64,9 @@ public class GuiGroups extends GuiFrame
 				{
 					final Group group = groups.getSelected().group;
 					final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-					GroupCore.locate().getDefaultPool().addMember(player.getGameProfile().getId(), group);
+					GroupModule.locate().getDefaultPool().addMember(player.getGameProfile().getId(), group);
 
-					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
 						@Override
 						protected boolean condition()
@@ -84,7 +84,7 @@ public class GuiGroups extends GuiFrame
 			}
 		});
 
-		this.content().set("create", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.create"))
+		this.content().set("create", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilModule.translate("gui.create"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -92,7 +92,7 @@ public class GuiGroups extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					UiCore.locate().open("", new MinecraftGui(new GuiCreateGroup()));
+					UiModule.locate().open("", new MinecraftGui(new GuiCreateGroup()));
 				}
 			}
 		});
@@ -104,7 +104,7 @@ public class GuiGroups extends GuiFrame
 		public LinkedHashMap<String, GroupButton> provideContent(ImmutableMap<String, Ui> currentContent, Rect contentArea)
 		{
 			LinkedHashMap<String, GroupButton> buttons = new LinkedHashMap<>();
-			for (Group group : GroupCore.locate().getDefaultPool().getGroups())
+			for (Group group : GroupModule.locate().getDefaultPool().getGroups())
 			{
 				if (group.getPermissions().isVisible(group))
 				{

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.Gui;
@@ -32,9 +32,9 @@ public class GuiInput<T> extends GuiFrame
 
 	private DataInput<T> data;
 
-	private final AssetLocation texture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputBox.png");
+	private final AssetLocation texture = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/inputBox.png");
 
-	private final AssetLocation cursorTexture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputCursor.png");
+	private final AssetLocation cursorTexture = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/inputCursor.png");
 
 	private boolean isClicked;
 

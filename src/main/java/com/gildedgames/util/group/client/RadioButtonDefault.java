@@ -2,7 +2,7 @@ package com.gildedgames.util.group.client;
 
 import java.awt.Color;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.data.AssetLocation;
 import com.gildedgames.util.ui.data.DrawingData;
@@ -13,7 +13,7 @@ import com.gildedgames.util.ui.util.input.RadioButton;
 public class RadioButtonDefault extends RadioButton
 {
 
-	private final static AssetLocation texture = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/inputBox.png");
+	private final static AssetLocation texture = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/inputBox.png");
 
 	public RadioButtonDefault(int width, int height)
 	{

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.group.common.IGroupPoolListener;
 import com.gildedgames.util.group.common.IGroupPoolListenerClient;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
@@ -26,7 +26,7 @@ public class GroupPoolClient extends GroupPool
 	public Group create(String name, EntityPlayer creating, IGroupPerms perms)
 	{
 		GroupInfo groupInfo = new GroupInfo(UUID.randomUUID(), name, perms);
-		UtilCore.NETWORK.sendToServer(new PacketAddGroup(this, groupInfo));
+		UtilModule.NETWORK.sendToServer(new PacketAddGroup(this, groupInfo));
 		return null;
 	}
 
@@ -38,7 +38,7 @@ public class GroupPoolClient extends GroupPool
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		UtilCore.NETWORK.sendToServer(new PacketAddMember(this, group, member));
+		UtilModule.NETWORK.sendToServer(new PacketAddMember(this, group, member));
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class GroupPoolClient extends GroupPool
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		UtilCore.NETWORK.sendToServer(new PacketRemoveMember(this, group, member));
+		UtilModule.NETWORK.sendToServer(new PacketRemoveMember(this, group, member));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class GroupPoolClient extends GroupPool
 		{
 			return;
 		}
-		UtilCore.NETWORK.sendToServer(new PacketRemoveGroup(this, group));
+		UtilModule.NETWORK.sendToServer(new PacketRemoveGroup(this, group));
 	}
 
 	@Override
@@ -70,13 +70,13 @@ public class GroupPoolClient extends GroupPool
 			return;
 		}
 
-		if (player.equals(UtilCore.proxy.getPlayer().getGameProfile().getId()))
+		if (player.equals(UtilModule.proxy.getPlayer().getGameProfile().getId()))
 		{
-			UtilCore.print("Tried to invite client themselves a different player!");
+			UtilModule.print("Tried to invite client themselves a different player!");
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		UtilCore.NETWORK.sendToServer(new PacketAddInvite(this, group, member, this.thePlayer()));
+		UtilModule.NETWORK.sendToServer(new PacketAddInvite(this, group, member, this.thePlayer()));
 	}
 
 	@Override
@@ -89,10 +89,10 @@ public class GroupPoolClient extends GroupPool
 
 		if (!group.getMemberData().isInvited(player))
 		{
-			UtilCore.print("Tried to remove an invitation of someone who wasn't invited.");
+			UtilModule.print("Tried to remove an invitation of someone who wasn't invited.");
 		}
 		GroupMember member = GroupMember.get(player);
-		UtilCore.NETWORK.sendToServer(new PacketRemoveInvite(this, group, member));
+		UtilModule.NETWORK.sendToServer(new PacketRemoveInvite(this, group, member));
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class GroupPoolClient extends GroupPool
 		{
 			return;
 		}
-		UtilCore.NETWORK.sendToServer(new PacketChangeGroupInfo(changing, group, newInfo));
+		UtilModule.NETWORK.sendToServer(new PacketChangeGroupInfo(changing, group, newInfo));
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class GroupPoolClient extends GroupPool
 
 	protected void join(Group group, MemberData members)
 	{
-		UtilCore.debugPrint("Joined group " + group.getName());
+		UtilModule.debugPrint("Joined group " + group.getName());
 		group.setMemberData(members);
 		members.setHooks(this.createHooks(group));
 		this.addMemberDirectly(group, this.thePlayer());
@@ -129,7 +129,7 @@ public class GroupPoolClient extends GroupPool
 
 	protected void inviteReceived(Group group, GroupMember inviter)
 	{
-		UtilCore.debugPrint("Received invite for group " + group.getName());
+		UtilModule.debugPrint("Received invite for group " + group.getName());
 		this.thePlayer().addInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
@@ -139,7 +139,7 @@ public class GroupPoolClient extends GroupPool
 
 	protected void invitationRemoved(Group group)
 	{
-		UtilCore.debugPrint("Invitation for group " + group.getName() + " removed.");
+		UtilModule.debugPrint("Invitation for group " + group.getName() + " removed.");
 		this.thePlayer().removeInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
@@ -149,7 +149,7 @@ public class GroupPoolClient extends GroupPool
 
 	private void onLeave(Group group)
 	{
-		UtilCore.debugPrint("Left the group " + group.getName());
+		UtilModule.debugPrint("Left the group " + group.getName());
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
 			listener.onLeave(group);
@@ -172,7 +172,7 @@ public class GroupPoolClient extends GroupPool
 
 	private GroupMember thePlayer()
 	{
-		return GroupMember.get(UtilCore.proxy.getPlayer());
+		return GroupMember.get(UtilModule.proxy.getPlayer());
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class GroupPoolClient extends GroupPool
 		}
 		if (!this.thePlayer().groupsInFor(this).contains(group))
 		{
-			UtilCore.print("Client trying to modify group he's not in");
+			UtilModule.print("Client trying to modify group he's not in");
 			return false;
 		}
 		return true;

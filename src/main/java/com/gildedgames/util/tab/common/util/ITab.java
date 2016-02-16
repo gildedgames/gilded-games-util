@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.common.util;
 
-import com.gildedgames.util.tab.common.TabAPI;
+import com.gildedgames.util.tab.common.TabApiImpl;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public interface ITab
 
 	/**
 	 * List all {@link GuiScreen} classes which are used within this tab. If you use a class which you have not listed here,
-	 * the {@link TabAPI} will not be able to recognize its association with this particular tab, meaning it
+	 * the {@link TabApiImpl} will not be able to recognize its association with this particular tab, meaning it
 	 * won't display when the {@link GuiScreen} is open.
 	 * @return All of the {@link GuiScreen} classes which are used within this tab.
 	 */
