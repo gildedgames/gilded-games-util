@@ -1,6 +1,6 @@
 package com.gildedgames.util.ui.util.input;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -16,7 +16,7 @@ public class RadioButton extends GuiFrame
 
 	public RadioButton()
 	{
-		this(new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/radioButtonOn.png"), new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/radioButtonOff.png"));
+		this(new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/radioButtonOn.png"), new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/radioButtonOff.png"));
 	}
 
 	public RadioButton(AssetLocation onTexture, AssetLocation offTexture)

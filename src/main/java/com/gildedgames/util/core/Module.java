@@ -9,25 +9,23 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 
-public interface ICore
+public abstract class Module
 {
+	public void preInit(FMLPreInitializationEvent event) { }
 
-	void preInit(FMLPreInitializationEvent event);
+	public void init(FMLInitializationEvent event) { }
 
-	void init(FMLInitializationEvent event);
+	public void postInit(FMLPostInitializationEvent event) { }
 
-	void postInit(FMLPostInitializationEvent event);
+	public void serverAboutToStart(FMLServerAboutToStartEvent event) { }
 
-	void serverAboutToStart(FMLServerAboutToStartEvent event);
+	public void serverStopping(FMLServerStoppingEvent event) { }
 
-	void serverStopping(FMLServerStoppingEvent event);
+	public void serverStopped(FMLServerStoppedEvent event) { }
 
-	void serverStopped(FMLServerStoppedEvent event);
+	public void serverStarting(FMLServerStartingEvent event) { }
 
-	void serverStarting(FMLServerStartingEvent event);
+	public void serverStarted(FMLServerStartedEvent event) { }
 
-	void serverStarted(FMLServerStartedEvent event);
-
-	void flushData();
-
+	public void flushData() { }
 }

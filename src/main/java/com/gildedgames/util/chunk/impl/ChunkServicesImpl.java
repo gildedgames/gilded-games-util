@@ -1,5 +1,6 @@
-package com.gildedgames.util.chunk;
+package com.gildedgames.util.chunk.impl;
 
+import com.gildedgames.util.chunk.api.ChunkServices;
 import com.gildedgames.util.chunk.common.hook.IChunkHook;
 import com.gildedgames.util.chunk.common.hook.IChunkHookFactory;
 import com.gildedgames.util.chunk.common.pools.IChunkHookPool;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChunkServices
+public class ChunkServicesImpl implements ChunkServices
 {
 	private final Map<Integer, WorldHookPool> pools = new HashMap<>();
 
@@ -80,10 +81,7 @@ public class ChunkServices
 		}
 	}
 
-	/**
-	 * Registers a chunk hook factory. The factory is responsible for the creation of it's own chunk hooks from NBT.
-	 * @param factory The factory to register.
-	 */
+	@Override
 	public void registerHookFactory(IChunkHookFactory<IChunkHook> factory)
 	{
 		if (this.factories.contains(factory))
@@ -113,23 +111,24 @@ public class ChunkServices
 		return pool;
 	}
 
-	/**
-	 * @param chunk The chunk
-	 * @return Returns a unique identifier that represents the chunk's position.
-	 */
-	private long getChunkCoord(Chunk chunk)
+	@Override
+	public IChunkHook getHook(World world, BlockPos pos, Class<? extends IChunkHook> clazz)
 	{
-		return ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
+		return this.getHook(world, pos.getX() / 16, pos.getZ() / 16, clazz);
 	}
 
-	public <T extends IChunkHook> IChunkHook getData(World world, BlockPos pos, Class<T> clazz)
+	@Override
+	public IChunkHook getHook(World world, ChunkCoordIntPair pos, Class<? extends IChunkHook> clazz)
+	{
+		return this.getHook(world, pos.chunkXPos, pos.chunkZPos, clazz);
+	}
+
+	private IChunkHook getHook(World world, int x, int z, Class<? extends IChunkHook> clazz)
 	{
 		WorldHookPool pool = this.getWorldPool(world);
 
 		if (pool != null)
 		{
-			int x = pos.getX() / 16, z = pos.getZ() / 16;
-
 			IChunkHookPool hookPool = pool.getPool(clazz);
 
 			if (hookPool != null)
@@ -139,6 +138,15 @@ public class ChunkServices
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param chunk The chunk
+	 * @return Returns a unique identifier that represents the chunk's position.
+	 */
+	private long getChunkCoord(Chunk chunk)
+	{
+		return ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
 	}
 
 	/**

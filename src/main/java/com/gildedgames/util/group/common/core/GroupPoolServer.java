@@ -3,7 +3,7 @@ package com.gildedgames.util.group.common.core;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.group.common.IGroupSettings;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
@@ -31,7 +31,7 @@ public class GroupPoolServer extends GroupPool
 			{
 				if (group.getName().equals(name))
 				{
-					UtilCore.print("Tried to add group " + name + " but it already existed");
+					UtilModule.print("Tried to add group " + name + " but it already existed");
 					return null;
 				}
 			}
@@ -48,7 +48,7 @@ public class GroupPoolServer extends GroupPool
 
 		this.addGroupDirectly(group);
 
-		UtilCore.NETWORK.sendToAll(new PacketAddGroup(this, groupInfo));
+		UtilModule.NETWORK.sendToAll(new PacketAddGroup(this, groupInfo));
 
 		this.addMember(creating.getGameProfile().getId(), group);
 
@@ -66,8 +66,8 @@ public class GroupPoolServer extends GroupPool
 		{
 			GroupMember member = GroupMember.get(player);
 			this.leaveOldGroup(member);
-			UtilCore.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
-			UtilCore.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getProfile().getEntity());
+			UtilModule.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
+			UtilModule.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getProfile().getEntity());
 			this.addMemberDirectly(group, member);
 		}
 	}
@@ -80,7 +80,7 @@ public class GroupPoolServer extends GroupPool
 			return;
 		}
 		GroupMember member = GroupMember.get(player);
-		UtilCore.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
+		UtilModule.NETWORK.sendToGroup(new PacketRemoveMember(this, group, member), group);
 		this.removeMemberDirectly(group, member);
 
 		group.getPermissions().onMemberRemoved(group, player);
@@ -99,7 +99,7 @@ public class GroupPoolServer extends GroupPool
 			return;
 		}
 		this.removeGroupDirectly(group);
-		UtilCore.NETWORK.sendToAll(new PacketRemoveGroup(this, group));
+		UtilModule.NETWORK.sendToAll(new PacketRemoveGroup(this, group));
 	}
 
 	@Override
@@ -113,12 +113,12 @@ public class GroupPoolServer extends GroupPool
 		GroupMember inviterG = GroupMember.get(inviter);
 		if (!group.getPermissions().canInvite(group, member, inviterG))
 		{
-			UtilCore.print("Player " + inviterG.getProfile().getUsername() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
+			UtilModule.print("Player " + inviterG.getProfile().getUsername() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
 			return;
 		}
 		this.inviteDirectly(group, member, inviterG);
-		UtilCore.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
-		UtilCore.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getProfile().getEntity());
+		UtilModule.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
+		UtilModule.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getProfile().getEntity());
 	}
 
 	@Override
@@ -130,8 +130,8 @@ public class GroupPoolServer extends GroupPool
 		}
 		GroupMember member = GroupMember.get(player);
 		this.removeInvitationDirectly(group, member);
-		UtilCore.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
-		UtilCore.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getProfile().getEntity());
+		UtilModule.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
+		UtilModule.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getProfile().getEntity());
 	}
 
 	@Override
@@ -147,7 +147,7 @@ public class GroupPoolServer extends GroupPool
 		}
 		GroupInfo finalInfo = new GroupInfo(group.getUUID(), newInfo.getName(), newInfo.getPermissions());
 		this.changeGroupInfoDirectly(group, finalInfo);
-		UtilCore.NETWORK.sendToAll(new PacketChangeGroupInfo(changing, group, finalInfo));
+		UtilModule.NETWORK.sendToAll(new PacketChangeGroupInfo(changing, group, finalInfo));
 	}
 
 	/**

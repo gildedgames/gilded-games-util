@@ -1,5 +1,6 @@
 package com.gildedgames.util.core.gui.viewing;
 
+import com.gildedgames.util.ui.UiModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -13,7 +14,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.UiServices.Overlay;
 import com.gildedgames.util.ui.UiServices.RenderOrder;
 import com.gildedgames.util.ui.common.GuiFrame;
@@ -45,7 +45,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (Mouse.isCreated())
 		{
-			for (Overlay overlay : UiCore.locate().overlays())
+			for (Overlay overlay : UiModule.locate().overlays())
 			{
 				GuiFrame frame = overlay.getFrame();
 				GuiViewer viewer = overlay.getViewer();
@@ -57,7 +57,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
 		if (Keyboard.isCreated())
 		{
-			for (Overlay overlay : UiCore.locate().overlays())
+			for (Overlay overlay : UiModule.locate().overlays())
 			{
 				GuiFrame frame = overlay.getFrame();
 				GuiViewer viewer = overlay.getViewer();
@@ -144,7 +144,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 				viewer.tick(this);
 			}
 
-			for (Overlay overlay : UiCore.locate().overlays())
+			for (Overlay overlay : UiModule.locate().overlays())
 			{
 				GuiFrame frame = overlay.getFrame();
 				GuiViewer viewer = overlay.getViewer();
@@ -176,10 +176,10 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		{
 			this.worldStarted = true;
 
-			UiCore.locate().createRegisteredOverlays();
+			UiModule.locate().createRegisteredOverlays();
 		}
 
-		for (Overlay overlay : UiCore.locate().overlays())
+		for (Overlay overlay : UiModule.locate().overlays())
 		{
 			GuiFrame frame = overlay.getFrame();
 			GuiViewer viewer = overlay.getViewer();
@@ -205,7 +205,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		{
 			this.worldStarted = false;
 
-			UiCore.locate().destroyRegisteredOverlays();
+			UiModule.locate().destroyRegisteredOverlays();
 		}
 	}
 

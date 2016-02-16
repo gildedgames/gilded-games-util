@@ -1,7 +1,7 @@
 package com.gildedgames.util.player.server;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.player.PlayerModule;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.common.player.PlayerProfile;
@@ -35,15 +35,15 @@ public class PlayerHookSaveHandler
 	@SubscribeEvent
 	public void onSavePlayerFile(PlayerEvent.SaveToFile event)
 	{
-		this.playerDirectory = new File(UtilCore.getWorldDirectory(), "playerdata/");
-		this.writePlayerData(UUID.fromString(event.playerUUID), PlayerCore.locate().getPools());
+		this.playerDirectory = new File(UtilModule.getWorldDirectory(), "playerdata/");
+		this.writePlayerData(UUID.fromString(event.playerUUID), PlayerModule.locate().getPools());
 	}
 
 	@SubscribeEvent
 	public void onLoadPlayerFile(PlayerEvent.LoadFromFile event)
 	{
-		this.playerDirectory = new File(UtilCore.getWorldDirectory(), "playerdata/");
-		this.readPlayerData(UUID.fromString(event.playerUUID), event.entityPlayer, PlayerCore.locate().getPools());
+		this.playerDirectory = new File(UtilModule.getWorldDirectory(), "playerdata/");
+		this.readPlayerData(UUID.fromString(event.playerUUID), event.entityPlayer, PlayerModule.locate().getPools());
 	}
 
 	public void writePlayerData(UUID uuid, List<IPlayerHookPool<?>> pools)
@@ -140,7 +140,7 @@ public class PlayerHookSaveHandler
 		{
 			EntityPlayerMP player = configManager.playerEntityList.get(i);
 
-			this.writePlayerData(player.getUniqueID(), PlayerCore.locate().getPools());
+			this.writePlayerData(player.getUniqueID(), PlayerModule.locate().getPools());
 		}
 	}
 

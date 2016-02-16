@@ -1,12 +1,18 @@
 package com.gildedgames.util.core;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import com.gildedgames.util.chunk.ChunkCore;
+import com.gildedgames.util.chunk.ChunkModule;
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.io.NetworkWrapper;
+import com.gildedgames.util.group.GroupModule;
+import com.gildedgames.util.instances.InstanceModule;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.menu.MenuModule;
+import com.gildedgames.util.notifications.NotificationModule;
+import com.gildedgames.util.player.PlayerModule;
+import com.gildedgames.util.spawning.SpawningModule;
+import com.gildedgames.util.tab.TabModule;
+import com.gildedgames.util.world.WorldModule;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,24 +32,15 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.group.GroupCore;
-import com.gildedgames.util.instances.InstanceCore;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.menu.MenuCore;
-import com.gildedgames.util.notifications.NotificationCore;
-import com.gildedgames.util.player.PlayerCore;
-import com.gildedgames.util.spawning.SpawningCore;
-import com.gildedgames.util.tab.TabCore;
-import com.gildedgames.util.universe.UniverseCore;
-import com.gildedgames.util.world.WorldCore;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-@Mod(modid = UtilCore.MOD_ID, name = "Gilded Games Utility", version = UtilCore.VERSION, dependencies = "before:*")
-public class UtilCore implements ICore
+@Mod(modid = UtilModule.MOD_ID, name = "Gilded Games Utility", version = UtilModule.VERSION, dependencies = "before:*")
+public class UtilModule extends Module
 {
 
 	public static final String MOD_ID = "gildedgamesutil";
@@ -52,35 +49,34 @@ public class UtilCore implements ICore
 
 	public static final boolean DEBUG_MODE = true;
 
-	@Instance(UtilCore.MOD_ID)
-	public static UtilCore instance;
+	@Instance(UtilModule.MOD_ID)
+	public static UtilModule instance;
 
 	@SidedProxy(clientSide = "com.gildedgames.util.core.client.ClientProxy", serverSide = "com.gildedgames.util.core.ServerProxy")
 	public static ServerProxy proxy;
 
 	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
-	private final List<ICore> cores = new ArrayList<>();
+	private final List<Module> modules = new ArrayList<>();
 
 	private final SidedObject<UtilServices> serviceLocator;
 
 	private final MCSyncableDispatcher syncableDispatcher;
 
-	public UtilCore()
+	public UtilModule()
 	{
-		this.registerCore(PlayerCore.INSTANCE);
-		this.registerCore(WorldCore.INSTANCE);
-		this.registerCore(TabCore.INSTANCE);
-		this.registerCore(UniverseCore.INSTANCE);
-		this.registerCore(GroupCore.INSTANCE);
-		this.registerCore(new SpawningCore());
-		this.registerCore(InstanceCore.INSTANCE);
-		this.registerCore(NotificationCore.INSTANCE);
-		this.registerCore(ChunkCore.INSTANCE);
+		this.registerCore(PlayerModule.INSTANCE);
+		this.registerCore(WorldModule.INSTANCE);
+		this.registerCore(TabModule.INSTANCE);
+		this.registerCore(GroupModule.INSTANCE);
+		this.registerCore(new SpawningModule());
+		this.registerCore(InstanceModule.INSTANCE);
+		this.registerCore(NotificationModule.INSTANCE);
+		this.registerCore(ChunkModule.INSTANCE);
 
-		if (UtilCore.isClient())
+		if (UtilModule.isClient())
 		{
-			this.registerCore(MenuCore.INSTANCE);
+			this.registerCore(MenuModule.INSTANCE);
 		}
 
 		UtilServices clientLocator = new UtilServices();
@@ -90,14 +86,14 @@ public class UtilCore implements ICore
 		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
 	}
 
-	public void registerCore(ICore core)
+	public void registerCore(Module module)
 	{
-		this.cores.add(core);
+		this.modules.add(module);
 	}
 
 	public static ItemStack getItemStack(Block block)
 	{
-		return UtilCore.getItemStack(block, 1);
+		return UtilModule.getItemStack(block, 1);
 	}
 
 	public static ItemStack getItemStack(Block block, int amount)
@@ -111,7 +107,7 @@ public class UtilCore implements ICore
 	{
 		try
 		{
-			IOCore.io().registerManager(UtilCore.locate().getIOManager());
+			IOCore.io().registerManager(UtilModule.locate().getIOManager());
 			IOCore.io().registerDispatcher(this.syncableDispatcher);
 		}
 		catch (IOManagerTakenException e)
@@ -119,11 +115,11 @@ public class UtilCore implements ICore
 			e.printStackTrace();
 		}
 
-		UtilCore.NETWORK.init(UtilCore.MOD_ID);
+		UtilModule.NETWORK.init(UtilModule.MOD_ID);
 
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.preInit(event);
+			module.preInit(event);
 		}
 
 		proxy.preInit(event);
@@ -133,12 +129,10 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.init(event);
+			module.init(event);
 		}
-
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new UtilGuiHandler());
 
 		proxy.init(event);
 	}
@@ -147,9 +141,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.postInit(event);
+			module.postInit(event);
 		}
 
 		proxy.postInit(event);
@@ -159,9 +153,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.serverAboutToStart(event);
+			module.serverAboutToStart(event);
 		}
 
 		proxy.serverAboutToStart(event);
@@ -171,9 +165,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.serverStarting(event);
+			module.serverStarting(event);
 		}
 
 		proxy.serverStarting(event);
@@ -183,9 +177,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.serverStarted(event);
+			module.serverStarted(event);
 		}
 
 		proxy.serverStarted(event);
@@ -195,9 +189,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.serverStopping(event);
+			module.serverStopping(event);
 		}
 
 		proxy.serverStopping(event);
@@ -209,9 +203,9 @@ public class UtilCore implements ICore
 	@EventHandler
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		for (ICore core : this.cores)
+		for (Module module : this.modules)
 		{
-			core.serverStopped(event);
+			module.serverStopped(event);
 		}
 
 		proxy.serverStopped(event);
@@ -220,13 +214,13 @@ public class UtilCore implements ICore
 	@Override
 	public void flushData()
 	{
-		UtilCore.debugPrint("Flushing data for GG Util");
-		for (ICore core : this.cores)
+		UtilModule.debugPrint("Flushing data for GG Util");
+		for (Module module : this.modules)
 		{
-			core.flushData();
+			module.flushData();
 		}
 		proxy.flushData();
-		UtilCore.debugPrint("Finished flushing data for GG Util");
+		UtilModule.debugPrint("Finished flushing data for GG Util");
 	}
 
 	public MCSyncableDispatcher getDispatcher()
@@ -241,7 +235,7 @@ public class UtilCore implements ICore
 
 	public static String modAddress()
 	{
-		return UtilCore.MOD_ID + ":";
+		return UtilModule.MOD_ID + ":";
 	}
 
 	public static boolean isClient()
@@ -294,7 +288,7 @@ public class UtilCore implements ICore
 			return null;
 		}
 
-		List<EntityPlayerMP> allPlayers = UtilCore.getOnlinePlayers();
+		List<EntityPlayerMP> allPlayers = UtilModule.getOnlinePlayers();
 
 		for (EntityPlayerMP player : allPlayers)
 		{

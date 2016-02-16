@@ -4,16 +4,16 @@ import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.client.ClientProxy;
-import com.gildedgames.util.core.UtilCore;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.group.common.player.GroupMember;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.common.Ui;
 import com.gildedgames.util.ui.data.Pos2D;
@@ -45,8 +45,8 @@ public class GuiEditGroup extends GuiFrame
 
 	public GuiEditGroup(EntityPlayer player)
 	{
-		this.groupMember = GroupCore.locate().getPlayers().get(player);
-		this.group = this.groupMember.groupsInFor(GroupCore.locate().getDefaultPool()).get(0);
+		this.groupMember = GroupModule.locate().getPlayers().get(player);
+		this.group = this.groupMember.groupsInFor(GroupModule.locate().getDefaultPool()).get(0);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class GuiEditGroup extends GuiFrame
 
 		if (permissions.canRemoveMember(this.group, null, this.groupMember))
 		{
-			this.content().set("removeMember", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilCore.translate("gui.removemember"))
+			this.content().set("removeMember", new MinecraftButton(Dim2D.build().pos(130, 200).area(75, 20).flush(), UtilModule.translate("gui.removemember"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -82,14 +82,14 @@ public class GuiEditGroup extends GuiFrame
 						final UUID selected = players.getSelected().uuid;
 						final Group g = GuiEditGroup.this.group;
 						final GroupMember removing = GuiEditGroup.this.groupMember;
-						GroupCore.locate().getDefaultPool().removeMember(selected, g);
+						GroupModule.locate().getDefaultPool().removeMember(selected, g);
 
-						UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+						UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 						{
 							@Override
 							protected boolean condition()
 							{
-								return !g.hasMemberData() || !g.getMemberData().contains(selected) || GroupCore.locate().getDefaultPool().get(g.getName()) == null;
+								return !g.hasMemberData() || !g.getMemberData().contains(selected) || GroupModule.locate().getDefaultPool().get(g.getName()) == null;
 							}
 
 							@Override
@@ -105,7 +105,7 @@ public class GuiEditGroup extends GuiFrame
 
 		if (permissions.canRemoveGroup(this.group, this.groupMember))
 		{
-			this.content().set("disband", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilCore.translate("gui.disband"))
+			this.content().set("disband", new MinecraftButton(Dim2D.build().pos(210, 200).area(75, 20).flush(), UtilModule.translate("gui.disband"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -113,9 +113,9 @@ public class GuiEditGroup extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
-						GroupCore.locate().getDefaultPool().remove(GuiEditGroup.this.group);
+						GroupModule.locate().getDefaultPool().remove(GuiEditGroup.this.group);
 
-						UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+						UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 						{
 							@Override
 							protected boolean condition()
@@ -126,7 +126,7 @@ public class GuiEditGroup extends GuiFrame
 							@Override
 							protected void onCondition()
 							{
-								UiCore.locate().open("", new MinecraftGui(new GuiGroups()));
+								UiModule.locate().open("", new MinecraftGui(new GuiGroups()));
 							}
 						}));
 					}
@@ -134,7 +134,7 @@ public class GuiEditGroup extends GuiFrame
 			});
 		}
 
-		this.content().set("leave", new MinecraftButton(Dim2D.build().pos(290, 200).area(75, 20).flush(), UtilCore.translate("gui.leave"))
+		this.content().set("leave", new MinecraftButton(Dim2D.build().pos(290, 200).area(75, 20).flush(), UtilModule.translate("gui.leave"))
 		{
 			@Override
 			public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -142,9 +142,9 @@ public class GuiEditGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					GroupCore.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getProfile().getUUID(), GuiEditGroup.this.group);
+					GroupModule.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getProfile().getUUID(), GuiEditGroup.this.group);
 
-					UiCore.locate().open("", new MinecraftGui(new GuiPolling()
+					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
 						@Override
 						protected boolean condition()
@@ -155,7 +155,7 @@ public class GuiEditGroup extends GuiFrame
 						@Override
 						protected void onCondition()
 						{
-							UiCore.locate().open("", new MinecraftGui(new GuiGroups()));
+							UiModule.locate().open("", new MinecraftGui(new GuiGroups()));
 						}
 					}));
 				}
@@ -164,7 +164,7 @@ public class GuiEditGroup extends GuiFrame
 
 		if (permissions.canInvite(this.group, null, this.groupMember))
 		{
-			this.content().set("invite", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilCore.translate("gui.invite"))
+			this.content().set("invite", new MinecraftButton(Dim2D.build().pos(310, 100).area(75, 20).flush(), UtilModule.translate("gui.invite"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -172,7 +172,7 @@ public class GuiEditGroup extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
-						UiCore.locate().open("", new MinecraftGui(new GuiInvite(GuiEditGroup.this.groupMember, GuiEditGroup.this.group)));
+						UiModule.locate().open("", new MinecraftGui(new GuiInvite(GuiEditGroup.this.groupMember, GuiEditGroup.this.group)));
 					}
 				}
 			});
@@ -180,7 +180,7 @@ public class GuiEditGroup extends GuiFrame
 
 		if (permissions.canEditGroupInfo(this.group, this.groupMember.getProfile().getUUID()))
 		{
-			this.content().set("edit", new MinecraftButton(Dim2D.build().pos(310, 130).area(75, 20).flush(), UtilCore.translate("gui.edit"))
+			this.content().set("edit", new MinecraftButton(Dim2D.build().pos(310, 130).area(75, 20).flush(), UtilModule.translate("gui.edit"))
 			{
 				@Override
 				public void onMouseInput(MouseInputPool pool, InputProvider input)
@@ -188,7 +188,7 @@ public class GuiEditGroup extends GuiFrame
 					super.onMouseInput(pool, input);
 					if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 					{
-						UiCore.locate().open("", new MinecraftGui(new GuiEditInfo(GuiEditGroup.this.group)));
+						UiModule.locate().open("", new MinecraftGui(new GuiEditInfo(GuiEditGroup.this.group)));
 					}
 				}
 			});

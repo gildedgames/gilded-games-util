@@ -3,7 +3,7 @@ package com.gildedgames.util.group.common.core;
 import java.util.UUID;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupI
 
 	public PacketChangeGroupInfo(UUID uuid, Group group, GroupInfo groupInfo)
 	{
-		super(group.getParentPool(), group, GroupCore.locate().getPlayers().get(uuid));
+		super(group.getParentPool(), group, GroupModule.locate().getPlayers().get(uuid));
 		this.groupInfo = groupInfo;
 	}
 

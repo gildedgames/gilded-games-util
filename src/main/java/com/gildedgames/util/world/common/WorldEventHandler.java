@@ -3,6 +3,7 @@ package com.gildedgames.util.world.common;
 import java.io.File;
 import java.io.IOException;
 
+import com.gildedgames.util.world.WorldModule;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
@@ -14,7 +15,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.world.WorldCore;
 
 public class WorldEventHandler
 {
@@ -26,7 +26,7 @@ public class WorldEventHandler
 	{
 		if (event.phase == Phase.END)
 		{
-			for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
+			for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 			{
 				IWorldHook world = pool.get(event.world);
 
@@ -54,7 +54,7 @@ public class WorldEventHandler
 
 		this.saveLocation = new File(worldFile, "hook\\world\\");
 
-		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
+		for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(event.world);
 
@@ -78,7 +78,7 @@ public class WorldEventHandler
 	{
 		World world = event.world;
 
-		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
+		for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 		{
 			if (pool != null)
 			{
@@ -115,7 +115,7 @@ public class WorldEventHandler
 
 		//TODO: Shouldn't it save here lol?
 
-		for (IWorldHookPool<?> pool : WorldCore.locate().getPools())
+		for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 		{
 			IWorldHook worldHook = pool.get(world);
 

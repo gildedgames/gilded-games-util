@@ -2,7 +2,7 @@ package com.gildedgames.util.ui.util;
 
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 import com.gildedgames.util.ui.graphics.Graphics2D;
 import com.gildedgames.util.ui.input.InputProvider;
@@ -86,9 +86,9 @@ public class GuiCanvas extends GuiFrame
 	
 	public static GuiCanvas fetch(String key, float depth)
 	{
-		if (UiCore.locate().hasFrame())
+		if (UiModule.locate().hasFrame())
 		{
-			GuiFrame currentFrame = UiCore.locate().getCurrentFrame();
+			GuiFrame currentFrame = UiModule.locate().getCurrentFrame();
 			
 			if (!currentFrame.events().contains(key))
 			{

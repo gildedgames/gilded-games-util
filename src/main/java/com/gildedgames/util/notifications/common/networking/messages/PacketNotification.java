@@ -2,7 +2,7 @@ package com.gildedgames.util.notifications.common.networking.messages;
 
 import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.notifications.NotificationModule;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.player.PlayerNotification;
 
@@ -30,7 +30,7 @@ public class PacketNotification extends CustomPacket<PacketNotification>
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.player = NotificationCore.getPlayerNotifications(IOUtil.readUUID(buf));
+		this.player = NotificationModule.getPlayerNotifications(IOUtil.readUUID(buf));
 		this.notification = IOUtil.readIO(buf);
 	}
 
@@ -44,13 +44,13 @@ public class PacketNotification extends CustomPacket<PacketNotification>
 	@Override
 	public void handleClientSide(PacketNotification message, EntityPlayer player)
 	{
-		NotificationCore.locate().queueNotificationForDisplay(message.notification);
+		NotificationModule.locate().queueNotificationForDisplay(message.notification);
 	}
 
 	@Override
 	public void handleServerSide(PacketNotification message, EntityPlayer player)
 	{
-		NotificationCore.sendNotification(message.notification);
+		NotificationModule.sendNotification(message.notification);
 	}
 
 }

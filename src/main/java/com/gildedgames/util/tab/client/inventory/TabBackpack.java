@@ -1,7 +1,7 @@
-package com.gildedgames.util.tab.common.tab;
+package com.gildedgames.util.tab.client.inventory;
 
 import com.gildedgames.util.core.client.SpriteGeneric;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.tab.common.util.ITab;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 public class TabBackpack implements ITab
 {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/tab_icons/backpack.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/backpack.png");
 
 	private static final SpriteGeneric sprite = new SpriteGeneric("backpack.png", 16, 16);
 	

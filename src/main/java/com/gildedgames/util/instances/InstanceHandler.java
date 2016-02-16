@@ -105,7 +105,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		if (this.instances.containsValue(instance))
 		{
-			PlayerInstances hook = InstanceCore.INSTANCE.getPlayer(player);
+			PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
 			if (hook.getInstance() == null)
 			{
 				hook.setOutside(new BlockPosDimension((int) player.posX, (int) player.posY, (int) player.posZ, player.dimension));
@@ -125,7 +125,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 	public void teleportPlayerOutsideInstance(EntityPlayerMP player)
 	{
-		PlayerInstances hook = InstanceCore.INSTANCE.getPlayer(player);
+		PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
 		if (hook.getInstance() != null && hook.outside() != null)
 		{
 			BlockPosDimension pos = hook.outside();

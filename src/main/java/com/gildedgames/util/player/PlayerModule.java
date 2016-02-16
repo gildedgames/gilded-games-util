@@ -1,8 +1,8 @@
 package com.gildedgames.util.player;
 
-import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import com.gildedgames.util.player.common.PlayerEventHandler;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
@@ -12,19 +12,14 @@ import com.gildedgames.util.player.common.player.IPlayerHook;
 import com.gildedgames.util.player.server.PlayerHookSaveHandler;
 
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class PlayerCore implements ICore
+public class PlayerModule extends Module
 {
 
-	public static final PlayerCore INSTANCE = new PlayerCore();
+	public static final PlayerModule INSTANCE = new PlayerModule();
 
 	public final PlayerHookSaveHandler playerHookSaveHandler = new PlayerHookSaveHandler();
 
@@ -32,48 +27,19 @@ public class PlayerCore implements ICore
 
 	private final SidedObject<PlayerServices> serviceLocator = new SidedObject<>(new PlayerServices(), new PlayerServices());
 
-	private PlayerCore()
-	{
-
-	}
-
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilCore.NETWORK.registerMessage(MessagePlayerHook.Handler.class, MessagePlayerHook.class, Side.CLIENT);
-		UtilCore.NETWORK.registerMessage(MessagePlayerHookClient.Handler.class, MessagePlayerHookClient.class, Side.SERVER);
-		UtilCore.NETWORK.registerMessage(MessagePlayerHookRequest.Handler.class, MessagePlayerHookRequest.class, Side.SERVER);
+		UtilModule.NETWORK.registerMessage(MessagePlayerHook.Handler.class, MessagePlayerHook.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(MessagePlayerHookClient.Handler.class, MessagePlayerHookClient.class, Side.SERVER);
+		UtilModule.NETWORK.registerMessage(MessagePlayerHookRequest.Handler.class, MessagePlayerHookRequest.class, Side.SERVER);
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		UtilCore.registerEventHandler(this.playerHookSaveHandler);
-		UtilCore.registerEventHandler(this.playerEventHandler);
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverAboutToStart(FMLServerAboutToStartEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarted(FMLServerStartedEvent event)
-	{
-
+		UtilModule.registerEventHandler(this.playerHookSaveHandler);
+		UtilModule.registerEventHandler(this.playerEventHandler);
 	}
 
 	@Override
@@ -83,14 +49,9 @@ public class PlayerCore implements ICore
 	}
 
 	@Override
-	public void serverStopping(FMLServerStoppingEvent event)
-	{
-	}
-
-	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerModule.locate().getPools())
 		{
 			if (manager != null)
 			{

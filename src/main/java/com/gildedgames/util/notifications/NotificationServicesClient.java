@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.core.NotificationDispatcher;
 import com.gildedgames.util.notifications.common.core.NotificationDispatcherClient;
@@ -24,7 +24,7 @@ public class NotificationServicesClient extends NotificationServices
 
 	private NotificationDispatcher dispatcher;
 
-	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/notification/notifications.png");
+	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/notification/notifications.png");
 
 	public NotificationServicesClient()
 	{

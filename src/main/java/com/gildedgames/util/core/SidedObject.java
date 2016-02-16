@@ -15,7 +15,7 @@ public class SidedObject<T>
 
 	public T instance()
 	{
-		if (UtilCore.isClient())
+		if (UtilModule.isClient())
 		{
 			return this.client;
 		}

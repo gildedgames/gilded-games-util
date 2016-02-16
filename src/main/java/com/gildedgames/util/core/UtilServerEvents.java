@@ -22,7 +22,7 @@ public class UtilServerEvents
 		{
 			if (this.tickCounter % (1200 * 3) == 0)
 			{
-				UtilCore.instance.flushData();
+				UtilModule.instance.flushData();
 			}
 		}
 	}

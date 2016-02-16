@@ -1,6 +1,6 @@
 package com.gildedgames.util.core.io;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -26,12 +26,12 @@ public abstract class CustomPacket<REQ extends IMessage> implements IMessage, IM
 		}
 		else
 		{
-			UtilCore.proxy.addScheduledTask(new Runnable()
+			UtilModule.proxy.addScheduledTask(new Runnable()
 			{
 				@Override
 				public void run()
 				{
-					CustomPacket.this.handleClientSide(message, UtilCore.proxy.getPlayer());
+					CustomPacket.this.handleClientSide(message, UtilModule.proxy.getPlayer());
 				}
 			});
 		}

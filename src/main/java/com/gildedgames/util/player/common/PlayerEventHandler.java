@@ -1,7 +1,7 @@
 package com.gildedgames.util.player.common;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.player.PlayerModule;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHook;
 import com.gildedgames.util.player.common.networking.messages.MessagePlayerHookClient;
 import com.gildedgames.util.player.common.player.IPlayerHook;
@@ -22,7 +22,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerModule.locate().getPools())
 			{
 				manager.get(player).getProfile().entityInit(player);
 				manager.get(player).entityInit(player);
@@ -37,7 +37,7 @@ public class PlayerEventHandler
 		{
 			EntityPlayer player = (EntityPlayer) event.entity;
 
-			for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+			for (IPlayerHookPool<?> manager : PlayerModule.locate().getPools())
 			{
 				IPlayerHook playerHook = manager.get(player);
 
@@ -62,7 +62,7 @@ public class PlayerEventHandler
 	{
 		if (playerHook.isDirty())
 		{
-			UtilCore.NETWORK.sendToServer(new MessagePlayerHookClient(playerHook));
+			UtilModule.NETWORK.sendToServer(new MessagePlayerHookClient(playerHook));
 			playerHook.markClean();
 		}
 	}
@@ -71,7 +71,7 @@ public class PlayerEventHandler
 	{
 		if (playerHook.isDirty())
 		{
-			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilModule.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 			playerHook.markClean();
 		}
 	}
@@ -79,27 +79,27 @@ public class PlayerEventHandler
 	@SubscribeEvent
 	public void onLoggedIn(PlayerLoggedInEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerModule.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
 			playerHook.getProfile().setLoggedIn(true);
 
-			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilModule.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
 
 	@SubscribeEvent
 	public void onLoggedOut(PlayerLoggedOutEvent event)
 	{
-		for (IPlayerHookPool<?> manager : PlayerCore.locate().getPools())
+		for (IPlayerHookPool<?> manager : PlayerModule.locate().getPools())
 		{
 			IPlayerHook playerHook = manager.get(event.player);
 
 			playerHook.getProfile().setEntity(null);
 			playerHook.getProfile().setLoggedIn(false);
 
-			UtilCore.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
+			UtilModule.NETWORK.sendToAll(new MessagePlayerHook(playerHook));
 		}
 	}
 

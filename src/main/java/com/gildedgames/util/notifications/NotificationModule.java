@@ -2,9 +2,9 @@ package com.gildedgames.util.notifications;
 
 import java.util.UUID;
 
-import com.gildedgames.util.core.ICore;
+import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.notifications.common.core.INotification;
 import com.gildedgames.util.notifications.common.core.INotificationMessage;
@@ -16,43 +16,37 @@ import com.gildedgames.util.notifications.common.util.DefaultMessage;
 import com.gildedgames.util.notifications.common.util.DefaultNotification;
 import com.gildedgames.util.notifications.common.util.MessageNotification;
 import com.gildedgames.util.notifications.common.util.PopupNotification;
-import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.player.PlayerModule;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class NotificationCore implements ICore
+public class NotificationModule extends Module
 {
 
-	@SidedProxy(modId = UtilCore.MOD_ID, clientSide = "com.gildedgames.util.notifications.client.ClientProxy", serverSide = "com.gildedgames.util.notifications.CommonProxy")
+	@SidedProxy(modId = UtilModule.MOD_ID, clientSide = "com.gildedgames.util.notifications.client.ClientProxy", serverSide = "com.gildedgames.util.notifications.CommonProxy")
 	public static CommonProxy proxy;
 
 	private SidedObject<NotificationServices> serviceLocator;
 
-	public final static NotificationCore INSTANCE = new NotificationCore();
+	public final static NotificationModule INSTANCE = new NotificationModule();
 
 	public static NotificationServices locate()
 	{
-		return NotificationCore.INSTANCE.serviceLocator.instance();
+		return NotificationModule.INSTANCE.serviceLocator.instance();
 	}
 
 	public static PlayerNotification getPlayerNotifications(EntityPlayer player)
 	{
-		return NotificationCore.locate().getPlayers().get(player);
+		return NotificationModule.locate().getPlayers().get(player);
 	}
 
 	public static PlayerNotification getPlayerNotifications(UUID uuid)
 	{
-		return NotificationCore.locate().getPlayers().get(uuid);
+		return NotificationModule.locate().getPlayers().get(uuid);
 	}
 
 	public static void sendNotification(INotification notification)
@@ -84,11 +78,11 @@ public class NotificationCore implements ICore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		this.serviceLocator = proxy.createServices();
-		PlayerCore.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
+		PlayerModule.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
 
-		UtilCore.NETWORK.registerPacket(PacketNotification.class);
-		UtilCore.NETWORK.registerPacket(PacketRemoveMessage.class);
-		UtilCore.NETWORK.registerPacket(PacketClickedResponse.class, Side.SERVER);
+		UtilModule.NETWORK.registerPacket(PacketNotification.class);
+		UtilModule.NETWORK.registerPacket(PacketRemoveMessage.class);
+		UtilModule.NETWORK.registerPacket(PacketClickedResponse.class, Side.SERVER);
 
 		proxy.preInit(event);
 	}
@@ -96,53 +90,10 @@ public class NotificationCore implements ICore
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		IORegistry registry = UtilCore.locate().getIORegistry();
+		IORegistry registry = UtilModule.locate().getIORegistry();
 		registry.registerClass(PopupNotification.class, 2345);
 		registry.registerClass(DefaultMessage.class, 2346);
 		registry.registerClass(DefaultNotification.class, 2347);
 		registry.registerClass(MessageNotification.class, 2348);
-	}
-
-	@Override
-	public void flushData()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverAboutToStart(FMLServerAboutToStartEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStopping(FMLServerStoppingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStopped(FMLServerStoppedEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarted(FMLServerStartedEvent event)
-	{
-
 	}
 }

@@ -3,7 +3,7 @@ package com.gildedgames.util.core.gui.util;
 import java.awt.Color;
 import java.util.List;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
 import com.gildedgames.util.ui.common.Gui;
@@ -31,11 +31,11 @@ import net.minecraft.client.gui.GuiButton;
 public class GuiFactory
 {
 
-	private static final MinecraftAssetLocation SCROLL_BAR = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/scrollBar.png");
+	private static final MinecraftAssetLocation SCROLL_BAR = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/scrollBar.png");
 
-	private static final MinecraftAssetLocation PANEL = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePane.png");
+	private static final MinecraftAssetLocation PANEL = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/resizablePane.png");
 
-	private static final MinecraftAssetLocation PANEL_EMBEDDED = new MinecraftAssetLocation(UtilCore.MOD_ID, "textures/gui/test/resizablePaneEmbedded.png");
+	private static final MinecraftAssetLocation PANEL_EMBEDDED = new MinecraftAssetLocation(UtilModule.MOD_ID, "textures/gui/test/resizablePaneEmbedded.png");
 
 	private GuiFactory()
 	{

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.group.common.core.GroupPool;
 import com.gildedgames.util.group.common.core.PacketAddInvite;
@@ -41,12 +41,12 @@ public class GroupMember implements IPlayerHook
 
 	public static GroupMember get(EntityPlayer player)
 	{
-		return GroupCore.locate().getPlayers().get(player);
+		return GroupModule.locate().getPlayers().get(player);
 	}
 
 	public static GroupMember get(UUID uuid)
 	{
-		return GroupCore.locate().getPlayers().get(uuid);
+		return GroupModule.locate().getPlayers().get(uuid);
 	}
 
 	@Override
@@ -88,19 +88,19 @@ public class GroupMember implements IPlayerHook
 			this.invitations.clear();
 			return;
 		}
-		for (GroupPool pool : GroupCore.locate().getPools())
+		for (GroupPool pool : GroupModule.locate().getPools())
 		{
-			UtilCore.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.getProfile().getEntity());
+			UtilModule.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.getProfile().getEntity());
 			UUID uuid = this.getProfile().getUUID();
 			for (Group group : pool.getGroups())
 			{
 				if (group.getMemberData().contains(uuid))
 				{
-					UtilCore.NETWORK.sendTo(new PacketJoin(group.getParentPool(), group), (EntityPlayerMP) this.profile.getEntity());
+					UtilModule.NETWORK.sendTo(new PacketJoin(group.getParentPool(), group), (EntityPlayerMP) this.profile.getEntity());
 				}
 				else if (group.getMemberData().isInvited(uuid))
 				{
-					UtilCore.NETWORK.sendTo(new PacketAddInvite(group.getParentPool(), group, this, this), (EntityPlayerMP) this.profile.getEntity());
+					UtilModule.NETWORK.sendTo(new PacketAddInvite(group.getParentPool(), group, this, this), (EntityPlayerMP) this.profile.getEntity());
 				}
 			}
 		}

@@ -2,11 +2,12 @@ package com.gildedgames.util.tab.client;
 
 import java.io.IOException;
 
+import com.gildedgames.util.tab.TabModule;
 import org.lwjgl.input.Mouse;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.tab.client.util.RenderTabGroup;
-import com.gildedgames.util.tab.common.TabAPI;
+import com.gildedgames.util.tab.common.TabApiImpl;
 import com.gildedgames.util.tab.common.networking.packet.PacketOpenTab;
 import com.gildedgames.util.tab.common.util.ITab;
 import com.gildedgames.util.tab.common.util.ITabGroup;
@@ -31,7 +32,7 @@ public class TabClientEvents
 	{
 		GuiScreen gui = event.gui;
 
-		ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
+		ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
 		if (groupHandler != null)
 		{
@@ -41,10 +42,10 @@ public class TabClientEvents
 			{
 				return;
 			}
-			TabAPI.INSTANCE.setActiveGroup(null);
+			TabModule.api().setActiveGroup(null);
 		}
 
-		for (ITabGroupHandler tabGroupHandler : TabAPI.INSTANCE.getRegisteredTabGroups().values())
+		for (ITabGroupHandler tabGroupHandler : TabModule.api().getRegisteredTabGroups().values())
 		{
 			ITabGroup tabGroup = tabGroupHandler.getSide(Side.CLIENT);
 
@@ -70,7 +71,7 @@ public class TabClientEvents
 							}
 
 							tabGroup.getSelectedTab().onOpen(Minecraft.getMinecraft().thePlayer);
-							UtilCore.NETWORK.sendToServer(new PacketOpenTab(tabGroup.getSelectedTab()));
+							UtilModule.NETWORK.sendToServer(new PacketOpenTab(tabGroup.getSelectedTab()));
 						}
 						else
 						{
@@ -82,7 +83,7 @@ public class TabClientEvents
 						tabGroup.setSelectedTab(tab);
 					}
 
-					TabAPI.INSTANCE.setActiveGroup(tabGroupHandler);
+					TabModule.api().setActiveGroup(tabGroupHandler);
 
 					return;
 				}
@@ -95,7 +96,7 @@ public class TabClientEvents
 	{
 		if (event.phase == TickEvent.Phase.START)
 		{
-			ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
+			ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
 			if (groupHandler != null)
 			{
@@ -127,7 +128,7 @@ public class TabClientEvents
 								}
 
 								hoveredTab.onOpen(Minecraft.getMinecraft().thePlayer);
-								UtilCore.NETWORK.sendToServer(new PacketOpenTab(hoveredTab));
+								UtilModule.NETWORK.sendToServer(new PacketOpenTab(hoveredTab));
 							}
 						}
 						else if (Minecraft.getMinecraft().currentScreen != null)
@@ -152,7 +153,7 @@ public class TabClientEvents
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			ITabGroupHandler groupHandler = TabAPI.INSTANCE.getActiveGroup();
+			ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
 			if (groupHandler != null)
 			{

@@ -1,7 +1,7 @@
 package com.gildedgames.util.ui.util;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.ui.UiModule;
 import com.gildedgames.util.ui.common.GuiFrame;
 
 public abstract class GuiPolling extends GuiFrame
@@ -21,7 +21,7 @@ public abstract class GuiPolling extends GuiFrame
 						Thread.sleep(100L);
 						if (GuiPolling.this.condition())
 						{
-							UtilCore.proxy.addScheduledTask(new Runnable()
+							UtilModule.proxy.addScheduledTask(new Runnable()
 							{
 								@Override
 								public void run()
@@ -37,7 +37,7 @@ public abstract class GuiPolling extends GuiFrame
 				catch (InterruptedException e)
 				{
 				}
-				UiCore.locate().close();
+				UiModule.locate().close();
 			}
 		});
 		t.start();

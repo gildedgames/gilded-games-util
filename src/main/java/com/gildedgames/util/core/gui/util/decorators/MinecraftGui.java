@@ -2,11 +2,11 @@ package com.gildedgames.util.core.gui.util.decorators;
 
 import java.awt.Color;
 
+import com.gildedgames.util.ui.UiModule;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.ui.UiCore;
 import com.gildedgames.util.ui.common.Gui;
 import com.gildedgames.util.ui.common.GuiDecorator;
 import com.gildedgames.util.ui.data.DrawingData;
@@ -68,7 +68,7 @@ public class MinecraftGui extends GuiDecorator<Gui>
 		
 		if (pool.has(Keyboard.KEY_ESCAPE) || pool.has(this.mc.gameSettings.keyBindInventory.getKeyCode()))
 		{
-			UiCore.locate().close();
+			UiModule.locate().close();
 		}
 		
 		return false;

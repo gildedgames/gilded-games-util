@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
@@ -310,7 +310,7 @@ public class IOUtil
 
 	public static Group getGroup(IOBridge bridge, String key)
 	{
-		return GroupCore.locate().getPoolFromID(bridge.getString(key + "p")).get(getUUID(bridge, key + "u"));
+		return GroupModule.locate().getPoolFromID(bridge.getString(key + "p")).get(getUUID(bridge, key + "u"));
 	}
 
 	public static void setGroup(IOBridge bridge, String key, Group group)

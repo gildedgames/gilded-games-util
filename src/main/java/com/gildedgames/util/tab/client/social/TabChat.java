@@ -1,6 +1,6 @@
 package com.gildedgames.util.tab.client.social;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.tab.common.util.TabGeneric;
 
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class TabChat extends TabGeneric
 {
 
-	private static final ResourceLocation TEXTURE_CHAT = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/tab_icons/chat.png");
+	private static final ResourceLocation TEXTURE_CHAT = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/chat.png");
 
 	@Override
 	public String getUnlocalizedName()

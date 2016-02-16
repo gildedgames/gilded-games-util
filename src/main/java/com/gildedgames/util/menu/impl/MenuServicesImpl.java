@@ -1,23 +1,18 @@
-package com.gildedgames.util.menu;
+package com.gildedgames.util.menu.impl;
 
+import com.gildedgames.util.menu.api.MenuServices;
 import com.gildedgames.util.menu.client.IMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-public class MenuServices
+public class MenuServicesImpl implements MenuServices
 {
+	private final ArrayList<IMenu> menus = new ArrayList<>();
+	
+	private IMenu current;
 
-	protected final List<IMenu> menus = new ArrayList<>();
-	
-	protected IMenu current;	
-	
-	public MenuServices()
-	{
-		
-	}
-	
 	public IMenu getMenuFromID(String id)
 	{
 		for (IMenu menu : this.menus)
@@ -43,7 +38,7 @@ public class MenuServices
 		return this.menus.get(index);
 	}
 	
-	public IMenu getPreviousMenu()
+	public IMenu getPrevMenu()
 	{
 		int index = this.menus.indexOf(this.getCurrentMenu()) - 1;
 		
@@ -54,36 +49,50 @@ public class MenuServices
 		
 		return this.menus.get(index);
 	}
-	
-	public IMenu fromGui(GuiScreen screen)
+
+	@Override
+	public IMenu getMenuFromScreen(GuiScreen screen)
 	{
-		for (IMenu menu : this.menus)
+		if (screen != null)
 		{
-			if (screen != null && menu != null && screen.getClass().isAssignableFrom(menu.getMenuClass()))
+			for (IMenu menu : this.menus)
 			{
-				return menu;
+				if (screen.getClass().isAssignableFrom(menu.getMenuClass()))
+				{
+					return menu;
+				}
 			}
 		}
+
 		return null;
 	}
-	
-	public List<IMenu> getRegisteredMenus()
+
+	@Override
+	public Collection<IMenu> getRegisteredMenus()
 	{
 		return new ArrayList<>(this.menus);
 	}
-	
-	public void setCurrentMenu(IMenu menu)
-	{
-		this.current = menu;
-	}
-	
+
+	@Override
 	public IMenu getCurrentMenu()
 	{
 		return this.current;
 	}
-	
+
+	@Override
+	public void setCurrentMenu(IMenu menu)
+	{
+		this.current = menu;
+	}
+
+	@Override
 	public void registerMenu(IMenu menu)
 	{
+		if (menu == null)
+		{
+			throw new IllegalArgumentException("Cannot register null as a menu!");
+		}
+
 		this.menus.add(menu);
 	}
 	

@@ -22,31 +22,31 @@ public class RenderTabGroup extends Gui
 	private static final ResourceLocation TEXTURE_TABS = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	
 	@SideOnly(Side.CLIENT)
-	protected void drawHoveringText(String text, int par2, int par3, FontRenderer font)
+	protected void drawHoveringText(String text, int x, int y, FontRenderer font)
 	{
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 
 		int k = font.getStringWidth(text);
 
-		int i1 = par2 + 12;
-		int j1 = par3 - 12;
-		int k1 = 8;
+		int x1 = x + 12;
+		int y1 = y - 12;
+		int z1 = 8;
 
 		this.zLevel = 300.0F;
-		int l1 = -267386864;
-		this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
-		this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
-		this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 + k1 + 3, l1, l1);
-		this.drawGradientRect(i1 - 4, j1 - 3, i1 - 3, j1 + k1 + 3, l1, l1);
-		this.drawGradientRect(i1 + k + 3, j1 - 3, i1 + k + 4, j1 + k1 + 3, l1, l1);
-		int i2 = 1347420415;
-		int j2 = (i2 & 16711422) >> 1 | i2 & -16777216;
-		this.drawGradientRect(i1 - 3, j1 - 3 + 1, i1 - 3 + 1, j1 + k1 + 3 - 1, i2, j2);
-		this.drawGradientRect(i1 + k + 2, j1 - 3 + 1, i1 + k + 3, j1 + k1 + 3 - 1, i2, j2);
-		this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 - 3 + 1, i2, i2);
-		this.drawGradientRect(i1 - 3, j1 + k1 + 2, i1 + k + 3, j1 + k1 + 3, j2, j2);
+		int color1 = -267386864;
+		this.drawGradientRect(x1 - 3, y1 - 4, x1 + k + 3, y1 - 3, color1, color1);
+		this.drawGradientRect(x1 - 3, y1 + z1 + 3, x1 + k + 3, y1 + z1 + 4, color1, color1);
+		this.drawGradientRect(x1 - 3, y1 - 3, x1 + k + 3, y1 + z1 + 3, color1, color1);
+		this.drawGradientRect(x1 - 4, y1 - 3, x1 - 3, y1 + z1 + 3, color1, color1);
+		this.drawGradientRect(x1 + k + 3, y1 - 3, x1 + k + 4, y1 + z1 + 3, color1, color1);
+		int color2 = 1347420415;
+		int color2BG = (color2 & 16711422) >> 1 | color2 & -16777216;
+		this.drawGradientRect(x1 - 3, y1 - 3 + 1, x1 - 3 + 1, y1 + z1 + 3 - 1, color2, color2BG);
+		this.drawGradientRect(x1 + k + 2, y1 - 3 + 1, x1 + k + 3, y1 + z1 + 3 - 1, color2, color2BG);
+		this.drawGradientRect(x1 - 3, y1 - 3, x1 + k + 3, y1 - 3 + 1, color2, color2);
+		this.drawGradientRect(x1 - 3, y1 + z1 + 2, x1 + k + 3, y1 + z1 + 3, color2BG, color2BG);
 
-		font.drawString(text, i1, j1, -1);
+		font.drawString(text, x1, y1, -1);
 
 		this.zLevel = 0.0F;
 

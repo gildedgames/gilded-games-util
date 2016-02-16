@@ -1,7 +1,7 @@
 package com.gildedgames.util.player.common.networking.messages;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.player.PlayerCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.player.PlayerModule;
 import com.gildedgames.util.player.common.IPlayerHookPool;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ public class MessagePlayerHookRequest implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.pool = PlayerCore.locate().getPool(ByteBufUtils.readUTF8String(buf));
+		this.pool = PlayerModule.locate().getPool(ByteBufUtils.readUTF8String(buf));
 		this.uuid = new UUID(buf.readLong(), buf.readLong());
 	}
 
@@ -57,7 +57,7 @@ public class MessagePlayerHookRequest implements IMessage
 			{
 				EntityPlayer player = ctx.getServerHandler().playerEntity;
 
-				UtilCore.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
+				UtilModule.NETWORK.sendTo(new MessagePlayerHook(message.pool.get(message.uuid)), (EntityPlayerMP) player);
 			}
 
 			return null;

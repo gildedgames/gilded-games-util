@@ -1,7 +1,7 @@
 package com.gildedgames.util.chunk.common.pools;
 
 import com.gildedgames.util.chunk.common.hook.IChunkHook;
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ public class ChunkHookPool implements IChunkHookPool
 	{
 		if (this.loadedHooks.containsKey(coord))
 		{
-			UtilCore.print("Chunk hook at " + coord + " was already loaded, overwriting (this shouldn't happen)");
+			UtilModule.print("Chunk hook at " + coord + " was already loaded, overwriting (this shouldn't happen)");
 		}
 
 		this.loadedHooks.put(coord, hook);

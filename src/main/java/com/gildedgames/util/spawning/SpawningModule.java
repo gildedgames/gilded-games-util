@@ -1,12 +1,8 @@
 package com.gildedgames.util.spawning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.gildedgames.util.core.ICore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.Module;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.spawning.util.DefaultSpawnSettings;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,8 +19,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
-public class SpawningCore implements ICore
+import java.util.ArrayList;
+import java.util.List;
+
+public class SpawningModule extends Module
 {
+	public static final SpawningModule INSTANCE = new SpawningModule();
 
 	private static List<SpawnManager> spawnManagers = new ArrayList<>();
 
@@ -72,32 +72,16 @@ public class SpawningCore implements ICore
 				List<SpawnManager> spawnManagers = getSpawnManagersFor(world.provider.getDimensionId());
 				for (SpawnManager spawnManager : spawnManagers)
 				{
-					spawnManager.tickSpawning(world, GroupCore.locate().getPlayers().getPlayerHooks());//It's kinda ewwy how it uses GroupCore here admittedly
+					spawnManager.tickSpawning(world, GroupModule.locate().getPlayers().getPlayerHooks());//It's kinda ewwy how it uses GroupCore here admittedly
 				}
 			}
 		}
 	}
 
 	@Override
-	public void preInit(FMLPreInitializationEvent event)
-	{
-	}
-
-	@Override
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
-	}
-
-	@Override
-	public void postInit(FMLPostInitializationEvent event)
-	{
-	}
-
-	@Override
-	public void serverAboutToStart(FMLServerAboutToStartEvent event)
-	{
 	}
 
 	@Override
@@ -108,30 +92,4 @@ public class SpawningCore implements ICore
 			spawnManager.clear();
 		}
 	}
-
-	@Override
-	public void serverStopped(FMLServerStoppedEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarting(FMLServerStartingEvent event)
-	{
-
-	}
-
-	@Override
-	public void serverStarted(FMLServerStartedEvent event)
-	{
-
-	}
-
-	@Override
-	public void flushData()
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 }

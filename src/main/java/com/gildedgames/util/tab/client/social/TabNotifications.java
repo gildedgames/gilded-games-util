@@ -1,11 +1,11 @@
 package com.gildedgames.util.tab.client.social;
 
-import com.gildedgames.util.core.UtilCore;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.notifications.client.gui.GuiNotification;
 import com.gildedgames.util.notifications.client.gui.GuiNotifications;
 import com.gildedgames.util.tab.common.util.TabGeneric;
-import com.gildedgames.util.ui.UiCore;
+import com.gildedgames.util.ui.UiModule;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class TabNotifications extends TabGeneric
 {
 
-	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilCore.MOD_ID, "textures/gui/tab_icons/notifications.png");
+	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/notifications.png");
 
 	@Override
 	public String getUnlocalizedName()
@@ -27,13 +27,13 @@ public class TabNotifications extends TabGeneric
 	@Override
 	public boolean isTabValid(GuiScreen gui)
 	{
-		return UiCore.locate().containsFrame(gui, GuiNotifications.class, GuiNotification.class);
+		return UiModule.locate().containsFrame(gui, GuiNotifications.class, GuiNotification.class);
 	}
 
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		UiCore.locate().open("", new MinecraftGui(new GuiNotifications(player)));
+		UiModule.locate().open("", new MinecraftGui(new GuiNotifications(player)));
 	}
 
 	@Override

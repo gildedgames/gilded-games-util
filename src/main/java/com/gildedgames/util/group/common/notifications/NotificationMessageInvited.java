@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.core.UtilCore;
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.core.Group;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.util.IOUtil;
@@ -33,13 +33,13 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 	@Override
 	public String getTitle()
 	{
-		return UtilCore.translate("group.invited") + " " + this.group.getName();
+		return UtilModule.translate("group.invited") + " " + this.group.getName();
 	}
 
 	@Override
 	public String getDescription()
 	{
-		return UtilCore.translate("group.inviteddescr1") + " " + this.group.getName() + " " + UtilCore.translate("group.inviteddescr2");
+		return UtilModule.translate("group.inviteddescr1") + " " + this.group.getName() + " " + UtilModule.translate("group.inviteddescr2");
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 			@Override
 			public String getName()
 			{
-				return UtilCore.translate("gui.accept");
+				return UtilModule.translate("gui.accept");
 			}
 
 			@Override
@@ -73,7 +73,7 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 			@Override
 			public String getName()
 			{
-				return UtilCore.translate("gui.decline");
+				return UtilModule.translate("gui.decline");
 			}
 
 			@Override
@@ -106,13 +106,13 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 	@Override
 	public boolean isRelevant()
 	{
-		return GroupCore.locate().getPlayers().get(this.getReceiver()).isInvitedFor(this.group);
+		return GroupModule.locate().getPlayers().get(this.getReceiver()).isInvitedFor(this.group);
 	}
 
 	@Override
 	public String getKey()
 	{
-		return UtilCore.translate("group.invited") + " " + this.group.getName();//TODO: Uses getName as key. Might need to be sth else if group name changes
+		return UtilModule.translate("group.invited") + " " + this.group.getName();//TODO: Uses getName as key. Might need to be sth else if group name changes
 	}
 
 	@Override

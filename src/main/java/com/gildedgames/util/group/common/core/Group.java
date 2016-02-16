@@ -2,7 +2,7 @@ package com.gildedgames.util.group.common.core;
 
 import java.util.UUID;
 
-import com.gildedgames.util.group.GroupCore;
+import com.gildedgames.util.group.GroupModule;
 import com.gildedgames.util.group.common.permissions.IGroupPerms;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;
@@ -41,7 +41,7 @@ public final class Group implements IO<IOBridge, IOBridge>
 	@Override
 	public void read(IOBridge input)
 	{
-		this.parentPool = GroupCore.locate().getPoolFromID(input.getString("pool"));
+		this.parentPool = GroupModule.locate().getPoolFromID(input.getString("pool"));
 		this.groupInfo = input.getIO("info");
 		if (input.getBoolean("hasMemberData"))
 		{
