@@ -205,16 +205,12 @@ public class UtilCore implements ICore
 	@Override
 	public void flushData()
 	{
-		UtilCore.debugPrint("Flushing data for GG Util");
-		
 		for (ICore core : this.cores)
 		{
 			core.flushData();
 		}
 		
 		proxy.flushData();
-		
-		UtilCore.debugPrint("Finished flushing data for GG Util");
 	}
 
 	public MCSyncableDispatcher getDispatcher()
