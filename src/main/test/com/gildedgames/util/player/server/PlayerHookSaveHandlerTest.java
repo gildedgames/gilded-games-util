@@ -1,4 +1,4 @@
-package com.gildedgames.util.player.server;
+package com.gildedgames.util.modules.player.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.modules.player.common.IPlayerHookPool;
+import com.gildedgames.util.modules.player.common.player.IPlayerHook;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 
 public class PlayerHookSaveHandlerTest

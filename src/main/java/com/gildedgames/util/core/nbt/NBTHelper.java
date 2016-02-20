@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import com.gildedgames.util.instances.BlockPosDimension;
+import com.gildedgames.util.modules.instances.BlockPosDimension;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.io.IO;

@@ -4,8 +4,8 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 
-import com.gildedgames.util.instances.InstanceFactory;
-import com.gildedgames.util.instances.InstanceHandler;
+import com.gildedgames.util.modules.instances.InstanceFactory;
+import com.gildedgames.util.modules.instances.InstanceHandler;
 
 public class DefaultInstancesFactory implements InstanceFactory<DefaultInstance>
 {

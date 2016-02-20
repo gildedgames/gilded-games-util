@@ -13,7 +13,7 @@ import com.gildedgames.util.core.nbt.NBTFactory;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
-import com.gildedgames.util.player.PlayerServicesTest;
+import com.gildedgames.util.modules.player.PlayerServicesTest;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.io.TestNBTFile;
 

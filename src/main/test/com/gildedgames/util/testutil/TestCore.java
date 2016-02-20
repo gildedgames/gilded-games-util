@@ -2,8 +2,8 @@ package com.gildedgames.util.testutil;
 
 import com.gildedgames.util.core.ICore;
 import com.gildedgames.util.core.SidedObject;
-import com.gildedgames.util.instances.InstanceCore;
-import com.gildedgames.util.instances.InstanceHandler;
+import com.gildedgames.util.modules.instances.InstanceCore;
+import com.gildedgames.util.modules.instances.InstanceHandler;
 import com.gildedgames.util.testutil.commands.CreateDimension;
 import com.gildedgames.util.testutil.commands.ReturnFromInstance;
 import com.gildedgames.util.testutil.commands.SendNotification;

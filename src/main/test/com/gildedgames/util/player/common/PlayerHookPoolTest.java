@@ -1,4 +1,4 @@
-package com.gildedgames.util.player.common;
+package com.gildedgames.util.modules.player.common;
 
 import static org.junit.Assert.fail;
 
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.gildedgames.util.player.common.player.PlayerProfile;
+import com.gildedgames.util.modules.player.common.player.PlayerProfile;
 import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.player.TestPlayerHook;
 import com.gildedgames.util.testutil.player.TestPlayerHookFactory;

@@ -1,6 +1,6 @@
 package com.gildedgames.util.testutil.world;
 
-import com.gildedgames.util.world.common.world.IWorldFactory;
+import com.gildedgames.util.modules.world.common.world.IWorldFactory;
 
 public class TestWorldFactory implements IWorldFactory<TestWorld>
 {

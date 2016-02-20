@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.Validate;
 
-import com.gildedgames.util.ui.data.AssetLocation;
+import com.gildedgames.util.modules.ui.data.AssetLocation;
 
 public class MinecraftAssetLocation implements AssetLocation
 {

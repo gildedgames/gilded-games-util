@@ -14,12 +14,12 @@ import com.gildedgames.util.core.gui.util.events.MinecraftHoveredDesc;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
 import com.gildedgames.util.core.util.GGHelper;
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.common.Ui;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.util.events.slots.SlotStackFactory;
-import com.gildedgames.util.ui.util.factory.ContentFactory;
-import com.gildedgames.util.ui.util.factory.Factory;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.common.Ui;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.util.events.slots.SlotStackFactory;
+import com.gildedgames.util.modules.ui.util.factory.ContentFactory;
+import com.gildedgames.util.modules.ui.util.factory.Factory;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 

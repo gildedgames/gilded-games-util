@@ -1,6 +1,6 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import com.gildedgames.util.ui.UiModule;
+import com.gildedgames.util.modules.ui.UiModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -14,19 +14,19 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.UiServices.Overlay;
-import com.gildedgames.util.ui.UiServices.RenderOrder;
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.common.GuiViewer;
-import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.input.ButtonState;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.KeyboardInput;
-import com.gildedgames.util.ui.input.KeyboardInputPool;
-import com.gildedgames.util.ui.input.MouseButton;
-import com.gildedgames.util.ui.input.MouseInput;
-import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.input.MouseMotion;
+import com.gildedgames.util.modules.ui.UiServices.Overlay;
+import com.gildedgames.util.modules.ui.UiServices.RenderOrder;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.common.GuiViewer;
+import com.gildedgames.util.modules.ui.data.TickInfo;
+import com.gildedgames.util.modules.ui.input.ButtonState;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.input.KeyboardInput;
+import com.gildedgames.util.modules.ui.input.KeyboardInputPool;
+import com.gildedgames.util.modules.ui.input.MouseButton;
+import com.gildedgames.util.modules.ui.input.MouseInput;
+import com.gildedgames.util.modules.ui.input.MouseInputPool;
+import com.gildedgames.util.modules.ui.input.MouseMotion;
 
 public class MinecraftGuiWrapperEvents implements TickInfo
 {

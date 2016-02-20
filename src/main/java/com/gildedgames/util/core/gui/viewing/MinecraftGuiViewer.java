@@ -2,11 +2,11 @@ package com.gildedgames.util.core.gui.viewing;
 
 import net.minecraft.client.Minecraft;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.common.GuiViewer;
-import com.gildedgames.util.ui.data.TickInfo;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.common.GuiViewer;
+import com.gildedgames.util.modules.ui.data.TickInfo;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class MinecraftGuiViewer implements GuiViewer
 {

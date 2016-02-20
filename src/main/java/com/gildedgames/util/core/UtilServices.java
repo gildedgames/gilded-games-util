@@ -15,9 +15,9 @@ import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
-import com.gildedgames.util.menu.client.MenuClientEvents.MenuConfig;
-import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.world.common.WorldHookPool;
+import com.gildedgames.util.modules.menu.client.MenuClientEvents.MenuConfig;
+import com.gildedgames.util.modules.ui.data.AssetLocation;
+import com.gildedgames.util.modules.world.common.WorldHookPool;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.IResource;

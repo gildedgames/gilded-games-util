@@ -2,18 +2,16 @@ package com.gildedgames.util.core.client;
 
 import com.gildedgames.util.core.ServerProxy;
 import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.tab.TabModule;
+import com.gildedgames.util.modules.tab.TabModule;
 import org.lwjgl.input.Keyboard;
 
 import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
-import com.gildedgames.util.tab.client.TabClientEvents;
-import com.gildedgames.util.tab.client.social.TabChat;
-import com.gildedgames.util.tab.client.social.TabGroup;
-import com.gildedgames.util.tab.client.social.TabNotifications;
-import com.gildedgames.util.tab.common.TabApiImpl;
-import com.gildedgames.util.tab.client.inventory.TabBackpack;
-import com.gildedgames.util.tab.common.util.ITab;
-import com.gildedgames.util.tab.common.util.TabGroupHandler;
+import com.gildedgames.util.modules.tab.client.TabClientEvents;
+import com.gildedgames.util.modules.tab.client.social.TabChat;
+import com.gildedgames.util.modules.tab.client.social.TabGroup;
+import com.gildedgames.util.modules.tab.client.social.TabNotifications;
+import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -23,8 +21,6 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
-
-//import com.gildedgames.util.ui.TestTab;
 
 public class ClientProxy extends ServerProxy
 {
@@ -66,8 +62,6 @@ public class ClientProxy extends ServerProxy
 	public void init(FMLInitializationEvent event)
 	{
 		ClientRegistry.registerKeyBinding(keyBindHopUniverse);
-
-		//TabAPI.INSTANCE.getInventoryGroup().getSide(Side.CLIENT).add(new TestTab());
 	}
 
 	@Override

@@ -1,0 +1,112 @@
+package com.gildedgames.util.modules.instances;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.modules.player.common.IPlayerHookPool;
+import com.gildedgames.util.modules.player.common.player.IPlayerHook;
+import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
+
+public class PlayerInstances implements IPlayerHook
+{
+	private final IPlayerHookPool<PlayerInstances> pool;
+
+	private final IPlayerProfile playerProfile;
+
+	private NBT activeInstance;
+
+	private BlockPosDimension outside;
+
+	//private Map<BlockPosDimension, Instance> instanceMap = new HashMap<BlockPosDimension, Instance>();
+
+	public PlayerInstances(IPlayerHookPool<PlayerInstances> pool, IPlayerProfile profile)
+	{
+		this.pool = pool;
+		this.playerProfile = profile;
+	}
+
+	@Override
+	public void write(NBTTagCompound output)
+	{
+		NBTHelper.setBlockPosDimension(output, this.outside, "outside");
+	}
+
+	@Override
+	public void read(NBTTagCompound input)
+	{
+		this.outside = NBTHelper.getBlockPosDimension(input, "outside");
+	}
+
+	/*public Instance instanceFor(BlockPosDimension pos)
+	{
+		GroupMember groupMember = GroupCore.getGroupMember(this.playerProfile.getEntity());
+		return null;
+	}*/
+
+	@Override
+	public IPlayerHookPool<PlayerInstances> getParentPool()
+	{
+		return this.pool;
+	}
+
+	@Override
+	public void entityInit(EntityPlayer player)
+	{
+	}
+
+	@Override
+	public IPlayerProfile getProfile()
+	{
+		return this.playerProfile;
+	}
+
+	@Override
+	public boolean isDirty()
+	{
+		return false;
+	}
+
+	@Override
+	public void markDirty()
+	{
+	}
+
+	@Override
+	public void markClean()
+	{
+	}
+
+	@Override
+	public void syncTo(ByteBuf output, com.gildedgames.util.io_manager.io.IOSyncable.SyncSide to)
+	{
+	}
+
+	@Override
+	public void syncFrom(ByteBuf input, com.gildedgames.util.io_manager.io.IOSyncable.SyncSide from)
+	{
+	}
+
+	public NBT getInstance()
+	{
+		return this.activeInstance;
+	}
+
+	protected void setInstance(NBT i)
+	{
+		this.activeInstance = i;
+	}
+
+	public BlockPosDimension outside()
+	{
+		return this.outside;
+	}
+
+	public void setOutside(BlockPosDimension pos)
+	{
+		this.outside = pos;
+	}
+
+}

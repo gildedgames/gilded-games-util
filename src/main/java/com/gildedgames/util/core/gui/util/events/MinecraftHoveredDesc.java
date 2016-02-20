@@ -1,14 +1,14 @@
 package com.gildedgames.util.core.gui.util.events;
 
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftTextBackground;
-import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.event.GuiEvent;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.GuiCanvas;
-import com.gildedgames.util.ui.util.InputHelper;
-import com.gildedgames.util.ui.util.Text;
-import com.gildedgames.util.ui.util.TextElement;
+import com.gildedgames.util.modules.ui.common.Gui;
+import com.gildedgames.util.modules.ui.event.GuiEvent;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.util.GuiCanvas;
+import com.gildedgames.util.modules.ui.util.InputHelper;
+import com.gildedgames.util.modules.ui.util.Text;
+import com.gildedgames.util.modules.ui.util.TextElement;
 
 public class MinecraftHoveredDesc extends GuiEvent<Gui>
 {

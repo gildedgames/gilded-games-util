@@ -1,4 +1,4 @@
-package com.gildedgames.util.player.common.player;
+package com.gildedgames.util.modules.player.common.player;
 
 import java.util.UUID;
 

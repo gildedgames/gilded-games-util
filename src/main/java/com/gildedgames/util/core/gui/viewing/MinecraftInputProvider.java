@@ -7,9 +7,9 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.data.rect.RectHolder;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.data.rect.RectHolder;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class MinecraftInputProvider implements InputProvider
 {

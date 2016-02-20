@@ -2,8 +2,8 @@ package com.gildedgames.util.testutil.world;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.world.common.IWorldHook;
-import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.modules.world.common.IWorldHook;
+import com.gildedgames.util.modules.world.common.world.IWorld;
 
 public class TestWorldHook implements IWorldHook
 {
