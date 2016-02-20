@@ -13,13 +13,13 @@ import java.util.UUID;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
-import com.gildedgames.util.group.GroupModule;
-import com.gildedgames.util.group.common.core.Group;
+import com.gildedgames.util.modules.group.GroupModule;
+import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
+import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;

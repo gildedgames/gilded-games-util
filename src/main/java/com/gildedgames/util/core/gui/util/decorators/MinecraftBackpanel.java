@@ -1,12 +1,12 @@
 package com.gildedgames.util.core.gui.util.decorators;
 
 import com.gildedgames.util.core.gui.util.GuiFactory;
-import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.common.GuiDecorator;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.RectModifier.ModifierType;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.util.TextureElement;
+import com.gildedgames.util.modules.ui.common.Gui;
+import com.gildedgames.util.modules.ui.common.GuiDecorator;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.RectModifier.ModifierType;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.util.TextureElement;
 
 public class MinecraftBackpanel extends GuiDecorator<Gui>
 {

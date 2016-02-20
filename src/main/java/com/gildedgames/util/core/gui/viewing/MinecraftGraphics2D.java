@@ -13,14 +13,14 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.data.AssetLocation;
-import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.graphics.Sprite;
-import com.gildedgames.util.ui.graphics.Sprite.UV;
-import com.gildedgames.util.ui.graphics.UVBehavior.UVDimPair;
-import com.gildedgames.util.ui.util.rect.RectCollection;
+import com.gildedgames.util.modules.ui.data.AssetLocation;
+import com.gildedgames.util.modules.ui.data.DrawingData;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.graphics.Sprite;
+import com.gildedgames.util.modules.ui.graphics.Sprite.UV;
+import com.gildedgames.util.modules.ui.graphics.UVBehavior.UVDimPair;
+import com.gildedgames.util.modules.ui.util.rect.RectCollection;
 
 public class MinecraftGraphics2D implements Graphics2D
 {

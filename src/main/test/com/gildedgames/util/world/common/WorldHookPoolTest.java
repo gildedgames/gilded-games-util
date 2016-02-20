@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gildedgames.util.world.common;
+package com.gildedgames.util.modules.world.common;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -12,7 +12,7 @@ import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.world.TestWorld;
 import com.gildedgames.util.testutil.world.TestWorldHook;
 import com.gildedgames.util.testutil.world.TestWorldHookFactory;
-import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.modules.world.common.world.IWorld;
 
 /**
  * @author Emile

@@ -5,9 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
+import com.gildedgames.util.modules.player.common.IPlayerHookPool;
+import com.gildedgames.util.modules.player.common.player.IPlayerHook;
+import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
 
 public class TestPlayerHook implements IPlayerHook
 {

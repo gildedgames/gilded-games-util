@@ -6,10 +6,10 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class MinecraftTextBackground extends GuiFrame
 {

@@ -5,8 +5,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.instances.Instance;
-import com.gildedgames.util.instances.InstanceHandler;
+import com.gildedgames.util.modules.instances.Instance;
+import com.gildedgames.util.modules.instances.InstanceHandler;
 import com.google.common.collect.Lists;
 
 public class DefaultInstance implements Instance

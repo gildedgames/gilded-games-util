@@ -10,7 +10,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
-import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.modules.world.common.world.IWorld;
 
 public class TestWorld implements IWorld
 {

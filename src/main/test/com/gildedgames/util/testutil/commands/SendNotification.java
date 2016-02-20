@@ -3,7 +3,7 @@ package com.gildedgames.util.testutil.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.notifications.NotificationCore;
+import com.gildedgames.util.modules.notifications.NotificationCore;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;

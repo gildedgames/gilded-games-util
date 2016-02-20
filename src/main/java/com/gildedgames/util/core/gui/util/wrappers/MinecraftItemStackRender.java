@@ -16,11 +16,11 @@ import net.minecraft.util.ReportedException;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class MinecraftItemStackRender extends GuiFrame
 {

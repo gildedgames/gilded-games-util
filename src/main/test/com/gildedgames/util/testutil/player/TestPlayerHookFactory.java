@@ -1,8 +1,8 @@
 package com.gildedgames.util.testutil.player;
 
-import com.gildedgames.util.player.common.IPlayerHookFactory;
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerProfile;
+import com.gildedgames.util.modules.player.common.IPlayerHookFactory;
+import com.gildedgames.util.modules.player.common.IPlayerHookPool;
+import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
 
 public class TestPlayerHookFactory implements IPlayerHookFactory<TestPlayerHook>
 {

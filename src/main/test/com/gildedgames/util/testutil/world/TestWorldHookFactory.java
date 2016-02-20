@@ -2,8 +2,8 @@ package com.gildedgames.util.testutil.world;
 
 import java.util.List;
 
-import com.gildedgames.util.world.common.IWorldHookFactory;
-import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.modules.world.common.IWorldHookFactory;
+import com.gildedgames.util.modules.world.common.world.IWorld;
 
 public class TestWorldHookFactory implements IWorldHookFactory<TestWorldHook>
 {

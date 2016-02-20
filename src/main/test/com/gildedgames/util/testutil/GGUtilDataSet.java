@@ -13,9 +13,9 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
-import com.gildedgames.util.player.common.IPlayerHookPool;
-import com.gildedgames.util.player.common.PlayerHookPool;
-import com.gildedgames.util.player.common.player.IPlayerHook;
+import com.gildedgames.util.modules.player.common.IPlayerHookPool;
+import com.gildedgames.util.modules.player.common.PlayerHookPool;
+import com.gildedgames.util.modules.player.common.player.IPlayerHook;
 import com.gildedgames.util.testutil.block.TestBlockState;
 import com.gildedgames.util.testutil.io.TestMetadata;
 import com.gildedgames.util.testutil.io.TestNBTFile;
@@ -23,7 +23,7 @@ import com.gildedgames.util.testutil.player.TestPlayerHook;
 import com.gildedgames.util.testutil.player.TestPlayerHookFactory;
 import com.gildedgames.util.testutil.world.TestWorld;
 import com.gildedgames.util.testutil.world.TestWorldHook;
-import com.gildedgames.util.world.common.world.IWorld;
+import com.gildedgames.util.modules.world.common.world.IWorld;
 
 public class GGUtilDataSet
 {

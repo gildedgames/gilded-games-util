@@ -5,13 +5,13 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.ResourceLocation;
 
-import com.gildedgames.util.ui.common.GuiDecorator;
-import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.input.ButtonState;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.MouseButton;
-import com.gildedgames.util.ui.input.MouseInput;
-import com.gildedgames.util.ui.input.MouseInputPool;
+import com.gildedgames.util.modules.ui.common.GuiDecorator;
+import com.gildedgames.util.modules.ui.common.Gui;
+import com.gildedgames.util.modules.ui.input.ButtonState;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.input.MouseButton;
+import com.gildedgames.util.modules.ui.input.MouseInput;
+import com.gildedgames.util.modules.ui.input.MouseInputPool;
 
 public class MinecraftButtonSounds extends GuiDecorator<Gui>
 {

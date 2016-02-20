@@ -1,25 +1,25 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.chunk.ChunkModule;
+import com.gildedgames.util.modules.chunk.ChunkModule;
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.io.NetworkWrapper;
-import com.gildedgames.util.group.GroupModule;
-import com.gildedgames.util.instances.InstanceModule;
+import com.gildedgames.util.modules.group.GroupModule;
+import com.gildedgames.util.modules.instances.InstanceModule;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.menu.MenuModule;
-import com.gildedgames.util.notifications.NotificationModule;
-import com.gildedgames.util.player.PlayerModule;
-import com.gildedgames.util.spawning.SpawningModule;
-import com.gildedgames.util.tab.TabModule;
-import com.gildedgames.util.world.WorldModule;
-import net.minecraft.block.Block;
+import com.gildedgames.util.modules.menu.MenuModule;
+import com.gildedgames.util.modules.notifications.NotificationModule;
+import com.gildedgames.util.modules.player.PlayerModule;
+import com.gildedgames.util.modules.spawning.SpawningModule;
+import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.world.WorldModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,14 +40,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Mod(modid = UtilModule.MOD_ID, name = "Gilded Games Utility", version = UtilModule.VERSION, dependencies = "before:*")
-public class UtilModule extends Module
+public class UtilModule
 {
-
 	public static final String MOD_ID = "gildedgamesutil";
 
-	public static final String VERSION = "1.8-r1";
+	public static final String VERSION = "1.8.9-r1";
 
-	public static final boolean DEBUG_MODE = true;
+	public static final NetworkWrapper NETWORK = new NetworkWrapper();
 
 	@Instance(UtilModule.MOD_ID)
 	public static UtilModule instance;
@@ -55,56 +54,35 @@ public class UtilModule extends Module
 	@SidedProxy(clientSide = "com.gildedgames.util.core.client.ClientProxy", serverSide = "com.gildedgames.util.core.ServerProxy")
 	public static ServerProxy proxy;
 
-	public static final NetworkWrapper NETWORK = new NetworkWrapper();
+	public static Logger logger;
 
 	private final List<Module> modules = new ArrayList<>();
 
-	private final SidedObject<UtilServices> serviceLocator;
+	private UtilServices services = new UtilServices();
 
-	private final MCSyncableDispatcher syncableDispatcher;
+	private MCSyncableDispatcher syncableDispatcher;
 
-	public UtilModule()
-	{
-		this.registerCore(PlayerModule.INSTANCE);
-		this.registerCore(WorldModule.INSTANCE);
-		this.registerCore(TabModule.INSTANCE);
-		this.registerCore(GroupModule.INSTANCE);
-		this.registerCore(new SpawningModule());
-		this.registerCore(InstanceModule.INSTANCE);
-		this.registerCore(NotificationModule.INSTANCE);
-		this.registerCore(ChunkModule.INSTANCE);
-
-		if (UtilModule.isClient())
-		{
-			this.registerCore(MenuModule.INSTANCE);
-		}
-
-		UtilServices clientLocator = new UtilServices();
-		UtilServices serverLocator = new UtilServices();
-
-		this.serviceLocator = new SidedObject<>(clientLocator, serverLocator);
-		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
-	}
-
-	public void registerCore(Module module)
-	{
-		this.modules.add(module);
-	}
-
-	public static ItemStack getItemStack(Block block)
-	{
-		return UtilModule.getItemStack(block, 1);
-	}
-
-	public static ItemStack getItemStack(Block block, int amount)
-	{
-		return new ItemStack(block, amount);
-	}
-
-	@Override
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		UtilModule.logger = event.getModLog();
+
+		this.registerModule(PlayerModule.INSTANCE);
+		this.registerModule(WorldModule.INSTANCE);
+		this.registerModule(TabModule.INSTANCE);
+		this.registerModule(GroupModule.INSTANCE);
+		this.registerModule(SpawningModule.INSTANCE);
+		this.registerModule(InstanceModule.INSTANCE);
+		this.registerModule(NotificationModule.INSTANCE);
+		this.registerModule(ChunkModule.INSTANCE);
+
+		if (UtilModule.isClient())
+		{
+			this.registerModule(MenuModule.INSTANCE);
+		}
+
+		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
+
 		try
 		{
 			IOCore.io().registerManager(UtilModule.locate().getIOManager());
@@ -125,7 +103,13 @@ public class UtilModule extends Module
 		proxy.preInit(event);
 	}
 
-	@Override
+	public void registerModule(Module module)
+	{
+		UtilModule.logger().debug("Adding module " + module.getClass().getName());
+
+		this.modules.add(module);
+	}
+
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
@@ -137,7 +121,6 @@ public class UtilModule extends Module
 		proxy.init(event);
 	}
 
-	@Override
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
@@ -149,7 +132,6 @@ public class UtilModule extends Module
 		proxy.postInit(event);
 	}
 
-	@Override
 	@EventHandler
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
@@ -161,7 +143,6 @@ public class UtilModule extends Module
 		proxy.serverAboutToStart(event);
 	}
 
-	@Override
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
@@ -173,7 +154,6 @@ public class UtilModule extends Module
 		proxy.serverStarting(event);
 	}
 
-	@Override
 	@EventHandler
 	public void serverStarted(FMLServerStartedEvent event)
 	{
@@ -185,7 +165,6 @@ public class UtilModule extends Module
 		proxy.serverStarted(event);
 	}
 
-	@Override
 	@EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
@@ -199,7 +178,6 @@ public class UtilModule extends Module
 		this.flushData();
 	}
 
-	@Override
 	@EventHandler
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
@@ -211,16 +189,14 @@ public class UtilModule extends Module
 		proxy.serverStopped(event);
 	}
 
-	@Override
 	public void flushData()
 	{
-		UtilModule.debugPrint("Flushing data for GG Util");
 		for (Module module : this.modules)
 		{
 			module.flushData();
 		}
+
 		proxy.flushData();
-		UtilModule.debugPrint("Finished flushing data for GG Util");
 	}
 
 	public MCSyncableDispatcher getDispatcher()
@@ -230,50 +206,22 @@ public class UtilModule extends Module
 
 	public static UtilServices locate()
 	{
-		return instance.serviceLocator.instance();
-	}
-
-	public static String modAddress()
-	{
-		return UtilModule.MOD_ID + ":";
+		return instance.services;
 	}
 
 	public static boolean isClient()
 	{
-		return getSide().isClient();
+		return FMLCommonHandler.instance().getSide().isClient();
 	}
 
 	public static boolean isServer()
 	{
-		return getSide().isServer();
+		return FMLCommonHandler.instance().getSide().isServer();
 	}
 
-	public static Side getSide()
+	public static Logger logger()
 	{
-		Thread thr = Thread.currentThread();
-
-		if (thr.getName().equals("Server thread") || thr.getName().startsWith("Netty Server IO"))
-		{
-			return Side.SERVER;
-		}
-
-		return Side.CLIENT;
-	}
-
-	public static void debugPrint(Object line)
-	{
-		if (DEBUG_MODE && line != null)
-		{
-			System.out.println("[GG DEV]: " + line.toString());
-		}
-	}
-
-	public static void print(Object line)
-	{
-		if (line != null)
-		{
-			System.out.println("[GG]: " + line.toString());
-		}
+		return instance.logger;
 	}
 
 	public static List<EntityPlayerMP> getOnlinePlayers()
@@ -324,9 +272,13 @@ public class UtilModule extends Module
 		return StatCollector.translateToLocal(key);
 	}
 
-	public static void registerEventHandler(Object o)
+	public static void registerEventHandler(Object obj)
 	{
-		MinecraftForge.EVENT_BUS.register(o);
+		MinecraftForge.EVENT_BUS.register(obj);
 	}
 
+	public static boolean isInsideDevEnvironment()
+	{
+		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE;
+	}
 }

@@ -2,19 +2,19 @@ package com.gildedgames.util.core.gui.util.decorators;
 
 import java.awt.Color;
 
-import com.gildedgames.util.ui.UiModule;
+import com.gildedgames.util.modules.ui.UiModule;
 import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
-import com.gildedgames.util.ui.common.Gui;
-import com.gildedgames.util.ui.common.GuiDecorator;
-import com.gildedgames.util.ui.data.DrawingData;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.KeyboardInputPool;
-import com.gildedgames.util.ui.util.RectangleElement;
+import com.gildedgames.util.modules.ui.common.Gui;
+import com.gildedgames.util.modules.ui.common.GuiDecorator;
+import com.gildedgames.util.modules.ui.data.DrawingData;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.input.KeyboardInputPool;
+import com.gildedgames.util.modules.ui.util.RectangleElement;
 
 public class MinecraftGui extends GuiDecorator<Gui>
 {

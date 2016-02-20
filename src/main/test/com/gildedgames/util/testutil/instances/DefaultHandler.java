@@ -2,7 +2,7 @@ package com.gildedgames.util.testutil.instances;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import com.gildedgames.util.instances.InstanceHandler;
+import com.gildedgames.util.modules.instances.InstanceHandler;
 
 public class DefaultHandler
 {

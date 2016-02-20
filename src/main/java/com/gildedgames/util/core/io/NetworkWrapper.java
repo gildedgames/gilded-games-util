@@ -2,9 +2,8 @@ package com.gildedgames.util.core.io;
 
 import java.util.List;
 
-import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.group.common.core.Group;
-import com.gildedgames.util.group.common.player.GroupMember;
+import com.gildedgames.util.modules.group.common.core.Group;
+import com.gildedgames.util.modules.group.common.player.GroupMember;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;

@@ -4,17 +4,17 @@ import java.awt.Color;
 import java.io.File;
 
 import com.gildedgames.util.core.gui.util.GuiFactory;
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.event.view.MouseEventGui;
-import com.gildedgames.util.ui.input.ButtonState;
-import com.gildedgames.util.ui.input.InputProvider;
-import com.gildedgames.util.ui.input.MouseButton;
-import com.gildedgames.util.ui.input.MouseInput;
-import com.gildedgames.util.ui.input.MouseInputPool;
-import com.gildedgames.util.ui.util.Button;
-import com.gildedgames.util.ui.util.TextureElement;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.event.view.MouseEventGui;
+import com.gildedgames.util.modules.ui.input.ButtonState;
+import com.gildedgames.util.modules.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.input.MouseButton;
+import com.gildedgames.util.modules.ui.input.MouseInput;
+import com.gildedgames.util.modules.ui.input.MouseInputPool;
+import com.gildedgames.util.modules.ui.util.Button;
+import com.gildedgames.util.modules.ui.util.TextureElement;
 
 public class FileBrowserButton extends GuiFrame
 {

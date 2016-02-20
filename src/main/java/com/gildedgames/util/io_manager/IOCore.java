@@ -125,7 +125,7 @@ public class IOCore implements IORegistry, IOFileController, IOVolatileControlle
 			}
 		}
 
-		UtilModule.print("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
+		UtilModule.logger().warn("Could not find IO manager for class " + clazz + ". Please register this class to a manager (it's also possible you've forgotten to register an IO manager).");
 
 		return null;
 	}

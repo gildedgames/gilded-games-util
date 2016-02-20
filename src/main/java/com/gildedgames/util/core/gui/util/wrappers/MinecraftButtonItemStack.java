@@ -2,11 +2,11 @@ package com.gildedgames.util.core.gui.util.wrappers;
 
 import net.minecraft.item.ItemStack;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Dim2D;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.graphics.Graphics2D;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.graphics.Graphics2D;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class MinecraftButtonItemStack extends GuiFrame
 {

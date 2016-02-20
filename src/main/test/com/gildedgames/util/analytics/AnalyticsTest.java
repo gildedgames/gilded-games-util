@@ -1,4 +1,4 @@
-package com.gildedgames.util.analytics;
+package com.gildedgames.util.modules.analytics;
 
 import java.util.Scanner;
 import java.util.UUID;

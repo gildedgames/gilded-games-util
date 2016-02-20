@@ -1,4 +1,4 @@
-package com.gildedgames.util.world;
+package com.gildedgames.util.modules.world;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -7,7 +7,7 @@ import com.gildedgames.util.testutil.GGUtilDataSet;
 import com.gildedgames.util.testutil.world.TestWorldFactory;
 import com.gildedgames.util.testutil.world.TestWorldHook;
 import com.gildedgames.util.testutil.world.TestWorldHookFactory;
-import com.gildedgames.util.world.common.WorldHookPool;
+import com.gildedgames.util.modules.world.common.WorldHookPool;
 
 public class WorldServicesTest
 {

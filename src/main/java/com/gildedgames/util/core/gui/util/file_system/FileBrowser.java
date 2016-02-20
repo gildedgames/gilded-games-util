@@ -1,8 +1,8 @@
 package com.gildedgames.util.core.gui.util.file_system;
 
-import com.gildedgames.util.ui.common.GuiFrame;
-import com.gildedgames.util.ui.data.rect.Rect;
-import com.gildedgames.util.ui.input.InputProvider;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public class FileBrowser extends GuiFrame
 {
