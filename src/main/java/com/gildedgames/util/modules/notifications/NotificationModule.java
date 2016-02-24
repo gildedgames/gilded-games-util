@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class NotificationModule extends Module
 {
 
-	@SidedProxy(modId = UtilModule.MOD_ID, clientSide = "com.gildedgames.util.notifications.client.ClientProxy", serverSide = "com.gildedgames.util.notifications.CommonProxy")
+	@SidedProxy(modId = UtilModule.MOD_ID, clientSide = "com.gildedgames.util.modules.notifications.client.ClientProxy", serverSide = "com.gildedgames.util.modules.notifications.CommonProxy")
 	public static CommonProxy proxy;
 
 	private SidedObject<NotificationServices> serviceLocator;
