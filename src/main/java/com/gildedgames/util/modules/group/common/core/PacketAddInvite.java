@@ -1,10 +1,13 @@
 package com.gildedgames.util.modules.group.common.core;
 
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.util.IOUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 {
@@ -32,19 +35,28 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 	public void toBytes(ByteBuf buf)
 	{
 		super.toBytes(buf);
-		IOUtil.writeUUID(this.inviter.getProfile().getUUID(), buf);
+		IOUtil.writeUUID(this.inviter.getUniqueId(), buf);
 	}
 
-	@Override
-	public void handleClientSide(PacketAddInvite message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketAddInvite, IMessage>
 	{
-		message.pool.inviteDirectly(message.group, message.member, message.inviter);
+		@Override
+		public IMessage onMessage(PacketAddInvite message, EntityPlayer player)
+		{
+			message.pool.inviteDirectly(message.group, message.member, message.inviter);
+
+			return null;
+		}
 	}
 
-	@Override
-	public void handleServerSide(PacketAddInvite message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketAddInvite, IMessage>
 	{
-		message.pool.invite(message.member.getProfile().getUUID(), player.getGameProfile().getId(), message.group);
-	}
+		@Override
+		public IMessage onMessage(PacketAddInvite message, EntityPlayer player)
+		{
+			message.pool.invite(message.member.getUniqueId(), player.getGameProfile().getId(), message.group);
 
+			return null;
+		}
+	}
 }

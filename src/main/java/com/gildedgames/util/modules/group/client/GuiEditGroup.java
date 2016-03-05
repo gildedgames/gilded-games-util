@@ -45,7 +45,7 @@ public class GuiEditGroup extends GuiFrame
 
 	public GuiEditGroup(EntityPlayer player)
 	{
-		this.groupMember = GroupModule.locate().getPlayers().get(player);
+		this.groupMember = GroupMember.get(player);
 		this.group = this.groupMember.groupsInFor(GroupModule.locate().getDefaultPool()).get(0);
 	}
 
@@ -95,7 +95,7 @@ public class GuiEditGroup extends GuiFrame
 							@Override
 							protected void onCondition()
 							{
-								ClientProxy.GROUP_TAB.onOpen(removing.getProfile().getEntity());
+								ClientProxy.GROUP_TAB.onOpen(removing.getEntity());
 							}
 						}));
 					}
@@ -142,7 +142,7 @@ public class GuiEditGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					GroupModule.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getProfile().getUUID(), GuiEditGroup.this.group);
+					GroupModule.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getUniqueId(), GuiEditGroup.this.group);
 
 					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
@@ -178,7 +178,7 @@ public class GuiEditGroup extends GuiFrame
 			});
 		}
 
-		if (permissions.canEditGroupInfo(this.group, this.groupMember.getProfile().getUUID()))
+		if (permissions.canEditGroupInfo(this.group, this.groupMember.getUniqueId()))
 		{
 			this.content().set("edit", new MinecraftButton(Dim2D.build().pos(310, 130).area(75, 20).flush(), UtilModule.translate("gui.edit"))
 			{
@@ -210,7 +210,7 @@ public class GuiEditGroup extends GuiFrame
 			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<>();
 			for (GroupMember member : this.group.getMemberData().onlineMembers())
 			{
-				buttons.put(member.getProfile().getUsername(), new PlayerButton(member.getProfile().getUUID(), member.getProfile().getUsername()));
+				buttons.put(member.getEntity().getName(), new PlayerButton(member.getUniqueId(), member.getEntity().getName()));
 			}
 
 			return buttons;

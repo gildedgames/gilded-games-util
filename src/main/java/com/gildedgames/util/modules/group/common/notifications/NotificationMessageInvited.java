@@ -1,19 +1,18 @@
 package com.gildedgames.util.modules.group.common.notifications;
 
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.util.IOUtil;
+import com.gildedgames.util.modules.group.common.core.Group;
+import com.gildedgames.util.modules.group.common.player.GroupMember;
+import com.gildedgames.util.modules.notifications.common.core.INotificationResponse;
+import com.gildedgames.util.modules.notifications.common.util.AbstractNotificationMessage;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.group.common.core.Group;
-import com.gildedgames.util.io_manager.factory.IOBridge;
-import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.modules.notifications.common.core.INotificationResponse;
-import com.gildedgames.util.modules.notifications.common.util.AbstractNotificationMessage;
-
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class NotificationMessageInvited extends AbstractNotificationMessage
 {
@@ -106,7 +105,7 @@ public class NotificationMessageInvited extends AbstractNotificationMessage
 	@Override
 	public boolean isRelevant()
 	{
-		return GroupModule.locate().getPlayers().get(this.getReceiver()).isInvitedFor(this.group);
+		return GroupMember.get(this.getReceiver()).isInvitedFor(this.group);
 	}
 
 	@Override

@@ -73,15 +73,15 @@ public class MemberData implements Iterable<GroupMember>
 
 	protected void join(GroupMember member)
 	{
-		this.invitedMembers.remove(member.getProfile().getUUID());
+		this.invitedMembers.remove(member.getUniqueId());
 
-		if (this.members.contains(member.getProfile().getUUID()))
+		if (this.members.contains(member.getUniqueId()))
 		{
-			UtilModule.logger().warn("Tried to join group but player " + member.getProfile().getUsername() + " was already in it");
+			UtilModule.logger().warn("Tried to join group but player " + member.getEntity().getName() + " was already in it");
 			return;
 		}
 
-		this.members.add(member.getProfile().getUUID());
+		this.members.add(member.getUniqueId());
 
 		for (IGroupHook hook : this.hooks)
 		{
@@ -93,7 +93,7 @@ public class MemberData implements Iterable<GroupMember>
 	{
 		if (this.assertMember(member))
 		{
-			this.members.remove(member.getProfile().getUUID());
+			this.members.remove(member.getUniqueId());
 			for (IGroupHook hook : this.hooks)
 			{
 				hook.onMemberRemoved(member);
@@ -103,9 +103,9 @@ public class MemberData implements Iterable<GroupMember>
 
 	protected void invite(GroupMember member)
 	{
-		if (this.members.contains(member.getProfile().getUUID()))
+		if (this.members.contains(member.getUniqueId()))
 		{
-			UtilModule.logger().warn("Tried to invite player who is already a member: " + member.getProfile().getUsername());
+			UtilModule.logger().warn("Tried to invite player who is already a member: " + member.getEntity().getName());
 			return;
 		}
 
@@ -114,20 +114,20 @@ public class MemberData implements Iterable<GroupMember>
 			hook.onMemberInvited(member);
 		}
 
-		this.invitedMembers.add(member.getProfile().getUUID());
+		this.invitedMembers.add(member.getUniqueId());
 	}
 
 	protected void removeInvitation(GroupMember member)
 	{
-		if (this.members.contains(member.getProfile().getUUID()))
+		if (this.members.contains(member.getUniqueId()))
 		{
-			UtilModule.logger().warn("Tried to remove invitation of a player who is already a member: " + member.getProfile().getUsername());
+			UtilModule.logger().warn("Tried to remove invitation of a player who is already a member: " + member.getEntity().getName());
 			return;
 		}
 
-		if (!this.invitedMembers.contains(member.getProfile().getUUID()))
+		if (!this.invitedMembers.contains(member.getUniqueId()))
 		{
-			UtilModule.logger().warn("Tried to remove invitation of a player who wasn't invited: " + member.getProfile().getUsername());
+			UtilModule.logger().warn("Tried to remove invitation of a player who wasn't invited: " + member.getEntity().getName());
 			return;
 		}
 
@@ -136,12 +136,12 @@ public class MemberData implements Iterable<GroupMember>
 			hook.onInviteRemoved(member);
 		}
 
-		this.invitedMembers.remove(member.getProfile().getUUID());
+		this.invitedMembers.remove(member.getUniqueId());
 	}
 
 	protected boolean assertMember(GroupMember member)
 	{
-		if (!this.members.contains(member.getProfile().getUUID()))
+		if (!this.members.contains(member.getUniqueId()))
 		{
 			UtilModule.logger().warn("Trying to do something with a player who is not a member");
 			return false;
@@ -175,8 +175,9 @@ public class MemberData implements Iterable<GroupMember>
 		List<GroupMember> onlineMembers = new ArrayList<>();
 		for (UUID uuid : this.members)
 		{
-			GroupMember member = GroupModule.locate().getPlayers().get(uuid);
-			if (member.getProfile().getEntity() != null && member.getProfile().isLoggedIn())
+			GroupMember member = GroupMember.get(uuid);
+			// TODO: VERIFY
+//			if (member.getProfile().getEntity() != null && member.getEntity().isLoggedIn())
 			{
 				onlineMembers.add(member);
 			}

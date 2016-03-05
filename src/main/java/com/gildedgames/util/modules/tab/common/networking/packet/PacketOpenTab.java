@@ -1,41 +1,37 @@
 package com.gildedgames.util.modules.tab.common.networking.packet;
 
-import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.core.io.CustomPacket;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.tab.TabModule;
 import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.tab.common.util.ITabGroup;
 import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
-import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Map;
 
-public class PacketOpenTab extends CustomPacket<PacketOpenTab>
+public class PacketOpenTab implements IMessage
 {
 
 	private int tabGroupIndex, tabIndex, containerID;
 	
 	private boolean openContainer = false;
 
-	public PacketOpenTab()
-	{
-	}
+	public PacketOpenTab() { }
 
 	public PacketOpenTab(ITab tab)
 	{
-
-		for (Object o : TabModule.api().getRegisteredTabGroups().entrySet())
+		for (Map.Entry<Integer, ITabGroupHandler> entry : TabModule.api().getRegisteredTabGroups().entrySet())
 		{
-			Map.Entry<Integer, TabGroupHandler> pairs = (Map.Entry) o;
+			int groupIndex = entry.getKey();
 
-			int groupIndex = pairs.getKey();
-			TabGroupHandler tabGroup = pairs.getValue();
+			ITabGroupHandler tabGroup = entry.getValue();
 
 			int index = 0;
 
@@ -82,56 +78,68 @@ public class PacketOpenTab extends CustomPacket<PacketOpenTab>
 		buf.writeBoolean(this.openContainer);
 	}
 
-	@Override
-	public void handleClientSide(PacketOpenTab message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketOpenTab, IMessage>
 	{
-		if (message.openContainer)
+
+		@Override
+		public IMessage onMessage(PacketOpenTab message, EntityPlayer player)
 		{
-			Minecraft.getMinecraft().thePlayer.openContainer.windowId = message.containerID;
+			if (message.openContainer)
+			{
+				Minecraft.getMinecraft().thePlayer.openContainer.windowId = message.containerID;
+			}
+
+			return null;
 		}
 	}
 
-	@Override
-	public void handleServerSide(PacketOpenTab message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketOpenTab, PacketOpenTab>
 	{
-		if (player instanceof EntityPlayerMP)
+		@Override
+		public PacketOpenTab onMessage(PacketOpenTab message, EntityPlayer player)
 		{
-			EntityPlayerMP entityPlayer = (EntityPlayerMP) player;
-
-			if (this.tabGroupIndex < TabModule.api().getRegisteredTabGroups().size())
+			if (player instanceof EntityPlayerMP)
 			{
-				ITabGroupHandler tabGroupHandler = TabModule.api().getRegisteredTabGroups().get(this.tabGroupIndex);
-				
-				if (tabGroupHandler == null)
+				EntityPlayerMP playerMp = (EntityPlayerMP) player;
+
+				if (message.tabGroupIndex < TabModule.api().getRegisteredTabGroups().size())
 				{
-					return;
-				}
-				
-				ITabGroup tabGroup = tabGroupHandler.getSide(Side.SERVER);
-				
-				if (this.tabIndex < tabGroup.getTabs().size())
-				{
-					ITab tab = tabGroup.getTabs().get(this.tabIndex);
-	
-					Container container = tab.getCurrentContainer(entityPlayer, entityPlayer.worldObj, (int) entityPlayer.posX, (int) entityPlayer.posY, (int) entityPlayer.posZ);
-	
-					if (container != null)
+					ITabGroupHandler tabGroupHandler = TabModule.api().getRegisteredTabGroups().get(message.tabGroupIndex);
+
+					if (tabGroupHandler == null)
 					{
-						entityPlayer.getNextWindowId();
-						entityPlayer.closeContainer();
-	
-						int windowID = entityPlayer.currentWindowId;
-	
-						entityPlayer.openContainer = container;
-						entityPlayer.openContainer.windowId = windowID;
-	
-						UtilModule.NETWORK.sendTo(new PacketOpenTab(this.tabGroupIndex, this.tabIndex, windowID), entityPlayer);
+						return null;
 					}
-					
-					tab.onOpen(player);
+
+					ITabGroup tabGroup = tabGroupHandler.getSide(Side.SERVER);
+
+					if (message.tabIndex < tabGroup.getTabs().size())
+					{
+						ITab tab = tabGroup.getTabs().get(message.tabIndex);
+
+						Container container = tab.getCurrentContainer(playerMp, playerMp.worldObj, (int) playerMp.posX, (int) playerMp.posY, (int) playerMp.posZ);
+
+						if (container != null)
+						{
+							playerMp.getNextWindowId();
+							playerMp.closeContainer();
+
+							int windowID = playerMp.currentWindowId;
+
+							playerMp.openContainer = container;
+							playerMp.openContainer.windowId = windowID;
+
+							playerMp.openContainer.onCraftGuiOpened(playerMp);
+
+							return new PacketOpenTab(message.tabGroupIndex, message.tabIndex, windowID);
+						}
+
+						tab.onOpen(player);
+					}
 				}
 			}
+
+			return null;
 		}
 	}
-
 }

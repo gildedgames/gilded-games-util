@@ -21,12 +21,12 @@ public class InstanceModule extends Module
 
 	public PlayerInstances getPlayer(EntityPlayer player)
 	{
-		return this.locate().getPlayers().get(player);
+		return PlayerInstances.PROVIDER.getHook(player);
 	}
 
 	public PlayerInstances getPlayer(UUID uuid)
 	{
-		return this.locate().getPlayers().get(uuid);
+		return PlayerInstances.PROVIDER.getHook(uuid);
 	}
 
 	public <T extends Instance> InstanceHandler<T> createServerInstanceHandler(InstanceFactory<T> factory)

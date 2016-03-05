@@ -23,19 +23,20 @@ public class TabApiImpl implements TabAPI
 
 	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<>();
 
-	@SideOnly(Side.CLIENT)
 	private final ITab BACKPACK_TAB = new TabBackpack();
 
 	private ITabGroupHandler activeGroup;
 
 	public TabApiImpl()
 	{
+		this.getInventoryGroup().getSide(Side.SERVER).add(this.getBackpackTab());
+
 		if (UtilModule.isClient())
 		{
 			this.getInventoryGroup().getSide(Side.CLIENT).add(this.getBackpackTab());
-
-			this.registerGroup(this.inventoryTabGroup);
 		}
+
+		this.registerGroup(this.inventoryTabGroup);
 	}
 
 	@Override
@@ -45,7 +46,6 @@ public class TabApiImpl implements TabAPI
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public ITab getBackpackTab()
 	{
 		return this.BACKPACK_TAB;

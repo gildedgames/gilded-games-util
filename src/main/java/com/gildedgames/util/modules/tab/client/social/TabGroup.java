@@ -37,7 +37,7 @@ public class TabGroup extends TabGeneric
 	@Override
 	public void onOpen(EntityPlayer player)
 	{
-		GroupMember member = GroupModule.locate().getPlayers().get(player);
+		GroupMember member = GroupMember.get(player);
 		if (member.groupsInFor(GroupModule.locate().getDefaultPool()).isEmpty())
 		{
 			UiModule.locate().open("", new MinecraftGui(new GuiGroups()));

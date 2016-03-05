@@ -20,9 +20,10 @@ public class NotificationDispatcherClient extends NotificationDispatcher
 	{
 		//If the notification contains no message and is meant for the player,
 		//don't send it to the server for a check. 
-		UUID player = notification.getReceiver();
+		EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByUUID(notification.getReceiver());
+
 		EntityPlayer thePlayer = Minecraft.getMinecraft().thePlayer;
-		if (notification.getMessage() == null && player.equals(thePlayer.getGameProfile().getId()))
+		if (notification.getMessage() == null && player.getGameProfile().getId().equals(thePlayer.getGameProfile().getId()))
 		{
 			NotificationModule.locate().queueNotificationForDisplay(notification);
 		}

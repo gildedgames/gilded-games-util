@@ -15,7 +15,7 @@ import com.gildedgames.util.core.nbt.NBTFile;
 import com.gildedgames.util.io_manager.overhead.IOManager;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
 import com.gildedgames.util.io_manager.util.IOManagerDefault;
-import com.gildedgames.util.modules.menu.client.MenuClientEvents.MenuConfig;
+import com.gildedgames.util.modules.menu.impl.client.MenuClientEvents;
 import com.gildedgames.util.modules.ui.data.AssetLocation;
 import com.gildedgames.util.modules.world.common.WorldHookPool;
 
@@ -40,7 +40,7 @@ public class UtilServices
 
 		registry.registerClass(NBTFile.class, 0);
 		registry.registerClass(WorldHookPool.class, 1);
-		registry.registerClass(MenuConfig.class, 2);
+		registry.registerClass(MenuClientEvents.MenuConfig.class, 2);
 		registry.registerClass(MCSyncableDispatcher.class, 3);
 	}
 

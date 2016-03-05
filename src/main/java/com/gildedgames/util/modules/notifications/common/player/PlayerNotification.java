@@ -1,81 +1,38 @@
 package com.gildedgames.util.modules.notifications.common.player;
 
+import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.modules.entityhook.api.IEntityHookFactory;
+import com.gildedgames.util.modules.entityhook.impl.hooks.EntityHook;
+import com.gildedgames.util.modules.notifications.common.core.INotificationMessage;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.io_manager.io.IOSyncable;
-import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.modules.notifications.common.core.INotificationMessage;
-import com.gildedgames.util.modules.player.common.IPlayerHookPool;
-import com.gildedgames.util.modules.player.common.player.IPlayerHook;
-import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
-
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
-public class PlayerNotification implements IPlayerHook
+public class PlayerNotification extends EntityHook<EntityPlayer>
 {
-
-	private IPlayerProfile profile;
-
-	private IPlayerHookPool<PlayerNotification> pool;
-
 	private List<INotificationMessage> notifications = new ArrayList<>();
 
-	public PlayerNotification(IPlayerProfile profile, IPlayerHookPool<PlayerNotification> pool)
+	@Override
+	public void init(Entity entity, World world)
 	{
-		this.profile = profile;
-
-		this.pool = pool;
+		super.init(entity, world);
 	}
 
 	@Override
-	public void write(NBTTagCompound output)
+	public void saveNBTData(NBTTagCompound compound)
 	{
-		NBTHelper.setIOList("notifications", this.notifications, output);
+		NBTHelper.setIOList("notifications", this.notifications, compound);
 	}
 
 	@Override
-	public void read(NBTTagCompound input)
+	public void loadNBTData(NBTTagCompound compound)
 	{
-		this.notifications = NBTHelper.getIOList("notifications", input);
-	}
-
-	@Override
-	public IPlayerHookPool<PlayerNotification> getParentPool()
-	{
-		return this.pool;
-	}
-
-	@Override
-	public void entityInit(EntityPlayer player)
-	{
-	}
-
-	@Override
-	public IPlayerProfile getProfile()
-	{
-		return this.profile;
-	}
-
-	@Override
-	public void syncTo(ByteBuf output, IOSyncable.SyncSide to)
-	{
-		if (to == SyncSide.CLIENT)
-		{
-			IOUtil.writeIOList(this.notifications, output);
-		}
-	}
-
-	@Override
-	public void syncFrom(ByteBuf input, IOSyncable.SyncSide from)
-	{
-		if (from == SyncSide.SERVER)
-		{
-			this.notifications = IOUtil.readIOList(input);
-		}
+		this.notifications = NBTHelper.getIOList("notifications", compound);
 	}
 
 	public void addNotification(INotificationMessage notification)
@@ -110,20 +67,18 @@ public class PlayerNotification implements IPlayerHook
 		return null;
 	}
 
-	@Override
-	public boolean isDirty()
+	public static class Factory implements IEntityHookFactory<PlayerNotification>
 	{
-		return false;
-	}
+		@Override
+		public PlayerNotification createHook()
+		{
+			return new PlayerNotification();
+		}
 
-	@Override
-	public void markDirty()
-	{
-	}
+		@Override
+		public void writeFull(ByteBuf buf, PlayerNotification hook) { }
 
-	@Override
-	public void markClean()
-	{
+		@Override
+		public void readFull(ByteBuf buf, PlayerNotification hook) { }
 	}
-
 }

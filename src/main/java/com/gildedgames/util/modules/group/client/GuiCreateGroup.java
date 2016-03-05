@@ -44,7 +44,7 @@ public class GuiCreateGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS) && !StringUtils.isEmpty(nameInput.getData()))
 				{
-					GuiCreateGroup.this.onCreated(nameInput.getData(), new GroupPermsDefault(GroupModule.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer), permission.type));
+					GuiCreateGroup.this.onCreated(nameInput.getData(), new GroupPermsDefault(GroupMember.get(Minecraft.getMinecraft().thePlayer), permission.type));
 				}
 			}
 		});
@@ -63,7 +63,7 @@ public class GuiCreateGroup extends GuiFrame
 	protected void onCreated(String name, IGroupPerms perms)
 	{
 		GroupModule.locate().getDefaultPool().create(name, Minecraft.getMinecraft().thePlayer, perms);
-		final GroupMember member = GroupModule.locate().getPlayers().get(Minecraft.getMinecraft().thePlayer);
+		final GroupMember member = GroupMember.get(Minecraft.getMinecraft().thePlayer);
 		UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 		{
 			@Override

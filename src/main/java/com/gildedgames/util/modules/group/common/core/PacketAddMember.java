@@ -1,8 +1,10 @@
 package com.gildedgames.util.modules.group.common.core;
 
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketAddMember extends PacketMemberAction<PacketAddMember>
 {
@@ -16,16 +18,26 @@ public class PacketAddMember extends PacketMemberAction<PacketAddMember>
 		super(pool, group, member);
 	}
 
-	@Override
-	public void handleClientSide(PacketAddMember message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketAddMember, IMessage>
 	{
-		message.pool.addMemberDirectly(message.group, message.member);
+		@Override
+		public IMessage onMessage(PacketAddMember message, EntityPlayer player)
+		{
+			message.pool.addMemberDirectly(message.group, message.member);
+
+			return null;
+		}
 	}
 
-	@Override
-	public void handleServerSide(PacketAddMember message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketAddMember, IMessage>
 	{
-		message.pool.addMember(message.member.getProfile().getUUID(), message.group);
-	}
 
+		@Override
+		public IMessage onMessage(PacketAddMember message, EntityPlayer player)
+		{
+			message.pool.addMember(message.member.getUniqueId(), message.group);
+
+			return null;
+		}
+	}
 }

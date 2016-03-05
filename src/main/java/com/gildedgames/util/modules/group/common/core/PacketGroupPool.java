@@ -1,16 +1,15 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.core.io.MessageHandlerClient;
 import com.gildedgames.util.modules.group.GroupModule;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketGroupPool extends CustomPacket<PacketGroupPool>
+public class PacketGroupPool implements IMessage
 {
-
 	private GroupPool pool;
 
 	public PacketGroupPool()
@@ -51,16 +50,13 @@ public class PacketGroupPool extends CustomPacket<PacketGroupPool>
 		}
 	}
 
-	@Override
-	public void handleClientSide(PacketGroupPool message, EntityPlayer player)
+	public static class Handler extends MessageHandlerClient<PacketGroupPool, IMessage>
 	{
-
+		@Override
+		public IMessage onMessage(PacketGroupPool message, EntityPlayer player)
+		{
+			// WHAT IS THIS SUPPOSED TO DO?!
+			return null;
+		}
 	}
-
-	@Override
-	public void handleServerSide(PacketGroupPool message, EntityPlayer player)
-	{
-		throw new IllegalStateException();
-	}
-
 }

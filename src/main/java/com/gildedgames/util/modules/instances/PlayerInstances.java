@@ -1,102 +1,31 @@
 package com.gildedgames.util.modules.instances;
 
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.modules.entityhook.api.IEntityHookFactory;
+import com.gildedgames.util.modules.entityhook.impl.hooks.EntityHook;
+import com.gildedgames.util.modules.entityhook.impl.providers.PlayerHookProvider;
+import com.gildedgames.util.modules.world.common.BlockPosDimension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.modules.player.common.IPlayerHookPool;
-import com.gildedgames.util.modules.player.common.player.IPlayerHook;
-import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
-
-public class PlayerInstances implements IPlayerHook
+public class PlayerInstances extends EntityHook<EntityPlayer>
 {
-	private final IPlayerHookPool<PlayerInstances> pool;
-
-	private final IPlayerProfile playerProfile;
+	public static final PlayerHookProvider<PlayerInstances> PROVIDER = new PlayerHookProvider<>("instances", new Factory());
 
 	private NBT activeInstance;
 
 	private BlockPosDimension outside;
-
-	//private Map<BlockPosDimension, Instance> instanceMap = new HashMap<BlockPosDimension, Instance>();
-
-	public PlayerInstances(IPlayerHookPool<PlayerInstances> pool, IPlayerProfile profile)
-	{
-		this.pool = pool;
-		this.playerProfile = profile;
-	}
-
-	@Override
-	public void write(NBTTagCompound output)
-	{
-		NBTHelper.setBlockPosDimension(output, this.outside, "outside");
-	}
-
-	@Override
-	public void read(NBTTagCompound input)
-	{
-		this.outside = NBTHelper.getBlockPosDimension(input, "outside");
-	}
-
-	/*public Instance instanceFor(BlockPosDimension pos)
-	{
-		GroupMember groupMember = GroupCore.getGroupMember(this.playerProfile.getEntity());
-		return null;
-	}*/
-
-	@Override
-	public IPlayerHookPool<PlayerInstances> getParentPool()
-	{
-		return this.pool;
-	}
-
-	@Override
-	public void entityInit(EntityPlayer player)
-	{
-	}
-
-	@Override
-	public IPlayerProfile getProfile()
-	{
-		return this.playerProfile;
-	}
-
-	@Override
-	public boolean isDirty()
-	{
-		return false;
-	}
-
-	@Override
-	public void markDirty()
-	{
-	}
-
-	@Override
-	public void markClean()
-	{
-	}
-
-	@Override
-	public void syncTo(ByteBuf output, com.gildedgames.util.io_manager.io.IOSyncable.SyncSide to)
-	{
-	}
-
-	@Override
-	public void syncFrom(ByteBuf input, com.gildedgames.util.io_manager.io.IOSyncable.SyncSide from)
-	{
-	}
 
 	public NBT getInstance()
 	{
 		return this.activeInstance;
 	}
 
-	protected void setInstance(NBT i)
+	protected void setInstance(NBT instance)
 	{
-		this.activeInstance = i;
+		this.activeInstance = instance;
 	}
 
 	public BlockPosDimension outside()
@@ -109,4 +38,30 @@ public class PlayerInstances implements IPlayerHook
 		this.outside = pos;
 	}
 
+	@Override
+	public void saveNBTData(NBTTagCompound compound)
+	{
+		NBTHelper.setBlockPosDimension(compound, this.outside, "outside");
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound compound)
+	{
+		this.outside = NBTHelper.getBlockPosDimension(compound, "outside");
+	}
+
+	public static class Factory implements IEntityHookFactory<PlayerInstances>
+	{
+		@Override
+		public PlayerInstances createHook()
+		{
+			return new PlayerInstances();
+		}
+
+		@Override
+		public void writeFull(ByteBuf buf, PlayerInstances hook) { }
+
+		@Override
+		public void readFull(ByteBuf buf, PlayerInstances hook) { }
+	}
 }

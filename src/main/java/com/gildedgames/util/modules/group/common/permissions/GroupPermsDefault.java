@@ -135,8 +135,8 @@ public class GroupPermsDefault implements IGroupPerms
 
 	public GroupPermsDefault(GroupMember creating, PermissionType type)
 	{
-		this.owner = creating.getProfile().getUUID();
-		this.ownerUsername = creating.getProfile().getUsername();
+		this.owner = creating.getUniqueId();
+		this.ownerUsername = creating.getEntity().getName();
 		this.type = type;
 	}
 
@@ -163,7 +163,7 @@ public class GroupPermsDefault implements IGroupPerms
 		{
 			Random random = new Random();
 			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
-			this.ownerUsername = GroupModule.locate().getPlayers().get(this.owner).getProfile().getUsername();
+			this.ownerUsername = GroupMember.get(this.owner).getEntity().getName();
 		}
 	}
 
@@ -182,13 +182,13 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canInvite(Group group, GroupMember member, GroupMember inviter)
 	{
-		return this.type.canEveryoneInvite() || inviter.getProfile().getUUID().equals(this.owner);
+		return this.type.canEveryoneInvite() || inviter.getUniqueId().equals(this.owner);
 	}
 
 	@Override
 	public boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing)
 	{
-		return changing.getProfile().getUUID().equals(this.owner);
+		return changing.getUniqueId().equals(this.owner);
 	}
 
 	@Override
@@ -206,13 +206,13 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canRemoveGroup(Group group, GroupMember remover)
 	{
-		return remover.getProfile().getUUID().equals(this.owner);
+		return remover.getUniqueId().equals(this.owner);
 	}
 
 	@Override
 	public boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover)
 	{
-		return remover.equals(toRemove) || remover.getProfile().getUUID().equals(this.owner);
+		return remover.equals(toRemove) || remover.getUniqueId().equals(this.owner);
 	}
 
 	@Override
@@ -223,11 +223,11 @@ public class GroupPermsDefault implements IGroupPerms
 
 	public String ownerUsername()
 	{
-		GroupMember member = GroupModule.locate().getPlayers().get(this.owner);
-		if (member.getProfile().isLoggedIn())
-		{
-			this.ownerUsername = member.getProfile().getUsername();
-		}
+		GroupMember member = GroupMember.get(this.owner);
+//		if (member.getProfile().isLoggedIn())
+//		{
+			this.ownerUsername = member.getEntity().getName();
+//		}
 		return this.ownerUsername;
 	}
 

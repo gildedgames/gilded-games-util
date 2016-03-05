@@ -1,14 +1,13 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import com.gildedgames.util.core.io.CustomPacket;
+import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.modules.group.GroupModule;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-import com.gildedgames.util.io_manager.util.IOUtil;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public abstract class PacketMemberAction<T extends PacketMemberAction<T>> extends CustomPacket<T>
+public abstract class PacketMemberAction<T extends PacketMemberAction<T>> implements IMessage
 {
 	protected GroupPool pool;
 
@@ -41,6 +40,6 @@ public abstract class PacketMemberAction<T extends PacketMemberAction<T>> extend
 	{
 		ByteBufUtils.writeUTF8String(buf, this.pool.getID());
 		IOUtil.writeUUID(this.group.getUUID(), buf);
-		IOUtil.writeUUID(this.member.getProfile().getUUID(), buf);
+		IOUtil.writeUUID(this.member.getUniqueId(), buf);
 	}
 }

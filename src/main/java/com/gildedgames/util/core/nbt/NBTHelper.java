@@ -1,5 +1,18 @@
 package com.gildedgames.util.core.nbt;
 
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.util.IOUtil;
+import com.gildedgames.util.modules.world.common.BlockPosDimension;
+import com.google.common.collect.AbstractIterator;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -11,20 +24,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
-
-import com.gildedgames.util.modules.instances.BlockPosDimension;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.factory.IOBridge;
-import com.gildedgames.util.io_manager.io.IO;
-import com.gildedgames.util.io_manager.util.IOUtil;
-import com.google.common.collect.AbstractIterator;
-
-import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 
 public class NBTHelper
 {
@@ -309,5 +308,4 @@ public class NBTHelper
 		tag.setInteger(key + "z", pos.getZ());
 		tag.setInteger(key + "dimension", pos.dimId());
 	}
-
 }

@@ -1,30 +1,27 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.core.io.MessageHandlerClient;
 import com.gildedgames.util.modules.group.GroupModule;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketJoin extends CustomPacket<PacketJoin>
+public class PacketJoin implements IMessage
 {
 	//This class doesn't use PacketGroupAction because of syncing issues. It'd send two packets, PacketAddGroup and this at the same time, meaning
 	//sometimes this packet doesn't find the newly created group. Waiting until handleClientSide to read the group ensures it's there.
 
-	MemberData data;
+	private MemberData data;
 
-	GroupPool pool;
+	private GroupPool pool;
 
-	Group group;
+	private Group group;
 
-	ByteBuf buf;
+	private ByteBuf buf;
 
-	public PacketJoin()
-	{
-
-	}
+	public PacketJoin() { }
 
 	public PacketJoin(GroupPool pool, Group group)
 	{
@@ -48,18 +45,17 @@ public class PacketJoin extends CustomPacket<PacketJoin>
 		this.data.write((new ByteBufBridge(buf)));
 	}
 
-	@Override
-	public void handleClientSide(PacketJoin message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketJoin, IMessage>
 	{
-		MemberData data = new MemberData();
-		Group group = message.pool.get(ByteBufUtils.readUTF8String(message.buf));
-		data.read(new ByteBufBridge(message.buf));
-		((GroupPoolClient) message.pool).join(group, data);
-	}
+		@Override
+		public IMessage onMessage(PacketJoin message, EntityPlayer player)
+		{
+			MemberData data = new MemberData();
+			Group group = message.pool.get(ByteBufUtils.readUTF8String(message.buf));
+			data.read(new ByteBufBridge(message.buf));
+			((GroupPoolClient) message.pool).join(group, data);
 
-	@Override
-	public void handleServerSide(PacketJoin message, EntityPlayer player)
-	{
-		throw new IllegalStateException();
+			return null;
+		}
 	}
 }

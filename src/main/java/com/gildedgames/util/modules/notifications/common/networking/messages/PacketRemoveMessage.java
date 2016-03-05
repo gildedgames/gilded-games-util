@@ -1,27 +1,23 @@
 package com.gildedgames.util.modules.notifications.common.networking.messages;
 
-import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.notifications.NotificationModule;
 import com.gildedgames.util.modules.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.modules.notifications.common.player.PlayerNotification;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
+public class PacketRemoveMessage implements IMessage
 {
 
 	private INotificationMessage message;
 
 	private String messageKey;
 
-	public PacketRemoveMessage()
-	{
-
-	}
+	public PacketRemoveMessage() { }
 
 	public PacketRemoveMessage(INotificationMessage message)
 	{
@@ -40,20 +36,7 @@ public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 		ByteBufUtils.writeUTF8String(buf, this.message.getKey());
 	}
 
-	@Override
-	public void handleClientSide(PacketRemoveMessage message, EntityPlayer player)
-	{
-		this.removeFromHook(message, player);
-	}
-
-	@Override
-	public void handleServerSide(PacketRemoveMessage message, EntityPlayer player)
-	{
-		INotificationMessage noti = this.removeFromHook(message, player);
-		UtilModule.NETWORK.sendTo(new PacketRemoveMessage(noti), (EntityPlayerMP) player);
-	}
-
-	private INotificationMessage removeFromHook(PacketRemoveMessage message, EntityPlayer player)
+	private static INotificationMessage removeFromHook(PacketRemoveMessage message, EntityPlayer player)
 	{
 		PlayerNotification hook = NotificationModule.getPlayerNotifications(player);
 		INotificationMessage noti = hook.getFromKey(message.messageKey);
@@ -61,4 +44,25 @@ public class PacketRemoveMessage extends CustomPacket<PacketRemoveMessage>
 		return noti;
 	}
 
+	public static class HandlerClient extends MessageHandlerClient<PacketRemoveMessage, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketRemoveMessage message, EntityPlayer player)
+		{
+			PacketRemoveMessage.removeFromHook(message, player);
+
+			return null;
+		}
+	}
+
+	public static class HandlerServer extends MessageHandlerServer<PacketRemoveMessage, PacketRemoveMessage>
+	{
+		@Override
+		public PacketRemoveMessage onMessage(PacketRemoveMessage message, EntityPlayer player)
+		{
+			INotificationMessage noti = PacketRemoveMessage.removeFromHook(message, player);
+
+			return new PacketRemoveMessage(noti);
+		}
+	}
 }

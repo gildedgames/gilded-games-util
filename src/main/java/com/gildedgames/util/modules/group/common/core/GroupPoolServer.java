@@ -67,7 +67,7 @@ public class GroupPoolServer extends GroupPool
 			GroupMember member = GroupMember.get(player);
 			this.leaveOldGroup(member);
 			UtilModule.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
-			UtilModule.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getProfile().getEntity());
+			UtilModule.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getEntity());
 			this.addMemberDirectly(group, member);
 		}
 	}
@@ -113,12 +113,12 @@ public class GroupPoolServer extends GroupPool
 		GroupMember inviterG = GroupMember.get(inviter);
 		if (!group.getPermissions().canInvite(group, member, inviterG))
 		{
-			UtilModule.logger().warn("Player " + inviterG.getProfile().getUsername() + " tried to invite " + member.getProfile().getUsername() + " but did not have the permissions.");
+			UtilModule.logger().warn("Player " + inviterG.getEntity().getName() + " tried to invite " + inviterG.getEntity().getName() + " but did not have the permissions.");
 			return;
 		}
 		this.inviteDirectly(group, member, inviterG);
 		UtilModule.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
-		UtilModule.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getProfile().getEntity());
+		UtilModule.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getEntity());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class GroupPoolServer extends GroupPool
 		GroupMember member = GroupMember.get(player);
 		this.removeInvitationDirectly(group, member);
 		UtilModule.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
-		UtilModule.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getProfile().getEntity());
+		UtilModule.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getEntity());
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class GroupPoolServer extends GroupPool
 			List<Group> oldGroups = member.groupsInFor(this);
 			if (!oldGroups.isEmpty())
 			{
-				this.removeMember(member.getProfile().getUUID(), oldGroups.get(0));
+				this.removeMember(member.getUniqueId(), oldGroups.get(0));
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 package com.gildedgames.util.modules.menu.impl;
 
 import com.gildedgames.util.modules.menu.api.MenuServices;
-import com.gildedgames.util.modules.menu.client.IMenu;
+import com.gildedgames.util.modules.menu.impl.client.IMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.ArrayList;

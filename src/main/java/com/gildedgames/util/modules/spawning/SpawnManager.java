@@ -1,11 +1,6 @@
 package com.gildedgames.util.modules.spawning;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import com.gildedgames.util.modules.spawning.util.ChunkMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,9 +11,11 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import com.gildedgames.util.modules.player.common.player.IPlayerHook;
-import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
-import com.gildedgames.util.modules.spawning.util.ChunkMap;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class SpawnManager
 {
@@ -54,23 +51,24 @@ public class SpawnManager
 		this.spawnAreaPerTick = null;
 	}
 
-	public void tickSpawning(World world, Collection<? extends IPlayerHook> playerHooks)
+	public void tickSpawning(World world, Collection<EntityPlayer> players)
 	{
 		this.ticks++;
+
 		boolean doUpdate = this.ticks % this.spawnSettings.ticksBetweenUpdate() == 0;
+
 		if (!doUpdate)
 		{
 			return;
 		}
-		for (IPlayerHook player : playerHooks)
+
+		for (EntityPlayer player : players)
 		{
-			IPlayerProfile profile = player.getProfile();
-			if (profile.isLoggedIn())
+			if (player.isEntityAlive())
 			{
-				EntityPlayer entityP = profile.getEntity();
-				if (entityP.dimension == this.dimensionId)
+				if (player.dimension == this.dimensionId)
 				{
-					this.wakeUpAreas(world, entityP.posX, entityP.posY, entityP.posZ);
+					this.wakeUpAreas(world, player.posX, player.posY, player.posZ);
 				}
 			}
 		}

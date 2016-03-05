@@ -1,17 +1,16 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import com.gildedgames.util.core.io.CustomPacket;
-import com.gildedgames.util.modules.group.GroupModule;
 import com.gildedgames.util.io_manager.util.IOUtil;
-
+import com.gildedgames.util.modules.group.GroupModule;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public abstract class PacketGroupAction<T extends PacketGroupAction<T>> extends CustomPacket<T>
+public abstract class PacketGroupAction<T extends PacketGroupAction<T>> implements IMessage
 {
-	GroupPool pool;
+	protected GroupPool pool;
 
-	Group group;
+	protected Group group;
 
 	public PacketGroupAction()
 	{
