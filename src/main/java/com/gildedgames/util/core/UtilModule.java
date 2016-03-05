@@ -6,6 +6,7 @@ import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
 import com.gildedgames.util.modules.chunk.ChunkModule;
 import com.gildedgames.util.modules.entityhook.EntityHookModule;
+import com.gildedgames.util.modules.group.GroupModule;
 import com.gildedgames.util.modules.instances.InstanceModule;
 import com.gildedgames.util.modules.menu.MenuModule;
 import com.gildedgames.util.modules.notifications.NotificationModule;
@@ -68,6 +69,8 @@ public class UtilModule
 
 		this.registerModule(EntityHookModule.INSTANCE);
 		this.registerModule(WorldModule.INSTANCE);
+		this.registerModule(InstanceModule.INSTANCE);
+		this.registerModule(GroupModule.INSTANCE);
 		this.registerModule(TabModule.INSTANCE);
 		this.registerModule(SpawningModule.INSTANCE);
 		this.registerModule(NotificationModule.INSTANCE);
