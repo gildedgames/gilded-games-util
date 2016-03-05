@@ -1,8 +1,10 @@
 package com.gildedgames.util.modules.instances;
 
-import java.util.Collection;
-import java.util.Map.Entry;
-
+import com.gildedgames.util.core.nbt.NBT;
+import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.modules.world.common.BlockPosDimension;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,10 +13,8 @@ import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.world.Teleporter;
 import net.minecraftforge.common.DimensionManager;
 
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTHelper;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import java.util.Collection;
+import java.util.Map.Entry;
 
 public class InstanceHandler<T extends Instance> implements NBT
 {

@@ -1,14 +1,8 @@
 package com.gildedgames.util.modules.analytics;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.UUID;
-import java.util.logging.Logger;
-
+import com.google.gson.Gson;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -16,8 +10,11 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
-import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Analytics
 {
@@ -52,11 +49,6 @@ public class Analytics
 	public void sendClientEvent(String event)
 	{
 		this.sendClientEvent(event, 0.0f);
-	}
-
-	public void sendEvent(IPlayerProfile profile, String event, float value)
-	{
-		this.sendEvent(profile.getUUID(), event, value);
 	}
 
 	public void sendEvent(EntityPlayer profile, String event, float value)

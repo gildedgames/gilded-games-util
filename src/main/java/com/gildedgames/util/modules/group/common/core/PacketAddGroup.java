@@ -1,18 +1,19 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import com.gildedgames.util.core.io.CustomPacket;
 import com.gildedgames.util.core.io.ByteBufBridge;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.group.GroupModule;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketAddGroup extends CustomPacket<PacketAddGroup>
+public class PacketAddGroup implements IMessage
 {
-	GroupPool pool;
+	private GroupPool pool;
 
-	GroupInfo groupInfo;
+	private GroupInfo groupInfo;
 
 	public PacketAddGroup()
 	{
@@ -39,18 +40,29 @@ public class PacketAddGroup extends CustomPacket<PacketAddGroup>
 		(new ByteBufBridge(buf)).setIO("", this.groupInfo);
 	}
 
-	@Override
-	public void handleClientSide(PacketAddGroup message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketAddGroup, IMessage>
 	{
-		Group group = new Group(message.pool);
-		group.setGroupInfo(message.groupInfo);
-		message.pool.addGroupDirectly(group);
+		@Override
+		public IMessage onMessage(PacketAddGroup message, EntityPlayer player)
+		{
+			message.pool.create(message.groupInfo.getName(), player, message.groupInfo.getPermissions());
+
+			return null;
+		}
 	}
 
-	@Override
-	public void handleServerSide(PacketAddGroup message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketAddGroup, IMessage>
 	{
-		message.pool.create(message.groupInfo.getName(), player, message.groupInfo.getPermissions());
+		@Override
+		public IMessage onMessage(PacketAddGroup message, EntityPlayer player)
+		{
+			Group group = new Group(message.pool);
+			group.setGroupInfo(message.groupInfo);
+
+			message.pool.addGroupDirectly(group);
+
+			return null;
+		}
 	}
 
 }

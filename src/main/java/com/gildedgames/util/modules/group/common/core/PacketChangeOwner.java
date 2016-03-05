@@ -1,9 +1,12 @@
 package com.gildedgames.util.modules.group.common.core;
 
 import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 {
@@ -17,22 +20,24 @@ public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 		super(pool, group, newOwner);
 	}
 
-	@Override
-	public void handleClientSide(PacketChangeOwner message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketChangeOwner, IMessage>
 	{
-		throw new IllegalStateException();
-	}
 
-	@Override
-	public void handleServerSide(PacketChangeOwner message, EntityPlayer player)
-	{
-		Group group = message.group;
-		GroupMember thePlayer = GroupMember.get(player);
-		if (!group.hasMemberData() || !group.getMemberData().contains(message.member.getProfile().getUUID()) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
+		@Override
+		public IMessage onMessage(PacketChangeOwner message, EntityPlayer player)
 		{
-			UtilModule.logger().warn("Player " + player.getName() + " tried to change " + message.member.getProfile().getUsername() + " to the owner but did not have the permissions.");
-			return;
+			Group group = message.group;
+			GroupMember thePlayer = GroupMember.get(player);
+
+			if (!group.hasMemberData() || !group.getMemberData().contains(message.member.getUniqueId()) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
+			{
+				UtilModule.logger().warn("Player " + player.getName() + " tried to change " + message.member.getEntity().getName() + " to the owner but did not have the permissions.");
+				return null;
+			}
+
+			//message.pool.changeOwner(message.member.getProfile().getEntity(), message.group);
+
+			return null;
 		}
-		//message.pool.changeOwner(message.member.getProfile().getEntity(), message.group);
 	}
 }

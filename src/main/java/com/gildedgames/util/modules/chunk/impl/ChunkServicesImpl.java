@@ -1,10 +1,10 @@
 package com.gildedgames.util.modules.chunk.impl;
 
 import com.gildedgames.util.modules.chunk.api.ChunkServices;
-import com.gildedgames.util.modules.chunk.common.hook.IChunkHook;
-import com.gildedgames.util.modules.chunk.common.hook.IChunkHookFactory;
-import com.gildedgames.util.modules.chunk.common.pools.IChunkHookPool;
-import com.gildedgames.util.modules.chunk.common.pools.WorldHookPool;
+import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHookFactory;
+import com.gildedgames.util.modules.chunk.impl.pools.WorldHookPool;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;

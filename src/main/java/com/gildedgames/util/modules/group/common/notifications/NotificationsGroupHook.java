@@ -1,12 +1,11 @@
 package com.gildedgames.util.modules.group.common.notifications;
 
 import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.modules.group.common.IGroupHook;
 import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.modules.notifications.NotificationModule;
-
 import net.minecraft.client.Minecraft;
 
 public class NotificationsGroupHook implements IGroupHook
@@ -21,18 +20,18 @@ public class NotificationsGroupHook implements IGroupHook
 	@Override
 	public void onMemberAdded(GroupMember member)
 	{
-		this.sendPopup(member.getProfile().getUsername() + " " + UtilModule.translate("group.playerjoined"), member);
+		this.sendPopup(member.getEntity().getName() + " " + UtilModule.translate("group.playerjoined"), member);
 	}
 
 	private void sendPopup(String message, GroupMember about)
 	{
-		NotificationModule.sendPopup(message, about.getProfile().getUUID(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
+		NotificationModule.sendPopup(message, about.getUniqueId(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
 	}
 
 	@Override
 	public void onMemberRemoved(GroupMember member)
 	{
-		this.sendPopup(member.getProfile().getUsername() + " " + UtilModule.translate("group.playerleft"), member);
+		this.sendPopup(member.getEntity().getName() + " " + UtilModule.translate("group.playerleft"), member);
 	}
 
 	@Override

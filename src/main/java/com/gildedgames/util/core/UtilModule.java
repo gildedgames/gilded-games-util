@@ -1,15 +1,14 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.modules.chunk.ChunkModule;
 import com.gildedgames.util.core.io.MCSyncableDispatcher;
 import com.gildedgames.util.core.io.NetworkWrapper;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.instances.InstanceModule;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.modules.chunk.ChunkModule;
+import com.gildedgames.util.modules.entityhook.EntityHookModule;
+import com.gildedgames.util.modules.instances.InstanceModule;
 import com.gildedgames.util.modules.menu.MenuModule;
 import com.gildedgames.util.modules.notifications.NotificationModule;
-import com.gildedgames.util.modules.player.PlayerModule;
 import com.gildedgames.util.modules.spawning.SpawningModule;
 import com.gildedgames.util.modules.tab.TabModule;
 import com.gildedgames.util.modules.world.WorldModule;
@@ -67,14 +66,13 @@ public class UtilModule
 	{
 		UtilModule.logger = event.getModLog();
 
-		this.registerModule(PlayerModule.INSTANCE);
+		this.registerModule(EntityHookModule.INSTANCE);
 		this.registerModule(WorldModule.INSTANCE);
 		this.registerModule(TabModule.INSTANCE);
-		this.registerModule(GroupModule.INSTANCE);
 		this.registerModule(SpawningModule.INSTANCE);
-		this.registerModule(InstanceModule.INSTANCE);
 		this.registerModule(NotificationModule.INSTANCE);
 		this.registerModule(ChunkModule.INSTANCE);
+		this.registerModule(InstanceModule.INSTANCE);
 
 		if (UtilModule.isClient())
 		{

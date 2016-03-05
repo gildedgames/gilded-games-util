@@ -1,12 +1,14 @@
 package com.gildedgames.util.modules.group.common.core;
 
-import java.util.UUID;
-
 import com.gildedgames.util.core.io.ByteBufBridge;
-import com.gildedgames.util.modules.group.GroupModule;
-
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
+import com.gildedgames.util.modules.group.common.player.GroupMember;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import java.util.UUID;
 
 public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupInfo>
 {
@@ -19,7 +21,7 @@ public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupI
 
 	public PacketChangeGroupInfo(UUID uuid, Group group, GroupInfo groupInfo)
 	{
-		super(group.getParentPool(), group, GroupModule.locate().getPlayers().get(uuid));
+		super(group.getParentPool(), group, GroupMember.get(uuid));
 		this.groupInfo = groupInfo;
 	}
 
@@ -37,16 +39,25 @@ public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupI
 		(new ByteBufBridge(buf)).setIO("", this.groupInfo);
 	}
 
-	@Override
-	public void handleClientSide(PacketChangeGroupInfo message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketChangeGroupInfo, IMessage>
 	{
-		message.pool.changeGroupInfoDirectly(message.group, message.groupInfo);
+		@Override
+		public IMessage onMessage(PacketChangeGroupInfo message, EntityPlayer player)
+		{
+			message.pool.changeGroupInfoDirectly(message.group, message.groupInfo);
+
+			return null;
+		}
 	}
 
-	@Override
-	public void handleServerSide(PacketChangeGroupInfo message, EntityPlayer player)
+	public static class HandlerServer extends MessageHandlerServer<PacketChangeGroupInfo, IMessage>
 	{
-		message.pool.changeGroupInfo(message.member.getProfile().getUUID(), message.group, message.groupInfo);
-	}
+		@Override
+		public IMessage onMessage(PacketChangeGroupInfo message, EntityPlayer player)
+		{
+			message.pool.changeGroupInfo(message.member.getUniqueId(), message.group, message.groupInfo);
 
+			return null;
+		}
+	}
 }

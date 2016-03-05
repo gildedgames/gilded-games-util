@@ -13,14 +13,13 @@ import java.util.UUID;
 
 import com.gildedgames.util.core.io.ByteBufBridge;
 import com.gildedgames.util.core.io.ByteBufFactory;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.io_manager.IOCore;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.factory.IOFactory;
 import com.gildedgames.util.io_manager.io.IO;
-import com.gildedgames.util.modules.player.common.player.IPlayerProfile;
 
+import com.gildedgames.util.modules.group.GroupModule;
+import com.gildedgames.util.modules.group.common.core.Group;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -247,11 +246,6 @@ public class IOUtil
 		return new UUID(buf.readLong(), buf.readLong());
 	}
 
-	public static void setUUID(IPlayerProfile profile, NBTTagCompound tag, String name)
-	{
-		setUUID(profile.getUUID(), tag, name);
-	}
-
 	public static void setUUID(UUID uuid, NBTTagCompound tag, String key)
 	{
 		tag.setLong(key + "most", uuid.getMostSignificantBits());
@@ -262,11 +256,6 @@ public class IOUtil
 	{
 		bridge.setLong(key + "most", uuid.getMostSignificantBits());
 		bridge.setLong(key + "least", uuid.getLeastSignificantBits());
-	}
-	
-	public static void setUUID(IPlayerProfile profile, IOBridge bridge, String name)
-	{
-		setUUID(profile.getUUID(), bridge, name);
 	}
 
 	public static UUID getUUID(NBTTagCompound tag, String name)

@@ -59,10 +59,6 @@ processResources {
 }
 
 jar {
-    manifest {
-        attributes 'FMLAT': 'forge_at.cfg', 'FMLCorePlugin': 'com.gildedgames.util.threadedlighting.TLLoadingPlugin', 'FMLCorePluginContainsFMLMod': 'true'
-    }
-
     configurations.shade.each { dep ->
         from(project.zipTree(dep)){
             exclude 'META-INF', 'META-INF/**'

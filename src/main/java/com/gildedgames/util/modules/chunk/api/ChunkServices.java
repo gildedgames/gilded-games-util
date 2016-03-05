@@ -1,7 +1,7 @@
 package com.gildedgames.util.modules.chunk.api;
 
-import com.gildedgames.util.modules.chunk.common.hook.IChunkHook;
-import com.gildedgames.util.modules.chunk.common.hook.IChunkHookFactory;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHookFactory;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;

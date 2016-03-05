@@ -1,16 +1,15 @@
 package com.gildedgames.util.core.io;
 
-import java.util.List;
-
 import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.Collection;
 
 public class NetworkWrapper
 {
@@ -27,23 +26,6 @@ public class NetworkWrapper
 	public <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType, Side side)
 	{
 		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, side);
-	}
-
-	public <REQ extends IMessage, REPLY extends IMessage> void registerMessageCommon(Class<? extends IMessageHandler<REQ, REPLY>> messageHandler, Class<REQ> requestMessageType)
-	{
-		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, Side.CLIENT);
-		this.internal.registerMessage(messageHandler, requestMessageType, this.discriminator++, Side.SERVER);
-	}
-
-	public <T extends CustomPacket<T>> void registerPacket(Class<T> packet, Side side)
-	{
-		this.registerMessage(packet, packet, side);
-	}
-
-	public <T extends CustomPacket<T>> void registerPacket(Class<T> packet)
-	{
-		this.registerMessage(packet, packet, Side.CLIENT);
-		this.registerMessage(packet, packet, Side.SERVER);
 	}
 
 	public void sendToAll(IMessage message)
@@ -75,14 +57,14 @@ public class NetworkWrapper
 	{
 		for (GroupMember member : group.getMemberData())
 		{
-			if (member.getProfile().getEntity() != null)
+			if (member.getEntity() != null)
 			{
-				this.sendTo(message, (EntityPlayerMP) member.getProfile().getEntity());
+				this.sendTo(message, (EntityPlayerMP) member.getEntity());
 			}
 		}
 	}
 
-	public void sendToList(IMessage message, List<EntityPlayerMP> players)
+	public void sendToList(IMessage message, Collection<EntityPlayerMP> players)
 	{
 		for (EntityPlayerMP player : players)
 		{

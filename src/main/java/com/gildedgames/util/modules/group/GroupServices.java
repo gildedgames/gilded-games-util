@@ -1,24 +1,16 @@
 package com.gildedgames.util.modules.group;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.modules.group.common.core.GroupPool;
 import com.gildedgames.util.modules.group.common.core.GroupPoolClient;
 import com.gildedgames.util.modules.group.common.core.GroupPoolServer;
-import com.gildedgames.util.modules.group.common.player.GroupMember;
-import com.gildedgames.util.modules.group.common.player.GroupMemberFactory;
 import com.gildedgames.util.modules.group.common.util.DefaultSettings;
-import com.gildedgames.util.modules.player.common.IPlayerHookPool;
-import com.gildedgames.util.modules.player.common.PlayerHookPool;
-
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupServices
 {
-
-	private IPlayerHookPool<GroupMember> players;
-
 	private final Side side;
 
 	private List<GroupPool> pools;
@@ -56,16 +48,6 @@ public class GroupServices
 	protected void registerPool(GroupPool pool)
 	{
 		this.getPools().add(pool);
-	}
-
-	public IPlayerHookPool<GroupMember> getPlayers()
-	{
-		if (this.players == null)
-		{
-			this.players = new PlayerHookPool<>("group", new GroupMemberFactory(), this.side);
-		}
-
-		return this.players;
 	}
 
 	public GroupPool getDefaultPool()

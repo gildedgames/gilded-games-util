@@ -1,7 +1,6 @@
 package com.gildedgames.util.modules.instances;
 
-import com.gildedgames.util.modules.player.common.IPlayerHookPool;
-import com.gildedgames.util.modules.player.common.PlayerHookPool;
+import com.gildedgames.util.modules.entityhook.api.IEntityHookPool;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -10,8 +9,6 @@ import java.util.List;
 
 public class InstanceServices
 {
-	private IPlayerHookPool<PlayerInstances> players;
-
 	private List<InstanceHandler<?>> instances;
 
 	private final Side side;
@@ -21,14 +18,9 @@ public class InstanceServices
 		this.side = side;
 	}
 
-	public IPlayerHookPool<PlayerInstances> getPlayers()
+	public IEntityHookPool<PlayerInstances> getPlayerHooks()
 	{
-		if (this.players == null)
-		{
-			this.players = new PlayerHookPool<>("instances", new PlayerInstancesFactory(), this.side);
-		}
-
-		return this.players;
+		return PlayerInstances.PROVIDER.getPool();
 	}
 
 	public Collection<InstanceHandler<?>> getHandlers()
@@ -37,6 +29,7 @@ public class InstanceServices
 		{
 			this.instances = new ArrayList<>();
 		}
+
 		return this.instances;
 	}
 

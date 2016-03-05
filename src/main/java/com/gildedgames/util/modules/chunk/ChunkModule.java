@@ -33,7 +33,7 @@ public class ChunkModule extends Module
 		// Chunk hooks are saved during Minecraft's regular chunk saving procedure.
 	}
 
-	public static ChunkServices locate()
+	public static ChunkServices api()
 	{
 		return ChunkModule.INSTANCE.services;
 	}

@@ -4,10 +4,10 @@ import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.menu.api.MenuServices;
-import com.gildedgames.util.modules.menu.client.IMenu;
-import com.gildedgames.util.modules.menu.client.MenuClientEvents;
-import com.gildedgames.util.modules.menu.client.util.MenuMinecraft;
 import com.gildedgames.util.modules.menu.impl.MenuServicesImpl;
+import com.gildedgames.util.modules.menu.impl.client.IMenu;
+import com.gildedgames.util.modules.menu.impl.client.MenuClientEvents;
+import com.gildedgames.util.modules.menu.impl.client.util.MenuMinecraft;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class MenuModule extends Module

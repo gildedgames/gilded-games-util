@@ -1,8 +1,10 @@
 package com.gildedgames.util.modules.group.common.core;
 
+import com.gildedgames.util.core.io.MessageHandlerClient;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.gildedgames.util.modules.group.common.player.GroupMember;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketInvite extends PacketMemberAction<PacketInvite>
 {
@@ -17,16 +19,14 @@ public class PacketInvite extends PacketMemberAction<PacketInvite>
 		super(pool, group, inviter);
 	}
 
-	@Override
-	public void handleClientSide(PacketInvite message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketInvite, IMessage>
 	{
-		((GroupPoolClient) message.pool).inviteReceived(message.group, message.member);
-	}
+		@Override
+		public IMessage onMessage(PacketInvite message, EntityPlayer player)
+		{
+			((GroupPoolClient) message.pool).inviteReceived(message.group, message.member);
 
-	@Override
-	public void handleServerSide(PacketInvite message, EntityPlayer player)
-	{
-		throw new IllegalStateException();
+			return null;
+		}
 	}
-
 }

@@ -5,6 +5,8 @@ import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTBridge;
 import com.gildedgames.util.core.util.GGHelper;
+import com.gildedgames.util.io_manager.overhead.IORegistry;
+import com.gildedgames.util.modules.entityhook.EntityHookModule;
 import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.core.GroupInfo;
 import com.gildedgames.util.modules.group.common.core.GroupPool;
@@ -25,9 +27,6 @@ import com.gildedgames.util.modules.group.common.notifications.NotificationMessa
 import com.gildedgames.util.modules.group.common.notifications.NotificationsPoolHook;
 import com.gildedgames.util.modules.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.modules.player.PlayerModule;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -60,7 +59,7 @@ public class GroupModule extends Module
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		PlayerModule.INSTANCE.registerPlayerPool(this.serviceLocator.client().getPlayers(), this.serviceLocator.server().getPlayers());
+		EntityHookModule.api().registerHookProvider(GroupMember.PROVIDER);
 
 		GroupPool client = this.serviceLocator.client().getDefaultPool();
 
@@ -71,18 +70,36 @@ public class GroupModule extends Module
 
 		server().registerPool(server);
 
-		UtilModule.NETWORK.registerPacket(PacketAddGroup.class);
-		UtilModule.NETWORK.registerPacket(PacketAddInvite.class);
-		UtilModule.NETWORK.registerPacket(PacketAddMember.class);
-		UtilModule.NETWORK.registerPacket(PacketChangeGroupInfo.class);
-		UtilModule.NETWORK.registerPacket(PacketChangeOwner.class, Side.SERVER);
-		UtilModule.NETWORK.registerPacket(PacketInvite.class, Side.CLIENT);
-		UtilModule.NETWORK.registerPacket(PacketJoin.class, Side.CLIENT);
-		UtilModule.NETWORK.registerPacket(PacketRemoveGroup.class);
-		UtilModule.NETWORK.registerPacket(PacketRemoveInvitation.class, Side.CLIENT);
-		UtilModule.NETWORK.registerPacket(PacketRemoveInvite.class);
-		UtilModule.NETWORK.registerPacket(PacketRemoveMember.class);
-		UtilModule.NETWORK.registerPacket(PacketGroupPool.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketAddGroup.HandlerClient.class, PacketAddGroup.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketAddGroup.HandlerServer.class, PacketAddGroup.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketAddInvite.HandlerClient.class, PacketAddInvite.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketAddInvite.HandlerServer.class, PacketAddInvite.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketAddMember.HandlerClient.class, PacketAddMember.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketAddMember.HandlerServer.class, PacketAddMember.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketChangeGroupInfo.HandlerClient.class, PacketChangeGroupInfo.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketChangeGroupInfo.HandlerServer.class, PacketChangeGroupInfo.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketChangeOwner.HandlerServer.class, PacketChangeOwner.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketInvite.HandlerClient.class, PacketInvite.class, Side.CLIENT);
+
+		UtilModule.NETWORK.registerMessage(PacketJoin.HandlerClient.class, PacketJoin.class, Side.CLIENT);
+
+		UtilModule.NETWORK.registerMessage(PacketRemoveGroup.HandlerClient.class, PacketRemoveGroup.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketRemoveGroup.HandlerServer.class, PacketRemoveGroup.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketRemoveInvitation.HandlerClient.class, PacketRemoveInvitation.class, Side.CLIENT);
+
+		UtilModule.NETWORK.registerMessage(PacketRemoveInvite.HandlerClient.class, PacketRemoveInvite.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketRemoveInvite.HandlerServer.class, PacketRemoveInvite.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketRemoveMember.HandlerClient.class, PacketRemoveMember.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketRemoveMember.HandlerServer.class, PacketRemoveMember.class, Side.SERVER);
+
+		UtilModule.NETWORK.registerMessage(PacketGroupPool.Handler.class, PacketGroupPool.class, Side.CLIENT);
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package com.gildedgames.util.modules.group.common.core;
 
 import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PacketRemoveGroup extends PacketGroupAction<PacketRemoveGroup>
 {
@@ -17,21 +20,31 @@ public class PacketRemoveGroup extends PacketGroupAction<PacketRemoveGroup>
 		super(pool, group);
 	}
 
-	@Override
-	public void handleClientSide(PacketRemoveGroup message, EntityPlayer player)
+	public static class HandlerClient extends MessageHandlerClient<PacketRemoveGroup, IMessage>
 	{
-		message.pool.removeGroupDirectly(message.group);
-	}
-
-	@Override
-	public void handleServerSide(PacketRemoveGroup message, EntityPlayer player)
-	{
-		if (!message.group.getPermissions().canRemoveGroup(message.group, GroupMember.get(player)))
+		@Override
+		public IMessage onMessage(PacketRemoveGroup message, EntityPlayer player)
 		{
-			UtilModule.logger().warn("Player " + player.getName() + " tried to remove " + message.group.getName() + " but did not have the permissions.");
-			return;
+			message.pool.removeGroupDirectly(message.group);
+
+			return null;
 		}
-		message.pool.remove(message.group);
 	}
 
+	public static class HandlerServer extends MessageHandlerServer<PacketRemoveGroup, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketRemoveGroup message, EntityPlayer player)
+		{
+			if (!message.group.getPermissions().canRemoveGroup(message.group, GroupMember.get(player)))
+			{
+				UtilModule.logger().warn("Player " + player.getName() + " tried to remove " + message.group.getName() + " but did not have the permissions.");
+
+				return null;
+			}
+			message.pool.remove(message.group);
+
+			return null;
+		}
+	}
 }
