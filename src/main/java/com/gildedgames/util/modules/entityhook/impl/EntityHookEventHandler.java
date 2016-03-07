@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -82,7 +83,6 @@ public class EntityHookEventHandler
 				}
 			}
 		}
-
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -91,6 +91,18 @@ public class EntityHookEventHandler
 		if (!event.world.isRemote)
 		{
 			event.world.addWorldAccess(EntityHookEventHandler.worldAccess);
+		}
+	}
+
+	@SubscribeEvent
+	public void onEntityUpdated(LivingEvent.LivingUpdateEvent event)
+	{
+		for (IEntityHookProvider<EntityHook> provider : EntityHookModule.impl().getEntityHookProviders())
+		{
+			if (provider.isAttachedToEntity(event.entity))
+			{
+				provider.updateHook(provider.getHook(event.entity));
+			}
 		}
 	}
 }

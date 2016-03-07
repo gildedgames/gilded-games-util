@@ -53,6 +53,11 @@ public interface IEntityHookProvider<T extends EntityHook>
 	void unloadHook(T hook);
 
 	/**
+	 * Called when a hook this provider has attached is updated.
+	 */
+	void updateHook(T hook);
+
+	/**
 	 * @return Returns the pool for this provider.
 	 */
 	IEntityHookPool<T> getPool();

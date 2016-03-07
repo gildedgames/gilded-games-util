@@ -50,6 +50,15 @@ public class PlayerInstances extends EntityHook<EntityPlayer>
 		this.outside = NBTHelper.getBlockPosDimension(compound, "outside");
 	}
 
+	@Override
+	public void onLoaded() { }
+
+	@Override
+	public void onUnloaded() { }
+
+	@Override
+	public void onUpdate() { }
+
 	public static class Factory implements IEntityHookFactory<PlayerInstances>
 	{
 		@Override
