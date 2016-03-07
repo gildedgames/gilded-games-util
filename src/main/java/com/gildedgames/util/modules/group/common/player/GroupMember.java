@@ -40,12 +40,9 @@ public class GroupMember extends EntityHook<EntityPlayer>
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void init(Entity entity, World world)
+	public void onLoaded()
 	{
-		super.init(entity, world);
-
-		if (player.worldObj.isRemote)
+		if (this.getEntity().worldObj.isRemote)
 		{
 			this.groups.clear();
 			this.invitations.clear();
@@ -72,6 +69,12 @@ public class GroupMember extends EntityHook<EntityPlayer>
 			}
 		}
 	}
+
+	@Override
+	public void onUnloaded() { }
+
+	@Override
+	public void onUpdate() { }
 
 	public void joinGroup(Group group)
 	{

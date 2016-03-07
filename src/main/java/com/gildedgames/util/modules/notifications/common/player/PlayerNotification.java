@@ -18,10 +18,13 @@ public class PlayerNotification extends EntityHook<EntityPlayer>
 	private List<INotificationMessage> notifications = new ArrayList<>();
 
 	@Override
-	public void init(Entity entity, World world)
-	{
-		super.init(entity, world);
-	}
+	public void onLoaded() { }
+
+	@Override
+	public void onUnloaded() { }
+
+	@Override
+	public void onUpdate() { }
 
 	@Override
 	public void saveNBTData(NBTTagCompound compound)

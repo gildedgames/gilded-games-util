@@ -20,6 +20,12 @@ public abstract class EntityHook<T extends Entity> implements IExtendedEntityPro
 		this.player = (T) entity;
 	}
 
+	public abstract void onLoaded();
+
+	public abstract void onUnloaded();
+
+	public abstract void onUpdate();
+
 	public T getEntity()
 	{
 		return this.player;

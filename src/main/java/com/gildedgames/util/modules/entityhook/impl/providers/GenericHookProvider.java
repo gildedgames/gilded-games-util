@@ -27,12 +27,22 @@ public class GenericHookProvider<T extends EntityHook> implements IEntityHookPro
 	public void loadHook(T hook)
 	{
 		this.pool.addHook(hook);
+
+		hook.onLoaded();
 	}
 
 	@Override
 	public void unloadHook(T hook)
 	{
 		this.pool.removeHook(hook);
+
+		hook.onUnloaded();
+	}
+
+	@Override
+	public void updateHook(T hook)
+	{
+		hook.onUpdate();
 	}
 
 	@Override
