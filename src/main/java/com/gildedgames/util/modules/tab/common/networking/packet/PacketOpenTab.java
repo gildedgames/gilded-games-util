@@ -1,12 +1,9 @@
 package com.gildedgames.util.modules.tab.common.networking.packet;
 
-import com.gildedgames.util.core.io.MessageHandlerClient;
-import com.gildedgames.util.core.io.MessageHandlerServer;
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.tab.common.util.ITab;
-import com.gildedgames.util.modules.tab.common.util.ITabGroup;
-import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 import io.netty.buffer.ByteBuf;
+
+import java.util.Map;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +11,13 @@ import net.minecraft.inventory.Container;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Map;
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.core.io.MessageHandlerClient;
+import com.gildedgames.util.core.io.MessageHandlerServer;
+import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.ITabGroup;
+import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 
 public class PacketOpenTab implements IMessage
 {
@@ -87,6 +90,7 @@ public class PacketOpenTab implements IMessage
 			if (message.openContainer)
 			{
 				Minecraft.getMinecraft().thePlayer.openContainer.windowId = message.containerID;
+				
 			}
 
 			return null;
@@ -118,7 +122,9 @@ public class PacketOpenTab implements IMessage
 						ITab tab = tabGroup.getTabs().get(message.tabIndex);
 
 						Container container = tab.getCurrentContainer(playerMp, playerMp.worldObj, (int) playerMp.posX, (int) playerMp.posY, (int) playerMp.posZ);
-
+						
+						PacketOpenTab packet = null;
+						
 						if (container != null)
 						{
 							playerMp.getNextWindowId();
@@ -129,12 +135,14 @@ public class PacketOpenTab implements IMessage
 							playerMp.openContainer = container;
 							playerMp.openContainer.windowId = windowID;
 
-							playerMp.openContainer.onCraftGuiOpened(playerMp);
+							//playerMp.openContainer.onCraftGuiOpened(playerMp);
 
-							return new PacketOpenTab(message.tabGroupIndex, message.tabIndex, windowID);
+							packet = new PacketOpenTab(message.tabGroupIndex, message.tabIndex, windowID);
 						}
 
 						tab.onOpen(player);
+						
+						return packet;
 					}
 				}
 			}
