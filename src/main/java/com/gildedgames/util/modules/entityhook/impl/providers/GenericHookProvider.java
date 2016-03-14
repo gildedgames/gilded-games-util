@@ -15,8 +15,6 @@ public class GenericHookProvider<T extends EntityHook> implements IEntityHookPro
 
 	protected final IEntityHookFactory<T> factory;
 
-	protected final IEntityHookPool<T> pool = new EntityHookPool<>();
-
 	public GenericHookProvider(String id, IEntityHookFactory<T> factory)
 	{
 		this.id = id;
@@ -26,16 +24,12 @@ public class GenericHookProvider<T extends EntityHook> implements IEntityHookPro
 	@Override
 	public void loadHook(T hook)
 	{
-		this.pool.addHook(hook);
-
 		hook.onLoaded();
 	}
 
 	@Override
 	public void unloadHook(T hook)
 	{
-		this.pool.removeHook(hook);
-
 		hook.onUnloaded();
 	}
 
@@ -50,18 +44,6 @@ public class GenericHookProvider<T extends EntityHook> implements IEntityHookPro
 	public T getHook(Entity entity)
 	{
 		return (T) entity.getExtendedProperties(this.getId());
-	}
-
-	@Override
-	public T getHook(UUID uuid)
-	{
-		return this.pool.getHook(uuid);
-	}
-
-	@Override
-	public IEntityHookPool<T> getPool()
-	{
-		return this.pool;
 	}
 
 	@Override

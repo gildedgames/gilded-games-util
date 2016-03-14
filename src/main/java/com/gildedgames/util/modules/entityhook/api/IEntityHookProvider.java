@@ -32,13 +32,6 @@ public interface IEntityHookProvider<T extends EntityHook>
 	T getHook(Entity entity);
 
 	/**
-	 * See {@link IEntityHookProvider#getHook(Entity)}.
-	 *
-	 * @param uuid The entity's UUID.
-	 */
-	T getHook(UUID uuid);
-
-	/**
 	 * Called when a hook this provider has created is loaded.
 	 *
 	 * @param hook The hook
@@ -56,11 +49,6 @@ public interface IEntityHookProvider<T extends EntityHook>
 	 * Called when a hook this provider has attached is updated.
 	 */
 	void updateHook(T hook);
-
-	/**
-	 * @return Returns the pool for this provider.
-	 */
-	IEntityHookPool<T> getPool();
 
 	/**
 	 * Returns the factory which constructs hooks for this provider. Used in
