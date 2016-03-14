@@ -22,6 +22,11 @@ public class WorldHookPool
 		return pool;
 	}
 
+	public void clear()
+	{
+		this.pool.clear();
+	}
+
 	public Collection<IChunkHookPool> getAllPools()
 	{
 		return this.pool.values();

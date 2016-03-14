@@ -1,5 +1,6 @@
 package com.gildedgames.util.modules.chunk.impl;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.chunk.api.ChunkServices;
 import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
@@ -11,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.event.world.ChunkEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -25,14 +27,55 @@ public class ChunkServicesImpl implements ChunkServices
 	private final List<IChunkHookFactory<IChunkHook>> factories = new ArrayList<>();
 
 	@SubscribeEvent
-	public void onChunkLoaded(ChunkDataEvent.Load event)
+	public void onWorldLoaded(WorldEvent.Load event)
 	{
+		if (event.world.isRemote)
+		{
+			return;
+		}
+
 		WorldHookPool worldPool = this.getWorldPool(event.world);
 
 		if (worldPool == null)
 		{
 			// Create our chunk pool for the dimension if we haven't already
-			worldPool = this.createWorldPool(event.world);
+			this.createWorldPool(event.world);
+		}
+	}
+
+	@SubscribeEvent
+	public void onWorldUnloaded(WorldEvent.Unload event)
+	{
+		if (event.world.isRemote)
+		{
+			return;
+		}
+
+		WorldHookPool worldPool = this.getWorldPool(event.world);
+
+		if (worldPool != null)
+		{
+			worldPool.clear();
+
+			this.pools.remove(event.world.provider.getDimensionId());
+		}
+	}
+
+	@SubscribeEvent
+	public void onChunkLoaded(ChunkDataEvent.Load event)
+	{
+		if (event.world.isRemote)
+		{
+			return;
+		}
+
+		WorldHookPool worldPool = this.getWorldPool(event.world);
+
+		if (worldPool == null)
+		{
+			UtilModule.logger.warn("World id " + event.world.provider.getDimensionId() + " doesn't have a pool");
+
+			return;
 		}
 
 		long coord = this.getChunkCoord(event.getChunk());
@@ -56,6 +99,11 @@ public class ChunkServicesImpl implements ChunkServices
 	@SubscribeEvent
 	public void onChunkUnloaded(ChunkEvent.Unload event)
 	{
+		if (event.world.isRemote)
+		{
+			return;
+		}
+
 		WorldHookPool worldPool = this.getWorldPool(event.world);
 
 		if (worldPool != null)

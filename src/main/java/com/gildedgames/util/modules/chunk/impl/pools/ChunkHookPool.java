@@ -6,25 +6,27 @@ import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.LongHashMap;
 
+import java.util.HashMap;
+
 public class ChunkHookPool implements IChunkHookPool
 {
-	private final LongHashMap<IChunkHook> loadedHooks = new LongHashMap<>();
+	private final HashMap<Long, IChunkHook> loadedHooks = new HashMap<>();
 
 	@Override
 	public void addChunkHook(IChunkHook hook, long coord)
 	{
-		if (this.loadedHooks.containsItem(coord))
+		if (this.loadedHooks.containsKey(coord))
 		{
 			UtilModule.logger().warn("Chunk hook at " + coord + " was already loaded, overwriting (this shouldn't happen)");
 		}
 
-		this.loadedHooks.add(coord, hook);
+		this.loadedHooks.put(coord, hook);
 	}
 
 	@Override
 	public void saveChunkHook(NBTTagCompound tag, long coord)
 	{
-		if (this.loadedHooks.containsItem(coord))
+		if (this.loadedHooks.containsKey(coord))
 		{
 			IChunkHook hook = this.getHook(coord);
 			hook.write(tag);
@@ -34,7 +36,7 @@ public class ChunkHookPool implements IChunkHookPool
 	@Override
 	public void removeChunkHook(long coord)
 	{
-		if (this.loadedHooks.containsItem(coord))
+		if (this.loadedHooks.containsKey(coord))
 		{
 			this.loadedHooks.remove(coord);
 		}
@@ -43,6 +45,6 @@ public class ChunkHookPool implements IChunkHookPool
 	@Override
 	public IChunkHook getHook(long coord)
 	{
-		return this.loadedHooks.getValueByKey(coord);
+		return this.loadedHooks.get(coord);
 	}
 }
