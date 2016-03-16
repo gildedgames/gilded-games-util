@@ -23,6 +23,7 @@ public class TabApiImpl implements TabAPI
 
 	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<>();
 
+	@SideOnly(Side.CLIENT)
 	private final ITab BACKPACK_TAB = new TabBackpack();
 
 	private ITabGroupHandler activeGroup;

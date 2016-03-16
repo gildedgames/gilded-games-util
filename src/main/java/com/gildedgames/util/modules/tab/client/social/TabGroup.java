@@ -9,18 +9,17 @@ import com.gildedgames.util.modules.group.client.GuiEditInfo;
 import com.gildedgames.util.modules.group.client.GuiGroups;
 import com.gildedgames.util.modules.group.client.GuiInvite;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
-import com.gildedgames.util.modules.tab.common.util.TabGeneric;
+import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.ui.UiModule;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TabGroup extends TabGeneric
+public class TabGroup implements ITab
 {
-	private static final ResourceLocation TEXTURE_GROUP = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/group.png");
+	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/group.png");
 
 	@Override
 	public String getUnlocalizedName()
@@ -32,6 +31,12 @@ public class TabGroup extends TabGeneric
 	public boolean isTabValid(GuiScreen gui)
 	{
 		return UiModule.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class, GuiEditInfo.class);
+	}
+
+	@Override
+	public ResourceLocation getIcon()
+	{
+		return TabGroup.ICON;
 	}
 
 	@Override
@@ -71,11 +76,4 @@ public class TabGroup extends TabGeneric
 	{
 		return true;
 	}
-
-	@Override
-	public ResourceLocation getIconTexture()
-	{
-		return TEXTURE_GROUP;
-	}
-
 }
