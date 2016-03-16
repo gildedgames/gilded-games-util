@@ -49,9 +49,16 @@ public class ClientProxy extends ServerProxy
 		UtilModule.registerEventHandler(clientEvents);
 
 		TabGroupHandler socialTab = new TabGroupHandler();
-		socialTab.getSide(Side.CLIENT).add(new TabChat());
-		socialTab.getSide(Side.CLIENT).add(new TabGroup());
-		socialTab.getSide(Side.CLIENT).add(new TabNotifications());
+		socialTab.registerServerTab(new TabChat());
+		socialTab.registerServerTab(new TabGroup());
+		socialTab.registerServerTab(new TabNotifications());
+
+		if (UtilModule.isClient())
+		{
+			socialTab.registerClientTab(new TabChat.Client());
+			socialTab.registerClientTab(new TabGroup.Client());
+			socialTab.registerClientTab(new TabNotifications.Client());
+		}
 
 		TabModule.api().registerGroup(socialTab);
 	}

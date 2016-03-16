@@ -82,8 +82,6 @@ public class GroupModule extends Module
 		UtilModule.NETWORK.registerMessage(PacketChangeGroupInfo.HandlerClient.class, PacketChangeGroupInfo.class, Side.CLIENT);
 		UtilModule.NETWORK.registerMessage(PacketChangeGroupInfo.HandlerServer.class, PacketChangeGroupInfo.class, Side.SERVER);
 
-		UtilModule.NETWORK.registerMessage(PacketChangeOwner.HandlerServer.class, PacketChangeOwner.class, Side.SERVER);
-
 		UtilModule.NETWORK.registerMessage(PacketInvite.HandlerClient.class, PacketInvite.class, Side.CLIENT);
 
 		UtilModule.NETWORK.registerMessage(PacketJoin.HandlerClient.class, PacketJoin.class, Side.CLIENT);
@@ -92,6 +90,8 @@ public class GroupModule extends Module
 		UtilModule.NETWORK.registerMessage(PacketRemoveGroup.HandlerServer.class, PacketRemoveGroup.class, Side.SERVER);
 
 		UtilModule.NETWORK.registerMessage(PacketRemoveInvitation.HandlerClient.class, PacketRemoveInvitation.class, Side.CLIENT);
+
+		UtilModule.NETWORK.registerMessage(PacketChangeOwner.HandlerServer.class, PacketChangeOwner.class, Side.SERVER);
 
 		UtilModule.NETWORK.registerMessage(PacketRemoveInvite.HandlerClient.class, PacketRemoveInvite.class, Side.CLIENT);
 		UtilModule.NETWORK.registerMessage(PacketRemoveInvite.HandlerServer.class, PacketRemoveInvite.class, Side.SERVER);

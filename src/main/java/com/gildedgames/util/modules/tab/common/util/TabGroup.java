@@ -3,19 +3,14 @@ package com.gildedgames.util.modules.tab.common.util;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabGroup implements ITabGroup
+public class TabGroup<T extends ITab> implements ITabGroup<T>
 {
 	
-	protected final ArrayList<ITab> tabs = new ArrayList<>();
+	protected final ArrayList<T> tabs = new ArrayList<>();
 	
-	protected ITab selectedTab, rememberedTab;
+	protected T selectedTab, rememberedTab;
 
 	protected boolean rememberSelectedTab = true;
-	
-	public TabGroup()
-	{
-		
-	}
 	
 	@Override
 	public boolean getRememberSelectedTab()
@@ -30,31 +25,31 @@ public class TabGroup implements ITabGroup
 	}
 
 	@Override
-	public ITab getSelectedTab()
+	public T getSelectedTab()
 	{
 		return this.selectedTab;
 	}
 	
 	@Override
-	public void setSelectedTab(ITab tab)
+	public void setSelectedTab(T tab)
 	{
 		this.selectedTab = tab;
 	}
 
 	@Override
-	public ITab getRememberedTab()
+	public T getRememberedTab()
 	{
 		return this.rememberedTab;
 	}
 
 	@Override
-	public void setRememberedTab(ITab tab)
+	public void setRememberedTab(T tab)
 	{
 		this.rememberedTab = tab;
 	}
 
 	@Override
-	public void add(ITab tab)
+	public void add(T tab)
 	{
 		this.tabs.add(tab);
 	}
@@ -64,7 +59,7 @@ public class TabGroup implements ITabGroup
 	{
 		int amount = 0;
 
-		for (ITab tabDescription : this.tabs)
+		for (T tabDescription : this.tabs)
 		{
 			if (tabDescription.isEnabled())
 			{
@@ -76,11 +71,11 @@ public class TabGroup implements ITabGroup
 	}
 
 	@Override
-	public List<ITab> getEnabledTabs()
+	public List<T> getEnabledTabs()
 	{
-		List<ITab> enabledTabs = new ArrayList<>();
+		List<T> enabledTabs = new ArrayList<>();
 
-		for (ITab tabDescription : this.tabs)
+		for (T tabDescription : this.tabs)
 		{
 			if (tabDescription.isEnabled())
 			{
@@ -92,7 +87,7 @@ public class TabGroup implements ITabGroup
 	}
 	
 	@Override
-	public List<ITab> getTabs()
+	public List<T> getTabs()
 	{
 		return this.tabs;
 	}

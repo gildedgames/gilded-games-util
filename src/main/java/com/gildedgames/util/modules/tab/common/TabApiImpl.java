@@ -7,8 +7,6 @@ import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,18 +21,17 @@ public class TabApiImpl implements TabAPI
 
 	private final Map<Integer, ITabGroupHandler> registeredGroups = new HashMap<>();
 
-	@SideOnly(Side.CLIENT)
-	private final ITab BACKPACK_TAB = new TabBackpack();
+	private final ITab backpackTab = new TabBackpack();
 
 	private ITabGroupHandler activeGroup;
 
 	public TabApiImpl()
 	{
-		this.getInventoryGroup().getSide(Side.SERVER).add(this.getBackpackTab());
+		this.getInventoryGroup().registerServerTab(this.getBackpackTab());
 
 		if (UtilModule.isClient())
 		{
-			this.getInventoryGroup().getSide(Side.CLIENT).add(this.getBackpackTab());
+			this.getInventoryGroup().registerClientTab(new TabBackpack.Client());
 		}
 
 		this.registerGroup(this.inventoryTabGroup);
@@ -49,7 +46,7 @@ public class TabApiImpl implements TabAPI
 	@Override
 	public ITab getBackpackTab()
 	{
-		return this.BACKPACK_TAB;
+		return this.backpackTab;
 	}
 
 	@Override

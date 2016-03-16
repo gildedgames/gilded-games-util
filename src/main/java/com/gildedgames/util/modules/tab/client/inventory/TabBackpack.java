@@ -2,6 +2,7 @@ package com.gildedgames.util.modules.tab.client.inventory;
 
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -22,9 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class TabBackpack implements ITab
 {
-	@SideOnly(Side.CLIENT)
-	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/backpack.png");
-
 	@Override
 	public String getUnlocalizedName()
 	{
@@ -32,33 +30,10 @@ public class TabBackpack implements ITab
 	}
 
 	@Override
-	public boolean isTabValid(GuiScreen gui)
-	{
-		Class<? extends GuiScreen> clazz = gui.getClass();
-		return clazz == GuiInventory.class || clazz == GuiContainerCreative.class;
-	}
+	public void onOpen(EntityPlayer player) { }
 
 	@Override
-	public ResourceLocation getIcon()
-	{
-		return TabBackpack.ICON;
-	}
-
-	@Override
-	public void onOpen(EntityPlayer player)
-	{
-		Minecraft.getMinecraft().displayGuiScreen(new GuiInventory(player));
-	}
-
-	@Override
-	public void onClose(EntityPlayer player)
-	{
-		EntityPlayerSP playerSP = (EntityPlayerSP) player;
-
-		playerSP.sendQueue.addToSendQueue(new C0DPacketCloseWindow(playerSP.openContainer.windowId));
-		playerSP.inventory.setItemStack(null);
-		playerSP.openContainer = playerSP.inventoryContainer;
-	}
+	public void onClose(EntityPlayer player) { }
 
 	@Override
 	public Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ)
@@ -77,5 +52,39 @@ public class TabBackpack implements ITab
 	{
 		return true;
 	}
-	
+
+	@SideOnly(Side.CLIENT)
+	public static class Client extends TabBackpack implements ITabClient
+	{
+		private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/backpack.png");
+
+		@Override
+		public boolean isTabValid(GuiScreen gui)
+		{
+			Class<? extends GuiScreen> clazz = gui.getClass();
+			return clazz == GuiInventory.class || clazz == GuiContainerCreative.class;
+		}
+
+		@Override
+		public void onOpen(EntityPlayer player)
+		{
+			Minecraft.getMinecraft().displayGuiScreen(new GuiInventory(player));
+		}
+
+		@Override
+		public void onClose(EntityPlayer player)
+		{
+			EntityPlayerSP playerSP = (EntityPlayerSP) player;
+
+			playerSP.sendQueue.addToSendQueue(new C0DPacketCloseWindow(playerSP.openContainer.windowId));
+			playerSP.inventory.setItemStack(null);
+			playerSP.openContainer = playerSP.inventoryContainer;
+		}
+
+		@Override
+		public ResourceLocation getIcon()
+		{
+			return TabBackpack.Client.ICON;
+		}
+	}
 }
