@@ -1,10 +1,14 @@
 package com.gildedgames.util.modules.tab.common.util;
 
-import net.minecraftforge.fml.relauncher.Side;
-
 public interface ITabGroupHandler
 {
+	void registerServerTab(ITab tab);
 
-	ITabGroup getSide(Side side);
-	
+	void registerClientTab(ITabClient tab);
+
+	int getDiscriminant(ITab tab);
+
+	ITabGroup<ITabClient> getClientGroup();
+
+	ITabGroup<ITab> getServerGroup();
 }

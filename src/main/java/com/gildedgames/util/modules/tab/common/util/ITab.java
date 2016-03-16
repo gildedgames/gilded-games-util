@@ -1,11 +1,8 @@
 package com.gildedgames.util.modules.tab.common.util;
 
-import com.gildedgames.util.modules.tab.common.TabApiImpl;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,29 +14,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public interface ITab
 {
-
 	/**
 	 * This is the name which is displayed upon hovering over this {@link ITab} or when it is currently selected. Note that this is
 	 * unlocalized and will be translated to the correct value if your mod uses a language file.
 	 * @return This {@link ITab}'s unlocalized name which is used for rendering.
 	 */
-	@SideOnly(Side.CLIENT)
 	String getUnlocalizedName();
-
-	/**
-	 * List all {@link GuiScreen} classes which are used within this tab. If you use a class which you have not listed here,
-	 * the {@link TabApiImpl} will not be able to recognize its association with this particular tab, meaning it
-	 * won't display when the {@link GuiScreen} is open.
-	 * @return All of the {@link GuiScreen} classes which are used within this tab.
-	 */
-	@SideOnly(Side.CLIENT)
-	boolean isTabValid(GuiScreen gui);
-
-	/**
-	 * @return Returns the icon this tab has.
-	 */
-	@SideOnly(Side.CLIENT)
-	ResourceLocation getIcon();
 
 	/**
 	 * Called when the player selects this {@link ITab} within its parent {@link TabGroupHandler}. This includes

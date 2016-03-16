@@ -34,20 +34,18 @@ public class PacketOpenTab implements IMessage
 		{
 			int groupIndex = entry.getKey();
 
-			ITabGroupHandler tabGroup = entry.getValue();
+			ITabGroupHandler handler = entry.getValue();
 
-			int index = 0;
-
-			for (ITab groupTab : tabGroup.getSide(Side.CLIENT).getTabs())
+			for (ITab groupTab : handler.getClientGroup().getTabs())
 			{
 				if (tab == groupTab)
 				{
 					this.tabGroupIndex = groupIndex;
-					this.tabIndex = index;
+
+					this.tabIndex = handler.getDiscriminant(tab);
+
 					return;
 				}
-
-				index++;
 			}
 		}
 	}
@@ -115,7 +113,7 @@ public class PacketOpenTab implements IMessage
 						return null;
 					}
 
-					ITabGroup tabGroup = tabGroupHandler.getSide(Side.SERVER);
+					ITabGroup<ITab> tabGroup = tabGroupHandler.getServerGroup();
 
 					if (message.tabIndex < tabGroup.getTabs().size())
 					{

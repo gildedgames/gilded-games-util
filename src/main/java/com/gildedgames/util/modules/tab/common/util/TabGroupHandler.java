@@ -1,10 +1,11 @@
 package com.gildedgames.util.modules.tab.common.util;
 
-import com.google.common.collect.Maps;
+import com.gildedgames.util.core.UtilModule;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.EnumMap;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This is what contains {@link ITab}s for a {@link GuiScreen}'s tab interface.
@@ -12,19 +13,62 @@ import java.util.EnumMap;
  */
 public class TabGroupHandler implements ITabGroupHandler
 {
+	public final BiMap<Integer, String> idMappings = HashBiMap.create();
 
-	public final EnumMap<Side, TabGroup> sidedGroups = Maps.newEnumMap(Side.class);
-	
+	@SideOnly(Side.CLIENT)
+	public TabGroup<ITabClient> clientGroup;
+
+	public TabGroup<ITab> serverGroup;
+
+	public int discriminant;
+
 	public TabGroupHandler()
 	{
-		this.sidedGroups.put(Side.CLIENT, new TabGroup());
-		this.sidedGroups.put(Side.SERVER, new TabGroup());
+		if (UtilModule.isClient())
+		{
+			this.clientGroup = new TabGroup<>();
+		}
+
+		this.serverGroup = new TabGroup<>();
 	}
-	
+
 	@Override
-	public ITabGroup getSide(Side side)
+	public void registerServerTab(ITab tab)
 	{
-		return this.sidedGroups.get(side);
+		if (!this.idMappings.inverse().containsKey(tab.getUnlocalizedName()))
+		{
+			this.idMappings.put(this.discriminant++, tab.getUnlocalizedName());
+		}
+
+		this.getServerGroup().add(tab);
 	}
-	
+
+	@Override
+	public void registerClientTab(ITabClient tab)
+	{
+		if (!this.idMappings.inverse().containsKey(tab.getUnlocalizedName()))
+		{
+			this.idMappings.put(this.discriminant++, tab.getUnlocalizedName());
+		}
+
+		this.getClientGroup().add(tab);
+	}
+
+	@Override
+	public int getDiscriminant(ITab tab)
+	{
+		return this.idMappings.inverse().get(tab.getUnlocalizedName());
+	}
+
+	@Override
+	public ITabGroup<ITabClient> getClientGroup()
+	{
+		return this.clientGroup;
+	}
+
+	@Override
+	public ITabGroup<ITab> getServerGroup()
+	{
+		return this.serverGroup;
+	}
 }

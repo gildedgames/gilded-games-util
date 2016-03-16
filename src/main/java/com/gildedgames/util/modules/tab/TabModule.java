@@ -19,6 +19,7 @@ public class TabModule extends Module
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilModule.NETWORK.registerMessage(PacketOpenTab.HandlerClient.class, PacketOpenTab.class, Side.CLIENT);
+
 		UtilModule.NETWORK.registerMessage(PacketOpenTab.HandlerServer.class, PacketOpenTab.class, Side.SERVER);
 	}
 

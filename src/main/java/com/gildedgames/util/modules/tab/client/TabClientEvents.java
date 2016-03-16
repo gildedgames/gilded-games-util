@@ -3,6 +3,7 @@ package com.gildedgames.util.modules.tab.client;
 import java.io.IOException;
 
 import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import org.lwjgl.input.Mouse;
 
 import com.gildedgames.util.core.UtilModule;
@@ -22,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TabClientEvents
 {
-
 	@SideOnly(Side.CLIENT)
 	private final static RenderTabGroup tabGroupRenderer = new RenderTabGroup();
 
@@ -35,24 +35,25 @@ public class TabClientEvents
 
 		if (groupHandler != null)
 		{
-			ITab selectedTab = groupHandler.getSide(Side.CLIENT).getSelectedTab();
+			ITabClient selectedTab = groupHandler.getClientGroup().getSelectedTab();
 
 			if (event.gui != null && selectedTab.isTabValid(gui))
 			{
 				return;
 			}
+
 			TabModule.api().setActiveGroup(null);
 		}
 
 		for (ITabGroupHandler tabGroupHandler : TabModule.api().getRegisteredTabGroups().values())
 		{
-			ITabGroup tabGroup = tabGroupHandler.getSide(Side.CLIENT);
+			ITabGroup<ITabClient> tabGroup = tabGroupHandler.getClientGroup();
 
-			for (ITab tab : tabGroup.getTabs())
+			for (ITabClient tab : tabGroup.getTabs())
 			{
 				if (event.gui != null && tab.isTabValid(gui))
 				{
-					ITab selectedTab = tabGroup.getSelectedTab();
+					ITabClient selectedTab = tabGroup.getSelectedTab();
 
 					if (selectedTab != null && !selectedTab.isTabValid(gui))
 					{
@@ -70,6 +71,7 @@ public class TabClientEvents
 							}
 
 							tabGroup.getSelectedTab().onOpen(Minecraft.getMinecraft().thePlayer);
+
 							UtilModule.NETWORK.sendToServer(new PacketOpenTab(tabGroup.getSelectedTab()));
 						}
 						else
@@ -99,13 +101,13 @@ public class TabClientEvents
 
 			if (groupHandler != null)
 			{
-				ITabGroup activeGroup = groupHandler.getSide(Side.CLIENT);
+				ITabGroup<ITabClient> activeGroup = groupHandler.getClientGroup();
 
 				if (activeGroup != null)
 				{
 					while (Mouse.next())
 					{
-						ITab hoveredTab = null;
+						ITabClient hoveredTab;
 
 						hoveredTab = tabGroupRenderer.getHoveredTab(activeGroup);
 
@@ -156,7 +158,7 @@ public class TabClientEvents
 
 			if (groupHandler != null)
 			{
-				ITabGroup activeGroup = groupHandler.getSide(Side.CLIENT);
+				ITabGroup<ITabClient> activeGroup = groupHandler.getClientGroup();
 
 				if (activeGroup != null)
 				{

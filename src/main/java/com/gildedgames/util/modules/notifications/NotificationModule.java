@@ -86,10 +86,15 @@ public class NotificationModule extends Module
 
 		EntityHookModule.api().registerHookProvider(this.hookProvider);
 
-		UtilModule.NETWORK.registerMessage(PacketNotification.HandlerClient.class, PacketNotification.class, Side.CLIENT);
+		if (UtilModule.isClient())
+		{
+			UtilModule.NETWORK.registerMessage(PacketNotification.HandlerClient.class, PacketNotification.class, Side.CLIENT);
+
+			UtilModule.NETWORK.registerMessage(PacketRemoveMessage.HandlerClient.class, PacketRemoveMessage.class, Side.CLIENT);
+		}
+
 		UtilModule.NETWORK.registerMessage(PacketNotification.HandlerServer.class, PacketNotification.class, Side.SERVER);
 
-		UtilModule.NETWORK.registerMessage(PacketRemoveMessage.HandlerClient.class, PacketRemoveMessage.class, Side.CLIENT);
 		UtilModule.NETWORK.registerMessage(PacketRemoveMessage.HandlerServer.class, PacketRemoveMessage.class, Side.SERVER);
 
 		UtilModule.NETWORK.registerMessage(PacketClickedResponse.HandlerServer.class, PacketClickedResponse.class, Side.SERVER);

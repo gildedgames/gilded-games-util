@@ -1,6 +1,7 @@
 package com.gildedgames.util.modules.tab.client.util;
 
 import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import com.gildedgames.util.modules.tab.common.util.ITabGroup;
 import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 import net.minecraft.client.Minecraft;
@@ -56,7 +57,7 @@ public class RenderTabGroup extends Gui
 	/**
 	 * Renders the {@link TabGroupHandler} and all of its containing {@link ITab ITab}s
 	 */
-	public void render(ITabGroup tabGroup)
+	public void render(ITabGroup<ITabClient> tabGroup)
 	{
 		if (tabGroup.getEnabledTabs().size() <= 1)
 		{
@@ -85,7 +86,7 @@ public class RenderTabGroup extends Gui
 
 		this.drawCenteredString(mc.fontRendererObj, StatCollector.translateToLocal(tabGroup.getSelectedTab().getUnlocalizedName()), centerX, topY + 8, 0xFFFFFFFF);
 
-		for (ITab tab : tabGroup.getEnabledTabs())
+		for (ITabClient tab : tabGroup.getEnabledTabs())
 		{
 			if (tab != null && tab.isEnabled())
 			{
@@ -129,7 +130,7 @@ public class RenderTabGroup extends Gui
 	/**
 	 * @return The current {@link ITab} that is hovered over by the player's mouse cursor
 	 */
-	public ITab getHoveredTab(ITabGroup tabGroup)
+	public ITabClient getHoveredTab(ITabGroup<ITabClient> tabGroup)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
 		ScaledResolution scaledresolution = new ScaledResolution(mc);

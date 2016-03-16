@@ -10,33 +10,22 @@ import com.gildedgames.util.modules.group.client.GuiGroups;
 import com.gildedgames.util.modules.group.client.GuiInvite;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import com.gildedgames.util.modules.ui.UiModule;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TabGroup implements ITab
 {
-	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/group.png");
-
 	@Override
 	public String getUnlocalizedName()
 	{
 		return "tab.group.name";
-	}
-
-	@Override
-	public boolean isTabValid(GuiScreen gui)
-	{
-		return UiModule.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class, GuiEditInfo.class);
-	}
-
-	@Override
-	public ResourceLocation getIcon()
-	{
-		return TabGroup.ICON;
 	}
 
 	@Override
@@ -75,5 +64,23 @@ public class TabGroup implements ITab
 	public boolean isRemembered()
 	{
 		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static class Client extends TabGroup implements ITabClient
+	{
+		private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/group.png");
+
+		@Override
+		public boolean isTabValid(GuiScreen gui)
+		{
+			return UiModule.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class, GuiEditInfo.class);
+		}
+
+		@Override
+		public ResourceLocation getIcon()
+		{
+			return TabGroup.Client.ICON;
+		}
 	}
 }
