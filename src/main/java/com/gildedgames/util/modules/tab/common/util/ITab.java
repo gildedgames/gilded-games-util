@@ -5,6 +5,7 @@ import com.gildedgames.util.modules.tab.common.TabApiImpl;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,12 +36,10 @@ public interface ITab
 	boolean isTabValid(GuiScreen gui);
 
 	/**
-	 * This is where this {@link ITab}'s display icon is rendered
-	 * @param x The X position of the {@link ITab}
-	 * @param y The Y position of the {@link ITab}
+	 * @return Returns the icon this tab has.
 	 */
 	@SideOnly(Side.CLIENT)
-	void renderIcon(int x, int y);
+	ResourceLocation getIcon();
 
 	/**
 	 * Called when the player selects this {@link ITab} within its parent {@link TabGroupHandler}. This includes

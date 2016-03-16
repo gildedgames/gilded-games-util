@@ -1,8 +1,7 @@
 package com.gildedgames.util.modules.tab.client.social;
 
 import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.modules.tab.common.util.TabGeneric;
-
+import com.gildedgames.util.modules.tab.common.util.ITab;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
@@ -10,11 +9,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TabChat extends TabGeneric
+public class TabChat implements ITab
 {
-
-	private static final ResourceLocation TEXTURE_CHAT = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/chat.png");
+	@SideOnly(Side.CLIENT)
+	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/chat.png");
 
 	@Override
 	public String getUnlocalizedName()
@@ -26,6 +27,12 @@ public class TabChat extends TabGeneric
 	public boolean isTabValid(GuiScreen gui)
 	{
 		return gui instanceof GuiChat;
+	}
+
+	@Override
+	public ResourceLocation getIcon()
+	{
+		return TabChat.ICON;
 	}
 
 	@Override
@@ -57,11 +64,4 @@ public class TabChat extends TabGeneric
 	{
 		return true;
 	}
-
-	@Override
-	public ResourceLocation getIconTexture()
-	{
-		return TEXTURE_CHAT;
-	}
-
 }

@@ -1,6 +1,5 @@
 package com.gildedgames.util.modules.tab.client.inventory;
 
-import com.gildedgames.util.core.client.SpriteGeneric;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.tab.common.util.ITab;
 import net.minecraft.client.Minecraft;
@@ -14,6 +13,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * The {@link ITab} representation of the Minecraft's vanilla Inventory {@link GuiScreen}
@@ -21,16 +22,9 @@ import net.minecraft.world.World;
  */
 public class TabBackpack implements ITab
 {
+	@SideOnly(Side.CLIENT)
+	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/backpack.png");
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/backpack.png");
-
-	private static final SpriteGeneric sprite = new SpriteGeneric("backpack.png", 16, 16);
-	
-	public TabBackpack()
-	{
-		sprite.initSprite(16, 16, 0, 0, false);
-	}
-	
 	@Override
 	public String getUnlocalizedName()
 	{
@@ -45,10 +39,9 @@ public class TabBackpack implements ITab
 	}
 
 	@Override
-	public void renderIcon(int x, int y)
+	public ResourceLocation getIcon()
 	{
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-		Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth(), sprite.getIconWidth());
+		return TabBackpack.ICON;
 	}
 
 	@Override

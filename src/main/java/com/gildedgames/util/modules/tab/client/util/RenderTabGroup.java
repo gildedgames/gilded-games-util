@@ -107,7 +107,12 @@ public class RenderTabGroup extends Gui
 					this.drawTexturedModalRect(xPosition, yPosition + 10, u, v + 20, 28, 12);
 				}
 
-				tab.renderIcon(xPosition + 6, yPosition - 1);
+				if (tab.getIcon() != null)
+				{
+					mc.renderEngine.bindTexture(tab.getIcon());
+
+					Gui.drawModalRectWithCustomSizedTexture(xPosition + 6, yPosition - 1, 0, 0, 16, 16, 16, 16);
+				}
 
 				xPosition += 28;
 			}

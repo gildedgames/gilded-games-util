@@ -4,19 +4,18 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
 import com.gildedgames.util.modules.notifications.client.gui.GuiNotification;
 import com.gildedgames.util.modules.notifications.client.gui.GuiNotifications;
-import com.gildedgames.util.modules.tab.common.util.TabGeneric;
+import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.ui.UiModule;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class TabNotifications extends TabGeneric
+public class TabNotifications implements ITab
 {
 
-	private static final ResourceLocation TEXTURE_NOTIFICATIONS = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/notifications.png");
+	private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/notifications.png");
 
 	@Override
 	public String getUnlocalizedName()
@@ -28,6 +27,12 @@ public class TabNotifications extends TabGeneric
 	public boolean isTabValid(GuiScreen gui)
 	{
 		return UiModule.locate().containsFrame(gui, GuiNotifications.class, GuiNotification.class);
+	}
+
+	@Override
+	public ResourceLocation getIcon()
+	{
+		return TabNotifications.ICON;
 	}
 
 	@Override
@@ -59,11 +64,4 @@ public class TabNotifications extends TabGeneric
 	{
 		return true;
 	}
-
-	@Override
-	public ResourceLocation getIconTexture()
-	{
-		return TEXTURE_NOTIFICATIONS;
-	}
-
 }
