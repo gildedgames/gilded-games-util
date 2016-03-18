@@ -33,15 +33,6 @@ public class TabBackpack implements ITab
 	public void onOpen(EntityPlayer player) { }
 
 	@Override
-	public void onClose(EntityPlayer player) { }
-
-	@Override
-	public Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ)
-	{
-		return null;
-	}
-
-	@Override
 	public boolean isEnabled()
 	{
 		return true;
@@ -72,14 +63,7 @@ public class TabBackpack implements ITab
 		}
 
 		@Override
-		public void onClose(EntityPlayer player)
-		{
-			EntityPlayerSP playerSP = (EntityPlayerSP) player;
-
-			playerSP.sendQueue.addToSendQueue(new C0DPacketCloseWindow(playerSP.openContainer.windowId));
-			playerSP.inventory.setItemStack(null);
-			playerSP.openContainer = playerSP.inventoryContainer;
-		}
+		public void onClose(EntityPlayer player) { }
 
 		@Override
 		public ResourceLocation getIcon()

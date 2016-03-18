@@ -43,18 +43,6 @@ public class TabGroup implements ITab
 	}
 
 	@Override
-	public void onClose(EntityPlayer player)
-	{
-
-	}
-
-	@Override
-	public Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ)
-	{
-		return null;
-	}
-
-	@Override
 	public boolean isEnabled()
 	{
 		return true;
@@ -75,6 +63,12 @@ public class TabGroup implements ITab
 		public boolean isTabValid(GuiScreen gui)
 		{
 			return UiModule.locate().containsFrame(gui, GuiGroups.class, GuiCreateGroup.class, GuiEditGroup.class, GuiInvite.class, GuiEditInfo.class);
+		}
+
+		@Override
+		public void onClose(EntityPlayer player)
+		{
+
 		}
 
 		@Override
