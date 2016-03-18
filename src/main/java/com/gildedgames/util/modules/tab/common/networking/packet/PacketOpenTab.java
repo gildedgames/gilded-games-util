@@ -1,30 +1,21 @@
 package com.gildedgames.util.modules.tab.common.networking.packet;
 
-import io.netty.buffer.ByteBuf;
-
-import java.util.Map;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
-
-import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.core.io.MessageHandlerClient;
 import com.gildedgames.util.core.io.MessageHandlerServer;
 import com.gildedgames.util.modules.tab.TabModule;
 import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.tab.common.util.ITabGroup;
 import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import java.util.Map;
 
 public class PacketOpenTab implements IMessage
 {
 
-	private int tabGroupIndex, tabIndex, containerID;
-	
-	private boolean openContainer = false;
+	private int tabGroupIndex, tabIndex;
 
 	public PacketOpenTab() { }
 
@@ -50,13 +41,10 @@ public class PacketOpenTab implements IMessage
 		}
 	}
 	
-	public PacketOpenTab(int tabGroupIndex, int tabIndex, int containerID)
+	public PacketOpenTab(int tabGroupIndex, int tabIndex)
 	{
 		this.tabGroupIndex = tabGroupIndex;
 		this.tabIndex = tabIndex;
-		this.containerID = containerID;
-		
-		this.openContainer = true;
 	}
 
 	@Override
@@ -64,9 +52,6 @@ public class PacketOpenTab implements IMessage
 	{
 		this.tabGroupIndex = buf.readInt();
 		this.tabIndex = buf.readInt();
-		this.containerID = buf.readInt();
-		
-		this.openContainer = buf.readBoolean();
 	}
 
 	@Override
@@ -74,25 +59,6 @@ public class PacketOpenTab implements IMessage
 	{
 		buf.writeInt(this.tabGroupIndex);
 		buf.writeInt(this.tabIndex);
-		buf.writeInt(this.containerID);
-		
-		buf.writeBoolean(this.openContainer);
-	}
-
-	public static class HandlerClient extends MessageHandlerClient<PacketOpenTab, IMessage>
-	{
-
-		@Override
-		public IMessage onMessage(PacketOpenTab message, EntityPlayer player)
-		{
-			if (message.openContainer)
-			{
-				Minecraft.getMinecraft().thePlayer.openContainer.windowId = message.containerID;
-				
-			}
-
-			return null;
-		}
 	}
 
 	public static class HandlerServer extends MessageHandlerServer<PacketOpenTab, PacketOpenTab>
@@ -102,8 +68,6 @@ public class PacketOpenTab implements IMessage
 		{
 			if (player instanceof EntityPlayerMP)
 			{
-				EntityPlayerMP playerMp = (EntityPlayerMP) player;
-
 				if (message.tabGroupIndex < TabModule.api().getRegisteredTabGroups().size())
 				{
 					ITabGroupHandler tabGroupHandler = TabModule.api().getRegisteredTabGroups().get(message.tabGroupIndex);
@@ -118,29 +82,7 @@ public class PacketOpenTab implements IMessage
 					if (message.tabIndex < tabGroup.getTabs().size())
 					{
 						ITab tab = tabGroup.getTabs().get(message.tabIndex);
-
-						Container container = tab.getCurrentContainer(playerMp, playerMp.worldObj, (int) playerMp.posX, (int) playerMp.posY, (int) playerMp.posZ);
-						
-						PacketOpenTab packet = null;
-						
-						if (container != null)
-						{
-							playerMp.getNextWindowId();
-							playerMp.closeContainer();
-
-							int windowID = playerMp.currentWindowId;
-
-							playerMp.openContainer = container;
-							playerMp.openContainer.windowId = windowID;
-
-							//playerMp.openContainer.onCraftGuiOpened(playerMp);
-
-							packet = new PacketOpenTab(message.tabGroupIndex, message.tabIndex, windowID);
-						}
-
 						tab.onOpen(player);
-						
-						return packet;
 					}
 				}
 			}

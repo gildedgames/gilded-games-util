@@ -28,18 +28,6 @@ public class TabChat implements ITab
 	}
 
 	@Override
-	public void onClose(EntityPlayer player)
-	{
-
-	}
-
-	@Override
-	public Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ)
-	{
-		return null;
-	}
-
-	@Override
 	public boolean isEnabled()
 	{
 		return true;
@@ -55,6 +43,12 @@ public class TabChat implements ITab
 	public static class Client extends TabChat implements ITabClient
 	{
 		private static final ResourceLocation ICON = new ResourceLocation(UtilModule.MOD_ID, "textures/gui/tab_icons/chat.png");
+
+		@Override
+		public void onClose(EntityPlayer player)
+		{
+
+		}
 
 		@Override
 		public boolean isTabValid(GuiScreen gui)

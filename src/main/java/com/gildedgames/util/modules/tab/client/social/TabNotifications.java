@@ -30,18 +30,6 @@ public class TabNotifications implements ITab
 	}
 
 	@Override
-	public void onClose(EntityPlayer player)
-	{
-
-	}
-
-	@Override
-	public Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ)
-	{
-		return null;
-	}
-
-	@Override
 	public boolean isEnabled()
 	{
 		return true;
@@ -62,6 +50,12 @@ public class TabNotifications implements ITab
 		public boolean isTabValid(GuiScreen gui)
 		{
 			return UiModule.locate().containsFrame(gui, GuiNotifications.class, GuiNotification.class);
+		}
+
+		@Override
+		public void onClose(EntityPlayer player)
+		{
+
 		}
 
 		@Override

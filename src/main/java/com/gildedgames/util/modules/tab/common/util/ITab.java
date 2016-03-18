@@ -29,27 +29,6 @@ public interface ITab
 	void onOpen(EntityPlayer player);
 
 	/**
-	 * Called when the player selects another {@link ITab} within this {@link ITab}'s parent {@link TabGroupHandler}. This includes
-	 * when the {@link TabGroupHandler} is closed and this {@link ITab} was open.
-	 * @param side The game's current networking Side.
-	 */
-	void onClose(EntityPlayer player);
-
-	/**
-	 * This is the current {@link Container} linked to this {@link ITab} upon opening it. Returns null if this {@link ITab} does
-	 * not have an associated {@link Container}.
-	 * @param side The game's current networking Side.
-	 * @param player The player which opens this {@link ITab}
-	 * @param world The world the player is currently in
-	 * @param posX The X position of the player
-	 * @param posY The Y position of the player
-	 * @param posZ The Z position of the player
-	 * @return The {@link Container} you'd like opened when this {@link ITab} is opened by the player.
-	 * Return null if you don't want any {@link Container} opened.
-	 */
-	Container getCurrentContainer(EntityPlayer player, World world, int posX, int posY, int posZ);
-
-	/**
 	 * When an {@link ITab} is enabled, it will render as normal within its parent {@link TabGroupHandler}. However,
 	 * if it is disabled, it will not render and can not be selected by the player.
 	 * @param side The game's current networking Side.
