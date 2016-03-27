@@ -1,8 +1,10 @@
 package com.gildedgames.util.modules.chunk;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.chunk.api.ChunkServices;
 import com.gildedgames.util.modules.chunk.impl.ChunkServicesImpl;
 import com.gildedgames.util.core.Module;
+import com.gildedgames.util.modules.chunk.impl.client.ClientEventListener;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
@@ -17,6 +19,11 @@ public class ChunkModule extends Module
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this.services);
+
+		if (UtilModule.isClient())
+		{
+			MinecraftForge.EVENT_BUS.register(new ClientEventListener());
+		}
 	}
 
 	@Override
@@ -38,7 +45,7 @@ public class ChunkModule extends Module
 		return ChunkModule.INSTANCE.services;
 	}
 
-	private static ChunkServicesImpl impl()
+	public static ChunkServicesImpl impl()
 	{
 		return ChunkModule.INSTANCE.services;
 	}

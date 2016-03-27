@@ -14,7 +14,7 @@ public interface ChunkServices
 	 */
 	void registerHookFactory(IChunkHookFactory<IChunkHook> factory);
 
-	IChunkHook getHook(World world, BlockPos pos, Class<? extends IChunkHook> clazz);
+	<T extends IChunkHook> T getHook(World world, BlockPos pos, Class<T> clazz);
 
-	IChunkHook getHook(World world, ChunkCoordIntPair pos, Class<? extends IChunkHook> clazz);
+	<T extends IChunkHook> T getHook(World world, ChunkCoordIntPair pos, Class<T> clazz);
 }

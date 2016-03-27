@@ -73,8 +73,6 @@ public class ChunkServicesImpl implements ChunkServices
 
 		if (worldPool == null)
 		{
-			UtilModule.logger.warn("World id " + event.world.provider.getDimensionId() + " doesn't have a pool");
-
 			return;
 		}
 
@@ -140,7 +138,7 @@ public class ChunkServicesImpl implements ChunkServices
 		this.factories.add(factory);
 	}
 
-	private WorldHookPool getWorldPool(World world)
+	public WorldHookPool getWorldPool(World world)
 	{
 		return this.pools.get(world.provider.getDimensionId());
 	}
@@ -160,18 +158,18 @@ public class ChunkServicesImpl implements ChunkServices
 	}
 
 	@Override
-	public IChunkHook getHook(World world, BlockPos pos, Class<? extends IChunkHook> clazz)
+	public <T extends IChunkHook> T getHook(World world, BlockPos pos, Class<T> clazz)
 	{
 		return this.getHook(world, pos.getX() / 16, pos.getZ() / 16, clazz);
 	}
 
 	@Override
-	public IChunkHook getHook(World world, ChunkCoordIntPair pos, Class<? extends IChunkHook> clazz)
+	public <T extends IChunkHook> T getHook(World world, ChunkCoordIntPair pos, Class<T> clazz)
 	{
 		return this.getHook(world, pos.chunkXPos, pos.chunkZPos, clazz);
 	}
 
-	private IChunkHook getHook(World world, int x, int z, Class<? extends IChunkHook> clazz)
+	private <T extends IChunkHook> T getHook(World world, int x, int z, Class<T> clazz)
 	{
 		WorldHookPool pool = this.getWorldPool(world);
 
@@ -181,7 +179,7 @@ public class ChunkServicesImpl implements ChunkServices
 
 			if (hookPool != null)
 			{
-				return hookPool.getHook(ChunkCoordIntPair.chunkXZ2Int(x, z));
+				return (T) hookPool.getHook(ChunkCoordIntPair.chunkXZ2Int(x, z));
 			}
 		}
 
