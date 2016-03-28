@@ -33,6 +33,13 @@ public class NBTHelper
 	
 	public static <T extends NBT> void fullySerialize(String key, T nbt, NBTTagCompound tag)
 	{
+		tag.setBoolean(key + "_null", nbt == null);
+		
+		if (nbt == null)
+		{
+			return;
+		}
+		
 		ClassSerializer.writeSerialNumber(key, nbt, tag);
 		
 		NBTTagCompound data = new NBTTagCompound();
@@ -44,6 +51,11 @@ public class NBTHelper
 	@SuppressWarnings("unchecked")
 	public static <T extends NBT> T fullyDeserialize(String key, NBTTagCompound tag)
 	{
+		if (tag.getBoolean(key + "_null"))
+		{
+			return (T)null;
+		}
+		
 		T nbt = (T) ClassSerializer.instantiate(key, tag);
 		
 		nbt.read(tag.getCompoundTag(key + "_data"));
