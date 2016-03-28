@@ -1,14 +1,15 @@
 package com.gildedgames.util.modules.instances;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.modules.entityhook.api.IEntityHookFactory;
 import com.gildedgames.util.modules.entityhook.impl.hooks.EntityHook;
 import com.gildedgames.util.modules.entityhook.impl.providers.PlayerHookProvider;
 import com.gildedgames.util.modules.world.common.BlockPosDimension;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PlayerInstances extends EntityHook<EntityPlayer>
 {
@@ -42,12 +43,16 @@ public class PlayerInstances extends EntityHook<EntityPlayer>
 	public void saveNBTData(NBTTagCompound compound)
 	{
 		NBTHelper.setBlockPosDimension(compound, this.outside, "outside");
+		
+		NBTHelper.fullySerialize("activeInstance", this.activeInstance, compound);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound compound)
 	{
 		this.outside = NBTHelper.getBlockPosDimension(compound, "outside");
+
+		this.activeInstance = (NBT) NBTHelper.fullyDeserialize("activeInstance", compound);
 	}
 
 	@Override

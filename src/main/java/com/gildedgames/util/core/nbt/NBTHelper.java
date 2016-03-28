@@ -1,17 +1,6 @@
 package com.gildedgames.util.core.nbt;
 
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.factory.IOBridge;
-import com.gildedgames.util.io_manager.io.IO;
-import com.gildedgames.util.io_manager.util.IOUtil;
-import com.gildedgames.util.modules.world.common.BlockPosDimension;
-import com.google.common.collect.AbstractIterator;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,8 +14,42 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+
+import com.gildedgames.util.io.ClassSerializer;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.factory.IOBridge;
+import com.gildedgames.util.io_manager.io.IO;
+import com.gildedgames.util.io_manager.util.IOUtil;
+import com.gildedgames.util.modules.world.common.BlockPosDimension;
+import com.google.common.collect.AbstractIterator;
+
 public class NBTHelper
 {
+	
+	public static <T extends NBT> void fullySerialize(String key, T nbt, NBTTagCompound tag)
+	{
+		ClassSerializer.writeSerialNumber(key, nbt, tag);
+		
+		NBTTagCompound data = new NBTTagCompound();
+		nbt.write(data);
+		
+		tag.setTag(key + "_data", data);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends NBT> T fullyDeserialize(String key, NBTTagCompound tag)
+	{
+		T nbt = (T) ClassSerializer.instantiate(key, tag);
+		
+		nbt.read(tag.getCompoundTag(key + "_data"));
+		
+		return nbt;
+	}
 
 	public static <T extends NBT> T readInputObject(ByteBuf buf)
 	{
