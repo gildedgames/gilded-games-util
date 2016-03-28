@@ -333,11 +333,23 @@ public class NBTHelper
 
 	public static BlockPosDimension getBlockPosDimension(NBTTagCompound tag, String key)
 	{
+		if (tag.getBoolean(key + "_null"))
+		{
+			return null;
+		}
+		
 		return new BlockPosDimension(tag.getInteger(key + "x"), tag.getInteger(key + "y"), tag.getInteger(key + "z"), tag.getInteger(key + "dimension"));
 	}
 
 	public static void setBlockPosDimension(NBTTagCompound tag, BlockPosDimension pos, String key)
 	{
+		tag.setBoolean(key + "_null", pos == null);
+		
+		if (pos == null)
+		{
+			return;
+		}
+		
 		tag.setInteger(key + "x", pos.getX());
 		tag.setInteger(key + "y", pos.getY());
 		tag.setInteger(key + "z", pos.getZ());
