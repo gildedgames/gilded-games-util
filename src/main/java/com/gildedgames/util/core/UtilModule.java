@@ -1,18 +1,11 @@
 package com.gildedgames.util.core;
 
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.core.io.NetworkWrapper;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.modules.chunk.ChunkModule;
-import com.gildedgames.util.modules.entityhook.EntityHookModule;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.instances.InstanceModule;
-import com.gildedgames.util.modules.menu.MenuModule;
-import com.gildedgames.util.modules.notifications.NotificationModule;
-import com.gildedgames.util.modules.spawning.SpawningModule;
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.world.WorldModule;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
@@ -32,12 +25,25 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
+import com.gildedgames.util.core.io.NetworkWrapper;
+import com.gildedgames.util.io.ClassSerializer;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.modules.chunk.ChunkModule;
+import com.gildedgames.util.modules.entityhook.EntityHookModule;
+import com.gildedgames.util.modules.group.GroupModule;
+import com.gildedgames.util.modules.instances.InstanceModule;
+import com.gildedgames.util.modules.menu.MenuModule;
+import com.gildedgames.util.modules.notifications.NotificationModule;
+import com.gildedgames.util.modules.spawning.SpawningModule;
+import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.world.WorldModule;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 @Mod(modid = UtilModule.MOD_ID, name = "Gilded Games Utility", version = UtilModule.VERSION, dependencies = "before:*")
 public class UtilModule
