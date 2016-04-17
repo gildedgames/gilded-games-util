@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -258,19 +259,12 @@ public class UtilModule
 
 	public static File getWorldDirectory()
 	{
-		String path = ".";
-
-		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
-		{
-			path = MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
-		}
-
-		return new File(path.replace("\\data", ""));
+		return DimensionManager.getCurrentSaveRootDirectory();
 	}
 
 	public static String getMinecraftDirectory()
 	{
-		return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
+		return UtilModule.getWorldDirectory().getAbsolutePath().replace(MinecraftServer.getServer().getFolderName(), "");
 	}
 
 	public static String translate(String key)
