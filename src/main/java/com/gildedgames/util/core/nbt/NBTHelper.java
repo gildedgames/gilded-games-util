@@ -313,15 +313,16 @@ public class NBTHelper
 			{
 				return new AbstractIterator<NBTTagCompound>()
 				{
-					int i = 0;
+					private int i = 0;
 
 					@Override
 					protected NBTTagCompound computeNext()
 					{
-						if (this.i < tagList.tagCount())
+						if (this.i > tagList.tagCount())
 						{
 							return this.endOfData();
 						}
+
 						NBTTagCompound tag = tagList.getCompoundTagAt(this.i);
 						this.i++;
 						return tag;
