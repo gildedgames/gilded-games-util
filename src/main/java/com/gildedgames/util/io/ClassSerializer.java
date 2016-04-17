@@ -32,7 +32,8 @@ public class ClassSerializer
 	}
 
 	/**
-	 * @param serialNumber MUST BE UNIQUE for each ClassSerializer instance.
+	 * @param serialNumber MUST BE UNIQUE for each ClassSerializer instance. You should never change this number once registered
+	 * in a previous version.
 	 * @param serializer
 	 */
 	public void registerSerialization(final int serialNumber, final Class<?> clazz, final Callable<?> serializer)
