@@ -11,6 +11,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
 import org.apache.commons.io.FileUtils;
@@ -140,7 +142,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 		return this.instances.values();
 	}
 
-	public void teleportPlayerToDimension(T instance, EntityPlayerMP player)
+	public World teleportPlayerToDimension(T instance, EntityPlayerMP player)
 	{
 		if (this.instances.containsValue(instance))
 		{
@@ -157,7 +159,9 @@ public class InstanceHandler<T extends Instance> implements NBT
 				DimensionManager.registerDimension(dimId, this.factory.providerId());
 			}
 
-			Teleporter teleporter = this.factory.getTeleporter(MinecraftServer.getServer().worldServerForDimension(dimId));
+			WorldServer world = MinecraftServer.getServer().worldServerForDimension(dimId);
+			
+			Teleporter teleporter = this.factory.getTeleporter(world);
 
 			ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
 			scm.transferPlayerToDimension(player, this.instances.inverse().get(instance), teleporter);
@@ -165,7 +169,11 @@ public class InstanceHandler<T extends Instance> implements NBT
 			player.timeUntilPortal = player.getPortalCooldown();
 
 			hook.setInstance(instance);
+			
+			return world;
 		}
+		
+		return player.worldObj;
 	}
 
 	public void teleportPlayerOutsideInstance(EntityPlayerMP player)
