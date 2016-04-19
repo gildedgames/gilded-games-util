@@ -27,6 +27,7 @@ import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.modules.world.common.BlockPosDimension;
 import com.google.common.collect.AbstractIterator;
+import net.minecraft.util.BlockPos;
 
 public class NBTHelper
 {
@@ -340,6 +341,18 @@ public class NBTHelper
 		}
 		
 		return new BlockPosDimension(tag.getInteger(key + "x"), tag.getInteger(key + "y"), tag.getInteger(key + "z"), tag.getInteger(key + "dimension"));
+	}
+
+	public static BlockPos readBlockPos(NBTTagCompound tag, String key)
+	{
+		int[] pos = tag.getIntArray(key);
+
+		return new BlockPos(pos[0], pos[1], pos[2]);
+	}
+
+	public static void writeBlockPos(NBTTagCompound tag, String key, BlockPos pos)
+	{
+		tag.setIntArray(key, new int[] { pos.getX(), pos.getY(), pos.getZ() });
 	}
 
 	public static void setBlockPosDimension(NBTTagCompound tag, BlockPosDimension pos, String key)
