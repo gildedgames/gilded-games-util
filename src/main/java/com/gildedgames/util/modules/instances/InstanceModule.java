@@ -1,30 +1,26 @@
 package com.gildedgames.util.modules.instances;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 import com.gildedgames.util.core.Module;
-import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.util.GGHelper;
+import com.gildedgames.util.modules.entityhook.api.IEntityHookPool;
 
 public class InstanceModule extends Module
 {
-	private SidedObject<InstanceServices> services = new SidedObject<>(new InstanceServices(Side.CLIENT), new InstanceServices(Side.SERVER));
-
+	
 	public static InstanceModule INSTANCE = new InstanceModule();
-
-	public InstanceServices locate()
-	{
-		return this.services.instance();
-	}
+	
+	private List<InstanceHandler<?>> instances;
 
 	public PlayerInstances getPlayer(EntityPlayer player)
 	{
@@ -54,17 +50,9 @@ public class InstanceModule extends Module
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
-		for (InstanceHandler<?> handler : this.locate().getHandlers())
+		for (InstanceHandler<?> handler : this.getHandlers())
 		{
-			for (Instance inst : handler.getInstances())
-			{
-				int dim = handler.getDimensionForInstance(inst);
-				
-				if (DimensionManager.isDimensionRegistered(dim))
-				{
-					DimensionManager.unregisterDimension(dim);
-				}
-			}
+			handler.unregisterInstances();
 		}
 	}
 	
@@ -80,7 +68,7 @@ public class InstanceModule extends Module
 		
 		int i = 0;
 		
-		for (InstanceHandler<?> handler : this.locate().getHandlers())
+		for (InstanceHandler<?> handler : this.getHandlers())
 		{
 			NBTTagCompound subTag = tag.getCompoundTag(String.valueOf(i++));
 			
@@ -95,9 +83,9 @@ public class InstanceModule extends Module
 		
 		int i = 0;
 		
-		tag.setInteger("size", this.locate().getHandlers().size());
+		tag.setInteger("size", this.getHandlers().size());
 		
-		for (InstanceHandler<?> handler : this.locate().getHandlers())
+		for (InstanceHandler<?> handler : this.getHandlers())
 		{
 			NBTTagCompound subTag = new NBTTagCompound();
 			handler.write(subTag);
@@ -108,17 +96,32 @@ public class InstanceModule extends Module
 		GGHelper.writeNBTToFile(tag, "//data//instances.dat");
 	}
 
-	public <T extends Instance> InstanceHandler<T> createServerInstanceHandler(InstanceFactory<T> factory)
+	public <T extends Instance> InstanceHandler<T> createInstanceHandler(InstanceFactory<T> factory)
 	{
 		InstanceHandler<T> handler = new InstanceHandler<>(factory);
-		this.services.server().addHandler(handler);
+		this.addHandler(handler);
+		
 		return handler;
+	}
+	
+	public IEntityHookPool<PlayerInstances> getPlayerHooks()
+	{
+		return PlayerInstances.PROVIDER.getPool();
 	}
 
-	public <T extends Instance> InstanceHandler<T> createClientInstanceHandler(InstanceFactory<T> factory)
+	public Collection<InstanceHandler<?>> getHandlers()
 	{
-		InstanceHandler<T> handler = new InstanceHandler<>(factory);
-		this.services.client().addHandler(handler);
-		return handler;
+		if (this.instances == null)
+		{
+			this.instances = new ArrayList<>();
+		}
+
+		return this.instances;
 	}
+
+	protected void addHandler(InstanceHandler<?> handler)
+	{
+		this.getHandlers().add(handler);
+	}
+
 }

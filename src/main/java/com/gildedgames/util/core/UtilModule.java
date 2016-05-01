@@ -82,7 +82,6 @@ public class UtilModule
 		this.registerModule(SpawningModule.INSTANCE);
 		this.registerModule(NotificationModule.INSTANCE);
 		this.registerModule(ChunkModule.INSTANCE);
-		this.registerModule(InstanceModule.INSTANCE);
 
 		if (UtilModule.isClient())
 		{

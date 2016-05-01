@@ -319,7 +319,7 @@ public class NBTHelper
 					@Override
 					protected NBTTagCompound computeNext()
 					{
-						if (this.i > tagList.tagCount())
+						if (this.i >= tagList.tagCount())
 						{
 							return this.endOfData();
 						}
