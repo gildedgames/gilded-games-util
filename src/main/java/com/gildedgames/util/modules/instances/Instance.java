@@ -8,9 +8,13 @@ import com.gildedgames.util.core.nbt.NBT;
 
 public interface Instance extends NBT
 {
+	
 	void onJoin(EntityPlayer player);
 
 	void onLeave(EntityPlayer player);
 
 	List<EntityPlayer> getPlayers();
+	
+	int getDimIdInside();
+	
 }
