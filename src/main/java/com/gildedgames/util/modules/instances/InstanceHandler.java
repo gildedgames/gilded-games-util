@@ -1,5 +1,7 @@
 package com.gildedgames.util.modules.instances;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map.Entry;
 
@@ -13,6 +15,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+import org.apache.commons.io.FileUtils;
+
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.modules.world.common.BlockPosDimension;
@@ -41,8 +46,6 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		int dimensionId = InstanceModule.INSTANCE.getFreeDimID();
 		
-		System.out.println("here's the dim: " + dimensionId);
-		
 		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
 		T instance = this.factory.createInstance(dimensionId, this);
 		this.instances.put(dimensionId, instance);
@@ -55,8 +58,6 @@ public class InstanceHandler<T extends Instance> implements NBT
 		for (Entry<Integer, T> entry : this.instances.entrySet())
 		{
 			int dimId = entry.getKey();
-			
-			System.out.println("unregistering dim id: " + dimId);
 
 			DimensionManager.unregisterDimension(dimId);
 		}
@@ -76,8 +77,6 @@ public class InstanceHandler<T extends Instance> implements NBT
 			T instance = entry.getValue();
 			NBTTagCompound newTag = new NBTTagCompound();
 			newTag.setInteger("dimension", entry.getKey());
-			
-			System.out.println(entry.getKey());
 			
 			instance.write(newTag);
 			tagList.appendTag(newTag);
@@ -99,10 +98,8 @@ public class InstanceHandler<T extends Instance> implements NBT
 		for (NBTTagCompound tag : NBTHelper.getIterator(input, "instances"))
 		{
 			int id = tag.getInteger("dimension");
-			
-			System.out.println("reading back dim id: " + id);
-			
-			/*if (DimensionManager.isDimensionRegistered(id))
+
+			if (DimensionManager.isDimensionRegistered(id))
 			{
 				final int oldId = id;
 				
@@ -128,7 +125,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 						}
 				    }
 				}
-			}*/
+			}
 			
 			T instance = this.factory.createInstance(id, this);
 			instance.read(tag);
