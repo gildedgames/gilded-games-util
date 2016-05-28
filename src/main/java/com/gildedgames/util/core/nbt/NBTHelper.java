@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 
 import com.gildedgames.util.io.ClassSerializer;
 import com.gildedgames.util.io_manager.IOCore;
@@ -27,10 +29,50 @@ import com.gildedgames.util.io_manager.io.IO;
 import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.modules.world.common.BlockPosDimension;
 import com.google.common.collect.AbstractIterator;
-import net.minecraft.util.BlockPos;
+import com.google.common.collect.Lists;
 
 public class NBTHelper
 {
+	
+	public static <T extends NBT> void fullySerializeCollection(String key, Collection<T> collection, NBTTagCompound tag)
+	{
+		NBTTagList list = new NBTTagList();
+
+		int count = 0;
+
+		for (NBT obj : collection)
+		{
+			NBTTagCompound appendedTag = new NBTTagCompound();
+			
+			NBTHelper.fullySerialize("data", obj, appendedTag);
+
+			list.appendTag(appendedTag);
+			
+			count++;
+		}
+		
+		tag.setTag(key, list);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends NBT> Collection<T> fullyDeserializeCollection(String key, NBTTagCompound tag)
+	{
+		List<T> collection = Lists.newArrayList();
+		
+		NBTTagList list = tag.getTagList(key, 10);
+
+		if (list != null)
+		{
+			for (int i = 0; i < list.tagCount(); i++)
+			{
+				NBTTagCompound compound = list.getCompoundTagAt(i);
+				
+				collection.add((T) NBTHelper.fullyDeserialize("data", compound));
+			}
+		}
+		
+		return collection;
+	}
 	
 	public static <T extends NBT> void fullySerialize(String key, T nbt, NBTTagCompound tag)
 	{
@@ -345,6 +387,11 @@ public class NBTHelper
 
 	public static BlockPos readBlockPos(NBTTagCompound tag, String key)
 	{
+		if (tag.getBoolean(key + "_null"))
+		{
+			return null;
+		}
+		
 		int[] pos = tag.getIntArray(key);
 
 		return new BlockPos(pos[0], pos[1], pos[2]);
@@ -352,6 +399,13 @@ public class NBTHelper
 
 	public static void writeBlockPos(NBTTagCompound tag, String key, BlockPos pos)
 	{
+		tag.setBoolean(key + "_null", pos == null);
+		
+		if (pos == null)
+		{
+			return;
+		}
+		
 		tag.setIntArray(key, new int[] { pos.getX(), pos.getY(), pos.getZ() });
 	}
 
