@@ -20,7 +20,7 @@ public class TabNotifications implements ITab
 	@Override
 	public String getUnlocalizedName()
 	{
-		return "tab.chat.name";
+		return "tab.notifications.name";
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TabNotifications implements ITab
 	@Override
 	public boolean isRemembered()
 	{
-		return true;
+		return false;
 	}
 
 	@SideOnly(Side.CLIENT)

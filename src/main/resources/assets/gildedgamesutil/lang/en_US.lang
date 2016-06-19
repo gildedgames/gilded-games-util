@@ -1,5 +1,8 @@
 tab.backpack.name=Backpack
 tab.universeHopper.name=Universe Hopper
+tab.chat.name=Chat
+tab.group.name=Party
+tab.notifications.name=Notifications
 universe.minecraft.name=Minecraft
 gui.travel.name=Travel
 keybindings.hopUniverse=Hop Universe
