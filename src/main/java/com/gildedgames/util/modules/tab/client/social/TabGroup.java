@@ -51,7 +51,7 @@ public class TabGroup implements ITab
 	@Override
 	public boolean isRemembered()
 	{
-		return true;
+		return false;
 	}
 
 	@SideOnly(Side.CLIENT)
