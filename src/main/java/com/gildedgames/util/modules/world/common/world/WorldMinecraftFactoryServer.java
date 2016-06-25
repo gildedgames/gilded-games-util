@@ -2,6 +2,7 @@ package com.gildedgames.util.modules.world.common.world;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class WorldMinecraftFactoryServer implements IWorldFactory<WorldMinecraft>
 {
@@ -9,7 +10,7 @@ public class WorldMinecraftFactoryServer implements IWorldFactory<WorldMinecraft
 	@Override
 	public WorldMinecraft create(int dimId, boolean isRemote)
 	{
-		World world = MinecraftServer.getServer().worldServerForDimension(dimId);
+		World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimId);
 
 		if (world == null)
 		{

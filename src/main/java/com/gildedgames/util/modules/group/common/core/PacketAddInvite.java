@@ -35,7 +35,7 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 	public void toBytes(ByteBuf buf)
 	{
 		super.toBytes(buf);
-		IOUtil.writeUUID(this.inviter.getUniqueId(), buf);
+		IOUtil.writeUUID(this.inviter.getPlayer().getUniqueID(), buf);
 	}
 
 	public static class HandlerClient extends MessageHandlerClient<PacketAddInvite, IMessage>
@@ -54,7 +54,7 @@ public class PacketAddInvite extends PacketMemberAction<PacketAddInvite>
 		@Override
 		public IMessage onMessage(PacketAddInvite message, EntityPlayer player)
 		{
-			message.pool.invite(message.member.getUniqueId(), player.getGameProfile().getId(), message.group);
+			message.pool.invite(message.member.getPlayer().getUniqueID(), player.getGameProfile().getId(), message.group);
 
 			return null;
 		}

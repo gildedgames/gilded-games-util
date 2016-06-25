@@ -24,7 +24,7 @@ public class PacketNotification implements IMessage
 	public PacketNotification(INotification notification, PlayerNotification player)
 	{
 		this.notification = notification;
-		this.playerId = player.getUniqueId();
+		this.playerId = player.getPlayer().getUniqueID();
 	}
 
 	@Override

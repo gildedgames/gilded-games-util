@@ -57,7 +57,7 @@ public class GuiInvite extends GuiFrame
 		GuiPositioner positioner = new GuiPositionerList(0);
 
 		this.content().set("name", new TextElement(GuiFactory.text(this.group.getName(), Color.white, 1.3f), Dim2D.build().pos(70, 100).flush()));
-		final RadioButtonSet<PlayerButton> players = new RadioButtonSet<>(Pos2D.flush(), 100, positioner, new PlayersContent(this.group, this.groupMember.getEntity()));
+		final RadioButtonSet<PlayerButton> players = new RadioButtonSet<>(Pos2D.flush(), 100, positioner, new PlayersContent(this.group, this.groupMember.getPlayer()));
 
 		ScrollableGui scrollPlayers = new ScrollableGui(Dim2D.build().pos(InputHelper.getCenter(input)).center(true).area(200, 200).flush(), players);
 
@@ -78,7 +78,7 @@ public class GuiInvite extends GuiFrame
 					final UUID selected = players.getSelected().uuid;
 					final Group g = GuiInvite.this.group;
 					final GroupMember inviting = GuiInvite.this.groupMember;
-					GroupModule.locate().getDefaultPool().invite(selected, inviting.getUniqueId(), g);
+					GroupModule.locate().getDefaultPool().invite(selected, inviting.getPlayer().getUniqueID(), g);
 
 					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
@@ -107,7 +107,7 @@ public class GuiInvite extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					UiModule.locate().open("", new MinecraftGui(new GuiEditGroup(GuiInvite.this.groupMember.getEntity())));
+					UiModule.locate().open("", new MinecraftGui(new GuiEditGroup(GuiInvite.this.groupMember.getPlayer())));
 				}
 			}
 		});
@@ -130,7 +130,7 @@ public class GuiInvite extends GuiFrame
 		{
 			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<>();
 
-			for (NetworkPlayerInfo info : Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap())
+			for (NetworkPlayerInfo info : Minecraft.getMinecraft().thePlayer.connection.getPlayerInfoMap())
 			{
 				GameProfile profile = info.getGameProfile();
 
@@ -165,7 +165,7 @@ public class GuiInvite extends GuiFrame
 		{
 			super.initContent(input);
 
-			this.content().set("head", new SkinButton(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfo(this.uuid).getGameProfile(), 2, 2));
+			this.content().set("head", new SkinButton(Minecraft.getMinecraft().thePlayer.connection.getPlayerInfo(this.uuid).getGameProfile(), 2, 2));
 			this.content().set("username", new TextElement(GuiFactory.text(this.username, new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 			if (this.invited)
 			{

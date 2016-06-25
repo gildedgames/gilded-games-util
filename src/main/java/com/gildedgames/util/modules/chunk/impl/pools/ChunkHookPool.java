@@ -4,7 +4,6 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.LongHashMap;
 
 import java.util.HashMap;
 

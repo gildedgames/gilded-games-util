@@ -1,19 +1,21 @@
 package com.gildedgames.util.modules.instances;
 
+import com.gildedgames.util.core.Module;
+import com.gildedgames.util.core.util.GGHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-
-import com.gildedgames.util.core.Module;
-import com.gildedgames.util.core.util.GGHelper;
-import com.gildedgames.util.modules.entityhook.api.IEntityHookPool;
 
 public class InstanceModule extends Module
 {
@@ -22,14 +24,24 @@ public class InstanceModule extends Module
 	
 	private List<InstanceHandler<?>> instances;
 
+	@CapabilityInject(PlayerInstances.class)
+	public static final Capability<PlayerInstances> PLAYER_INSTANCES = null;
+
 	public PlayerInstances getPlayer(EntityPlayer player)
 	{
-		return PlayerInstances.PROVIDER.getHook(player);
+		return player.getCapability(PLAYER_INSTANCES, null);
 	}
 
 	public PlayerInstances getPlayer(UUID uuid)
 	{
-		return PlayerInstances.PROVIDER.getHook(uuid);
+		EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(uuid);
+
+		if (player == null)
+		{
+			return null;
+		}
+
+		return InstanceModule.INSTANCE.getPlayer(player);
 	}
 	
 	public int getFreeDimID()
@@ -100,13 +112,8 @@ public class InstanceModule extends Module
 	{
 		InstanceHandler<T> handler = new InstanceHandler<>(factory);
 		this.addHandler(handler);
-		
+
 		return handler;
-	}
-	
-	public IEntityHookPool<PlayerInstances> getPlayerHooks()
-	{
-		return PlayerInstances.PROVIDER.getPool();
 	}
 
 	public Collection<InstanceHandler<?>> getHandlers()

@@ -20,18 +20,18 @@ public class NotificationsGroupHook implements IGroupHook
 	@Override
 	public void onMemberAdded(GroupMember member)
 	{
-		this.sendPopup(member.getEntity().getName() + " " + UtilModule.translate("group.playerjoined"), member);
+		this.sendPopup(member.getPlayer().getName() + " " + UtilModule.translate("group.playerjoined"), member);
 	}
 
 	private void sendPopup(String message, GroupMember about)
 	{
-		NotificationModule.sendPopup(message, about.getUniqueId(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
+		NotificationModule.sendPopup(message, about.getPlayer().getUniqueID(), Minecraft.getMinecraft().thePlayer.getGameProfile().getId());
 	}
 
 	@Override
 	public void onMemberRemoved(GroupMember member)
 	{
-		this.sendPopup(member.getEntity().getName() + " " + UtilModule.translate("group.playerleft"), member);
+		this.sendPopup(member.getPlayer().getName() + " " + UtilModule.translate("group.playerleft"), member);
 	}
 
 	@Override

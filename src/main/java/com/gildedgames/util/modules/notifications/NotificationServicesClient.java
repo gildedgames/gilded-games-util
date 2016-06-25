@@ -1,21 +1,19 @@
 package com.gildedgames.util.modules.notifications;
 
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.notifications.common.core.INotification;
 import com.gildedgames.util.modules.notifications.common.core.NotificationDispatcher;
 import com.gildedgames.util.modules.notifications.common.core.NotificationDispatcherClient;
 import com.gildedgames.util.modules.notifications.common.core.NotificationQueue;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class NotificationServicesClient extends NotificationServices
 {
@@ -72,8 +70,8 @@ public class NotificationServicesClient extends NotificationServices
 
 			int textOffsetX = 45;
 
-			String receiver = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(toDisplay.getReceiver()).getGameProfile().getName();
-			String sender = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(toDisplay.getSender()).getGameProfile().getName();
+			String receiver = Minecraft.getMinecraft().getConnection().getPlayerInfo(toDisplay.getReceiver()).getGameProfile().getName();
+			String sender = Minecraft.getMinecraft().getConnection().getPlayerInfo(toDisplay.getSender()).getGameProfile().getName();
 
 			String senderName = "To: " + receiver + (toDisplay.getSender() != null ? " From: " + sender : "");
 
@@ -97,7 +95,7 @@ public class NotificationServicesClient extends NotificationServices
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		VertexBuffer worldrenderer = tessellator.getBuffer();
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		worldrenderer.pos(x, y + height, 0).tex((textureX) * f, (textureY + height) * f1).endVertex();
 		worldrenderer.pos(x + width, y + height, 0).tex((textureX + width) * f, (textureY + height) * f1).endVertex();

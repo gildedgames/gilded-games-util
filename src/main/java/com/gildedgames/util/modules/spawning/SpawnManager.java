@@ -3,11 +3,12 @@ package com.gildedgames.util.modules.spawning;
 import com.gildedgames.util.modules.spawning.util.ChunkMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -124,7 +125,7 @@ public class SpawnManager
 				{
 					//Shuffle the list to allow for more variation, seeing as the algorithm
 					//has bias towards entries earlier in the list.
-					long randomSeed = world.getSeed() + ChunkCoordIntPair.chunkXZ2Int(areaX, areaZ);
+					long randomSeed = world.getSeed() + ChunkPos.chunkXZ2Int(areaX, areaZ);
 					Random random = new Random(randomSeed);
 					final List<SpawnEntry> shuffledRegistered = new ArrayList<>(this.tickSpawningRegister);
 					Collections.shuffle(shuffledRegistered, random);
@@ -215,9 +216,9 @@ public class SpawnManager
 
 		for (posZ &= 15; k > 0; --k)
 		{
-			final Block l = chunk.getBlock(posX, k, posZ);
+			final IBlockState l = chunk.getBlockState(posX, k, posZ);
 
-			if (l != Blocks.air && l.getMaterial().blocksMovement() && l.getMaterial() != Material.leaves && !l.isFoliage(world, new BlockPos(x, k, z)) && !blacklistedBlocks.contains(l))
+			if (l != Blocks.AIR && l.getMaterial().blocksMovement() && l.getMaterial() != Material.LEAVES && !l.getBlock().isFoliage(world, new BlockPos(x, k, z)) && !blacklistedBlocks.contains(l))
 			{
 				return k + 1;
 			}

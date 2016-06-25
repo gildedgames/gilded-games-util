@@ -35,7 +35,7 @@ public class PacketAddMember extends PacketMemberAction<PacketAddMember>
 		@Override
 		public IMessage onMessage(PacketAddMember message, EntityPlayer player)
 		{
-			message.pool.addMember(message.member.getUniqueId(), message.group);
+			message.pool.addMember(message.member.getPlayer().getUniqueID(), message.group);
 
 			return null;
 		}

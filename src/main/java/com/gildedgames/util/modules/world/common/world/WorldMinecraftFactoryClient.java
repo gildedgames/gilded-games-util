@@ -21,7 +21,7 @@ public class WorldMinecraftFactoryClient implements IWorldFactory<WorldMinecraft
 			return null;
 		}
 		
-		if (world.provider.getDimensionId() == dimId)
+		if (world.provider.getDimension() == dimId)
 		{
 			return new WorldMinecraft(world);
 		}

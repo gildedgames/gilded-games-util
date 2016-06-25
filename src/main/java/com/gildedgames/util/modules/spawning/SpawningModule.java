@@ -62,7 +62,7 @@ public class SpawningModule extends Module
 
 			if (!world.isRemote)
 			{
-				List<SpawnManager> spawnManagers = getSpawnManagersFor(world.provider.getDimensionId());
+				List<SpawnManager> spawnManagers = getSpawnManagersFor(world.provider.getDimension());
 
 				for (SpawnManager spawnManager : spawnManagers)
 				{

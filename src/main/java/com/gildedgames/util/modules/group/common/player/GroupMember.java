@@ -1,48 +1,57 @@
 package com.gildedgames.util.modules.group.common.player;
 
 import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.modules.entityhook.api.IEntityHookFactory;
-import com.gildedgames.util.modules.entityhook.impl.hooks.EntityHook;
-import com.gildedgames.util.modules.entityhook.impl.providers.PlayerHookProvider;
 import com.gildedgames.util.modules.group.GroupModule;
 import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.core.GroupPool;
 import com.gildedgames.util.modules.group.common.core.PacketAddInvite;
 import com.gildedgames.util.modules.group.common.core.PacketGroupPool;
 import com.gildedgames.util.modules.group.common.core.PacketJoin;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class GroupMember extends EntityHook<EntityPlayer>
+public class GroupMember implements IGroupMember
 {
-	public static final PlayerHookProvider<GroupMember> PROVIDER = new PlayerHookProvider<>("util:groups", new GroupMember.Factory());
-
 	private List<Group> groups = new ArrayList<>();
 
 	private List<Group> invitations = new ArrayList<>();
 
+	private EntityPlayer player;
+
+	public GroupMember(EntityPlayer player)
+	{
+		this.player = player;
+	}
+
 	public static GroupMember get(EntityPlayer player)
 	{
-		return GroupMember.PROVIDER.getHook(player);
+		return player.getCapability(GroupModule.GROUP_MEMBER, null);
 	}
 
 	public static GroupMember get(UUID uuid)
 	{
-		return GroupMember.PROVIDER.getHook(uuid);
+		EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(uuid);
+
+		if (player == null)
+		{
+			return null;
+		}
+
+		return GroupMember.get(player);
 	}
 
-	@Override
 	public void onLoaded()
 	{
-		if (this.getEntity().worldObj.isRemote)
+		if (this.player.worldObj.isRemote)
 		{
 			this.groups.clear();
 			this.invitations.clear();
@@ -52,29 +61,23 @@ public class GroupMember extends EntityHook<EntityPlayer>
 
 		for (GroupPool pool : GroupModule.locate().getPools())
 		{
-			UtilModule.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.getEntity());
+			UtilModule.NETWORK.sendTo(new PacketGroupPool(pool), (EntityPlayerMP) this.player);
 
-			UUID uuid = this.getUniqueId();
+			UUID uuid = this.player.getUniqueID();
 
 			for (Group group : pool.getGroups())
 			{
 				if (group.getMemberData().contains(uuid))
 				{
-					UtilModule.NETWORK.sendTo(new PacketJoin(group.getParentPool(), group), (EntityPlayerMP) this.getEntity());
+					UtilModule.NETWORK.sendTo(new PacketJoin(group.getParentPool(), group), (EntityPlayerMP) this.player);
 				}
 				else if (group.getMemberData().isInvited(uuid))
 				{
-					UtilModule.NETWORK.sendTo(new PacketAddInvite(group.getParentPool(), group, this, this), (EntityPlayerMP) this.getEntity());
+					UtilModule.NETWORK.sendTo(new PacketAddInvite(group.getParentPool(), group, this, this), (EntityPlayerMP) this.player);
 				}
 			}
 		}
 	}
-
-	@Override
-	public void onUnloaded() { }
-
-	@Override
-	public void onUpdate() { }
 
 	public void joinGroup(Group group)
 	{
@@ -126,30 +129,20 @@ public class GroupMember extends EntityHook<EntityPlayer>
 		return this.invitations.contains(group);
 	}
 
-	@Override
-	public void saveNBTData(NBTTagCompound compound)
+	public EntityPlayer getPlayer()
 	{
-
+		return this.player;
 	}
 
-	@Override
-	public void loadNBTData(NBTTagCompound compound)
-	{
-
-	}
-
-	public static class Factory implements IEntityHookFactory<GroupMember>
+	public static class Storage implements Capability.IStorage<GroupMember>
 	{
 		@Override
-		public GroupMember createHook()
+		public NBTBase writeNBT(Capability<GroupMember> capability, GroupMember instance, EnumFacing side)
 		{
-			return new GroupMember();
+			return null;
 		}
 
 		@Override
-		public void writeFull(ByteBuf buf, GroupMember hook) { }
-
-		@Override
-		public void readFull(ByteBuf buf, GroupMember hook) { }
+		public void readNBT(Capability<GroupMember> capability, GroupMember instance, EnumFacing side, NBTBase nbt) { }
 	}
 }

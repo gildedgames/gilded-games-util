@@ -201,7 +201,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void onGuiOpen(GuiOpenEvent event)
 	{
-		if (event.gui instanceof GuiMainMenu)
+		if (event.getGui() instanceof GuiMainMenu)
 		{
 			this.worldStarted = false;
 
@@ -212,7 +212,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public void renderGameOverlayPre(RenderGameOverlayEvent.Pre event)
 	{
-		if (event.type == ElementType.TEXT)
+		if (event.getType() == ElementType.TEXT)
 		{
 			this.renderOverlays(RenderOrder.PRE);
 		}
@@ -221,7 +221,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void renderGameOverlayPost(RenderGameOverlayEvent.Post event)
 	{
-		if (event.type == ElementType.TEXT)
+		if (event.getType() == ElementType.TEXT)
 		{
 			this.renderOverlays(RenderOrder.POST);
 		}

@@ -9,12 +9,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ServerConfigurationManager;
+import net.minecraft.server.management.PlayerList;
+
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
 import com.gildedgames.util.core.UtilModule;
@@ -34,7 +36,8 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public InstanceHandler(InstanceFactory<T> factory)
 	{
 		this.factory = factory;
-		DimensionManager.registerProviderType(factory.providerId(), factory.getProviderType(), false);
+
+//		DimensionManager.registerProviderType(factory.providerId(), factory.getProviderType(), false);
 	}
 	
 	public T getInstance(int id)
@@ -46,7 +49,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		int dimensionId = InstanceModule.INSTANCE.getFreeDimID();
 		
-		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
+//		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
 		T instance = this.factory.createInstance(dimensionId, this);
 		this.instances.put(dimensionId, instance);
 		
@@ -129,7 +132,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 			
 			T instance = this.factory.createInstance(id, this);
 			instance.read(tag);
-			DimensionManager.registerDimension(id, this.factory.providerId());
+//			DimensionManager.registerDimension(id, this.factory.providerId());
 
 			this.instances.put(id, instance);
 		}
@@ -167,12 +170,14 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 			int dimId = this.instances.inverse().get(instance);
 
-			WorldServer world = MinecraftServer.getServer().worldServerForDimension(dimId);
+			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+			WorldServer world = server.worldServerForDimension(dimId);
 			
 			Teleporter teleporter = this.factory.getTeleporter(world);
 
-			ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
-			scm.transferPlayerToDimension(player, this.instances.inverse().get(instance), teleporter);
+			PlayerList playerList = server.getPlayerList();
+			playerList.transferPlayerToDimension(player, this.instances.inverse().get(instance), teleporter);
 
 			player.timeUntilPortal = player.getPortalCooldown();
 
@@ -190,15 +195,17 @@ public class InstanceHandler<T extends Instance> implements NBT
 		
 		if (hook.getInstance() != null && hook.outside() != null)
 		{
+			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
 			BlockPosDimension pos = hook.outside();
-			Teleporter teleporter = new InstanceTeleporter(MinecraftServer.getServer().worldServerForDimension(player.dimension));
-			ServerConfigurationManager scm = MinecraftServer.getServer().getConfigurationManager();
-			scm.transferPlayerToDimension(player, pos.dimId(), teleporter);
+			Teleporter teleporter = new InstanceTeleporter(server.worldServerForDimension(player.dimension));
+			PlayerList playerList = server.getPlayerList();
+			playerList.transferPlayerToDimension(player, pos.dimId(), teleporter);
 			player.timeUntilPortal = player.getPortalCooldown();
 			hook.setOutside(null);
 			hook.setInstance(null);
 
-			player.playerNetServerHandler.setPlayerLocation(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
+			player.connection.setPlayerLocation(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
 		}
 	}
 

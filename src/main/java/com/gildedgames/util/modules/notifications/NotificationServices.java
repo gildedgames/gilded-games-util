@@ -52,7 +52,7 @@ public class NotificationServices
 			for (INotificationMessage remove : toRemove)
 			{
 				player.removeNotification(remove);
-				UtilModule.NETWORK.sendTo(new PacketRemoveMessage(remove), (EntityPlayerMP) player.getEntity());
+				UtilModule.NETWORK.sendTo(new PacketRemoveMessage(remove), (EntityPlayerMP) player.getPlayer());
 			}
 		}
 	}

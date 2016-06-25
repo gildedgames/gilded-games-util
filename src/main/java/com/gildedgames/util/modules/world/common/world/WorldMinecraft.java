@@ -2,7 +2,7 @@ package com.gildedgames.util.modules.world.common.world;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -70,7 +70,7 @@ public class WorldMinecraft implements IWorld
 	@Override
 	public int getDimensionID()
 	{
-		return this.world.provider.getDimensionId();
+		return this.world.provider.getDimension();
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class WorldMinecraft implements IWorld
 	@Override
 	public boolean isWrapperFor(int dimId, boolean isRemote)
 	{
-		return this.world.provider.getDimensionId() == dimId && this.world.isRemote == isRemote;
+		return this.world.provider.getDimension() == dimId && this.world.isRemote == isRemote;
 	}
 
 	@Override

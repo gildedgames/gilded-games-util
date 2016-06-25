@@ -63,7 +63,7 @@ public class WorldHookPool<W extends IWorldHook> implements IWorldHookPool<W>
 	{
 		for (final W w : this.hooks)
 		{
-			if (w.getWorld().isWrapperFor(world.provider.getDimensionId(), world.isRemote))
+			if (w.getWorld().isWrapperFor(world.provider.getDimension(), world.isRemote))
 			{
 				return w;
 			}

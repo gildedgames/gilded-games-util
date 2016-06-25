@@ -2,8 +2,8 @@ package com.gildedgames.util.modules.chunk.api;
 
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHookFactory;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 public interface ChunkServices
@@ -16,5 +16,5 @@ public interface ChunkServices
 
 	<T extends IChunkHook> T getHook(World world, BlockPos pos, Class<T> clazz);
 
-	<T extends IChunkHook> T getHook(World world, ChunkCoordIntPair pos, Class<T> clazz);
+	<T extends IChunkHook> T getHook(World world, ChunkPos pos, Class<T> clazz);
 }

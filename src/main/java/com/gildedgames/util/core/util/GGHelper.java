@@ -9,10 +9,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.BlockPos.MutableBlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -52,7 +52,7 @@ public class GGHelper
 
 	public static IBlockState getAirState()
 	{
-		return Blocks.air.getDefaultState();
+		return Blocks.AIR.getDefaultState();
 	}
 
 	public static ItemStack getItemStack(IBlockState state, int amount)
@@ -63,12 +63,12 @@ public class GGHelper
 
 	public static boolean isAir(IBlockState state)
 	{
-		return state.getBlock().getMaterial() == Material.air;
+		return state.getBlock().getMaterial(state) == Material.AIR;
 	}
 
 	public static boolean isSolid(IBlockState state, World world, BlockPos pos)
 	{
-		return !isAir(state) && state.getBlock().isBlockSolid(world, pos, EnumFacing.DOWN) && state.getBlock().getMaterial().isOpaque();
+		return !isAir(state) && state.getBlock().isBlockSolid(world, pos, EnumFacing.DOWN) && state.getBlock().getMaterial(state).isOpaque();
 	}
 
 	public static BlockPos getBlockPos(NBTTagCompound tag, String key)

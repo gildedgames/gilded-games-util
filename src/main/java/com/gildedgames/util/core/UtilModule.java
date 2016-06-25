@@ -1,16 +1,21 @@
 package com.gildedgames.util.core;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
+import com.gildedgames.util.core.io.MCSyncableDispatcher;
+import com.gildedgames.util.core.io.NetworkWrapper;
+import com.gildedgames.util.io_manager.IOCore;
+import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
+import com.gildedgames.util.modules.chunk.ChunkModule;
+import com.gildedgames.util.modules.group.GroupModule;
+import com.gildedgames.util.modules.instances.InstanceModule;
+import com.gildedgames.util.modules.menu.MenuModule;
+import com.gildedgames.util.modules.notifications.NotificationModule;
+import com.gildedgames.util.modules.spawning.SpawningModule;
+import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.world.WorldModule;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -26,25 +31,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import org.apache.logging.log4j.Logger;
 
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.core.io.NetworkWrapper;
-import com.gildedgames.util.io.ClassSerializer;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.modules.chunk.ChunkModule;
-import com.gildedgames.util.modules.entityhook.EntityHookModule;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.instances.InstanceModule;
-import com.gildedgames.util.modules.menu.MenuModule;
-import com.gildedgames.util.modules.notifications.NotificationModule;
-import com.gildedgames.util.modules.spawning.SpawningModule;
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.world.WorldModule;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Mod(modid = UtilModule.MOD_ID, name = "Gilded Games Utility", version = UtilModule.VERSION, dependencies = "before:*")
 public class UtilModule
@@ -74,7 +66,6 @@ public class UtilModule
 	{
 		UtilModule.logger = event.getModLog();
 
-		this.registerModule(EntityHookModule.INSTANCE);
 		this.registerModule(WorldModule.INSTANCE);
 		this.registerModule(InstanceModule.INSTANCE);
 		this.registerModule(GroupModule.INSTANCE);
@@ -233,7 +224,7 @@ public class UtilModule
 
 	public static List<EntityPlayerMP> getOnlinePlayers()
 	{
-		return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
 	}
 
 	public static EntityPlayer getPlayerOnServerFromUUID(UUID uuid)
@@ -263,13 +254,13 @@ public class UtilModule
 
 	public static String getMinecraftDirectory()
 	{
-		return UtilModule.getWorldDirectory().getAbsolutePath().replace(MinecraftServer.getServer().getFolderName(), "");
+		return UtilModule.getWorldDirectory().getAbsolutePath().replace(FMLCommonHandler.instance().getMinecraftServerInstance().getFolderName(), "");
 	}
 
 	public static String translate(String key)
 	{
 		//TOOD: Maybe put "ggUtil." before the key?
-		return StatCollector.translateToLocal(key);
+		return I18n.translateToLocal(key);
 	}
 
 	public static void registerEventHandler(Object obj)

@@ -69,7 +69,7 @@ public class WorldModule extends Module
 	 */
 	public static IWorld get(World world)
 	{
-		return get(world.provider.getDimensionId());
+		return get(world.provider.getDimension());
 	}
 
 	public static IWorld get(int dimId)

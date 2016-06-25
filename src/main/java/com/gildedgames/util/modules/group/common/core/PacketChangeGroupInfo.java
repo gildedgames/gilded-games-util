@@ -55,7 +55,7 @@ public class PacketChangeGroupInfo extends PacketMemberAction<PacketChangeGroupI
 		@Override
 		public IMessage onMessage(PacketChangeGroupInfo message, EntityPlayer player)
 		{
-			message.pool.changeGroupInfo(message.member.getUniqueId(), message.group, message.groupInfo);
+			message.pool.changeGroupInfo(message.member.getPlayer().getUniqueID(), message.group, message.groupInfo);
 
 			return null;
 		}

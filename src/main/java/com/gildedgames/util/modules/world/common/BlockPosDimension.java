@@ -1,6 +1,6 @@
 package com.gildedgames.util.modules.world.common;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 public class BlockPosDimension extends BlockPos
 {

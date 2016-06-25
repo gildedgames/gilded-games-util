@@ -13,11 +13,10 @@ import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 public class ClientProxy extends ServerProxy
@@ -27,7 +26,7 @@ public class ClientProxy extends ServerProxy
 
 	public static final ITab GROUP_TAB = new TabGroup();
 
-	public static final KeyBinding keyBindHopUniverse = new KeyBinding(StatCollector.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
+	public static final KeyBinding keyBindHopUniverse = new KeyBinding(I18n.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
 
 	@Override
 	public EntityPlayer getPlayer()

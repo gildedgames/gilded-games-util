@@ -1,41 +1,25 @@
 package com.gildedgames.util.modules.notifications.common.player;
 
 import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.modules.entityhook.api.IEntityHookFactory;
-import com.gildedgames.util.modules.entityhook.impl.hooks.EntityHook;
 import com.gildedgames.util.modules.notifications.common.core.INotificationMessage;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerNotification extends EntityHook<EntityPlayer>
+public class PlayerNotification
 {
 	private List<INotificationMessage> notifications = new ArrayList<>();
 
-	@Override
-	public void onLoaded() { }
+	private EntityPlayer player;
 
-	@Override
-	public void onUnloaded() { }
-
-	@Override
-	public void onUpdate() { }
-
-	@Override
-	public void saveNBTData(NBTTagCompound compound)
+	public PlayerNotification(EntityPlayer player)
 	{
-		NBTHelper.setIOList("notifications", this.notifications, compound);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound compound)
-	{
-		this.notifications = NBTHelper.getIOList("notifications", compound);
+		this.player = player;
 	}
 
 	public void addNotification(INotificationMessage notification)
@@ -70,18 +54,32 @@ public class PlayerNotification extends EntityHook<EntityPlayer>
 		return null;
 	}
 
-	public static class Factory implements IEntityHookFactory<PlayerNotification>
+	public EntityPlayer getPlayer()
+	{
+		return this.player;
+	}
+
+	public static class Storage implements Capability.IStorage<PlayerNotification>
 	{
 		@Override
-		public PlayerNotification createHook()
+		public NBTBase writeNBT(Capability<PlayerNotification> capability, PlayerNotification instance, EnumFacing side)
 		{
-			return new PlayerNotification();
+			NBTTagCompound compound = new NBTTagCompound();
+
+			NBTHelper.setIOList("notifications", instance.notifications, compound);
+
+			return compound;
 		}
 
 		@Override
-		public void writeFull(ByteBuf buf, PlayerNotification hook) { }
+		public void readNBT(Capability<PlayerNotification> capability, PlayerNotification instance, EnumFacing side, NBTBase nbt)
+		{
+			if (!(nbt instanceof NBTTagCompound))
+			{
+				return;
+			}
 
-		@Override
-		public void readFull(ByteBuf buf, PlayerNotification hook) { }
+			instance.notifications = NBTHelper.getIOList("notifications", (NBTTagCompound) nbt);
+		}
 	}
 }

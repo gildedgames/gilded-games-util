@@ -6,7 +6,6 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTBridge;
 import com.gildedgames.util.core.util.GGHelper;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.modules.entityhook.EntityHookModule;
 import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.core.GroupInfo;
 import com.gildedgames.util.modules.group.common.core.GroupPool;
@@ -28,6 +27,9 @@ import com.gildedgames.util.modules.group.common.notifications.NotificationsPool
 import com.gildedgames.util.modules.group.common.permissions.GroupPermsDefault;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -40,6 +42,9 @@ public class GroupModule extends Module
 	public final static GroupModule INSTANCE = new GroupModule();
 
 	private final SidedObject<GroupServices> serviceLocator = new SidedObject<>(new GroupServices(Side.CLIENT), new GroupServices(Side.SERVER));
+
+	@CapabilityInject(GroupMember.class)
+	public static final Capability<GroupMember> GROUP_MEMBER = null;
 
 	public static GroupServices locate()
 	{
@@ -59,7 +64,7 @@ public class GroupModule extends Module
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		EntityHookModule.api().registerHookProvider(GroupMember.PROVIDER);
+		CapabilityManager.INSTANCE.register(GroupMember.class, new GroupMember.Storage(), GroupMember.class);
 
 		GroupPool client = this.serviceLocator.client().getDefaultPool();
 

@@ -7,7 +7,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
@@ -131,7 +131,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
 		GlStateManager.shadeModel(7425);
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		VertexBuffer worldrenderer = tessellator.getBuffer();
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		worldrenderer.pos(right, top, this.zLevel).color(f1, f2, f3, f).endVertex();
 		worldrenderer.pos(left, top, this.zLevel).color(f1, f2, f3, f).endVertex();
@@ -149,7 +149,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		double f4 = 1.0D / textureWidth;
 		double f5 = 1.0D / textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		VertexBuffer worldrenderer = tessellator.getBuffer();
 		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		worldrenderer.pos(x, y + height, 0.0D).tex(u * f4, (v + (float) height) * f5).endVertex();
 		worldrenderer.pos(x + width, y + height, 0.0D).tex((u + (float) width) * f4, (v + (float) height) * f5).endVertex();
@@ -181,7 +181,7 @@ public class MinecraftGraphics2D implements Graphics2D
 		float f1 = (color >> 8 & 255) / 255.0F;
 		float f2 = (color & 255) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
-		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		VertexBuffer worldrenderer = tessellator.getBuffer();
 		GlStateManager.enableBlend();
 		GlStateManager.disableTexture2D();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);

@@ -4,8 +4,6 @@ import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.SidedObject;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.modules.entityhook.EntityHookModule;
-import com.gildedgames.util.modules.entityhook.impl.providers.PlayerHookProvider;
 import com.gildedgames.util.modules.notifications.common.core.INotification;
 import com.gildedgames.util.modules.notifications.common.core.INotificationMessage;
 import com.gildedgames.util.modules.notifications.common.networking.messages.PacketClickedResponse;
@@ -17,11 +15,17 @@ import com.gildedgames.util.modules.notifications.common.util.DefaultNotificatio
 import com.gildedgames.util.modules.notifications.common.util.MessageNotification;
 import com.gildedgames.util.modules.notifications.common.util.PopupNotification;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -33,7 +37,8 @@ public class NotificationModule extends Module
 
 	private SidedObject<NotificationServices> serviceLocator;
 
-	private PlayerHookProvider<PlayerNotification> hookProvider;
+	@CapabilityInject(PlayerNotification.class)
+	public static final Capability<PlayerNotification> PLAYER_NOTIFICATION = null;
 
 	public final static NotificationModule INSTANCE = new NotificationModule();
 
@@ -44,17 +49,31 @@ public class NotificationModule extends Module
 
 	public static PlayerNotification getPlayerNotifications(EntityPlayer player)
 	{
-		return NotificationModule.INSTANCE.hookProvider.getHook(player);
+		return player.getCapability(PLAYER_NOTIFICATION, null);
 	}
 
 	public static PlayerNotification getPlayerNotifications(UUID uuid)
 	{
-		return NotificationModule.INSTANCE.hookProvider.getHook(uuid);
+		EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(uuid);
+
+		if (player == null)
+		{
+			return null;
+		}
+
+		return player.getCapability(PLAYER_NOTIFICATION, null);
 	}
 
 	public static Collection<PlayerNotification> getAllPlayerNotifications()
 	{
-		return NotificationModule.INSTANCE.hookProvider.getPool().getAttachedHooks();
+		Collection<PlayerNotification> hooks = new ArrayList<>();
+
+		for (EntityPlayerMP player : FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList())
+		{
+			hooks.add(player.getCapability(PLAYER_NOTIFICATION, null));
+		}
+
+		return hooks;
 	}
 
 	public static void sendNotification(INotification notification)
@@ -82,9 +101,7 @@ public class NotificationModule extends Module
 	{
 		this.serviceLocator = proxy.createServices();
 
-		this.hookProvider = new PlayerHookProvider<>("util:notifications", new PlayerNotification.Factory());
-
-		EntityHookModule.api().registerHookProvider(this.hookProvider);
+		CapabilityManager.INSTANCE.register(PlayerNotification.class, new PlayerNotification.Storage(), PlayerNotification.class);
 
 		if (UtilModule.isClient())
 		{

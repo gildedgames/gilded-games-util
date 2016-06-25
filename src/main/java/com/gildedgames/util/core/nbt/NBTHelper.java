@@ -20,7 +20,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import com.gildedgames.util.io.ClassSerializer;
 import com.gildedgames.util.io_manager.IOCore;
@@ -30,6 +30,7 @@ import com.gildedgames.util.io_manager.util.IOUtil;
 import com.gildedgames.util.modules.world.common.BlockPosDimension;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Lists;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class NBTHelper
 {
@@ -207,9 +208,11 @@ public class NBTHelper
 
 	private static String getWorldFolderPath()
 	{
-		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().worldServers != null && MinecraftServer.getServer().worldServers[0] != null)
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+		if (server != null && server.worldServers != null && server.worldServers[0] != null)
 		{
-			return MinecraftServer.getServer().worldServers[0].getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", "");
+			return server.worldServers[0].getSaveHandler().getMapFileFromName(server.getFolderName()).getAbsolutePath().replace(server.getFolderName() + ".dat", "");
 		}
 		return null;
 	}

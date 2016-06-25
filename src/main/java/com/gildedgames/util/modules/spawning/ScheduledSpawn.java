@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public class ScheduledSpawn
@@ -94,7 +94,7 @@ public class ScheduledSpawn
 					if (entity instanceof EntityLiving)
 					{
 						EntityLiving living = (EntityLiving) entity;
-						living.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(new AttributeModifier("Random spawn bonus", living.getRNG().nextGaussian() * 0.05D, 1));
+						living.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Random spawn bonus", living.getRNG().nextGaussian() * 0.05D, 1));
 					}
 
 					return true;

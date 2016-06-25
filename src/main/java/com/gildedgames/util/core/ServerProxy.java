@@ -3,9 +3,6 @@ package com.gildedgames.util.core;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-import com.gildedgames.util.modules.entityhook.EntityHookModule;
-import com.gildedgames.util.modules.instances.PlayerInstances;
-
 public class ServerProxy extends Module
 {
 
@@ -25,7 +22,5 @@ public class ServerProxy extends Module
 		UtilServerEvents events = new UtilServerEvents();
 		
 		UtilModule.registerEventHandler(events);
-		
-		EntityHookModule.api().registerHookProvider(PlayerInstances.PROVIDER);
 	}
 }

@@ -5,9 +5,9 @@ import java.util.concurrent.Callable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.item.ItemStack;
@@ -72,8 +72,8 @@ public class MinecraftItemStackRender extends GuiFrame
     {
         IBakedModel ibakedmodel = MC.getRenderItem().getItemModelMesher().getItemModel(stack);
         GlStateManager.pushMatrix();
-        MC.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        MC.renderEngine.getTexture(TextureMap.locationBlocksTexture).setBlurMipmap(false, false);
+        MC.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        MC.renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(516, 0.1F);
@@ -81,14 +81,14 @@ public class MinecraftItemStackRender extends GuiFrame
         GlStateManager.blendFunc(770, 771);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.setupGuiTransform(x, y, ibakedmodel.isGui3d());
-        ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GUI);
+        ibakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(ibakedmodel, ItemCameraTransforms.TransformType.GUI, false);
         MC.getRenderItem().renderItem(stack, ibakedmodel);
         GlStateManager.disableAlpha();
         GlStateManager.disableRescaleNormal();
         GlStateManager.disableLighting();
         GlStateManager.popMatrix();
-        MC.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        MC.renderEngine.getTexture(TextureMap.locationBlocksTexture).restoreLastBlurMipmap();
+        MC.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        MC.renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
     }
 
     private void setupGuiTransform(double xPosition, double yPosition, boolean isGui3d)
@@ -125,28 +125,28 @@ public class MinecraftItemStackRender extends GuiFrame
             {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Rendering item");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being rendered");
-                crashreportcategory.addCrashSectionCallable("Item Type", new Callable<String>()
+                crashreportcategory.addCrashSection("Item Type", new Callable<String>()
                 {
                     public String call()
                     {
                         return String.valueOf(stack.getItem());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item Aux", new Callable<String>()
+                crashreportcategory.addCrashSection("Item Aux", new Callable<String>()
                 {
                     public String call()
                     {
                         return String.valueOf(stack.getMetadata());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item NBT", new Callable<String>()
+                crashreportcategory.addCrashSection("Item NBT", new Callable<String>()
                 {
                     public String call()
                     {
                         return String.valueOf(stack.getTagCompound());
                     }
                 });
-                crashreportcategory.addCrashSectionCallable("Item Foil", new Callable<String>()
+                crashreportcategory.addCrashSection("Item Foil", new Callable<String>()
                 {
                     public String call()
                     {
