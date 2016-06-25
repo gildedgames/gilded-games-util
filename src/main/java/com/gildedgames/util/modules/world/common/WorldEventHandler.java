@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
@@ -37,13 +38,15 @@ public class WorldEventHandler
 
 	private File getWorldFolderPath(World world)
 	{
-		return new File(world.getSaveHandler().getMapFileFromName(MinecraftServer.getServer().getFolderName()).getAbsolutePath().replace(MinecraftServer.getServer().getFolderName() + ".dat", ""));
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+		return new File(world.getSaveHandler().getMapFileFromName(server.getFolderName()).getAbsolutePath().replace(server.getFolderName() + ".dat", ""));
 	}
 
 	@SubscribeEvent
 	public void onLoad(WorldEvent.Load event)
 	{
-		World world = event.world;
+		World world = event.getWorld();
 
 		if (world.isRemote)
 		{
@@ -56,11 +59,11 @@ public class WorldEventHandler
 
 		for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 		{
-			IWorldHook worldHook = pool.get(event.world);
+			IWorldHook worldHook = pool.get(event.getWorld());
 
 			try
 			{
-				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+				File finalLocation = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimension() + ".dat");
 
 				IOCore.io().readFile(finalLocation, new NBTFile(finalLocation, worldHook, worldHook.getClass()), new NBTFactory());
 			}
@@ -76,16 +79,16 @@ public class WorldEventHandler
 	@SubscribeEvent
 	public void onUnload(WorldEvent.Unload event)
 	{
-		World world = event.world;
+		World world = event.getWorld();
 
 		for (IWorldHookPool<?> pool : WorldModule.locate().getPools())
 		{
 			if (pool != null)
 			{
-				IWorldHook worldHook = pool.get(event.world);
+				IWorldHook worldHook = pool.get(event.getWorld());
 				try
 				{
-					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimensionId() + ".dat");
+					final File location = new File(this.saveLocation, "\\" + pool.getPoolName() + "\\DIM" + world.provider.getDimension() + ".dat");
 
 					IOCore.io().writeFile(location, new NBTFile(location, worldHook, worldHook.getClass()), new NBTFactory());
 				}
@@ -108,7 +111,7 @@ public class WorldEventHandler
 	@SubscribeEvent
 	public void onSave(WorldEvent.Save event)
 	{
-		World world = event.world;
+		World world = event.getWorld();
 
 		ISaveHandler saveHandler = world.getSaveHandler();
 		File worldFile = saveHandler.getWorldDirectory();

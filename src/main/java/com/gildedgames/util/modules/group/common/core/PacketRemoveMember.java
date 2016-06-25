@@ -38,10 +38,10 @@ public class PacketRemoveMember extends PacketMemberAction<PacketRemoveMember>
 		{
 			if (!message.group.getPermissions().canRemoveMember(message.group, message.member, GroupMember.get(player)))
 			{
-				UtilModule.logger().warn("Player " + player.getName() + " tried to remove " + message.member.getUniqueId() + " but did not have the permissions.");
+				UtilModule.logger().warn("Player " + player.getName() + " tried to remove " + message.member.getPlayer().getUniqueID() + " but did not have the permissions.");
 				return null;
 			}
-			message.pool.removeMember(message.member.getUniqueId(), message.group);
+			message.pool.removeMember(message.member.getPlayer().getUniqueID(), message.group);
 
 			return null;
 		}

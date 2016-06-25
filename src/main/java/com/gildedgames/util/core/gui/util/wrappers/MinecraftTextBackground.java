@@ -1,15 +1,13 @@
 package com.gildedgames.util.core.gui.util.wrappers;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
-
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.rect.Rect;
 import com.gildedgames.util.modules.ui.graphics.Graphics2D;
 import com.gildedgames.util.modules.ui.input.InputProvider;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
 
 public class MinecraftTextBackground extends GuiFrame
 {
@@ -63,7 +61,7 @@ public class MinecraftTextBackground extends GuiFrame
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glShadeModel(GL11.GL_SMOOTH);
-		final WorldRenderer tessellator = Tessellator.getInstance().getWorldRenderer();
+		final VertexBuffer tessellator = Tessellator.getInstance().getBuffer();
 		tessellator.begin(7, DefaultVertexFormats.POSITION_COLOR);
 		tessellator.pos(maxX, minY, zLevel).color(f1, f2, f3, f).endVertex();
 		tessellator.pos(minX, minY, zLevel).color(f1, f2, f3, f).endVertex();

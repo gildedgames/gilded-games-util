@@ -112,7 +112,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void addMemberDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilModule.logger().debug("Adding member " + member.getEntity().getName() + " to group " + group.getName());
+		UtilModule.logger().debug("Adding member " + member.getPlayer().getName() + " to group " + group.getName());
 		member.joinGroup(group);
 		group.getMemberData().join(member);
 	}
@@ -120,7 +120,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void removeMemberDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilModule.logger().debug("Removing member " + member.getEntity().getName() + " from group " + group.getName());
+		UtilModule.logger().debug("Removing member " + member.getPlayer().getName() + " from group " + group.getName());
 		member.leaveGroup(group);
 		group.getMemberData().leave(member);
 	}
@@ -128,7 +128,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void inviteDirectly(Group group, GroupMember member, GroupMember inviter)
 	{
 		this.assertHasMemberData(group);
-		UtilModule.logger().debug("Inviting member " + member.getEntity().getName() + " to group " + group.getName());
+		UtilModule.logger().debug("Inviting member " + member.getPlayer().getName() + " to group " + group.getName());
 		group.getMemberData().invite(member);
 		member.addInvite(group);
 	}
@@ -136,7 +136,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	protected void removeInvitationDirectly(Group group, GroupMember member)
 	{
 		this.assertHasMemberData(group);
-		UtilModule.logger().debug("Removing invitation of member " + member.getEntity().getName() + " from group " + group.getName());
+		UtilModule.logger().debug("Removing invitation of member " + member.getPlayer().getName() + " from group " + group.getName());
 		group.getMemberData().removeInvitation(member);
 		member.removeInvite(group);
 	}
@@ -177,7 +177,7 @@ public abstract class GroupPool implements IO<IOBridge, IOBridge>
 	{
 		if (!group.hasMemberData() || !group.getMemberData().contains(player))
 		{
-			UtilModule.logger().debug("Member is not in the group like excepted. Group: " + group.getName() + " player: " + GroupMember.get(player).getEntity().getName());
+			UtilModule.logger().debug("Member is not in the group like excepted. Group: " + group.getName() + " player: " + GroupMember.get(player).getPlayer().getName());
 			return false;
 		}
 		return true;

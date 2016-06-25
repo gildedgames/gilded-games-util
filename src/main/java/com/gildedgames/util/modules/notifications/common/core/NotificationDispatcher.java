@@ -1,15 +1,12 @@
 package com.gildedgames.util.modules.notifications.common.core;
 
-import java.util.UUID;
-
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.notifications.NotificationModule;
 import com.gildedgames.util.modules.notifications.common.networking.messages.PacketNotification;
 import com.gildedgames.util.modules.notifications.common.player.PlayerNotification;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * Server sided notification sender.
@@ -19,7 +16,7 @@ public class NotificationDispatcher
 
 	public void sendNotification(INotification notification)
 	{
-		EntityPlayer player = MinecraftServer.getServer().getConfigurationManager().getPlayerByUUID(notification.getReceiver());
+		EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(notification.getReceiver());
 		PlayerNotification playerHook = NotificationModule.getPlayerNotifications(player);
 
 		INotificationMessage message = notification.getMessage();
@@ -32,7 +29,7 @@ public class NotificationDispatcher
 			}
 			playerHook.addNotification(notification.getMessage());
 		}
-		UtilModule.NETWORK.sendTo(new PacketNotification(notification, playerHook), (EntityPlayerMP) playerHook.getEntity());
+		UtilModule.NETWORK.sendTo(new PacketNotification(notification, playerHook), (EntityPlayerMP) playerHook.getPlayer());
 	}
 
 }

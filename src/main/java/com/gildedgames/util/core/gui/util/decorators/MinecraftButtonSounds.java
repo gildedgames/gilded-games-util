@@ -3,6 +3,7 @@ package com.gildedgames.util.core.gui.util.decorators;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 
 import com.gildedgames.util.modules.ui.common.GuiDecorator;
@@ -47,7 +48,7 @@ public class MinecraftButtonSounds extends GuiDecorator<Gui>
 	
 	public void playPressSound(SoundHandler soundHandlerIn)
     {
-        soundHandlerIn.playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+        soundHandlerIn.playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
 	@Override

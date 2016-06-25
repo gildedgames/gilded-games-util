@@ -67,7 +67,7 @@ public class GroupPoolServer extends GroupPool
 			GroupMember member = GroupMember.get(player);
 			this.leaveOldGroup(member);
 			UtilModule.NETWORK.sendToGroup(new PacketAddMember(this, group, member), group);
-			UtilModule.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getEntity());
+			UtilModule.NETWORK.sendTo(new PacketJoin(this, group), (EntityPlayerMP) member.getPlayer());
 			this.addMemberDirectly(group, member);
 		}
 	}
@@ -113,12 +113,12 @@ public class GroupPoolServer extends GroupPool
 		GroupMember inviterG = GroupMember.get(inviter);
 		if (!group.getPermissions().canInvite(group, member, inviterG))
 		{
-			UtilModule.logger().warn("Player " + inviterG.getEntity().getName() + " tried to invite " + inviterG.getEntity().getName() + " but did not have the permissions.");
+			UtilModule.logger().warn("Player " + inviterG.getPlayer().getName() + " tried to invite " + inviterG.getPlayer().getName() + " but did not have the permissions.");
 			return;
 		}
 		this.inviteDirectly(group, member, inviterG);
 		UtilModule.NETWORK.sendToGroup(new PacketAddInvite(this, group, member, inviterG), group);
-		UtilModule.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getEntity());
+		UtilModule.NETWORK.sendTo(new PacketInvite(this, group, inviterG), (EntityPlayerMP) member.getPlayer());
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class GroupPoolServer extends GroupPool
 		GroupMember member = GroupMember.get(player);
 		this.removeInvitationDirectly(group, member);
 		UtilModule.NETWORK.sendToGroup(new PacketRemoveInvite(this, group, member), group);
-		UtilModule.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getEntity());
+		UtilModule.NETWORK.sendTo(new PacketRemoveInvitation(this, group, member), (EntityPlayerMP) member.getPlayer());
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class GroupPoolServer extends GroupPool
 			List<Group> oldGroups = member.groupsInFor(this);
 			if (!oldGroups.isEmpty())
 			{
-				this.removeMember(member.getUniqueId(), oldGroups.get(0));
+				this.removeMember(member.getPlayer().getUniqueID(), oldGroups.get(0));
 			}
 		}
 	}

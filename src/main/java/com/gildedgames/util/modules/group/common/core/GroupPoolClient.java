@@ -133,7 +133,7 @@ public class GroupPoolClient extends GroupPool
 		this.thePlayer().addInvite(group);
 		for (IGroupPoolListenerClient<?> listener : this.getClientListeners())
 		{
-			listener.onInvited(group, inviter.getUniqueId());
+			listener.onInvited(group, inviter.getPlayer().getUniqueID());
 		}
 	}
 

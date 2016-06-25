@@ -40,6 +40,6 @@ public abstract class PacketMemberAction<T extends PacketMemberAction<T>> implem
 	{
 		ByteBufUtils.writeUTF8String(buf, this.pool.getID());
 		IOUtil.writeUUID(this.group.getUUID(), buf);
-		IOUtil.writeUUID(this.member.getUniqueId(), buf);
+		IOUtil.writeUUID(this.member.getPlayer().getUniqueID(), buf);
 	}
 }

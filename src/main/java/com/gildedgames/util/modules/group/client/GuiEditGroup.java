@@ -95,7 +95,7 @@ public class GuiEditGroup extends GuiFrame
 							@Override
 							protected void onCondition()
 							{
-								ClientProxy.GROUP_TAB.onOpen(removing.getEntity());
+								ClientProxy.GROUP_TAB.onOpen(removing.getPlayer());
 							}
 						}));
 					}
@@ -142,7 +142,7 @@ public class GuiEditGroup extends GuiFrame
 				super.onMouseInput(pool, input);
 				if (input.isHovered(this) && pool.has(MouseButton.LEFT) && pool.has(ButtonState.PRESS))
 				{
-					GroupModule.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getUniqueId(), GuiEditGroup.this.group);
+					GroupModule.locate().getDefaultPool().removeMember(GuiEditGroup.this.groupMember.getPlayer().getUniqueID(), GuiEditGroup.this.group);
 
 					UiModule.locate().open("", new MinecraftGui(new GuiPolling()
 					{
@@ -178,7 +178,7 @@ public class GuiEditGroup extends GuiFrame
 			});
 		}
 
-		if (permissions.canEditGroupInfo(this.group, this.groupMember.getUniqueId()))
+		if (permissions.canEditGroupInfo(this.group, this.groupMember.getPlayer().getUniqueID()))
 		{
 			this.content().set("edit", new MinecraftButton(Dim2D.build().pos(310, 130).area(75, 20).flush(), UtilModule.translate("gui.edit"))
 			{
@@ -210,7 +210,7 @@ public class GuiEditGroup extends GuiFrame
 			LinkedHashMap<String, PlayerButton> buttons = new LinkedHashMap<>();
 			for (GroupMember member : this.group.getMemberData().onlineMembers())
 			{
-				buttons.put(member.getEntity().getName(), new PlayerButton(member.getUniqueId(), member.getEntity().getName()));
+				buttons.put(member.getPlayer().getName(), new PlayerButton(member.getPlayer().getUniqueID(), member.getPlayer().getName()));
 			}
 
 			return buttons;
@@ -235,7 +235,7 @@ public class GuiEditGroup extends GuiFrame
 		{
 			super.initContent(input);
 
-			this.content().set("head", new SkinButton(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfo(this.uuid).getGameProfile(), 2, 2));
+			this.content().set("head", new SkinButton(Minecraft.getMinecraft().thePlayer.connection.getPlayerInfo(this.uuid).getGameProfile(), 2, 2));
 			this.content().set("username", new TextElement(GuiFactory.text(this.username, new Color(0xE5E5E5), 0.75f), Dim2D.build().pos(19, 12).flush()));
 		}
 	}

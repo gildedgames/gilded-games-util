@@ -29,7 +29,7 @@ public class TabClientEvents
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event)
 	{
-		GuiScreen gui = event.gui;
+		GuiScreen gui = event.getGui();
 
 		ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
@@ -37,7 +37,7 @@ public class TabClientEvents
 		{
 			ITabClient selectedTab = groupHandler.getClientGroup().getSelectedTab();
 
-			if (event.gui != null && selectedTab.isTabValid(gui))
+			if (event.getGui() != null && selectedTab.isTabValid(gui))
 			{
 				return;
 			}
@@ -51,7 +51,7 @@ public class TabClientEvents
 
 			for (ITabClient tab : tabGroup.getTabs())
 			{
-				if (event.gui != null && tab.isTabValid(gui))
+				if (event.getGui() != null && tab.isTabValid(gui))
 				{
 					ITabClient selectedTab = tabGroup.getSelectedTab();
 

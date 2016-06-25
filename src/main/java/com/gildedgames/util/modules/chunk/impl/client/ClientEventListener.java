@@ -5,11 +5,10 @@ import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
 import com.gildedgames.util.modules.chunk.api.hook.ExtendedBlockStateChunkHook;
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -29,21 +28,21 @@ public class ClientEventListener
 
 		BlockPos pos = Minecraft.getMinecraft().objectMouseOver.getBlockPos();
 
-		if (Minecraft.getMinecraft().objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+		if (Minecraft.getMinecraft().objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK)
 		{
-			event.left.add("");
+			event.getLeft().add("");
 
 			for (IChunkHookPool pool : ChunkModule.impl().getWorldPool(world).getAllPools())
 			{
 				Chunk chunk = world.getChunkFromBlockCoords(pos);
 
-				IChunkHook hook = pool.getHook(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition));
+				IChunkHook hook = pool.getHook(ChunkPos.chunkXZ2Int(chunk.xPosition, chunk.zPosition));
 
 				if (hook instanceof ExtendedBlockStateChunkHook)
 				{
-					event.left.add(hook.getName() + EnumChatFormatting.GRAY + " (@" + (Integer.toHexString(hook.hashCode())) + ")");
+					event.getLeft().add(hook.getName() + TextFormatting.GRAY + " (@" + (Integer.toHexString(hook.hashCode())) + ")");
 
-					((ExtendedBlockStateChunkHook) hook).addDebugInfo(event.left, pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15);
+					((ExtendedBlockStateChunkHook) hook).addDebugInfo(event.getLeft(), pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15);
 				}
 			}
 		}

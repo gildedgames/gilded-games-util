@@ -29,9 +29,9 @@ public class PacketChangeOwner extends PacketMemberAction<PacketChangeOwner>
 			Group group = message.group;
 			GroupMember thePlayer = GroupMember.get(player);
 
-			if (!group.hasMemberData() || !group.getMemberData().contains(message.member.getUniqueId()) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
+			if (!group.hasMemberData() || !group.getMemberData().contains(message.member.getPlayer().getUniqueID()) || !group.getPermissions().canChangeOwner(group, message.member, thePlayer))
 			{
-				UtilModule.logger().warn("Player " + player.getName() + " tried to change " + message.member.getEntity().getName() + " to the owner but did not have the permissions.");
+				UtilModule.logger().warn("Player " + player.getName() + " tried to change " + message.member.getPlayer().getName() + " to the owner but did not have the permissions.");
 				return null;
 			}
 

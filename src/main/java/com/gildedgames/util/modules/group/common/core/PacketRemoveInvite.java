@@ -49,7 +49,7 @@ public class PacketRemoveInvite extends PacketMemberAction<PacketRemoveInvite>
 		@Override
 		public IMessage onMessage(PacketRemoveInvite message, EntityPlayer player)
 		{
-			message.pool.removeInvitation(message.member.getUniqueId(), message.group);
+			message.pool.removeInvitation(message.member.getPlayer().getUniqueID(), message.group);
 
 			return null;
 		}

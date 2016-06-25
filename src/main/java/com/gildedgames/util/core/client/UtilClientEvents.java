@@ -31,7 +31,7 @@ public class UtilClientEvents
 	@SideOnly(Side.CLIENT)
 	public void renderWorldLast(RenderWorldLastEvent event)
 	{
-		UtilClientEvents.partialTicks = event.partialTicks;
+		UtilClientEvents.partialTicks = event.getPartialTicks();
 	}
 
 }

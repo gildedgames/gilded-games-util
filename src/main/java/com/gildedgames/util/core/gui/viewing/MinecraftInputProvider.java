@@ -1,15 +1,13 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.MathHelper;
-
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-
 import com.gildedgames.util.modules.ui.data.rect.Rect;
 import com.gildedgames.util.modules.ui.data.rect.RectHolder;
 import com.gildedgames.util.modules.ui.input.InputProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 public class MinecraftInputProvider implements InputProvider
 {

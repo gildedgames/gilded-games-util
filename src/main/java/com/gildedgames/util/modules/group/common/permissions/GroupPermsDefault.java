@@ -9,6 +9,8 @@ import com.gildedgames.util.modules.group.common.core.Group;
 import com.gildedgames.util.modules.group.common.player.GroupMember;
 import com.gildedgames.util.io_manager.factory.IOBridge;
 import com.gildedgames.util.io_manager.util.IOUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 
 public class GroupPermsDefault implements IGroupPerms
 {
@@ -135,8 +137,8 @@ public class GroupPermsDefault implements IGroupPerms
 
 	public GroupPermsDefault(GroupMember creating, PermissionType type)
 	{
-		this.owner = creating.getUniqueId();
-		this.ownerUsername = creating.getEntity().getName();
+		this.owner = creating.getPlayer().getUniqueID();
+		this.ownerUsername = creating.getPlayer().getName();
 		this.type = type;
 	}
 
@@ -163,7 +165,8 @@ public class GroupPermsDefault implements IGroupPerms
 		{
 			Random random = new Random();
 			this.owner = group.getMemberData().getMembers().get(random.nextInt(group.getMemberData().size()));
-			this.ownerUsername = GroupMember.get(this.owner).getEntity().getName();
+
+			this.ownerUsername = GroupMember.get(this.owner).getPlayer().getName();
 		}
 	}
 
@@ -182,13 +185,13 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canInvite(Group group, GroupMember member, GroupMember inviter)
 	{
-		return this.type.canEveryoneInvite() || inviter.getUniqueId().equals(this.owner);
+		return this.type.canEveryoneInvite() || inviter.getPlayer().getUniqueID().equals(this.owner);
 	}
 
 	@Override
 	public boolean canChangeOwner(Group group, GroupMember newOwner, GroupMember changing)
 	{
-		return changing.getUniqueId().equals(this.owner);
+		return changing.getPlayer().getUniqueID().equals(this.owner);
 	}
 
 	@Override
@@ -206,13 +209,13 @@ public class GroupPermsDefault implements IGroupPerms
 	@Override
 	public boolean canRemoveGroup(Group group, GroupMember remover)
 	{
-		return remover.getUniqueId().equals(this.owner);
+		return remover.getPlayer().getUniqueID().equals(this.owner);
 	}
 
 	@Override
 	public boolean canRemoveMember(Group group, GroupMember toRemove, GroupMember remover)
 	{
-		return remover.equals(toRemove) || remover.getUniqueId().equals(this.owner);
+		return remover.equals(toRemove) || remover.getPlayer().getUniqueID().equals(this.owner);
 	}
 
 	@Override
@@ -226,7 +229,7 @@ public class GroupPermsDefault implements IGroupPerms
 		GroupMember member = GroupMember.get(this.owner);
 //		if (member.getProfile().isLoggedIn())
 //		{
-			this.ownerUsername = member.getEntity().getName();
+			this.ownerUsername = member.getPlayer().getName();
 //		}
 		return this.ownerUsername;
 	}

@@ -69,7 +69,7 @@ public class GuiNotification extends GuiFrame
 			LinkedHashMap<String, Ui> buttons = new LinkedHashMap<>();
 			buttons.put("title", new TextElement(GuiFactory.text(this.message.getTitle(), Color.white, 2.3f), Dim2D.flush()));
 
-			String senderName = Minecraft.getMinecraft().getNetHandler().getPlayerInfo(this.message.getSender()).getGameProfile().getName();
+			String senderName = Minecraft.getMinecraft().getConnection().getPlayerInfo(this.message.getSender()).getGameProfile().getName();
 
 			buttons.put("sender", new TextElement(GuiFactory.text(UtilModule.translate("gui.from") + senderName, Color.YELLOW), Dim2D.flush()));
 			buttons.put("description", GuiFactory.textBox(Dim2D.build().width(200).flush(), false, GuiFactory.text(this.message.getDescription(), Color.white)));

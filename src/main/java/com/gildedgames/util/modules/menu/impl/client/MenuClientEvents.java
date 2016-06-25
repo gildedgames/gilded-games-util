@@ -116,8 +116,8 @@ public class MenuClientEvents
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event)
 	{
-		GuiScreen gui = event.gui;
-		
+		GuiScreen gui = event.getGui();
+
 		if (gui == null)
 		{
 			return;

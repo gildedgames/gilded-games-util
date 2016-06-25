@@ -1,10 +1,10 @@
 package com.gildedgames.util.modules.chunk.api.hook;
 
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public abstract class ExtendedBlockStateChunkHook implements IChunkHook
 {
 	private static final int CHUNK_SIZE = 16 * 256 * 16;
 
-	private final BlockState blockState = this.createBlockState();
+	private final BlockStateContainer blockState = this.createBlockState();
 
 	private byte[] metadata;
 
@@ -62,10 +62,10 @@ public abstract class ExtendedBlockStateChunkHook implements IChunkHook
 	abstract public IBlockState getStateFromMeta(int meta);
 
 	/**
-	 * Creates the {@link IBlockState} that will hold your data.
+	 * Creates the {@link BlockStateContainer} that will hold your data.
 	 * @return The new {@link IBlockState}
 	 */
-	abstract public BlockState createBlockState();
+	abstract public BlockStateContainer createBlockState();
 
 	@Override
 	public void write(NBTTagCompound output)
@@ -113,7 +113,7 @@ public abstract class ExtendedBlockStateChunkHook implements IChunkHook
 			{
 				Boolean bool = (Boolean) state.getValue(property);
 
-				value = (bool ? EnumChatFormatting.GREEN : EnumChatFormatting.RED) + value;
+				value = (bool ? TextFormatting.GREEN : TextFormatting.RED) + value;
 			}
 
 			info.add(property.getName() + "=" + value);
