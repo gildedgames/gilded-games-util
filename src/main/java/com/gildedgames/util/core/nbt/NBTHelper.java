@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -34,7 +35,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class NBTHelper
 {
-	
+
 	public static <T extends NBT> void fullySerializeCollection(String key, Collection<T> collection, NBTTagCompound tag)
 	{
 		NBTTagList list = new NBTTagList();
@@ -44,22 +45,22 @@ public class NBTHelper
 		for (NBT obj : collection)
 		{
 			NBTTagCompound appendedTag = new NBTTagCompound();
-			
+
 			NBTHelper.fullySerialize("data", obj, appendedTag);
 
 			list.appendTag(appendedTag);
-			
+
 			count++;
 		}
-		
+
 		tag.setTag(key, list);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T extends NBT> Collection<T> fullyDeserializeCollection(String key, NBTTagCompound tag)
 	{
 		List<T> collection = Lists.newArrayList();
-		
+
 		NBTTagList list = tag.getTagList(key, 10);
 
 		if (list != null)
@@ -67,31 +68,31 @@ public class NBTHelper
 			for (int i = 0; i < list.tagCount(); i++)
 			{
 				NBTTagCompound compound = list.getCompoundTagAt(i);
-				
+
 				collection.add((T) NBTHelper.fullyDeserialize("data", compound));
 			}
 		}
-		
+
 		return collection;
 	}
-	
+
 	public static <T extends NBT> void fullySerialize(String key, T nbt, NBTTagCompound tag)
 	{
 		tag.setBoolean(key + "_null", nbt == null);
-		
+
 		if (nbt == null)
 		{
 			return;
 		}
-		
+
 		ClassSerializer.writeSerialNumber(key, nbt, tag);
-		
+
 		NBTTagCompound data = new NBTTagCompound();
 		nbt.write(data);
-		
+
 		tag.setTag(key + "_data", data);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T extends NBT> T fullyDeserialize(String key, NBTTagCompound tag)
 	{
@@ -99,11 +100,11 @@ public class NBTHelper
 		{
 			return (T)null;
 		}
-		
+
 		T nbt = (T) ClassSerializer.instantiate(key, tag);
-		
+
 		nbt.read(tag.getCompoundTag(key + "_data"));
-		
+
 		return nbt;
 	}
 
@@ -347,7 +348,7 @@ public class NBTHelper
 	}
 
 	/**
-	 * Get the iterator for a taglist in an NBTTagCompound. 
+	 * Get the iterator for a taglist in an NBTTagCompound.
 	 * Simply a nice shortcut method.
 	 */
 	public static Iterable<NBTTagCompound> getIterator(final NBTTagList tagList)
@@ -378,52 +379,60 @@ public class NBTHelper
 		};
 	}
 
-	public static BlockPosDimension getBlockPosDimension(NBTTagCompound tag, String key)
+	public static BlockPosDimension getBlockPosDimension(NBTTagCompound tag)
 	{
-		if (tag.getBoolean(key + "_null"))
+		if (tag == null || (tag.hasKey("_null") && tag.getBoolean("_null")))
 		{
 			return null;
 		}
-		
-		return new BlockPosDimension(tag.getInteger(key + "x"), tag.getInteger(key + "y"), tag.getInteger(key + "z"), tag.getInteger(key + "dimension"));
+
+		return new BlockPosDimension(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"), tag.getInteger("d"));
 	}
 
-	public static BlockPos readBlockPos(NBTTagCompound tag, String key)
+	public static BlockPos readBlockPos(NBTTagCompound tag)
 	{
-		if (tag.getBoolean(key + "_null"))
+		if (tag == null || (tag.hasKey("_null") && tag.getBoolean("_null")))
 		{
 			return null;
 		}
-		
-		int[] pos = tag.getIntArray(key);
 
-		return new BlockPos(pos[0], pos[1], pos[2]);
+		return new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
 	}
 
-	public static void writeBlockPos(NBTTagCompound tag, String key, BlockPos pos)
+	public static NBTBase serializeBlockPos(BlockPos pos)
 	{
-		tag.setBoolean(key + "_null", pos == null);
-		
+		NBTTagCompound tag = new NBTTagCompound();
+
 		if (pos == null)
 		{
-			return;
+			tag.setBoolean("_null", true);
+
+			return tag;
 		}
-		
-		tag.setIntArray(key, new int[] { pos.getX(), pos.getY(), pos.getZ() });
+
+		tag.setInteger("x", pos.getX());
+		tag.setInteger("y", pos.getY());
+		tag.setInteger("z", pos.getZ());
+
+		return tag;
 	}
 
-	public static void setBlockPosDimension(NBTTagCompound tag, BlockPosDimension pos, String key)
+	public static NBTTagCompound serializeBlockPosDimension(BlockPosDimension pos)
 	{
-		tag.setBoolean(key + "_null", pos == null);
-		
+		NBTTagCompound tag = new NBTTagCompound();
+
 		if (pos == null)
 		{
-			return;
+			tag.setBoolean("_null", true);
+
+			return tag;
 		}
-		
-		tag.setInteger(key + "x", pos.getX());
-		tag.setInteger(key + "y", pos.getY());
-		tag.setInteger(key + "z", pos.getZ());
-		tag.setInteger(key + "dimension", pos.dimId());
+
+		tag.setInteger("x", pos.getX());
+		tag.setInteger("y", pos.getY());
+		tag.setInteger("z", pos.getZ());
+		tag.setInteger("d", pos.dimId());
+
+		return tag;
 	}
 }
