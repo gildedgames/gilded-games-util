@@ -50,7 +50,7 @@ public class PlayerInstances
 		{
 			NBTTagCompound compound = new NBTTagCompound();
 
-			NBTHelper.setBlockPosDimension(compound, instance.outside, "outside");
+			compound.setTag("outside", NBTHelper.serializeBlockPosDimension(instance.outside));
 
 			NBTHelper.fullySerialize("activeInstance", instance.activeInstance, compound);
 
@@ -67,7 +67,7 @@ public class PlayerInstances
 
 			NBTTagCompound compound = (NBTTagCompound) nbt;
 
-			instance.outside = NBTHelper.getBlockPosDimension(compound, "outside");
+			instance.outside = NBTHelper.getBlockPosDimension(compound.getCompoundTag("outside"));
 			instance.activeInstance = NBTHelper.fullyDeserialize("activeInstance", compound);
 		}
 	}
