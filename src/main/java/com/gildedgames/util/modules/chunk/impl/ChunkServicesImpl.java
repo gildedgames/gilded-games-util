@@ -1,10 +1,14 @@
 package com.gildedgames.util.modules.chunk.impl;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.chunk.api.ChunkServices;
 import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
-import com.gildedgames.util.modules.chunk.api.hook.IChunkHookFactory;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHookProvider;
+import com.gildedgames.util.modules.chunk.impl.pools.ChunkHookPool;
 import com.gildedgames.util.modules.chunk.impl.pools.WorldHookPool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -21,9 +25,11 @@ import java.util.Map;
 
 public class ChunkServicesImpl implements ChunkServices
 {
+	private static final ResourceLocation DATA_KEY = new ResourceLocation(UtilModule.MOD_ID, "hooks");
+
 	private final Map<Integer, WorldHookPool> pools = new HashMap<>();
 
-	private final List<IChunkHookFactory<IChunkHook>> factories = new ArrayList<>();
+	private final List<IChunkHookProvider> providers = new ArrayList<>();
 
 	@SubscribeEvent
 	public void onWorldLoaded(WorldEvent.Load event)
@@ -75,18 +81,32 @@ public class ChunkServicesImpl implements ChunkServices
 			return;
 		}
 
+		NBTTagCompound hookData = null;
+
+		if (event.getData().hasKey(DATA_KEY.toString()))
+		{
+			hookData = event.getData().getCompoundTag(DATA_KEY.toString());
+		}
+
 		long coord = this.getChunkCoord(event.getChunk());
 
-		// Build each hook using our registered factories for this chunk
-		for (IChunkHookFactory<IChunkHook> factory : this.factories)
+		// Build each hook using our registered providers for this chunk
+		for (IChunkHookProvider provider : this.providers)
 		{
-			IChunkHook hook = factory.createHook(event.getWorld(), event.getData());
+			NBTTagCompound data = new NBTTagCompound();
 
-			IChunkHookPool hookPool = worldPool.getPool(hook.getClass());
+			if (hookData != null && hookData.hasKey(provider.getID().toString()))
+			{
+				data = hookData.getCompoundTag(provider.getID().toString());
+			}
+
+			IChunkHook hook = provider.createHook(event.getWorld(), data);
+
+			IChunkHookPool hookPool = worldPool.getPool(provider);
 
 			if (hookPool == null)
 			{
-				hookPool = worldPool.addPool(hook.getClass(), factory.createPool());
+				worldPool.addPool(provider, hookPool = new ChunkHookPool());
 			}
 
 			hookPool.addChunkHook(hook, coord);
@@ -115,26 +135,36 @@ public class ChunkServicesImpl implements ChunkServices
 	@SubscribeEvent
 	public void onChunkSaved(ChunkDataEvent.Save event)
 	{
+		NBTTagCompound rootData = new NBTTagCompound();
+
 		WorldHookPool worldPool = this.getWorldPool(event.getWorld());
 
 		if (worldPool != null)
 		{
-			for (IChunkHookPool hookPool : worldPool.getAllPools())
+			for (IChunkHookProvider provider : this.providers)
 			{
-				hookPool.saveChunkHook(event.getData(), this.getChunkCoord(event.getChunk()));
+				IChunkHookPool hookPool = worldPool.getPool(provider);
+
+				NBTTagCompound data = new NBTTagCompound();
+
+				hookPool.saveChunkHook(data, this.getChunkCoord(event.getChunk()));
+
+				rootData.setTag(provider.getID().toString(), data);
 			}
 		}
+
+		event.getData().setTag(DATA_KEY.toString(), rootData);
 	}
 
 	@Override
-	public void registerHookFactory(IChunkHookFactory<IChunkHook> factory)
+	public void registerHookFactory(IChunkHookProvider<? extends IChunkHook> factory)
 	{
-		if (this.factories.contains(factory))
+		if (this.providers.contains(factory))
 		{
 			throw new IllegalArgumentException("Factory " + factory.getClass().getCanonicalName() + " is already registered!");
 		}
 
-		this.factories.add(factory);
+		this.providers.add(factory);
 	}
 
 	public WorldHookPool getWorldPool(World world)
@@ -157,24 +187,24 @@ public class ChunkServicesImpl implements ChunkServices
 	}
 
 	@Override
-	public <T extends IChunkHook> T getHook(World world, BlockPos pos, Class<T> clazz)
+	public <T extends IChunkHook> T getHook(World world, BlockPos pos, IChunkHookProvider<T> clazz)
 	{
 		return this.getHook(world, pos.getX() / 16, pos.getZ() / 16, clazz);
 	}
 
 	@Override
-	public <T extends IChunkHook> T getHook(World world, ChunkPos pos, Class<T> clazz)
+	public <T extends IChunkHook> T getHook(World world, ChunkPos pos, IChunkHookProvider<T> clazz)
 	{
 		return this.getHook(world, pos.chunkXPos, pos.chunkZPos, clazz);
 	}
 
-	private <T extends IChunkHook> T getHook(World world, int x, int z, Class<T> clazz)
+	private <T extends IChunkHook> T getHook(World world, int x, int z, IChunkHookProvider<T> provider)
 	{
 		WorldHookPool pool = this.getWorldPool(world);
 
 		if (pool != null)
 		{
-			IChunkHookPool hookPool = pool.getPool(clazz);
+			IChunkHookPool hookPool = pool.getPool(provider);
 
 			if (hookPool != null)
 			{
