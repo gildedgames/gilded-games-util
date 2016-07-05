@@ -1,25 +1,23 @@
 package com.gildedgames.util.modules.chunk.impl.pools;
 
 import com.gildedgames.util.modules.chunk.api.IChunkHookPool;
-import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHookProvider;
 
 import java.util.Collection;
 import java.util.HashMap;
 
 public class WorldHookPool
 {
-	private final HashMap<Class<? extends IChunkHook>, IChunkHookPool> pool = new HashMap<>();
+	private final HashMap<IChunkHookProvider, IChunkHookPool> pool = new HashMap<>();
 
-	public <T extends IChunkHook> IChunkHookPool getPool(Class<T> clazz)
+	public IChunkHookPool getPool(IChunkHookProvider provider)
 	{
-		return this.pool.get(clazz);
+		return this.pool.get(provider);
 	}
 
-	public <T extends IChunkHook> IChunkHookPool addPool(Class<T> clazz, IChunkHookPool pool)
+	public void addPool(IChunkHookProvider provider, IChunkHookPool pool)
 	{
-		this.pool.put(clazz, pool);
-
-		return pool;
+		this.pool.put(provider, pool);
 	}
 
 	public void clear()
