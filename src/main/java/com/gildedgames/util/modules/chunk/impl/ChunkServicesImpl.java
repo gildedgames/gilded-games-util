@@ -56,6 +56,8 @@ public class ChunkServicesImpl implements ChunkServices
 		this.pools.remove(event.getWorld().provider.getDimension());
 	}
 
+
+
 	@SubscribeEvent
 	public void onChunkLoaded(ChunkEvent.Load event)
 	{
@@ -67,6 +69,12 @@ public class ChunkServicesImpl implements ChunkServices
 		ChunkPos pos = event.getChunk().getChunkCoordIntPair();
 
 		WorldHookPool worldPool = this.getWorldPool(event.getWorld());
+
+		// Fixes an issue where WorldEvent.Load may not be called before chunk loading
+		if (worldPool == null)
+		{
+			this.pools.put(event.getWorld().provider.getDimension(), worldPool = new WorldHookPool(this.providers.values()));
+		}
 
 		for (IChunkHookProvider provider : this.providers.values())
 		{
