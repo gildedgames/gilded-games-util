@@ -5,6 +5,7 @@ import com.gildedgames.util.modules.chunk.api.ChunkServices;
 import com.gildedgames.util.modules.chunk.impl.ChunkServicesImpl;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
 public class ChunkModule extends Module
@@ -14,7 +15,7 @@ public class ChunkModule extends Module
 	private final ChunkServicesImpl services = new ChunkServicesImpl();
 
 	@Override
-	public void init(FMLInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(this.services);
 	}
