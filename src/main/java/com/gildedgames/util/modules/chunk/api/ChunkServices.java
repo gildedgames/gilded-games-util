@@ -9,10 +9,11 @@ import net.minecraft.world.World;
 public interface ChunkServices
 {
 	/**
-	 * Registers a chunk hook factory. The factory is responsible for the creation of it's own chunk hooks from NBT.
-	 * @param factory The factory to register.
+	 * Registers a chunk hook provider.
+	 * @param provider The provider to register
+	 * @throws IllegalArgumentException If another provider is already registered with the same ID
 	 */
-	void registerHookFactory(IChunkHookProvider<? extends IChunkHook> factory);
+	void registerChunkHookProvider(IChunkHookProvider provider);
 
 	<T extends IChunkHook> T getHook(World world, BlockPos pos, IChunkHookProvider<T> clazz);
 
