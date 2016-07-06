@@ -1,6 +1,8 @@
-package com.gildedgames.util.modules.chunk.api.hook;
+package com.gildedgames.util.modules.chunk.impl.hooks;
 
+import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.BitSet;
 
@@ -11,26 +13,26 @@ public class BlockBitFlagChunkHook implements IChunkHook
 {
 	private static final int CHUNK_SIZE = 16 * 256 * 16;
 
-	private BitSet bits;
+	private BitSet bits = new BitSet(CHUNK_SIZE);
 
-	public void mark(int x, int y, int z)
+	public void mark(BlockPos pos)
 	{
-		this.set(x, y, z, true);
+		this.set(pos, true);
 	}
 
-	public void clear(int x, int y, int z)
+	public void clear(BlockPos pos)
 	{
-		this.set(x, y, z, false);
+		this.set(pos, false);
 	}
 
-	public void set(int x, int y, int z, boolean value)
+	public void set(BlockPos pos, boolean value)
 	{
-		this.bits.set(this.getIndexFromCoordinate(x & 15, y & 15, z & 15), value);
+		this.bits.set(this.getIndexFromCoordinate(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15), value);
 	}
 
-	public boolean isMarked(int x, int y, int z)
+	public boolean isMarked(BlockPos pos)
 	{
-		return this.bits.get(this.getIndexFromCoordinate(x & 15, y & 15, z & 15));
+		return this.bits.get(this.getIndexFromCoordinate(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15));
 	}
 
 	@Override
