@@ -1,5 +1,6 @@
-package com.gildedgames.util.instances;
+package com.gildedgames.util.modules.instances;
 
+import com.gildedgames.util.modules.instances.InstanceHandler;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.WorldProvider;
