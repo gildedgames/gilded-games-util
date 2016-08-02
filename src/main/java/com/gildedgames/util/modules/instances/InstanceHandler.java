@@ -36,8 +36,6 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public InstanceHandler(InstanceFactory<T> factory)
 	{
 		this.factory = factory;
-
-//		DimensionManager.registerProviderType(factory.providerId(), factory.getProviderType(), false);
 	}
 	
 	public T getInstance(int id)
@@ -49,7 +47,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		int dimensionId = InstanceModule.INSTANCE.getFreeDimID();
 		
-//		DimensionManager.registerDimension(dimensionId, this.factory.providerId());
+		DimensionManager.registerDimension(dimensionId, this.factory.dimensionType());
 		T instance = this.factory.createInstance(dimensionId, this);
 		this.instances.put(dimensionId, instance);
 		
@@ -132,7 +130,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 			
 			T instance = this.factory.createInstance(id, this);
 			instance.read(tag);
-//			DimensionManager.registerDimension(id, this.factory.providerId());
+			DimensionManager.registerDimension(id, this.factory.dimensionType());
 
 			this.instances.put(id, instance);
 		}
@@ -146,6 +144,17 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public int getDimensionForInstance(Instance instance)
 	{
 		return this.instances.inverse().get(instance);
+	}
+
+	public World getWorldForInstance(Instance instance)
+	{
+		int dim = this.getDimensionForInstance(instance);
+
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+		WorldServer world = server.worldServerForDimension(dim);
+
+		return world;
 	}
 
 	public int getInstancesSize()
