@@ -9,6 +9,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
@@ -26,6 +27,15 @@ public class InstanceModule extends Module
 
 	@CapabilityInject(PlayerInstances.class)
 	public static final Capability<PlayerInstances> PLAYER_INSTANCES = null;
+
+	private InstanceCapabilityManager capabilityManager;
+
+	@Override
+	public void init(FMLInitializationEvent event)
+	{
+		this.capabilityManager = new InstanceCapabilityManager();
+		this.capabilityManager.init();
+	}
 
 	public PlayerInstances getPlayer(EntityPlayer player)
 	{
