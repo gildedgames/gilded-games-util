@@ -1,8 +1,5 @@
 package com.gildedgames.util.modules.ui.util;
 
-import java.util.Map;
-import java.util.UUID;
-
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
 import com.gildedgames.util.modules.ui.common.GuiFrame;
@@ -14,11 +11,13 @@ import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Map;
+import java.util.UUID;
 
 public class SkinButton extends GuiFrame
 {

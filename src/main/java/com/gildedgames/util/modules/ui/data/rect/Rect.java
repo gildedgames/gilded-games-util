@@ -19,11 +19,11 @@ public interface Rect
 	float maxX();
 
 	float maxY();
-	
+
 	float centerX();
-	
+
 	float centerY();
-	
+
 	Pos2D center();
 
 	float x();

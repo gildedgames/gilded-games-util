@@ -1,16 +1,16 @@
 package com.gildedgames.util.modules.ui.event.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.event.MouseEvent;
 import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.gildedgames.util.modules.ui.input.MouseInput;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class MouseEventGui extends MouseEvent
 {
-	
+
 	public MouseEventGui()
 	{
 		this(new ArrayList<MouseInput>());

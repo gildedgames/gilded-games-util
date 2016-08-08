@@ -2,9 +2,9 @@ package com.gildedgames.util.modules.ui.input;
 
 public class MouseDoubleClick implements MouseInputBehavior
 {
-	
+
 	private MouseInput[] events;
-	
+
 	private MouseDoubleClick(MouseInput... events)
 	{
 		this.events = events;
@@ -15,7 +15,7 @@ public class MouseDoubleClick implements MouseInputBehavior
 	{
 		return pool.containsAll(this.events);
 	}
-	
+
 	public static MouseDoubleClick with(MouseInput... events)
 	{
 		return new MouseDoubleClick(events);

@@ -23,7 +23,7 @@ public class Button extends GuiFrame
 	{
 		this(dim, defaultState, hoveredState, clickedState, null);
 	}
-	
+
 	public Button(Rect dim, TextureElement defaultState, TextureElement hoveredState, TextureElement clickedState, TextureElement disabledState)
 	{
 		super(dim);
@@ -31,10 +31,9 @@ public class Button extends GuiFrame
 		this.defaultState = defaultState;
 		this.hoveredState = hoveredState;
 		this.clickedState = clickedState;
-		
+
 		this.disabledState = disabledState;
 	}
-
 
 	@Override
 	public void initContent(InputProvider input)
@@ -56,7 +55,7 @@ public class Button extends GuiFrame
 		if (this.disabledState != null)
 		{
 			this.disabledState.dim().mod().center(false).resetPos().flush();
-			
+
 			if (!this.isEnabled())
 			{
 				this.disabledState.setVisible(true);
@@ -65,10 +64,10 @@ public class Button extends GuiFrame
 			{
 				this.disabledState.setVisible(false);
 			}
-			
+
 			this.content().set("disabledState", this.disabledState);
 		}
-		
+
 		this.defaultState.setVisible(true);
 	}
 
@@ -76,7 +75,7 @@ public class Button extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		if (this.disabledState != null)
 		{
 			if (!this.isEnabled())

@@ -43,10 +43,10 @@ public class StreamedTextureElement extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		graphics.drawSprite(this.sprite, this.dim(), this.data);
 	}
-	
+
 	public StreamedTextureElement clone()
 	{
 		return new StreamedTextureElement(this.sprite, this.dim(), this.data);

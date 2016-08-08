@@ -4,7 +4,7 @@ package com.gildedgames.util.io_manager.io;
  * Represents an object that can be serialized using the I and O types.
  * Implementing this interface allows this class to be used in various 
  * IOManager methods.
- * 
+ *
  * @author Emile
  *
  * @param <I> The type used to read back the data inside of this class.

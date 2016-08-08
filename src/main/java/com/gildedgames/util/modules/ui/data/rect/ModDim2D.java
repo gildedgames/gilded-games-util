@@ -1,16 +1,16 @@
 package com.gildedgames.util.modules.ui.data.rect;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.core.ObjectFilter.FilterCondition;
 import com.gildedgames.util.modules.ui.data.Pos2D;
 import com.gildedgames.util.modules.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.modules.ui.input.InputProvider;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A wrapper around a Rect object to provide a modified state via RectModifiers.

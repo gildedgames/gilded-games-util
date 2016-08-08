@@ -10,20 +10,20 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class InstanceCapabilityManager
 {
 
-    public void init()
-    {
-        MinecraftForge.EVENT_BUS.register(this);
+	public void init()
+	{
+		MinecraftForge.EVENT_BUS.register(this);
 
-        CapabilityManager.INSTANCE.register(PlayerInstances.class, new PlayerInstances.Storage(), PlayerInstances.class);
-    }
+		CapabilityManager.INSTANCE.register(PlayerInstances.class, new PlayerInstances.Storage(), PlayerInstances.class);
+	}
 
-    @SubscribeEvent
-    public void onEntityLoad(AttachCapabilitiesEvent.Entity event)
-    {
-        if (event.getEntity() instanceof EntityPlayer)
-        {
-            event.addCapability(UtilModule.getResource("PlayerInstances"), new PlayerInstancesProvider(new PlayerInstances((EntityPlayer) event.getEntity())));
-        }
-    }
+	@SubscribeEvent
+	public void onEntityLoad(AttachCapabilitiesEvent.Entity event)
+	{
+		if (event.getEntity() instanceof EntityPlayer)
+		{
+			event.addCapability(UtilModule.getResource("PlayerInstances"), new PlayerInstancesProvider(new PlayerInstances((EntityPlayer) event.getEntity())));
+		}
+	}
 
 }

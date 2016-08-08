@@ -4,5 +4,5 @@ public interface KeyboardInputBehavior
 {
 
 	boolean isMet(KeyboardInputPool pool);
-	
+
 }

@@ -1,7 +1,5 @@
 package com.gildedgames.util.core.gui.util.wrappers;
 
-import java.util.List;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.rect.Dim2D;
@@ -10,9 +8,10 @@ import com.gildedgames.util.modules.ui.graphics.Graphics2D;
 import com.gildedgames.util.modules.ui.input.ButtonState;
 import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+
+import java.util.List;
 
 public class MinecraftButton extends GuiFrame
 {

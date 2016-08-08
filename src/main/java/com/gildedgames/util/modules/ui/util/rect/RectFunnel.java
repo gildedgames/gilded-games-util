@@ -1,11 +1,11 @@
 package com.gildedgames.util.modules.ui.util.rect;
 
+import com.gildedgames.util.modules.ui.data.rect.BuildIntoRectHolder;
+import com.gildedgames.util.modules.ui.data.rect.RectHolder;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.gildedgames.util.modules.ui.data.rect.BuildIntoRectHolder;
-import com.gildedgames.util.modules.ui.data.rect.RectHolder;
 
 public class RectFunnel
 {

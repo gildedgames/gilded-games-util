@@ -1,8 +1,8 @@
 package com.gildedgames.util.modules.ui.util;
 
-import java.awt.Color;
-
 import com.gildedgames.util.modules.ui.data.DrawingData;
+
+import java.awt.*;
 
 public class Text
 {

@@ -1,9 +1,5 @@
 package com.gildedgames.util.modules.ui.common;
 
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.modules.ui.data.TickInfo;
 import com.gildedgames.util.modules.ui.data.UIContainer;
@@ -18,41 +14,43 @@ import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.listeners.KeyboardListener;
 import com.gildedgames.util.modules.ui.listeners.MouseListener;
 import com.gildedgames.util.modules.ui.util.GuiProcessingHelper;
+import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.List;
 
 public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Decorator<T>
 {
 
 	private T element;
-	
+
 	public GuiDecorator(T element)
 	{
 		this.element = element;
 	}
-	
+
 	@Override
 	public T getDecoratedElement()
 	{
 		return this.element;
 	}
-	
+
 	public <D> D findDecoratedElement(Class<? extends D> clazz)
 	{
 		Object element = this.getDecoratedElement();
-		
+
 		while (element != null)
 		{
 			if (element.getClass().isAssignableFrom(clazz))
 			{
 				return (D) element;
 			}
-			
+
 			if (element instanceof Decorator)
 			{
-				Decorator decorator = (Decorator)element;
-				
+				Decorator decorator = (Decorator) element;
+
 				element = decorator.getDecoratedElement();
-				
+
 				if (element == null)
 				{
 					break;
@@ -63,7 +61,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 				break;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -71,7 +69,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			view.draw(graphics, input);
@@ -82,12 +80,12 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public boolean isVisible()
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			return view.isVisible();
 		}
-		
+
 		return false;
 	}
 
@@ -95,7 +93,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public void setVisible(boolean visible)
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			view.setVisible(visible);
@@ -106,61 +104,61 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public ModDim2D dim()
 	{
 		RectHolder holder = ObjectFilter.cast(this.element, RectHolder.class);
-		
+
 		if (holder != null)
 		{
 			return holder.dim();
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public void tick(TickInfo tickInfo, InputProvider input)
 	{
 		this.element.tick(tickInfo, input);
 	}
-	
+
 	@Override
 	public final void init(InputProvider input)
 	{
 		this.initContent(input);
-		
+
 		GuiProcessingHelper.processInitPre(this, input, this.content(), this.events());
 	}
-	
+
 	@Override
 	public final void initContent(InputProvider input)
 	{
 		this.preInitContent(input);
-		
+
 		this.element.initContent(input);
-		
+
 		this.postInitContent(input);
 	}
-	
+
 	@Override
 	public final void onClose(InputProvider input)
 	{
 		this.preClose(input);
-		
+
 		this.element.onClose(input);
-		
+
 		this.postClose(input);
 	}
-	
+
 	protected void preClose(InputProvider input)
 	{
-		
+
 	}
-	
+
 	protected void postClose(InputProvider input)
 	{
-		
+
 	}
-	
+
 	protected abstract void preInitContent(InputProvider input);
-	
+
 	protected abstract void postInitContent(InputProvider input);
 
 	@Override
@@ -185,12 +183,12 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public boolean onKeyboardInput(KeyboardInputPool pool, InputProvider input)
 	{
 		KeyboardListener listener = ObjectFilter.cast(this.element, KeyboardListener.class);
-		
+
 		if (listener != null)
 		{
 			return listener.onKeyboardInput(pool, input);
 		}
-		
+
 		return false;
 	}
 
@@ -198,7 +196,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
 		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
-		
+
 		if (listener != null)
 		{
 			listener.onMouseInput(pool, input);
@@ -209,7 +207,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public void onMouseScroll(int scrollDifference, InputProvider input)
 	{
 		MouseListener listener = ObjectFilter.cast(this.element, MouseListener.class);
-		
+
 		if (listener != null)
 		{
 			listener.onMouseScroll(scrollDifference, input);
@@ -220,12 +218,12 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public boolean isFocused()
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			return view.isFocused();
 		}
-		
+
 		return false;
 	}
 
@@ -233,42 +231,42 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	public void setFocused(boolean focused)
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			view.setFocused(focused);
 		}
 	}
-	
+
 	@Override
 	public boolean query(Object... input)
 	{
 		Gui view = ObjectFilter.cast(this.element, Gui.class);
-		
+
 		if (view != null)
 		{
 			return view.query(input);
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public UIContainer seekContent()
 	{
 		return this.element.seekContent();
 	}
-	
+
 	@Override
 	public UIContainerMutable content()
 	{
 		GuiFrame frame = ObjectFilter.cast(this.element, GuiFrame.class);
-		
+
 		if (frame != null)
 		{
 			return frame.content();
 		}
-		
+
 		return null;
 	}
 
@@ -277,7 +275,7 @@ public abstract class GuiDecorator<T extends Ui> extends GuiFrame implements Dec
 	{
 		return this.element.events();
 	}
-	
+
 	@Override
 	public List<UIContainer> seekAllContent()
 	{

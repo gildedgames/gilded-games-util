@@ -10,25 +10,25 @@ import com.gildedgames.util.modules.ui.util.input.StringInput;
 
 public class SearchableGui extends GuiDecorator<GuiFrame>
 {
-	
+
 	private GuiInput<String> searchField;
-	
+
 	private StringInput searchFieldInput;
 
 	private DataInputListener<String> searcher;
-	
+
 	public SearchableGui(GuiFrame element)
 	{
 		this(element, null);
 	}
-	
+
 	public SearchableGui(GuiFrame element, DataInputListener<String> searcher)
 	{
 		super(element);
-		
+
 		this.searcher = searcher;
 	}
-	
+
 	public void setSearcher(DataInputListener<String> searcher)
 	{
 		this.searcher = searcher;
@@ -37,7 +37,7 @@ public class SearchableGui extends GuiDecorator<GuiFrame>
 	@Override
 	protected void preInitContent(InputProvider input)
 	{
-		
+
 	}
 
 	@Override

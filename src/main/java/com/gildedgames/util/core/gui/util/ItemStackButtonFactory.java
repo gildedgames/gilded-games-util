@@ -1,15 +1,5 @@
 package com.gildedgames.util.core.gui.util;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameData;
-
 import com.gildedgames.util.core.gui.util.events.MinecraftHoveredDesc;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButtonItemStack;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftItemStackRender;
@@ -22,6 +12,15 @@ import com.gildedgames.util.modules.ui.util.factory.ContentFactory;
 import com.gildedgames.util.modules.ui.util.factory.Factory;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameData;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 {
@@ -30,72 +29,72 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 	{
 
 		BLOCKS
-		{
-			@Override
-			List<ItemStack> createStacks()
-			{
-				List<ItemStack> blockStacks = new ArrayList<>();
-
-				for (final Block block : GameData.getBlockRegistry().typeSafeIterable())//TODO: Make sure this gets all blocks
 				{
-					if (block == null)
+					@Override
+					List<ItemStack> createStacks()
 					{
-						continue;
-					}
+						List<ItemStack> blockStacks = new ArrayList<>();
 
-					final Item item = Item.getItemFromBlock(block);
-
-					if (item == null)
-					{
-						continue;
-					}
-
-					List<ItemStack> subBlocks = new ArrayList<>();
-
-					block.getSubBlocks(item, item.getCreativeTab(), subBlocks);
-
-					for (final ItemStack stack : subBlocks)
-					{
-						if (GGHelper.getBlockState(stack) == GGHelper.getAirState())
+						for (final Block block : GameData.getBlockRegistry().typeSafeIterable())//TODO: Make sure this gets all blocks
 						{
-							continue;
+							if (block == null)
+							{
+								continue;
+							}
+
+							final Item item = Item.getItemFromBlock(block);
+
+							if (item == null)
+							{
+								continue;
+							}
+
+							List<ItemStack> subBlocks = new ArrayList<>();
+
+							block.getSubBlocks(item, item.getCreativeTab(), subBlocks);
+
+							for (final ItemStack stack : subBlocks)
+							{
+								if (GGHelper.getBlockState(stack) == GGHelper.getAirState())
+								{
+									continue;
+								}
+
+								blockStacks.add(stack);
+							}
 						}
 
-						blockStacks.add(stack);
+						return blockStacks;
 					}
-				}
-
-				return blockStacks;
-			}
-		},
+				},
 		ITEMS
-		{
-			@Override
-			List<ItemStack> createStacks()
-			{
-				return null;
-			}
-		},
+				{
+					@Override
+					List<ItemStack> createStacks()
+					{
+						return null;
+					}
+				},
 		ALL
-		{
-			@Override
-			List<ItemStack> createStacks()
-			{
-				List<ItemStack> stacks = new ArrayList<>();
+				{
+					@Override
+					List<ItemStack> createStacks()
+					{
+						List<ItemStack> stacks = new ArrayList<>();
 
-				stacks.addAll(ITEMS.createStacks());
-				stacks.addAll(BLOCKS.createStacks());
+						stacks.addAll(ITEMS.createStacks());
+						stacks.addAll(BLOCKS.createStacks());
 
-				return stacks;
-			}
-		};
+						return stacks;
+					}
+				};
 
 		abstract List<ItemStack> createStacks();
 
 	}
 
 	private StackTypes stackTypes;
-	
+
 	private Function<ItemStack, T> dataFactory;
 
 	public ItemStackButtonFactory(StackTypes stackTypes, Function<ItemStack, T> dataFactory)
@@ -112,7 +111,7 @@ public class ItemStackButtonFactory<T> implements ContentFactory<Ui>
 		for (ItemStack stack : this.stackTypes.createStacks())
 		{
 			final MinecraftButtonItemStack button = new MinecraftButtonItemStack(stack);
-			
+
 			button.events().set("description", new MinecraftHoveredDesc(GuiFactory.text(stack.getDisplayName(), Color.WHITE)));
 
 			button.events().set("draggableBehavior", new SlotStackFactory<>(new Function<T, GuiFrame>()

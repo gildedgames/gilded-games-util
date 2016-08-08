@@ -1,9 +1,5 @@
 package com.gildedgames.util.modules.ui.util.input;
 
-import java.awt.Color;
-
-import org.lwjgl.input.Keyboard;
-
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.core.gui.util.MinecraftAssetLocation;
@@ -24,8 +20,10 @@ import com.gildedgames.util.modules.ui.input.MouseButton;
 import com.gildedgames.util.modules.ui.input.MouseInput;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.util.TextElement;
-
 import net.minecraft.util.ChatAllowedCharacters;
+import org.lwjgl.input.Keyboard;
+
+import java.awt.*;
 
 public class GuiInput<T> extends GuiFrame
 {

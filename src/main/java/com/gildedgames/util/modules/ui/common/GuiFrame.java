@@ -1,10 +1,5 @@
 package com.gildedgames.util.modules.ui.common;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.gildedgames.util.modules.ui.data.TickInfo;
 import com.gildedgames.util.modules.ui.data.UIContainer;
 import com.gildedgames.util.modules.ui.data.UIContainerEvents;
@@ -18,6 +13,10 @@ import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.listeners.KeyboardListener;
 import com.gildedgames.util.modules.ui.listeners.MouseListener;
 import com.gildedgames.util.modules.ui.util.GuiProcessingHelper;
+import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiFrame implements Gui, KeyboardListener, MouseListener
 {
@@ -211,7 +210,7 @@ public class GuiFrame implements Gui, KeyboardListener, MouseListener
 	@Override
 	public void updateState()
 	{
-		
+
 	}
 
 }

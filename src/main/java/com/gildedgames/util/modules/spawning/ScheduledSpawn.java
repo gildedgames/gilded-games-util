@@ -1,8 +1,5 @@
 package com.gildedgames.util.modules.spawning;
 
-import java.lang.reflect.Constructor;
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,6 +7,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import java.lang.reflect.Constructor;
+import java.util.List;
 
 public class ScheduledSpawn
 {

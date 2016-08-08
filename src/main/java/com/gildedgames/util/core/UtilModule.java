@@ -1,12 +1,10 @@
 package com.gildedgames.util.core;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import com.gildedgames.util.core.io.NetworkWrapper;
+import com.gildedgames.util.modules.chunk.ChunkModule;
+import com.gildedgames.util.modules.instances.InstanceModule;
+import com.gildedgames.util.modules.spawning.SpawningModule;
+import com.gildedgames.util.modules.tab.TabModule;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
@@ -25,21 +23,11 @@ import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-
 import org.apache.logging.log4j.Logger;
 
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.core.io.NetworkWrapper;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.io_manager.exceptions.IOManagerTakenException;
-import com.gildedgames.util.modules.chunk.ChunkModule;
-import com.gildedgames.util.modules.group.GroupModule;
-import com.gildedgames.util.modules.instances.InstanceModule;
-import com.gildedgames.util.modules.menu.MenuModule;
-import com.gildedgames.util.modules.notifications.NotificationModule;
-import com.gildedgames.util.modules.spawning.SpawningModule;
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.world.WorldModule;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mod(modid = UtilModule.MOD_ID, name = "Gilded Games Utility", version = UtilModule.VERSION, dependencies = "before:*")
 public class UtilModule
@@ -62,37 +50,15 @@ public class UtilModule
 
 	private UtilServices services = new UtilServices();
 
-	private MCSyncableDispatcher syncableDispatcher;
-
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilModule.logger = event.getModLog();
 
-		this.registerModule(WorldModule.INSTANCE);
 		this.registerModule(InstanceModule.INSTANCE);
-		this.registerModule(GroupModule.INSTANCE);
 		this.registerModule(TabModule.INSTANCE);
 		this.registerModule(SpawningModule.INSTANCE);
-		this.registerModule(NotificationModule.INSTANCE);
 		this.registerModule(ChunkModule.INSTANCE);
-
-		if (UtilModule.isClient())
-		{
-			this.registerModule(MenuModule.INSTANCE);
-		}
-
-		this.syncableDispatcher = new MCSyncableDispatcher("GildedGamesUtil");
-
-		try
-		{
-			IOCore.io().registerManager(UtilModule.locate().getIOManager());
-			IOCore.io().registerDispatcher(this.syncableDispatcher);
-		}
-		catch (IOManagerTakenException e)
-		{
-			e.printStackTrace();
-		}
 
 		UtilModule.NETWORK.init(UtilModule.MOD_ID);
 
@@ -200,11 +166,6 @@ public class UtilModule
 		proxy.flushData();
 	}
 
-	public MCSyncableDispatcher getDispatcher()
-	{
-		return this.syncableDispatcher;
-	}
-
 	public static UtilServices locate()
 	{
 		return instance.services;
@@ -225,39 +186,9 @@ public class UtilModule
 		return instance.logger;
 	}
 
-	public static List<EntityPlayerMP> getOnlinePlayers()
-	{
-		return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
-	}
-
-	public static EntityPlayer getPlayerOnServerFromUUID(UUID uuid)
-	{
-		if (uuid == null)
-		{
-			return null;
-		}
-
-		List<EntityPlayerMP> allPlayers = UtilModule.getOnlinePlayers();
-
-		for (EntityPlayerMP player : allPlayers)
-		{
-			if (player.getUniqueID().equals(uuid))
-			{
-				return player;
-			}
-		}
-
-		return null;
-	}
-
 	public static File getWorldDirectory()
 	{
 		return DimensionManager.getCurrentSaveRootDirectory();
-	}
-
-	public static String getMinecraftDirectory()
-	{
-		return UtilModule.getWorldDirectory().getAbsolutePath().replace(FMLCommonHandler.instance().getMinecraftServerInstance().getFolderName(), "");
 	}
 
 	public static String translate(String key)
@@ -275,7 +206,7 @@ public class UtilModule
 	{
 		return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE;
 	}
-	
+
 	public static ResourceLocation getResource(String name)
 	{
 		return new ResourceLocation(UtilModule.MOD_ID, name);

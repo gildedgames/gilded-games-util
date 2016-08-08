@@ -31,7 +31,6 @@ public interface TabAPI
 	 */
 	ITab getBackpackTab();
 
-
 	/**
 	 * @return A map of the registered {@link TabGroupHandler}s active within the game
 	 */

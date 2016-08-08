@@ -17,11 +17,11 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderTabGroup extends Gui
 {
-	
+
 	private static final ResourceLocation TEXTURE_TAB_ITEMS = new ResourceLocation("textures/gui/container/creative_inventory/tab_items.png");
 
 	private static final ResourceLocation TEXTURE_TABS = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
-	
+
 	@SideOnly(Side.CLIENT)
 	protected void drawHoveringText(String text, int x, int y, FontRenderer font)
 	{
@@ -63,7 +63,7 @@ public class RenderTabGroup extends Gui
 		{
 			return;
 		}
-		
+
 		Minecraft mc = Minecraft.getMinecraft();
 		ScaledResolution scaledresolution = new ScaledResolution(mc);
 
@@ -126,7 +126,7 @@ public class RenderTabGroup extends Gui
 			this.drawHoveringText(I18n.translateToLocal(hoveredTab.getUnlocalizedName()), Mouse.getX() * scaledresolution.getScaledWidth() / mc.displayWidth, scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / mc.displayHeight - 1, mc.fontRendererObj);
 		}
 	}
-	
+
 	/**
 	 * @return The current {@link ITab} that is hovered over by the player's mouse cursor
 	 */

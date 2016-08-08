@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 public class MinecraftTextBackground extends GuiFrame
 {
-	
+
 	public MinecraftTextBackground(Rect rect)
 	{
 		super(rect);
@@ -21,12 +21,12 @@ public class MinecraftTextBackground extends GuiFrame
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
-		
+
 		GL11.glPushMatrix();
 		this.drawTextBackground(this.dim().x(), this.dim().y(), this.dim().width(), this.dim().height());
 		GL11.glPopMatrix();
 	}
-	
+
 	private void drawTextBackground(float cornerX, float cornerY, float width, float height)
 	{
 		final int l1 = -267386864;
@@ -42,11 +42,11 @@ public class MinecraftTextBackground extends GuiFrame
 		this.drawGradientRect(cornerX - 3, cornerY - 3, cornerX + width + 3, cornerY - 3 + 1, i2, i2);
 		this.drawGradientRect(cornerX - 3, cornerY + height + 2, cornerX + width + 3, cornerY + height + 3, j2, j2);
 	}
-	
+
 	public void drawGradientRect(float minX, float minY, float maxX, float maxY, int par5, int par6)
 	{
 		int zLevel = 0;
-		
+
 		GL11.glPushMatrix();
 		final float f = (par5 >> 24 & 255) / 255.0F;
 		final float f1 = (par5 >> 16 & 255) / 255.0F;
@@ -74,5 +74,5 @@ public class MinecraftTextBackground extends GuiFrame
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}
-	
+
 }

@@ -16,21 +16,21 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 {
 
 	private SlotStack<T> slotContents;
-	
+
 	private SlotParser<T> parser;
-	
+
 	private boolean takenContentsOut;
 
 	public SlotBehavior(SlotParser<T> parser)
 	{
 		this.parser = parser;
 	}
-	
+
 	public void setSlotContents(SlotStack<T> draggedState)
 	{
 		this.setSlotContents(draggedState, true);
 	}
-	
+
 	public void clearSlotContents()
 	{
 		this.slotContents = null;
@@ -45,12 +45,12 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 		{
 			return;
 		}
-		
+
 		if (notifyParser && !this.parser.isAllowed(draggedState))
 		{
 			return;
 		}
-		
+
 		this.slotContents = draggedState;
 
 		this.slotContents.dim().clear(ModifierType.POS);
@@ -87,9 +87,9 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 		{
 			return;
 		}
-		
+
 		super.onMouseInput(pool, input);
-		
+
 		if (!this.takenContentsOut && pool.has(ButtonState.PRESS) && input.isHovered(this.getGui().dim()))
 		{
 			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", 550.0F);
@@ -97,22 +97,22 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 			if (canvas != null)
 			{
 				GuiFrame draggedObject = canvas.get("draggedObject");
-				
+
 				if (draggedObject instanceof SlotStack)
 				{
 					@SuppressWarnings("unchecked")
-					SlotStack<T> stack = (SlotStack<T>)draggedObject;
-					
+					SlotStack<T> stack = (SlotStack<T>) draggedObject;
+
 					if (stack.events().contains("dragBehavior"))
 					{
 						SlotStack<T> original = this.getSlotContents();
-						
+
 						stack.events().remove("dragBehavior");
-						
+
 						this.setSlotContents(stack);
-						
+
 						canvas.remove("draggedObject");
-						
+
 						if (original != null)
 						{
 							original.events().set("dragBehavior", new DragBehavior<T>(), original);
@@ -123,7 +123,7 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 				}
 			}
 		}
-		
+
 		this.takenContentsOut = false;
 	}
 
@@ -149,12 +149,12 @@ public class SlotBehavior<T> extends GuiEvent<GuiFrame>
 			{
 				return SlotBehavior.this.getSlotContents().getData();
 			}
-	
+
 		};
-		
+
 		this.getGui().events().set("dragFactory", new SlotStackFactory<T>(iconFactory, dataFunction)
 		{
-			
+
 			@Override
 			public boolean shouldRemoveDragged(SlotStack<T> createdStack)
 			{

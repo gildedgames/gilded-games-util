@@ -17,7 +17,9 @@ public class PacketOpenTab implements IMessage
 
 	private int tabGroupIndex, tabIndex;
 
-	public PacketOpenTab() { }
+	public PacketOpenTab()
+	{
+	}
 
 	public PacketOpenTab(ITab tab)
 	{
@@ -40,7 +42,7 @@ public class PacketOpenTab implements IMessage
 			}
 		}
 	}
-	
+
 	public PacketOpenTab(int tabGroupIndex, int tabIndex)
 	{
 		this.tabGroupIndex = tabGroupIndex;

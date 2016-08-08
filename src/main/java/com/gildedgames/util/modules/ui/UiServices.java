@@ -1,32 +1,23 @@
 package com.gildedgames.util.modules.ui;
 
+import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
+import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapper;
+import com.gildedgames.util.modules.ui.common.GuiFrame;
+import com.gildedgames.util.modules.ui.common.GuiViewer;
+import com.gildedgames.util.modules.ui.util.factory.Factory;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.core.gui.util.decorators.MinecraftGui;
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
-import com.gildedgames.util.core.gui.viewing.MinecraftGuiWrapper;
-import com.gildedgames.util.core.nbt.NBTFactory;
-import com.gildedgames.util.core.nbt.NBTFile;
-import com.gildedgames.util.io_manager.IOCore;
-import com.gildedgames.util.modules.ui.common.GuiFrame;
-import com.gildedgames.util.modules.ui.common.GuiViewer;
-import com.gildedgames.util.modules.ui.util.factory.Factory;
-import com.google.common.collect.ImmutableList;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.relauncher.Side;
-
 public class UiServices
 {
-
-	private final Side side;
 
 	private File saveLocation;
 
@@ -123,11 +114,6 @@ public class UiServices
 			return this.frame.equals(overlay.getFrame()) && this.viewer.equals(overlay.getViewer()) && this.renderOrder.equals(overlay.getRenderOrder());
 		}
 
-	}
-
-	public UiServices(Side side)
-	{
-		this.side = side;
 	}
 
 	public ImmutableList<RegisteredOverlay> registeredOverlays()
@@ -305,49 +291,4 @@ public class UiServices
 		this.currentFrame = null;
 		this.currentUniqueSaveName = null;
 	}
-
-	private void refreshSaveLocation()
-	{
-		if (this.side.isClient())
-		{
-			this.saveLocation = new File(Minecraft.getMinecraft().mcDataDir, "mod-config\\ui\\");
-		}
-		else
-		{
-			this.saveLocation = new File(UtilModule.getWorldDirectory(), "mod-config\\ui\\");
-		}
-	}
-
-	private void save(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
-	{
-		this.refreshSaveLocation();
-
-		File save = new File(this.saveLocation, uniqueSaveName + ".dat");
-
-		try
-		{
-			IOCore.io().readFile(save, new NBTFile(save, frame, GuiFrame.class), new NBTFactory());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private void load(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
-	{
-		this.refreshSaveLocation();
-
-		File load = new File(this.saveLocation, uniqueSaveName + ".dat");
-
-		try
-		{
-			IOCore.io().writeFile(load, new NBTFile(load, frame, GuiFrame.class), new NBTFactory());
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
 }

@@ -1,7 +1,6 @@
 package com.gildedgames.util.modules.chunk.api;
 
 import com.gildedgames.util.modules.chunk.api.hook.IChunkHook;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.ChunkPos;
 
 public interface IChunkHookMap

@@ -4,7 +4,7 @@ public interface DataInputListener<T>
 {
 
 	void onInit();
-	
+
 	void onChange(T data);
-	
+
 }

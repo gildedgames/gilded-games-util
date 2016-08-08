@@ -1,9 +1,5 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import java.io.IOException;
-
-import org.lwjgl.input.Mouse;
-
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.TickInfo;
 import com.gildedgames.util.modules.ui.input.ButtonState;
@@ -12,10 +8,12 @@ import com.gildedgames.util.modules.ui.input.KeyboardInputPool;
 import com.gildedgames.util.modules.ui.input.MouseButton;
 import com.gildedgames.util.modules.ui.input.MouseInput;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 public final class MinecraftGuiWrapper extends GuiScreen
 {

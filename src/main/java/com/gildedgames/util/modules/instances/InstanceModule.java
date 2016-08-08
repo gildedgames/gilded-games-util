@@ -4,7 +4,6 @@ import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.util.GGHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -20,9 +19,9 @@ import java.util.UUID;
 
 public class InstanceModule extends Module
 {
-	
+
 	public static InstanceModule INSTANCE = new InstanceModule();
-	
+
 	private List<InstanceHandler<?>> instances;
 
 	@CapabilityInject(PlayerInstances.class)
@@ -53,22 +52,22 @@ public class InstanceModule extends Module
 
 		return InstanceModule.INSTANCE.getPlayer(player);
 	}
-	
+
 	public int getFreeDimID()
 	{
 		int next = -1;
-		
-        while (true)
-        {
-            next--;
-            
-            if (!DimensionManager.isDimensionRegistered(next))
-            {
-                return next;
-            }
-        }
+
+		while (true)
+		{
+			next--;
+
+			if (!DimensionManager.isDimensionRegistered(next))
+			{
+				return next;
+			}
+		}
 	}
-	
+
 	@Override
 	public void serverStopped(FMLServerStoppedEvent event)
 	{
@@ -77,7 +76,7 @@ public class InstanceModule extends Module
 			handler.unregisterInstances();
 		}
 	}
-	
+
 	@Override
 	public void serverAboutToStart(FMLServerAboutToStartEvent event)
 	{
@@ -87,34 +86,34 @@ public class InstanceModule extends Module
 		{
 			return;
 		}
-		
+
 		int i = 0;
-		
+
 		for (InstanceHandler<?> handler : this.getHandlers())
 		{
 			NBTTagCompound subTag = tag.getCompoundTag(String.valueOf(i++));
-			
+
 			handler.read(subTag);
 		}
 	}
-	
+
 	@Override
 	public void flushData()
 	{
 		NBTTagCompound tag = new NBTTagCompound();
-		
+
 		int i = 0;
-		
+
 		tag.setInteger("size", this.getHandlers().size());
-		
+
 		for (InstanceHandler<?> handler : this.getHandlers())
 		{
 			NBTTagCompound subTag = new NBTTagCompound();
 			handler.write(subTag);
-			
+
 			tag.setTag(String.valueOf(i++), subTag);
 		}
-		
+
 		GGHelper.writeNBTToFile(tag, "//data//instances.dat");
 	}
 

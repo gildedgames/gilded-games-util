@@ -1,9 +1,9 @@
 package com.gildedgames.util.modules.spawning;
 
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class SpawnEntry
 {
@@ -48,7 +48,7 @@ public class SpawnEntry
 	 * Uses a normal distribution to choose the amounts of groups 
 	 * for an area. This method achieves much greater granularity
 	 * for controlling spawning than using simple uniform distributions.
-	 * 
+	 *
 	 * If the standard deviation is not explicitly given, it is
 	 * average / 2, so around 95% of all numbers will be in the 
 	 * interval [0, 2 * avgGroupsInArea], obviously with bias

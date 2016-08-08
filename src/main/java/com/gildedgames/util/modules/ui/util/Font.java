@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Font
 {
-	
+
 	float getWidth(String text);
 
 	float getHeight(String text);

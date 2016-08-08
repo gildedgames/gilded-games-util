@@ -1,8 +1,8 @@
 package com.gildedgames.util.modules.instances;
 
-import com.gildedgames.util.core.nbt.NBT;
 import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.modules.world.common.BlockPosDimension;
+import com.gildedgames.util.core.util.BlockPosDimension;
+import com.gildedgames.util.io_manager.io.NBT;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

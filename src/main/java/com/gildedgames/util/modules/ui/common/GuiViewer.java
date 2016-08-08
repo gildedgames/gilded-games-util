@@ -8,13 +8,13 @@ public interface GuiViewer
 {
 
 	void open(GuiFrame frame);
-	
+
 	void close(GuiFrame frame);
-	
+
 	InputProvider getInputProvider();
-	
+
 	TickInfo getTickInfo();
-	
+
 	Graphics2D getGraphics();
-	
+
 }

@@ -36,7 +36,7 @@ public class TextElement extends GuiFrame
 
 		}, ModifierType.AREA);
 	}
-	
+
 	public Text getText()
 	{
 		return this.text;

@@ -1,8 +1,5 @@
 package com.gildedgames.util.core.gui.util.file_system;
 
-import java.awt.Color;
-import java.io.File;
-
 import com.gildedgames.util.core.gui.util.GuiFactory;
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.rect.Dim2D;
@@ -15,6 +12,9 @@ import com.gildedgames.util.modules.ui.input.MouseInput;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.util.Button;
 import com.gildedgames.util.modules.ui.util.TextureElement;
+
+import java.awt.*;
+import java.io.File;
 
 public class FileBrowserButton extends GuiFrame
 {
@@ -41,7 +41,7 @@ public class FileBrowserButton extends GuiFrame
 		this.content().displayDim(this);
 
 		final Button button = new Button(Dim2D.build().width(31).height(31).scale(0.5f).flush(), this.texture);
-		
+
 		button.events().set("pushDown", new MouseEventGui(new MouseInput(MouseButton.LEFT, ButtonState.PRESS))
 		{
 			@Override
@@ -59,17 +59,17 @@ public class FileBrowserButton extends GuiFrame
 			@Override
 			public void initEvent()
 			{
-				
+
 			}
-			
+
 		});
-		
+
 		this.content().set("button", button);
-		
+
 		GuiFrame textBox = GuiFactory.centeredTextBox(Dim2D.build().pos(this.dim().width() / 2, this.dim().height() / 2 + 12).centerX(true).width(16).height(12).flush(), false, GuiFactory.text(this.name, Color.WHITE, 0.5f));
 
 		this.content().set("text", textBox);
-		
+
 		super.initContent(input);
 	}
 }

@@ -1,7 +1,5 @@
 package com.gildedgames.util.modules.ui.util;
 
-import org.lwjgl.input.Mouse;
-
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.TickInfo;
 import com.gildedgames.util.modules.ui.data.rect.Dim2D;
@@ -18,8 +16,8 @@ import com.gildedgames.util.modules.ui.util.decorators.RepeatableGui;
 import com.gildedgames.util.modules.ui.util.rect.RectCollection;
 import com.gildedgames.util.modules.ui.util.rect.RectGetter;
 import com.gildedgames.util.modules.ui.util.rect.RectSeeker;
-
 import net.minecraft.nbt.NBTTagCompound;
+import org.lwjgl.input.Mouse;
 
 public class ScrollBar extends GuiFrame
 {

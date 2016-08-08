@@ -1,6 +1,5 @@
 package com.gildedgames.util.core.gui.util.file_system;
 
-
 public interface IFileBrowserListener
 {
 	/*void onOpened(GuiFileBrowserButton fileButton, IOFile<?, ?> openedFile);

@@ -1,8 +1,5 @@
 package com.gildedgames.util.core.gui.util;
 
-import java.awt.Color;
-import java.util.List;
-
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.gui.util.decorators.MinecraftButtonSounds;
 import com.gildedgames.util.core.gui.util.wrappers.MinecraftButton;
@@ -23,10 +20,12 @@ import com.gildedgames.util.modules.ui.util.TextBox;
 import com.gildedgames.util.modules.ui.util.TextureElement;
 import com.gildedgames.util.modules.ui.util.decorators.ScrollableGui;
 import com.gildedgames.util.modules.ui.util.rect.RectCollection;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+
+import java.awt.*;
+import java.util.List;
 
 public class GuiFactory
 {

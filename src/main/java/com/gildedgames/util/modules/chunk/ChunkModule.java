@@ -4,7 +4,6 @@ import com.gildedgames.util.core.Module;
 import com.gildedgames.util.modules.chunk.api.ChunkServices;
 import com.gildedgames.util.modules.chunk.impl.ChunkServicesImpl;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 

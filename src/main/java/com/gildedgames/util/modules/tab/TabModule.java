@@ -5,7 +5,6 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.modules.tab.api.TabAPI;
 import com.gildedgames.util.modules.tab.common.TabApiImpl;
 import com.gildedgames.util.modules.tab.common.networking.packet.PacketOpenTab;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 

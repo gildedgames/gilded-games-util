@@ -7,9 +7,9 @@ public interface SlotParser<E>
 {
 
 	boolean isAllowed(SlotStack<E> state);
-	
+
 	void onContentsChange(SlotBehavior<E> slot, SlotStack<E> newContents);
-	
+
 	/**
 	 * Return true to cancel the normal slot behavior on mouse input.
 	 * @param pool
@@ -17,5 +17,5 @@ public interface SlotParser<E>
 	 * @return
 	 */
 	boolean onMouseInput(MouseInputPool pool, InputProvider input);
-	
+
 }

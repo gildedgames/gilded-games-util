@@ -1,5 +1,13 @@
 package com.gildedgames.util.modules.ui.data;
 
+import com.gildedgames.util.core.ObjectFilter;
+import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.modules.ui.common.Gui;
+import com.gildedgames.util.modules.ui.common.Ui;
+import com.gildedgames.util.modules.ui.data.rect.Dim2D;
+import com.gildedgames.util.modules.ui.data.rect.Rect;
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,34 +15,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
-
-import com.gildedgames.util.core.ObjectFilter;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.modules.ui.common.Gui;
-import com.gildedgames.util.modules.ui.common.Ui;
-import com.gildedgames.util.modules.ui.data.rect.Dim2D;
-import com.gildedgames.util.modules.ui.data.rect.Rect;
-
 public class UIContainer implements Iterable<Ui>, NBT
 {
 
 	protected Map<String, Ui> elements = new LinkedHashMap<>();
 
 	protected Ui attachedUi;
-	
+
 	protected Ui parentUi;
-	
+
 	public UIContainer(Ui attachedUi)
 	{
 		this.attachedUi = attachedUi;
 	}
-	
+
 	public Ui getAttachedUi()
 	{
 		return this.attachedUi;
 	}
-	
+
 	public Ui getParentUi()
 	{
 		return this.parentUi;
@@ -71,8 +70,8 @@ public class UIContainer implements Iterable<Ui>, NBT
 
 		if (this.getAttachedUi() instanceof Gui)
 		{
-			Gui gui = (Gui)this.getAttachedUi();
-			
+			Gui gui = (Gui) this.getAttachedUi();
+
 			if (input.length == 0 || gui.query(input))
 			{
 				guis.add(gui);
@@ -85,13 +84,13 @@ public class UIContainer implements Iterable<Ui>, NBT
 			{
 				continue;
 			}
-			
+
 			for (UIContainer container : element.seekAllContent())
 			{
 				guis.addAll(container.queryAll(input));
 			}
 
-			if (input.length == 0 ||element.query(input))
+			if (input.length == 0 || element.query(input))
 			{
 				guis.add(element);
 			}
@@ -109,7 +108,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 	{
 		return this.map().containsValue(element);
 	}
-	
+
 	public boolean contains(Class<? extends Ui> clazz)
 	{
 		for (Ui ui : this.elements.values())
@@ -119,7 +118,7 @@ public class UIContainer implements Iterable<Ui>, NBT
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -212,26 +211,26 @@ public class UIContainer implements Iterable<Ui>, NBT
 	{
 
 	}
-	
+
 	public UIContainer getTopParent()
 	{
 		UIContainer parent = this.getParentUi().seekContent();
-		
+
 		while (parent != null)
 		{
 			if (parent.getParentUi() == null)
 			{
 				return parent;
 			}
-			
+
 			if (parent.getParentUi().seekContent() == null)
 			{
 				return parent;
 			}
-			
+
 			parent = parent.getParentUi().seekContent();
 		}
-		
+
 		return null;
 	}
 

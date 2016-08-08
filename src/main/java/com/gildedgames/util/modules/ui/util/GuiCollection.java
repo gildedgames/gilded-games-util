@@ -1,11 +1,5 @@
 package com.gildedgames.util.modules.ui.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.modules.ui.common.Gui;
 import com.gildedgames.util.modules.ui.common.GuiFrame;
@@ -21,6 +15,12 @@ import com.gildedgames.util.modules.ui.util.factory.ContentFactory;
 import com.gildedgames.util.modules.ui.util.transform.GuiPositioner;
 import com.gildedgames.util.modules.ui.util.transform.GuiSorter;
 import com.google.common.collect.ImmutableMap;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class GuiCollection<T extends Ui> extends GuiFrame
 {
@@ -143,10 +143,10 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 	public void sortAndPositionContent()
 	{
 		this.isSorting = true;
-		
+
 		this.sortContent();
 		this.positionContent(this.getSortedViews());
-		
+
 		this.isSorting = false;
 	}
 
@@ -162,7 +162,7 @@ public class GuiCollection<T extends Ui> extends GuiFrame
 	{
 		this.clearAndProvideContent();
 		this.sortAndPositionContent();
-		
+
 		super.initContent(input);
 	}
 

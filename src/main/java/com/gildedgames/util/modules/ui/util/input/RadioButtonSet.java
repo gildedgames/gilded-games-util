@@ -1,8 +1,5 @@
 package com.gildedgames.util.modules.ui.util.input;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.data.Pos2D;
 import com.gildedgames.util.modules.ui.event.view.MouseEventGui;
 import com.gildedgames.util.modules.ui.input.ButtonState;
@@ -13,6 +10,9 @@ import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.util.GuiCollection;
 import com.gildedgames.util.modules.ui.util.factory.ContentFactory;
 import com.gildedgames.util.modules.ui.util.transform.GuiPositioner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RadioButtonSet<T extends RadioButton> extends GuiCollection<T>
 {

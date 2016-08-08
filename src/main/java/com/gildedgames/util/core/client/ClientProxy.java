@@ -6,9 +6,6 @@ import com.gildedgames.util.core.gui.viewing.MinecraftGuiViewer;
 import com.gildedgames.util.modules.tab.TabModule;
 import com.gildedgames.util.modules.tab.client.TabClientEvents;
 import com.gildedgames.util.modules.tab.client.social.TabChat;
-import com.gildedgames.util.modules.tab.client.social.TabGroup;
-import com.gildedgames.util.modules.tab.client.social.TabNotifications;
-import com.gildedgames.util.modules.tab.common.util.ITab;
 import com.gildedgames.util.modules.tab.common.util.TabGroupHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -24,8 +21,6 @@ public class ClientProxy extends ServerProxy
 
 	private final Minecraft mc = Minecraft.getMinecraft();
 
-	public static final ITab GROUP_TAB = new TabGroup();
-
 	public static final KeyBinding keyBindHopUniverse = new KeyBinding(I18n.translateToLocal("keybindings.hopUniverse"), Keyboard.KEY_H, "key.categories.misc");
 
 	@Override
@@ -39,9 +34,6 @@ public class ClientProxy extends ServerProxy
 	{
 		super.preInit(event);
 
-		UtilClientEvents utilEvents = new UtilClientEvents();
-		UtilModule.registerEventHandler(utilEvents);
-
 		UtilModule.registerEventHandler(MinecraftGuiViewer.instance().getTickInfo());
 
 		TabClientEvents clientEvents = new TabClientEvents();
@@ -49,14 +41,10 @@ public class ClientProxy extends ServerProxy
 
 		TabGroupHandler socialTab = new TabGroupHandler();
 		socialTab.registerServerTab(new TabChat());
-		socialTab.registerServerTab(new TabGroup());
-		socialTab.registerServerTab(new TabNotifications());
 
 		if (UtilModule.isClient())
 		{
 			socialTab.registerClientTab(new TabChat.Client());
-			socialTab.registerClientTab(new TabGroup.Client());
-			socialTab.registerClientTab(new TabNotifications.Client());
 		}
 
 		TabModule.api().registerGroup(socialTab);

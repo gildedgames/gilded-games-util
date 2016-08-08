@@ -1,9 +1,5 @@
 package com.gildedgames.util.modules.ui.util.decorators;
 
-import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
-
-import org.lwjgl.opengl.GL11;
-
 import com.gildedgames.util.modules.ui.common.Gui;
 import com.gildedgames.util.modules.ui.common.GuiDecorator;
 import com.gildedgames.util.modules.ui.common.Ui;
@@ -15,13 +11,16 @@ import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.gildedgames.util.modules.ui.util.rect.RectSeekable;
 import com.gildedgames.util.modules.ui.util.rect.RectSeeker;
 import com.google.common.collect.ImmutableList;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 
 public class ScissorableGui extends GuiDecorator<Gui> implements RectSeekable
 {
 
 	protected ModDim2D scissoredArea;
 
-	private ImmutableList<RectSeeker> seekers = ImmutableList.<RectSeeker> of(new Seeker(this));
+	private ImmutableList<RectSeeker> seekers = ImmutableList.<RectSeeker>of(new Seeker(this));
 
 	public ScissorableGui(Rect scissoredArea, Gui gui)
 	{
