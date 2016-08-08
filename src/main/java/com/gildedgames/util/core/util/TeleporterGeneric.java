@@ -1,4 +1,4 @@
-package com.gildedgames.util.modules.universe.common.util;
+package com.gildedgames.util.core.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.Teleporter;
@@ -6,7 +6,7 @@ import net.minecraft.world.WorldServer;
 
 public class TeleporterGeneric extends Teleporter
 {
-	
+
 	public TeleporterGeneric(WorldServer world)
 	{
 		super(world);
@@ -25,15 +25,15 @@ public class TeleporterGeneric extends Teleporter
 	}
 
 	@Override
-    public boolean makePortal(Entity entity)
-    {
+	public boolean makePortal(Entity entity)
+	{
 		return false;
-    }
-	
+	}
+
 	@Override
-    public void removeStalePortalLocations(long p_85189_1_)
-    {
-		
-    }
-	
+	public void removeStalePortalLocations(long p_85189_1_)
+	{
+
+	}
+
 }

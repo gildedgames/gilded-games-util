@@ -1,18 +1,12 @@
 package com.gildedgames.util.modules.tab.client;
 
-import java.io.IOException;
-
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.tab.common.util.ITabClient;
-import org.lwjgl.input.Mouse;
-
 import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.modules.tab.TabModule;
 import com.gildedgames.util.modules.tab.client.util.RenderTabGroup;
 import com.gildedgames.util.modules.tab.common.networking.packet.PacketOpenTab;
-import com.gildedgames.util.modules.tab.common.util.ITab;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import com.gildedgames.util.modules.tab.common.util.ITabGroup;
 import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -20,6 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 public class TabClientEvents
 {

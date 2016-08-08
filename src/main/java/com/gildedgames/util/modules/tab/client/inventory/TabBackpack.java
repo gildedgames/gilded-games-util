@@ -25,7 +25,9 @@ public class TabBackpack implements ITab
 	}
 
 	@Override
-	public void onOpen(EntityPlayer player) { }
+	public void onOpen(EntityPlayer player)
+	{
+	}
 
 	@Override
 	public boolean isEnabled()
@@ -58,7 +60,9 @@ public class TabBackpack implements ITab
 		}
 
 		@Override
-		public void onClose(EntityPlayer player) { }
+		public void onClose(EntityPlayer player)
+		{
+		}
 
 		@Override
 		public ResourceLocation getIcon()

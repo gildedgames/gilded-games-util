@@ -10,21 +10,21 @@ import com.gildedgames.util.modules.ui.util.TextureElement;
 
 public class MinecraftBackpanel extends GuiDecorator<Gui>
 {
-	
+
 	private final float leftPadding, rightPadding, topPadding, bottomPadding;
-	
+
 	public MinecraftBackpanel(Gui gui, final float padding)
 	{
 		this(gui, padding, padding, padding, padding);
 	}
-	
+
 	public MinecraftBackpanel(Gui gui, final float leftPadding, final float rightPadding, final float topPadding, final float bottomPadding)
 	{
 		super(gui);
-		
+
 		this.leftPadding = leftPadding;
 		this.rightPadding = rightPadding;
-		
+
 		this.topPadding = topPadding;
 		this.bottomPadding = bottomPadding;
 	}
@@ -33,9 +33,9 @@ public class MinecraftBackpanel extends GuiDecorator<Gui>
 	protected void preInitContent(InputProvider input)
 	{
 		final TextureElement backPanel = GuiFactory.panel(Dim2D.build().flush());
-		
-		backPanel.dim().mod().area(this.leftPadding  + this.rightPadding, this.topPadding + this.bottomPadding).pos(-this.leftPadding, -this.topPadding).flush();
-		
+
+		backPanel.dim().mod().area(this.leftPadding + this.rightPadding, this.topPadding + this.bottomPadding).pos(-this.leftPadding, -this.topPadding).flush();
+
 		backPanel.dim().add(this, ModifierType.AREA);
 
 		this.content().set("backPanel", backPanel);
@@ -44,7 +44,7 @@ public class MinecraftBackpanel extends GuiDecorator<Gui>
 	@Override
 	protected void postInitContent(InputProvider input)
 	{
-		
+
 	}
 
 }

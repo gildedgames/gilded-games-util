@@ -16,9 +16,7 @@ import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ChunkServicesImpl implements ChunkServices
@@ -55,8 +53,6 @@ public class ChunkServicesImpl implements ChunkServices
 
 		this.pools.remove(event.getWorld().provider.getDimension());
 	}
-
-
 
 	@SubscribeEvent
 	public void onChunkLoaded(ChunkEvent.Load event)

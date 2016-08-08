@@ -14,9 +14,9 @@ import com.google.common.base.Function;
 
 public class SlotStackFactory<T> extends GuiEvent<Gui>
 {
-	
+
 	private Function<T, GuiFrame> iconFactory;
-	
+
 	private Factory<T> dataFactory;
 
 	public SlotStackFactory(Function<T, GuiFrame> iconFactory, Factory<T> dataFactory)
@@ -24,13 +24,13 @@ public class SlotStackFactory<T> extends GuiEvent<Gui>
 		this.iconFactory = iconFactory;
 		this.dataFactory = dataFactory;
 	}
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
 		super.draw(graphics, input);
 	}
-	
+
 	@Override
 	public void onMouseInput(MouseInputPool pool, InputProvider input)
 	{
@@ -42,11 +42,11 @@ public class SlotStackFactory<T> extends GuiEvent<Gui>
 			{
 				T data = this.dataFactory.create();
 				GuiFrame icon = this.iconFactory.apply(data);
-				
+
 				SlotStack<T> stack = new SlotStack<>(icon, data);
-				
+
 				stack.events().set("dragBehavior", new DragBehavior<T>(), stack);
-				
+
 				stack.dim().mod().pos(input.getMouseX(), input.getMouseY()).flush();
 
 				if (canvas.get("draggedObject") != null)
@@ -55,38 +55,38 @@ public class SlotStackFactory<T> extends GuiEvent<Gui>
 					{
 						canvas.remove("draggedObject");
 					}
-						
+
 					return;
 				}
-				
+
 				canvas.set("draggedObject", stack);
-				
+
 				this.onCreateDraggedState();
 			}
 		}
-		
+
 		super.onMouseInput(pool, input);
 	}
-	
+
 	public boolean isActive(MouseInputPool pool, InputProvider input)
 	{
 		return true;
 	}
-	
+
 	public boolean shouldRemoveDragged(SlotStack<T> createdStack)
 	{
 		return true;
 	}
-	
+
 	public void onCreateDraggedState()
 	{
-		
+
 	}
 
 	@Override
 	public void initEvent()
 	{
-		
+
 	}
 
 }

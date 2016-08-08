@@ -8,13 +8,13 @@ public interface Gui extends Ui, RectHolder
 {
 
 	void draw(Graphics2D graphics, InputProvider input);
-	
+
 	/**
 	 * There are 20 ticks in a second.
 	 * @return
 	 */
 	int ticksClosing();
-	
+
 	/**
 	 * There are 20 ticks in a second.
 	 * @return
@@ -24,11 +24,11 @@ public interface Gui extends Ui, RectHolder
 	boolean isVisible();
 
 	void setVisible(boolean visible);
-	
+
 	boolean isFocused();
-	
+
 	void setFocused(boolean focused);
-	
+
 	/**
 	 * @param input
 	 * @return True if this object meets the criteria passed through the input

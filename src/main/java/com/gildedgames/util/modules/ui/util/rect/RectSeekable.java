@@ -6,5 +6,5 @@ public interface RectSeekable
 {
 
 	ImmutableList<RectSeeker> getRectSeekers();
-	
+
 }

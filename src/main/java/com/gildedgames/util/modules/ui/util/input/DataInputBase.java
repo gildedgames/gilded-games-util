@@ -5,14 +5,14 @@ import java.util.List;
 
 public abstract class DataInputBase<T> implements DataInput<T>
 {
-	
+
 	private List<DataInputListener<T>> listeners = new ArrayList<>();
 
 	@Override
 	public final void setData(T data)
 	{
 		this.set(data);
-		
+
 		for (DataInputListener<T> listener : this.listeners)
 		{
 			listener.onChange(data);
@@ -23,7 +23,7 @@ public abstract class DataInputBase<T> implements DataInput<T>
 	public void addListener(DataInputListener<T> listener)
 	{
 		this.listeners.add(listener);
-		
+
 		listener.onInit();
 	}
 
@@ -32,7 +32,7 @@ public abstract class DataInputBase<T> implements DataInput<T>
 	{
 		return this.listeners.remove(listener);
 	}
-	
+
 	public abstract void set(T data);
-	
+
 }

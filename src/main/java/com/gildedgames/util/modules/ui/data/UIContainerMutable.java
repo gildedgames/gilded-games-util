@@ -1,16 +1,16 @@
 package com.gildedgames.util.modules.ui.data;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.gildedgames.util.core.ObjectFilter;
 import com.gildedgames.util.modules.ui.common.Ui;
 import com.gildedgames.util.modules.ui.data.rect.RectHolder;
 import com.gildedgames.util.modules.ui.data.rect.RectModifier.ModifierType;
 import com.gildedgames.util.modules.ui.util.RectangleElement;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UIContainerMutable extends UIContainer
 {
@@ -30,15 +30,15 @@ public class UIContainerMutable extends UIContainer
 		if (element == null)
 		{
 			this.elements.remove(key);
-			
+
 			return;
 		}
-		
+
 		RectHolder gui = ObjectFilter.cast(element, RectHolder.class);
 		RectHolder parentModifier = ObjectFilter.cast(this.getAttachedUi(), RectHolder.class);
-		
+
 		element.seekContent().parentUi = this.getAttachedUi();
-		
+
 		if (gui != null && gui.dim().mod() != null && parentModifier != null)
 		{
 			gui.dim().add(parentModifier, ModifierType.POS, ModifierType.SCALE);

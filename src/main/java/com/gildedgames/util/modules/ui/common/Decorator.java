@@ -4,5 +4,5 @@ public interface Decorator<T>
 {
 
 	T getDecoratedElement();
-	
+
 }

@@ -5,13 +5,13 @@ import java.util.List;
 
 public class TabGroup<T extends ITab> implements ITabGroup<T>
 {
-	
+
 	protected final ArrayList<T> tabs = new ArrayList<>();
-	
+
 	protected T selectedTab, rememberedTab;
 
 	protected boolean rememberSelectedTab = true;
-	
+
 	@Override
 	public boolean getRememberSelectedTab()
 	{
@@ -29,7 +29,7 @@ public class TabGroup<T extends ITab> implements ITabGroup<T>
 	{
 		return this.selectedTab;
 	}
-	
+
 	@Override
 	public void setSelectedTab(T tab)
 	{
@@ -85,11 +85,11 @@ public class TabGroup<T extends ITab> implements ITabGroup<T>
 
 		return enabledTabs;
 	}
-	
+
 	@Override
 	public List<T> getTabs()
 	{
 		return this.tabs;
 	}
-	
+
 }

@@ -1,12 +1,12 @@
-package com.gildedgames.util.modules.world.common;
+package com.gildedgames.util.core.util;
 
 import net.minecraft.util.math.BlockPos;
 
 public class BlockPosDimension extends BlockPos
 {
-	
+
 	private final int dimensionId;
-	
+
 	public BlockPosDimension(BlockPos pos, int dimensionId)
 	{
 		this(pos.getX(), pos.getY(), pos.getZ(), dimensionId);
@@ -15,7 +15,7 @@ public class BlockPosDimension extends BlockPos
 	public BlockPosDimension(int x, int y, int z, int dimensionId)
 	{
 		super(x, y, z);
-		
+
 		this.dimensionId = dimensionId;
 	}
 
@@ -23,7 +23,7 @@ public class BlockPosDimension extends BlockPos
 	{
 		return this.dimensionId;
 	}
-	
+
 	@Override
 	public boolean equals(Object object)
 	{

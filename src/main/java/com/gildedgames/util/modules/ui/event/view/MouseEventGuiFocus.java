@@ -1,10 +1,10 @@
 package com.gildedgames.util.modules.ui.event.view;
 
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.gildedgames.util.modules.ui.input.MouseInput;
 import com.gildedgames.util.modules.ui.input.MouseInputPool;
+
+import java.util.List;
 
 public class MouseEventGuiFocus extends MouseEventGui
 {
@@ -39,7 +39,7 @@ public class MouseEventGuiFocus extends MouseEventGui
 	@Override
 	public void initEvent()
 	{
-		
+
 	}
 
 }

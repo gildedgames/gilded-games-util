@@ -1,13 +1,13 @@
 package com.gildedgames.util.modules.ui.util;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.data.rect.Dim2D;
 import com.gildedgames.util.modules.ui.data.rect.Rect;
 import com.gildedgames.util.modules.ui.input.InputProvider;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class TextBox extends GuiFrame
 {

@@ -1,26 +1,25 @@
 package com.gildedgames.util.io;
 
-import java.util.concurrent.Callable;
-
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.concurrent.Callable;
 
 public class ClassSerializer
 {
 
 	private BiMap<Integer, RegisteredEntry> registeredSerializations = HashBiMap.create();
-	
+
 	private static BiMap<String, ClassSerializer> locators = HashBiMap.create();
-	
+
 	private static interface RegisteredEntry
 	{
-		
+
 		Callable<?> serializer();
-		
+
 		Class<?> serializedClass();
-		
+
 	}
 
 	/**
@@ -52,10 +51,10 @@ public class ClassSerializer
 			{
 				return clazz;
 			}
-			
+
 		});
 	}
-	
+
 	public Object instantiate(int serialNumber)
 	{
 		try
@@ -66,10 +65,10 @@ public class ClassSerializer
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	public boolean hasSerialNumber(Class<?> clazz)
 	{
 		for (RegisteredEntry entry : this.registeredSerializations.values())
@@ -79,10 +78,10 @@ public class ClassSerializer
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * @param clazz
 	 * @return serialNumber
@@ -93,7 +92,7 @@ public class ClassSerializer
 		{
 			throw new NullPointerException();
 		}
-		
+
 		for (RegisteredEntry entry : this.registeredSerializations.values())
 		{
 			if (entry.serializedClass() == clazz)
@@ -101,34 +100,34 @@ public class ClassSerializer
 				return this.registeredSerializations.inverse().get(entry);
 			}
 		}
-		
+
 		throw new IllegalArgumentException("Object's class isn't registered as a serialization! Class: " + clazz.getCanonicalName() + ". Register with ClassSerializer.registerSerialization()");
 	}
-	
+
 	public int getSerialNumber(Object obj)
 	{
 		if (obj == null)
 		{
 			throw new NullPointerException();
 		}
-		
+
 		return this.getSerialNumber(obj.getClass());
 	}
-	
+
 	public static void writeSerialNumber(String key, Object obj, NBTTagCompound nbt)
 	{
 		if (obj == null)
 		{
 			return;
 		}
-		
+
 		ClassSerializer.writeSerialNumber(key, obj.getClass(), nbt);
 	}
-	
+
 	public static void writeSerialNumber(String key, Class<?> clazz, NBTTagCompound nbt)
 	{
 		ClassSerializer srl = ClassSerializer.locateSerializer(clazz);
-		
+
 		if (srl != null)
 		{
 			nbt.setString(key + "_srl", ClassSerializer.findSerializerLocationKey(srl));
@@ -139,34 +138,34 @@ public class ClassSerializer
 			return;
 		}
 	}
-	
+
 	public static Object instantiate(String key, NBTTagCompound nbt)
 	{
 		ClassSerializer srl = (ClassSerializer) ClassSerializer.locateSerializer(nbt.getString(key + "_srl"));
-		
+
 		return srl.instantiate(nbt.getInteger(key + "_srlNumber"));
 	}
-	
+
 	public static String findSerializerLocationKey(Object obj)
 	{
 		return ClassSerializer.locators.inverse().get(obj);
 	}
-	
+
 	public static ClassSerializer locateSerializer(String locationKey)
 	{
 		return ClassSerializer.locators.get(locationKey);
 	}
-	
+
 	public static ClassSerializer locateSerializer(Object obj)
 	{
 		if (obj == null)
 		{
 			return null;
 		}
-		
+
 		return ClassSerializer.locateSerializer(obj.getClass());
 	}
-	
+
 	/**
 	 * @param clazz A serialized entry registered in one of the serializers.
 	 * @return The located serializer, or null if an associated serialize was not found.
@@ -177,21 +176,21 @@ public class ClassSerializer
 		{
 			return null;
 		}
-		
+
 		for (Object obj : ClassSerializer.locators.values())
 		{
 			if (obj instanceof ClassSerializer)
 			{
-				ClassSerializer srl = (ClassSerializer)obj;
-				
+				ClassSerializer srl = (ClassSerializer) obj;
+
 				if (srl.hasSerialNumber(clazz))
 				{
 					return srl;
 				}
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 }

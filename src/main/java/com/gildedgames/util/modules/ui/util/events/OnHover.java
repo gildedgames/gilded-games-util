@@ -7,18 +7,18 @@ import com.gildedgames.util.modules.ui.input.InputProvider;
 
 public abstract class OnHover<E extends Gui> extends GuiEvent<E>
 {
-	
+
 	private boolean hovered;
-	
+
 	public OnHover()
 	{
-		
+
 	}
-	
+
 	public abstract void onHover();
-	
+
 	public abstract void exitHover();
-	
+
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
@@ -27,22 +27,22 @@ public abstract class OnHover<E extends Gui> extends GuiEvent<E>
 			if (!this.hovered)
 			{
 				this.onHover();
-				
+
 				this.hovered = true;
 			}
 		}
 		else if (this.hovered)
 		{
 			this.exitHover();
-			
+
 			this.hovered = false;
 		}
 	}
-	
+
 	@Override
 	public void initEvent()
 	{
-		
+
 	}
 
 }

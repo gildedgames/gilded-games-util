@@ -1,11 +1,11 @@
 package com.gildedgames.util.modules.ui.data.rect;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.data.Pos2D;
 import com.gildedgames.util.modules.ui.input.InputProvider;
 import com.gildedgames.util.modules.ui.util.rect.RectCollection;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Dim2D implements Rect
 {
@@ -19,7 +19,7 @@ public class Dim2D implements Rect
 	final float width, height;
 
 	final boolean centeredX, centeredY;
-	
+
 	final Pos2D center;
 
 	final float scale;
@@ -49,7 +49,7 @@ public class Dim2D implements Rect
 
 		this.maxPosX = this.posX + this.width;
 		this.maxPosY = this.posY + this.height;
-		
+
 		this.center = Pos2D.flush(this.posX + (this.width / 2), this.posY + (this.height / 2));
 	}
 

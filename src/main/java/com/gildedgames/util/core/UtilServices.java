@@ -1,5 +1,13 @@
 package com.gildedgames.util.core;
 
+import com.gildedgames.util.modules.ui.data.AssetLocation;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,57 +16,8 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.imageio.ImageIO;
-
-import com.gildedgames.util.core.io.MCSyncableDispatcher;
-import com.gildedgames.util.core.nbt.NBTFile;
-import com.gildedgames.util.io_manager.overhead.IOManager;
-import com.gildedgames.util.io_manager.overhead.IORegistry;
-import com.gildedgames.util.io_manager.util.IOManagerDefault;
-import com.gildedgames.util.modules.menu.impl.client.MenuClientEvents;
-import com.gildedgames.util.modules.ui.data.AssetLocation;
-import com.gildedgames.util.modules.world.common.WorldHookPool;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.ModContainer;
-
 public class UtilServices
 {
-
-	private IOManager io;
-
-	private static final String MANAGER_NAME = "GildedGamesUtil";
-
-	private void startIOManager()
-	{
-		this.io = new IOManagerDefault(MANAGER_NAME);
-
-		IORegistry registry = this.io.getRegistry();
-
-		registry.registerClass(NBTFile.class, 0);
-		registry.registerClass(WorldHookPool.class, 1);
-		registry.registerClass(MenuClientEvents.MenuConfig.class, 2);
-		registry.registerClass(MCSyncableDispatcher.class, 3);
-	}
-
-	public IOManager getIOManager()
-	{
-		if (this.io == null)
-		{
-			this.startIOManager();
-		}
-
-		return this.io;
-	}
-
-	public IORegistry getIORegistry()
-	{
-		return this.getIOManager().getRegistry();
-	}
-
 	public IResource getResourceFrom(AssetLocation asset)
 	{
 		ResourceLocation resource = new ResourceLocation(asset.getDomain(), asset.getPath());

@@ -1,11 +1,11 @@
 package com.gildedgames.util.modules.ui.util.rect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.data.rect.Dim2D;
 import com.gildedgames.util.modules.ui.data.rect.Rect;
 import com.gildedgames.util.modules.ui.data.rect.RectHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RectCollectionBuilder
 {

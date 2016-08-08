@@ -1,20 +1,20 @@
 package com.gildedgames.util.modules.ui.util.transform;
 
+import com.gildedgames.util.modules.ui.common.Gui;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gildedgames.util.modules.ui.common.Gui;
-
 public class GuiSorterSearch implements GuiSorter
 {
-	
+
 	protected String searchText = "";
-	
+
 	public GuiSorterSearch()
 	{
-		
+
 	}
-	
+
 	public void setSearchText(String searchText)
 	{
 		this.searchText = searchText;
@@ -27,7 +27,7 @@ public class GuiSorterSearch implements GuiSorter
 		{
 			return list;
 		}
-		
+
 		List<Gui> result = new ArrayList<>();
 
 		for (Gui view : list)
@@ -37,7 +37,7 @@ public class GuiSorterSearch implements GuiSorter
 				result.add(view);
 			}
 		}
-		
+
 		return result;
 	}
 

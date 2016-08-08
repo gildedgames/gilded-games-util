@@ -1,7 +1,5 @@
 package com.gildedgames.util.core.io;
 
-import com.gildedgames.util.modules.group.common.core.Group;
-import com.gildedgames.util.modules.group.common.player.GroupMember;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -13,7 +11,6 @@ import java.util.Collection;
 
 public class NetworkWrapper
 {
-
 	private SimpleNetworkWrapper internal;
 
 	private int discriminator;
@@ -51,17 +48,6 @@ public class NetworkWrapper
 	public void sendToServer(IMessage message)
 	{
 		this.internal.sendToServer(message);
-	}
-
-	public void sendToGroup(IMessage message, Group group)
-	{
-		for (GroupMember member : group.getMemberData())
-		{
-			if (member.getPlayer() != null)
-			{
-				this.sendTo(message, (EntityPlayerMP) member.getPlayer());
-			}
-		}
 	}
 
 	public void sendToList(IMessage message, Collection<EntityPlayerMP> players)

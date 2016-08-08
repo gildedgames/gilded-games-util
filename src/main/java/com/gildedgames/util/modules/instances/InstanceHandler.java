@@ -1,30 +1,27 @@
 package com.gildedgames.util.modules.instances;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map.Entry;
-
+import com.gildedgames.util.core.UtilModule;
+import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.core.util.BlockPosDimension;
+import com.gildedgames.util.io_manager.io.NBT;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
-
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 
-import com.gildedgames.util.core.UtilModule;
-import com.gildedgames.util.core.nbt.NBT;
-import com.gildedgames.util.core.nbt.NBTHelper;
-import com.gildedgames.util.modules.world.common.BlockPosDimension;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map.Entry;
 
 public class InstanceHandler<T extends Instance> implements NBT
 {
@@ -37,7 +34,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		this.factory = factory;
 	}
-	
+
 	public T getInstance(int id)
 	{
 		return this.instances.get(id);
@@ -46,14 +43,14 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public T createNew()
 	{
 		int dimensionId = InstanceModule.INSTANCE.getFreeDimID();
-		
+
 		DimensionManager.registerDimension(dimensionId, this.factory.dimensionType());
 		T instance = this.factory.createInstance(dimensionId, this);
 		this.instances.put(dimensionId, instance);
-		
+
 		return instance;
 	}
-	
+
 	public void unregisterInstances()
 	{
 		for (Entry<Integer, T> entry : this.instances.entrySet())
@@ -62,7 +59,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 			DimensionManager.unregisterDimension(dimId);
 		}
-		
+
 		this.instances.clear();
 	}
 
@@ -70,19 +67,19 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public void write(NBTTagCompound output)
 	{
 		output.setBoolean("hasWrittenInstances", this.instances.size() > 0);
-		
+
 		NBTTagList tagList = new NBTTagList();
-		
+
 		for (Entry<Integer, T> entry : this.instances.entrySet())
 		{
 			T instance = entry.getValue();
 			NBTTagCompound newTag = new NBTTagCompound();
 			newTag.setInteger("dimension", entry.getKey());
-			
+
 			instance.write(newTag);
 			tagList.appendTag(newTag);
 		}
-		
+
 		output.setTag("instances", tagList);
 	}
 
@@ -90,12 +87,12 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public void read(NBTTagCompound input)
 	{
 		boolean hasWrittenInstances = input.getBoolean("hasWrittenInstances");
-		
+
 		if (!hasWrittenInstances)
 		{
 			return;
 		}
-		
+
 		for (NBTTagCompound tag : NBTHelper.getIterator(input, "instances"))
 		{
 			int id = tag.getInteger("dimension");
@@ -103,31 +100,31 @@ public class InstanceHandler<T extends Instance> implements NBT
 			if (DimensionManager.isDimensionRegistered(id))
 			{
 				final int oldId = id;
-				
+
 				File oldDimFolder = new File(UtilModule.getWorldDirectory(), "//DIM" + oldId);
-				
+
 				id = InstanceModule.INSTANCE.getFreeDimID();
-				
+
 				File newDimFolder = new File(UtilModule.getWorldDirectory(), "//DIM" + id);
-				
-				if(oldDimFolder.isDirectory())
+
+				if (oldDimFolder.isDirectory())
 				{
-				    File[] content = oldDimFolder.listFiles();
-				    
-				    for(int i = 0; i < content.length; i++)
-				    {
-				    	try
-				    	{
+					File[] content = oldDimFolder.listFiles();
+
+					for (int i = 0; i < content.length; i++)
+					{
+						try
+						{
 							FileUtils.moveFileToDirectory(content[i], newDimFolder, true);
 						}
-				    	catch (IOException e)
-				    	{
+						catch (IOException e)
+						{
 							e.printStackTrace();
 						}
-				    }
+					}
 				}
 			}
-			
+
 			T instance = this.factory.createInstance(id, this);
 			instance.read(tag);
 			DimensionManager.registerDimension(id, this.factory.dimensionType());
@@ -140,7 +137,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		return this.instances.get(id);
 	}
-	
+
 	public int getDimensionForInstance(Instance instance)
 	{
 		return this.instances.inverse().get(instance);
@@ -182,7 +179,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
 			WorldServer world = server.worldServerForDimension(dimId);
-			
+
 			Teleporter teleporter = this.factory.getTeleporter(world);
 
 			PlayerList playerList = server.getPlayerList();
@@ -191,17 +188,17 @@ public class InstanceHandler<T extends Instance> implements NBT
 			player.timeUntilPortal = player.getPortalCooldown();
 
 			hook.setInstance(instance);
-			
+
 			return world;
 		}
-		
+
 		return player.worldObj;
 	}
 
 	public void teleportPlayerOutsideInstance(EntityPlayerMP player)
 	{
 		PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
-		
+
 		if (hook.getInstance() != null && hook.outside() != null)
 		{
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();

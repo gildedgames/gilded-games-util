@@ -19,8 +19,6 @@ public class ServerProxy extends Module
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		UtilServerEvents events = new UtilServerEvents();
-		
-		UtilModule.registerEventHandler(events);
+
 	}
 }

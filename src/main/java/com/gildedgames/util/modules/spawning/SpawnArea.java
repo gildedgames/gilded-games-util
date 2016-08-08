@@ -1,11 +1,11 @@
 package com.gildedgames.util.modules.spawning;
 
+import net.minecraft.world.World;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import net.minecraft.world.World;
 
 public class SpawnArea
 {

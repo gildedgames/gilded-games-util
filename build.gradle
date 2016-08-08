@@ -29,21 +29,8 @@ minecraft {
     runDir = "eclipse"
 }
 
-configurations {
-    shade
-    compile.extendsFrom shade
-}
-
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    shade 'com.googlecode.efficient-java-matrix-library:ejml:0.25'
-    shade 'org.jgrapht:jgrapht-core:0.9.1'
-    shade 'org.luaj:luaj-jme:3.0.1'
-
-    testCompile 'junit:junit:4.11'
 }
 
 processResources {
@@ -55,14 +42,6 @@ processResources {
 
     from (sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
-}
-
-jar {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)){
-            exclude 'META-INF', 'META-INF/**'
-        }
     }
 }
 

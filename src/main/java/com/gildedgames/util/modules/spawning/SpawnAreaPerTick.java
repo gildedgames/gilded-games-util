@@ -1,15 +1,14 @@
 package com.gildedgames.util.modules.spawning;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
+import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import com.google.common.base.Predicate;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class SpawnAreaPerTick extends SpawnArea
 {
@@ -52,7 +51,7 @@ public class SpawnAreaPerTick extends SpawnArea
 	{
 		this.secondsUpdated++;
 
-		for (Iterator<ScheduledSpawn> iter = this.scheduledSpawns.iterator(); iter.hasNext();)
+		for (Iterator<ScheduledSpawn> iter = this.scheduledSpawns.iterator(); iter.hasNext(); )
 		{
 			ScheduledSpawn scheduledSpawn = iter.next();
 			if (scheduledSpawn.spawn(areaSize, world) || scheduledSpawn.getSpawnAttempts() >= this.spawnManager.getMaxSpawnAttempts())

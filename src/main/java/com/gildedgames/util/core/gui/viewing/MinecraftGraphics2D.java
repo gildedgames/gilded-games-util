@@ -1,18 +1,5 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import com.gildedgames.util.modules.ui.data.AssetLocation;
 import com.gildedgames.util.modules.ui.data.DrawingData;
 import com.gildedgames.util.modules.ui.data.rect.Rect;
@@ -21,6 +8,17 @@ import com.gildedgames.util.modules.ui.graphics.Sprite;
 import com.gildedgames.util.modules.ui.graphics.Sprite.UV;
 import com.gildedgames.util.modules.ui.graphics.UVBehavior.UVDimPair;
 import com.gildedgames.util.modules.ui.util.rect.RectCollection;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class MinecraftGraphics2D implements Graphics2D
 {
@@ -69,13 +67,13 @@ public class MinecraftGraphics2D implements Graphics2D
 		GlStateManager.enableBlend();
 
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		
+
 		GlStateManager.color(1.0F, 1.0F, 1.0F, data.getAlpha());
 
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		
+
 		GlStateManager.enableAlpha();
-		
+
 		inner.draw();
 
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -200,7 +198,7 @@ public class MinecraftGraphics2D implements Graphics2D
 	{
 		void draw();
 	}
-	
+
 	private static class DrawSprite implements DrawInner
 	{
 

@@ -1,7 +1,5 @@
 package com.gildedgames.util.modules.ui.util.events;
 
-import java.util.List;
-
 import com.gildedgames.util.modules.ui.common.Gui;
 import com.gildedgames.util.modules.ui.data.rect.BuildIntoRectHolder;
 import com.gildedgames.util.modules.ui.data.rect.ModDim2D;
@@ -18,6 +16,8 @@ import com.gildedgames.util.modules.ui.util.InputHelper.InputCondition;
 import com.gildedgames.util.modules.ui.util.events.slots.SlotBehavior;
 import com.gildedgames.util.modules.ui.util.events.slots.SlotStack;
 import com.gildedgames.util.modules.ui.util.events.slots.SlotStackFactory;
+
+import java.util.List;
 
 public class DragBehavior<T> extends GuiEvent<SlotStack<T>>
 {
@@ -66,9 +66,9 @@ public class DragBehavior<T> extends GuiEvent<SlotStack<T>>
 			{
 				return gui != null && gui.isVisible() && gui.isEnabled() && (gui.events().contains(SlotBehavior.class) || gui.events().contains(SlotStackFactory.class));
 			}
-			
+
 		}, input);
-		
+
 		if (pool.has(ButtonState.PRESS) && !hoveringSlot)
 		{
 			GuiCanvas canvas = GuiCanvas.fetch("dragCanvas", 550.0F);
@@ -78,7 +78,7 @@ public class DragBehavior<T> extends GuiEvent<SlotStack<T>>
 				canvas.remove("draggedObject");
 			}
 		}
-		
+
 		super.onMouseInput(pool, input);
 	}
 

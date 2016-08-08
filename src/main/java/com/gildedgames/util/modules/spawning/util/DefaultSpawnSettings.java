@@ -1,8 +1,7 @@
 package com.gildedgames.util.modules.spawning.util;
 
-import net.minecraft.world.World;
-
 import com.gildedgames.util.modules.spawning.SpawnSettings;
+import net.minecraft.world.World;
 
 public class DefaultSpawnSettings implements SpawnSettings
 {
