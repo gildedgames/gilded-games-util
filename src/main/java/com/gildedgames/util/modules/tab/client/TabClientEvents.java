@@ -8,7 +8,9 @@ import com.gildedgames.util.modules.tab.common.util.ITabClient;
 import com.gildedgames.util.modules.tab.common.util.ITabGroup;
 import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -94,6 +96,13 @@ public class TabClientEvents
 	{
 		if (event.phase == TickEvent.Phase.START)
 		{
+			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+			if (player == null || player.inventory.getItemStack() != null)
+			{
+				return;
+			}
+
 			ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
 			if (groupHandler != null)
@@ -151,6 +160,13 @@ public class TabClientEvents
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
+			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+			if (player == null || player.inventory.getItemStack() != null)
+			{
+				return;
+			}
+
 			ITabGroupHandler groupHandler = TabModule.api().getActiveGroup();
 
 			if (groupHandler != null)
