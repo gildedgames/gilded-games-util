@@ -1,48 +1,67 @@
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
-    }
+	repositories {
+		jcenter()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'org.ajoberstar:gradle-git:1.4.2'
+	}
 }
+
+import org.ajoberstar.grgit.*
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
 ext.config = loadConfig(file('build.properties'))
+ext.repo = Grgit.open()
 
-version = config.mod_version
-group = "com.gildedgames.util"
-archivesBaseName = "GildedGamesUtil"
-
-minecraft {
-    version = config.forge_version
-    mappings = config.forge_mappings
-
-    runDir = "eclipse"
+allprojects {
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
 }
 
-repositories {
-    mavenCentral()
+version = "${config.mod_version}"
+group = "com.gildedgames.util"
+archivesBaseName = "GildedGames-Util"
+
+ext.ciVersion = System.getenv("BUILD_VERSION")
+ext.gitVersion = repo.head().abbreviatedId
+
+if (ciVersion != null) {
+	version = "${config.mod_version}.build-${ciVersion}"
+} else {
+	version = "${config.mod_version}.git-${gitVersion}"
+}
+
+
+jar {
+	from sourceSets.main.output
+}
+
+minecraft {
+	version = config.forge_version
+	mappings = config.forge_mappings
+
+	runDir = "run"
 }
 
 processResources {
-    from (sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+	inputs.property "version", project.version
+	inputs.property "mcversion", project.minecraft.version
 
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
+	from (sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
 
-    from (sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+		expand 'version': project.version, 'mcversion': project.minecraft.version
+	}
+
+	from (sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
 }
 
 idea {
@@ -51,11 +70,14 @@ idea {
 	}
 }
 
-def loadConfig(File config) {
-	config.withReader {
-		def properties = new Properties()
-		properties.load(it)
+minecraft {
+	makeObfSourceJar = false
+}
 
-		return (new ConfigSlurper().parse(properties))
+static def loadConfig(File config) {
+	def props = new Properties()
+	config.withInputStream {
+		stream -> props.load(stream)
 	}
+	return new ConfigSlurper().parse(props)
 }
