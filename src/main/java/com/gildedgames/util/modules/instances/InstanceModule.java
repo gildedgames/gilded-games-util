@@ -10,6 +10,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class InstanceModule extends Module
 	}
 
 	@Override
-	public void serverAboutToStart(FMLServerAboutToStartEvent event)
+	public void serverStarted(FMLServerStartedEvent event)
 	{
 		NBTTagCompound tag = GGHelper.readNBTFromFile("//data//instances.dat");
 
