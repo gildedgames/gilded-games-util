@@ -4,6 +4,7 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.core.util.BlockPosDimension;
 import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,6 +46,12 @@ public class InstanceHandler<T extends Instance> implements NBT
 		int dimensionId = InstanceModule.INSTANCE.getFreeDimID();
 
 		DimensionManager.registerDimension(dimensionId, this.factory.dimensionType());
+
+		if (UtilModule.isServer())
+		{
+			UtilModule.NETWORK.sendToAll(new PacketRegisterInstance(this.factory.dimensionType(), dimensionId));
+		}
+
 		T instance = this.factory.createInstance(dimensionId, this);
 		this.instances.put(dimensionId, instance);
 
@@ -162,6 +169,11 @@ public class InstanceHandler<T extends Instance> implements NBT
 	public Collection<T> getInstances()
 	{
 		return this.instances.values();
+	}
+
+	public BiMap<Integer, T> getInstancesMap()
+	{
+		return this.instances;
 	}
 
 	public World teleportPlayerToDimension(T instance, EntityPlayerMP player)

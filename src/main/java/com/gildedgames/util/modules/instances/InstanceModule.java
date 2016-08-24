@@ -1,7 +1,10 @@
 package com.gildedgames.util.modules.instances;
 
 import com.gildedgames.util.core.Module;
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.util.GGHelper;
+import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
+import com.gildedgames.util.modules.tab.common.networking.packet.PacketOpenTab;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.DimensionManager;
@@ -9,9 +12,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -67,6 +71,12 @@ public class InstanceModule extends Module
 				return next;
 			}
 		}
+	}
+
+	@Override
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		UtilModule.NETWORK.registerMessage(PacketRegisterInstance.Handler.class, PacketRegisterInstance.class, Side.CLIENT);
 	}
 
 	@Override
