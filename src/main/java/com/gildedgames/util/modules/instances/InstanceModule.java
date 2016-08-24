@@ -4,8 +4,10 @@ import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.util.GGHelper;
 import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
+import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterInstance;
 import com.gildedgames.util.modules.tab.common.networking.packet.PacketOpenTab;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.capabilities.Capability;
@@ -15,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -39,6 +43,15 @@ public class InstanceModule extends Module
 	{
 		this.capabilityManager = new InstanceCapabilityManager();
 		this.capabilityManager.init();
+	}
+
+	@SubscribeEvent
+	public void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event)
+	{
+		for (InstanceHandler<?> handler : this.getHandlers())
+		{
+			handler.sendUnregisterInstancesPacket((EntityPlayerMP) event.player);
+		}
 	}
 
 	public PlayerInstances getPlayer(EntityPlayer player)
@@ -77,6 +90,7 @@ public class InstanceModule extends Module
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		UtilModule.NETWORK.registerMessage(PacketRegisterInstance.Handler.class, PacketRegisterInstance.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketUnregisterInstance.Handler.class, PacketUnregisterInstance.class, Side.CLIENT);
 	}
 
 	@Override

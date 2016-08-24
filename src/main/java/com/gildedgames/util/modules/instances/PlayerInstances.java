@@ -27,7 +27,7 @@ public class PlayerInstances
 		return this.activeInstance;
 	}
 
-	protected void setInstance(NBT instance)
+	public void setInstance(NBT instance)
 	{
 		this.activeInstance = instance;
 	}

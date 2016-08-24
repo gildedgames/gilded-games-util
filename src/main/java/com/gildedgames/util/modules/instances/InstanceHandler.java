@@ -5,6 +5,7 @@ import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.core.util.BlockPosDimension;
 import com.gildedgames.util.io_manager.io.NBT;
 import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
+import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterInstance;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -56,6 +57,21 @@ public class InstanceHandler<T extends Instance> implements NBT
 		this.instances.put(dimensionId, instance);
 
 		return instance;
+	}
+
+	public void sendUnregisterInstancesPacket(EntityPlayerMP player)
+	{
+		if (!UtilModule.isServer())
+		{
+			return;
+		}
+
+		for (Entry<Integer, T> entry : this.instances.entrySet())
+		{
+			int dimId = entry.getKey();
+
+			UtilModule.NETWORK.sendTo(new PacketUnregisterInstance(dimId), player);
+		}
 	}
 
 	public void unregisterInstances()

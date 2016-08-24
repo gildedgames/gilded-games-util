@@ -54,7 +54,10 @@ public class PacketRegisterInstance implements IMessage
 		@Override
 		public PacketRegisterInstance onMessage(PacketRegisterInstance message, EntityPlayer player)
 		{
-			DimensionManager.registerDimension(message.dimID, message.type);
+			if (!DimensionManager.isDimensionRegistered(message.dimID))
+			{
+				DimensionManager.registerDimension(message.dimID, message.type);
+			}
 
 			return null;
 		}
