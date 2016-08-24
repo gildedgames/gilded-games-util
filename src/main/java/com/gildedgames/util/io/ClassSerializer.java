@@ -55,11 +55,11 @@ public class ClassSerializer
 		});
 	}
 
-	public Object instantiate(int serialNumber)
+	public <T> T instantiate(int serialNumber)
 	{
 		try
 		{
-			return this.registeredSerializations.get(serialNumber).serializer().call();
+			return (T) this.registeredSerializations.get(serialNumber).serializer().call();
 		}
 		catch (Exception e)
 		{
