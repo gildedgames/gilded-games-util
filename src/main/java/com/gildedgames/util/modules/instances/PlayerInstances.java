@@ -1,9 +1,12 @@
 package com.gildedgames.util.modules.instances;
 
+import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.core.util.BlockPosDimension;
 import com.gildedgames.util.io_manager.io.NBT;
+import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -11,7 +14,7 @@ import net.minecraftforge.common.capabilities.Capability;
 
 public class PlayerInstances
 {
-	private NBT activeInstance;
+	private Instance activeInstance;
 
 	private BlockPosDimension outside;
 
@@ -22,14 +25,19 @@ public class PlayerInstances
 		this.player = player;
 	}
 
-	public NBT getInstance()
+	public Instance getInstance()
 	{
 		return this.activeInstance;
 	}
 
-	public void setInstance(NBT instance)
+	public void setInstance(Instance instance)
 	{
 		this.activeInstance = instance;
+
+		if (!this.player.worldObj.isRemote)
+		{
+			UtilModule.NETWORK.sendTo(new PacketRegisterInstance(this.activeInstance), (EntityPlayerMP) this.player);
+		}
 	}
 
 	public BlockPosDimension outside()

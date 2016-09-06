@@ -3,9 +3,9 @@ package com.gildedgames.util.modules.instances;
 import com.gildedgames.util.core.Module;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.util.GGHelper;
+import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterDimension;
 import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
-import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterInstance;
-import com.gildedgames.util.modules.tab.common.networking.packet.PacketOpenTab;
+import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterDimension;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -89,8 +89,9 @@ public class InstanceModule extends Module
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		UtilModule.NETWORK.registerMessage(PacketRegisterDimension.Handler.class, PacketRegisterDimension.class, Side.CLIENT);
+		UtilModule.NETWORK.registerMessage(PacketUnregisterDimension.Handler.class, PacketUnregisterDimension.class, Side.CLIENT);
 		UtilModule.NETWORK.registerMessage(PacketRegisterInstance.Handler.class, PacketRegisterInstance.class, Side.CLIENT);
-		UtilModule.NETWORK.registerMessage(PacketUnregisterInstance.Handler.class, PacketUnregisterInstance.class, Side.CLIENT);
 	}
 
 	@Override

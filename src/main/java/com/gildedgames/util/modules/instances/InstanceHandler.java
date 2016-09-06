@@ -4,8 +4,8 @@ import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.core.util.BlockPosDimension;
 import com.gildedgames.util.io_manager.io.NBT;
-import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
-import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterInstance;
+import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterDimension;
+import com.gildedgames.util.modules.instances.networking.packet.PacketUnregisterDimension;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -50,7 +50,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 		if (UtilModule.isServer())
 		{
-			UtilModule.NETWORK.sendToAll(new PacketRegisterInstance(this.factory.dimensionType(), dimensionId));
+			UtilModule.NETWORK.sendToAll(new PacketRegisterDimension(this.factory.dimensionType(), dimensionId));
 		}
 
 		T instance = this.factory.createInstance(dimensionId, this);
@@ -70,7 +70,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 		{
 			int dimId = entry.getKey();
 
-			UtilModule.NETWORK.sendTo(new PacketUnregisterInstance(dimId), player);
+			UtilModule.NETWORK.sendTo(new PacketUnregisterDimension(dimId), player);
 		}
 	}
 
@@ -197,6 +197,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 		if (this.instances.containsValue(instance))
 		{
 			PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
+
 			if (hook.getInstance() == null)
 			{
 				hook.setOutside(new BlockPosDimension((int) player.posX, (int) player.posY, (int) player.posZ, player.dimension));

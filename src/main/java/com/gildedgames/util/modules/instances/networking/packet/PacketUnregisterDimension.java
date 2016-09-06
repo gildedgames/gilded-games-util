@@ -7,17 +7,17 @@ import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class PacketUnregisterInstance implements IMessage
+public class PacketUnregisterDimension implements IMessage
 {
 
 	private int dimID;
 
-	public PacketUnregisterInstance()
+	public PacketUnregisterDimension()
 	{
 
 	}
 
-	public PacketUnregisterInstance(int dimID)
+	public PacketUnregisterDimension(int dimID)
 	{
 		this.dimID = dimID;
 	}
@@ -34,10 +34,10 @@ public class PacketUnregisterInstance implements IMessage
 		buf.writeInt(this.dimID);
 	}
 
-	public static class Handler extends MessageHandlerClient<PacketUnregisterInstance, PacketUnregisterInstance>
+	public static class Handler extends MessageHandlerClient<PacketUnregisterDimension, PacketUnregisterDimension>
 	{
 		@Override
-		public PacketUnregisterInstance onMessage(PacketUnregisterInstance message, EntityPlayer player)
+		public PacketUnregisterDimension onMessage(PacketUnregisterDimension message, EntityPlayer player)
 		{
 			if (DimensionManager.isDimensionRegistered(message.dimID))
 			{
