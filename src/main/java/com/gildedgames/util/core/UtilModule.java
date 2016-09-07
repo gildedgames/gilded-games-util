@@ -3,7 +3,6 @@ package com.gildedgames.util.core;
 import com.gildedgames.util.core.io.NetworkWrapper;
 import com.gildedgames.util.modules.chunk.ChunkModule;
 import com.gildedgames.util.modules.instances.InstanceModule;
-import com.gildedgames.util.modules.spawning.SpawningModule;
 import com.gildedgames.util.modules.tab.TabModule;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
@@ -57,7 +56,6 @@ public class UtilModule
 
 		this.registerModule(InstanceModule.INSTANCE);
 		this.registerModule(TabModule.INSTANCE);
-		this.registerModule(SpawningModule.INSTANCE);
 		this.registerModule(ChunkModule.INSTANCE);
 
 		UtilModule.NETWORK.init(UtilModule.MOD_ID);

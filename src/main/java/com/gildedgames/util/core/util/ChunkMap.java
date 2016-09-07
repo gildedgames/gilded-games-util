@@ -1,4 +1,4 @@
-package com.gildedgames.util.modules.spawning.util;
+package com.gildedgames.util.core.util;
 
 import gnu.trove.map.TLongObjectMap;
 import gnu.trove.map.hash.TLongObjectHashMap;

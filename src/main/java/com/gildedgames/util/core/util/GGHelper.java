@@ -14,6 +14,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 import java.io.File;
@@ -149,6 +150,27 @@ public class GGHelper
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static int getTopBlockHeight(final World world, int posX, int posZ)
+	{
+		final Chunk chunk = world.getChunkFromChunkCoords(posX >> 4, posZ >> 4);
+		final int x = posX;
+		final int z = posZ;
+		int k = chunk.getTopFilledSegment() + 15;
+		posX &= 15;//Get the latest 4 bits of posX. idk what for. :D
+
+		for (posZ &= 15; k > 0; --k)
+		{
+			final IBlockState l = chunk.getBlockState(posX, k, posZ);
+
+			if (l != Blocks.AIR && l.getMaterial().blocksMovement() && l.getMaterial() != Material.LEAVES && !l.getBlock().isFoliage(world, new BlockPos(x, k, z)))
+			{
+				return k + 1;
+			}
+		}
+
+		return -1;
 	}
 
 }

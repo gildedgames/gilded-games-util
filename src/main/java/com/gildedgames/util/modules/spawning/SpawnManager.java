@@ -1,6 +1,6 @@
 package com.gildedgames.util.modules.spawning;
 
-import com.gildedgames.util.modules.spawning.util.ChunkMap;
+import com.gildedgames.util.core.util.ChunkMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
