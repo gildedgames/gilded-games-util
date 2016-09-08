@@ -240,6 +240,11 @@ public class ScrollBar extends GuiFrame
 		return this.scrollPercentage;
 	}
 
+	public void addScrollPercentage(float scroll)
+	{
+		this.scrollPercentage += scroll;
+	}
+
 	public void setScrollingAreas(RectCollection scrollingAreas)
 	{
 		this.scrollingAreas = scrollingAreas;

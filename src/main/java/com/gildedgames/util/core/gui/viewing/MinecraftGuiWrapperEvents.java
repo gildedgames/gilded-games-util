@@ -1,5 +1,9 @@
 package com.gildedgames.util.core.gui.viewing;
 
+import com.gildedgames.util.modules.tab.TabModule;
+import com.gildedgames.util.modules.tab.common.util.ITabClient;
+import com.gildedgames.util.modules.tab.common.util.ITabGroup;
+import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.modules.ui.UiModule;
 import com.gildedgames.util.modules.ui.UiServices.Overlay;
 import com.gildedgames.util.modules.ui.UiServices.RenderOrder;
@@ -16,6 +20,7 @@ import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.input.MouseMotion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -25,6 +30,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
 
 public class MinecraftGuiWrapperEvents implements TickInfo
 {
@@ -41,16 +48,39 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
 	public void handleInput()
 	{
+		if (this.mc.theWorld != null)
+		{
+			return;
+		}
+
 		if (Mouse.isCreated())
 		{
-			for (Overlay overlay : UiModule.locate().overlays())
+			while (Mouse.next())
 			{
-				GuiFrame frame = overlay.getFrame();
-				GuiViewer viewer = overlay.getViewer();
+				if (this.mc.currentScreen != null)
+				{
+					if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent.Pre(this.mc.currentScreen))) continue;
 
-				this.handleMouseInput(frame, viewer);
+					try
+					{
+						this.mc.currentScreen.handleMouseInput();
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+
+					net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.GuiScreenEvent.MouseInputEvent.Post(this.mc.currentScreen));
+				}
+
+				for (Overlay overlay : UiModule.locate().overlays())
+				{
+					GuiFrame frame = overlay.getFrame();
+					GuiViewer viewer = overlay.getViewer();
+
+					this.handleMouseInput(frame, viewer);
+				}
 			}
-
 		}
 
 		if (Keyboard.isCreated())
@@ -67,6 +97,11 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 
 	public void handleMouseInput(GuiFrame frame, GuiViewer viewer)
 	{
+		if (!frame.isEnabled())
+		{
+			return;
+		}
+
 		double i = Mouse.getEventX() * this.width / this.mc.displayWidth;
 		double j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 		int button = Mouse.getEventButton();
@@ -129,6 +164,19 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	}
 
 	@SubscribeEvent
+	public void tickEnd(TickEvent.RenderTickEvent event)
+	{
+		if (event.phase == TickEvent.Phase.START)
+		{
+			this.renderOverlays(RenderOrder.PRE);
+		}
+		else
+		{
+			this.renderOverlays(RenderOrder.POST);
+		}
+	}
+
+	@SubscribeEvent
 	public void tickStartClient(TickEvent.ClientTickEvent event)
 	{
 		if (event.phase == TickEvent.Phase.START)
@@ -187,7 +235,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 			{
 				GL11.glPushMatrix();
 
-				GL11.glTranslatef(0.0F, 0.0F, -100.0F);
+				GL11.glTranslatef(0.0F, 0.0F, 0.0F);
 
 				frame.draw(viewer.getGraphics(), viewer.getInputProvider());
 
@@ -203,7 +251,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		{
 			this.worldStarted = false;
 
-			UiModule.locate().destroyRegisteredOverlays();
+			//UiModule.locate().destroyRegisteredOverlays();
 		}
 	}
 
@@ -212,7 +260,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (event.getType() == ElementType.TEXT)
 		{
-			this.renderOverlays(RenderOrder.PRE);
+			//this.renderOverlays(RenderOrder.PRE);
 		}
 	}
 
@@ -221,7 +269,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (event.getType() == ElementType.TEXT)
 		{
-			this.renderOverlays(RenderOrder.POST);
+			//this.renderOverlays(RenderOrder.POST);
 		}
 	}
 

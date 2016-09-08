@@ -18,10 +18,15 @@ public class Sprite
 
 	private Sprite(AssetLocation asset, int width, int height, boolean calculateArea)
 	{
-		this(asset, new DefaultUVBehavior(), width, height, calculateArea);
+		this(asset, new DefaultUVBehavior(), width, height, calculateArea, false);
 	}
 
-	private Sprite(AssetLocation asset, UVBehavior behavior, int width, int height, boolean calculateArea)
+	private Sprite(AssetLocation asset, int width, int height, boolean calculateArea, boolean setArea)
+	{
+		this(asset, new DefaultUVBehavior(), width, height, calculateArea, setArea);
+	}
+
+	private Sprite(AssetLocation asset, UVBehavior behavior, int width, int height, boolean calculateArea, boolean setArea)
 	{
 		this.asset = asset;
 
@@ -31,8 +36,16 @@ public class Sprite
 
 			this.uv = UV.build().width(image.getWidth()).height(image.getHeight()).flush();
 
-			this.assetWidth = image.getWidth();
-			this.assetHeight = image.getHeight();
+			if (setArea)
+			{
+				this.assetWidth = width;
+				this.assetHeight = height;
+			}
+			else
+			{
+				this.assetWidth = image.getWidth();
+				this.assetHeight = image.getHeight();
+			}
 		}
 		else
 		{
@@ -77,9 +90,14 @@ public class Sprite
 		return new Sprite(asset, 0, 0, true);
 	}
 
+	public static Sprite create(AssetLocation asset, boolean setArea)
+	{
+		return new Sprite(asset, 0, 0, true, setArea);
+	}
+
 	public static Sprite create(AssetLocation asset, UVBehavior behavior)
 	{
-		return new Sprite(asset, behavior, 0, 0, true);
+		return new Sprite(asset, behavior, 0, 0, true, false);
 	}
 
 	public static Sprite create(AssetLocation asset, UV uv)
@@ -99,7 +117,7 @@ public class Sprite
 
 	public static Sprite createWithArea(AssetLocation asset, UVBehavior behavior, int width, int height)
 	{
-		return new Sprite(asset, behavior, width, height, false);
+		return new Sprite(asset, behavior, width, height, false, false);
 	}
 
 	public static Sprite createWithArea(AssetLocation asset, UV uv, int width, int height)

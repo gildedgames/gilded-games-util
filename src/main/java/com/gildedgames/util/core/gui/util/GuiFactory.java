@@ -183,6 +183,13 @@ public class GuiFactory
 		return GuiFactory.texture(sprite, dim.rebuild().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
 	}
 
+	public static TextureElement textureSizable(AssetLocation asset, Rect dim)
+	{
+		Sprite sprite = Sprite.create(asset, true);
+
+		return GuiFactory.texture(sprite, dim.rebuild().area(sprite.getAssetWidth(), sprite.getAssetHeight()).flush());
+	}
+
 	public static TextureElement createResizableTexture(AssetLocation asset, Rect dim, UV corners, UV verticalSides, UV horizontalSides)
 	{
 		return GuiFactory.texture(Sprite.create(asset, new ResizableUVBehavior(corners, verticalSides, horizontalSides)), dim);

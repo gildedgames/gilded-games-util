@@ -139,4 +139,9 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 		return this.scrolledGui;
 	}
 
+	public ScrollBar getScrollBar()
+	{
+		return this.scrollBar;
+	}
+
 }
