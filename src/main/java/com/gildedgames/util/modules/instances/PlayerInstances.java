@@ -3,7 +3,6 @@ package com.gildedgames.util.modules.instances;
 import com.gildedgames.util.core.UtilModule;
 import com.gildedgames.util.core.nbt.NBTHelper;
 import com.gildedgames.util.core.util.BlockPosDimension;
-import com.gildedgames.util.io_manager.io.NBT;
 import com.gildedgames.util.modules.instances.networking.packet.PacketRegisterInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -12,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
-public class PlayerInstances
+public class PlayerInstances implements IPlayerInstances
 {
 	private Instance activeInstance;
 
@@ -50,33 +49,28 @@ public class PlayerInstances
 		this.outside = pos;
 	}
 
-	public static class Storage implements Capability.IStorage<PlayerInstances>
+	public static class Storage implements Capability.IStorage<IPlayerInstances>
 	{
 
 		@Override
-		public NBTBase writeNBT(Capability<PlayerInstances> capability, PlayerInstances instance, EnumFacing side)
+		public NBTBase writeNBT(Capability<IPlayerInstances> capability, IPlayerInstances instance, EnumFacing side)
 		{
 			NBTTagCompound compound = new NBTTagCompound();
 
-			compound.setTag("outside", NBTHelper.serializeBlockPosDimension(instance.outside));
+			compound.setTag("outside", NBTHelper.serializeBlockPosDimension(instance.outside()));
 
-			NBTHelper.fullySerialize("activeInstance", instance.activeInstance, compound);
+			NBTHelper.fullySerialize("activeInstance", instance.getInstance(), compound);
 
 			return compound;
 		}
 
 		@Override
-		public void readNBT(Capability<PlayerInstances> capability, PlayerInstances instance, EnumFacing side, NBTBase nbt)
+		public void readNBT(Capability<IPlayerInstances> capability, IPlayerInstances instance, EnumFacing side, NBTBase nbt)
 		{
-			if (!(nbt instanceof NBTTagCompound))
-			{
-				return;
-			}
-
 			NBTTagCompound compound = (NBTTagCompound) nbt;
 
-			instance.outside = NBTHelper.getBlockPosDimension(compound.getCompoundTag("outside"));
-			instance.activeInstance = NBTHelper.fullyDeserialize("activeInstance", compound);
+			instance.setOutside(NBTHelper.getBlockPosDimension(compound.getCompoundTag("outside")));
+			instance.setInstance((Instance) NBTHelper.fullyDeserialize("activeInstance", compound));
 		}
 	}
 

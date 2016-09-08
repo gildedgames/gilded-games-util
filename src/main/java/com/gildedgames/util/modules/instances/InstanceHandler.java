@@ -196,7 +196,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 	{
 		if (this.instances.containsValue(instance))
 		{
-			PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
+			IPlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
 
 			if (hook.getInstance() == null)
 			{
@@ -226,7 +226,7 @@ public class InstanceHandler<T extends Instance> implements NBT
 
 	public void teleportPlayerOutsideInstance(EntityPlayerMP player)
 	{
-		PlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
+		IPlayerInstances hook = InstanceModule.INSTANCE.getPlayer(player);
 
 		if (hook.getInstance() != null && hook.outside() != null)
 		{

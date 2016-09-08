@@ -2,6 +2,7 @@ package com.gildedgames.util.modules.instances.networking.packet;
 
 import com.gildedgames.util.core.io.MessageHandlerClient;
 import com.gildedgames.util.core.nbt.NBTHelper;
+import com.gildedgames.util.modules.instances.IPlayerInstances;
 import com.gildedgames.util.modules.instances.Instance;
 import com.gildedgames.util.modules.instances.InstanceModule;
 import com.gildedgames.util.modules.instances.PlayerInstances;
@@ -49,7 +50,7 @@ public class PacketRegisterInstance implements IMessage
 		@Override
 		public PacketRegisterInstance onMessage(PacketRegisterInstance message, EntityPlayer player)
 		{
-			PlayerInstances instances = InstanceModule.INSTANCE.getPlayer(player);
+			IPlayerInstances instances = InstanceModule.INSTANCE.getPlayer(player);
 
 			instances.setInstance(message.instance);
 

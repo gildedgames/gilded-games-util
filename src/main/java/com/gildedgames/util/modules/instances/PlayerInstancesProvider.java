@@ -1,5 +1,6 @@
 package com.gildedgames.util.modules.instances;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -9,17 +10,29 @@ public class PlayerInstancesProvider implements ICapabilitySerializable<NBTBase>
 {
 	private final PlayerInstances.Storage storage = new PlayerInstances.Storage();
 
-	private final PlayerInstances playerInstances;
+	private PlayerInstances capability;
 
-	public PlayerInstancesProvider(PlayerInstances playerInstances)
+	private EntityPlayer player;
+
+	public PlayerInstancesProvider(EntityPlayer player)
 	{
-		this.playerInstances = playerInstances;
+		this.player = player;
+	}
+
+	private PlayerInstances fetchCapability()
+	{
+		if (this.capability == null)
+		{
+			this.capability = new PlayerInstances(this.player);
+		}
+
+		return this.capability;
 	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
 	{
-		return capability == InstanceModule.PLAYER_INSTANCES && this.playerInstances != null;
+		return capability == InstanceModule.PLAYER_INSTANCES;
 	}
 
 	@Override
@@ -28,7 +41,7 @@ public class PlayerInstancesProvider implements ICapabilitySerializable<NBTBase>
 	{
 		if (this.hasCapability(capability, facing))
 		{
-			return (T) this.playerInstances;
+			return (T) this.fetchCapability();
 		}
 
 		return null;
@@ -37,13 +50,13 @@ public class PlayerInstancesProvider implements ICapabilitySerializable<NBTBase>
 	@Override
 	public NBTBase serializeNBT()
 	{
-		return this.storage.writeNBT(InstanceModule.PLAYER_INSTANCES, this.playerInstances, null);
+		return this.storage.writeNBT(InstanceModule.PLAYER_INSTANCES, this.fetchCapability(), null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt)
 	{
-		this.storage.readNBT(InstanceModule.PLAYER_INSTANCES, this.playerInstances, null, nbt);
+		this.storage.readNBT(InstanceModule.PLAYER_INSTANCES, this.fetchCapability(), null, nbt);
 	}
 
 }

@@ -33,16 +33,13 @@ public class InstanceModule extends Module
 
 	private List<InstanceHandler<?>> instances;
 
-	@CapabilityInject(PlayerInstances.class)
-	public static final Capability<PlayerInstances> PLAYER_INSTANCES = null;
-
-	private InstanceCapabilityManager capabilityManager;
+	@CapabilityInject(IPlayerInstances.class)
+	public static final Capability<IPlayerInstances> PLAYER_INSTANCES = null;
 
 	@Override
 	public void init(FMLInitializationEvent event)
 	{
-		this.capabilityManager = new InstanceCapabilityManager();
-		this.capabilityManager.init();
+		InstanceCapabilityManager.init();
 	}
 
 	@SubscribeEvent
@@ -54,12 +51,12 @@ public class InstanceModule extends Module
 		}
 	}
 
-	public PlayerInstances getPlayer(EntityPlayer player)
+	public IPlayerInstances getPlayer(EntityPlayer player)
 	{
 		return player.getCapability(PLAYER_INSTANCES, null);
 	}
 
-	public PlayerInstances getPlayer(UUID uuid)
+	public IPlayerInstances getPlayer(UUID uuid)
 	{
 		EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUUID(uuid);
 
