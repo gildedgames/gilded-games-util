@@ -32,7 +32,14 @@ public class PacketRegisterInstance implements IMessage
 	{
 		NBTTagCompound tag = ByteBufUtils.readTag(buf);
 
-		this.instance = NBTHelper.fullyDeserialize("instance", tag);
+		if (tag.getBoolean("isNull"))
+		{
+			this.instance = null;
+		}
+		else
+		{
+			this.instance = NBTHelper.fullyDeserialize("instance", tag);
+		}
 	}
 
 	@Override
@@ -40,7 +47,16 @@ public class PacketRegisterInstance implements IMessage
 	{
 		NBTTagCompound tag = new NBTTagCompound();
 
-		NBTHelper.fullySerialize("instance", this.instance, tag);
+		tag.setBoolean("isNull", false);
+
+		if (this.instance == null)
+		{
+			tag.setBoolean("isNull", true);
+		}
+		else
+		{
+			NBTHelper.fullySerialize("instance", this.instance, tag);
+		}
 
 		ByteBufUtils.writeTag(buf, tag);
 	}
