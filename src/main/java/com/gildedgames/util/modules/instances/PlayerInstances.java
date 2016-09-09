@@ -35,7 +35,7 @@ public class PlayerInstances implements IPlayerInstances
 
 		if (!this.player.worldObj.isRemote)
 		{
-			UtilModule.NETWORK.sendTo(new PacketRegisterInstance(this.activeInstance), (EntityPlayerMP) this.player);
+			//UtilModule.NETWORK.sendTo(new PacketRegisterInstance(this.activeInstance), (EntityPlayerMP) this.player);
 		}
 	}
 
