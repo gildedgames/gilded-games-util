@@ -81,6 +81,8 @@ public class MinecraftButton extends GuiFrame
 		{
 			this.button.mouseReleased((int) input.getMouseX(), (int) input.getMouseY());
 		}
+
+		super.onMouseInput(pool, input);
 	}
 
 	@Override
@@ -97,6 +99,11 @@ public class MinecraftButton extends GuiFrame
 		}
 
 		return false;
+	}
+
+	public void setText(String text)
+	{
+		this.text = text;
 	}
 
 }
