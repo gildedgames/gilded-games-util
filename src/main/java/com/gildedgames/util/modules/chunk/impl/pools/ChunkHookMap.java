@@ -14,7 +14,7 @@ public class ChunkHookMap implements IChunkHookMap
 	@Override
 	public void addChunkHook(IChunkHook hook, ChunkPos pos)
 	{
-		long id = ChunkPos.chunkXZ2Int(pos.chunkXPos, pos.chunkZPos);
+		long id = ChunkPos.asLong(pos.chunkXPos, pos.chunkZPos);
 
 		if (this.loadedHooks.containsKey(id))
 		{
@@ -27,7 +27,7 @@ public class ChunkHookMap implements IChunkHookMap
 	@Override
 	public void removeChunkHook(ChunkPos pos)
 	{
-		long id = ChunkPos.chunkXZ2Int(pos.chunkXPos, pos.chunkZPos);
+		long id = ChunkPos.asLong(pos.chunkXPos, pos.chunkZPos);
 
 		if (this.loadedHooks.containsKey(id))
 		{
@@ -38,7 +38,7 @@ public class ChunkHookMap implements IChunkHookMap
 	@Override
 	public IChunkHook getHook(ChunkPos pos)
 	{
-		long id = ChunkPos.chunkXZ2Int(pos.chunkXPos, pos.chunkZPos);
+		long id = ChunkPos.asLong(pos.chunkXPos, pos.chunkZPos);
 
 		return this.loadedHooks.get(id);
 	}

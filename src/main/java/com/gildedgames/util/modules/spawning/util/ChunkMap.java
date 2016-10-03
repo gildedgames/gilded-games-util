@@ -26,17 +26,17 @@ public class ChunkMap<T>
 
 	public boolean containsKey(int chunkX, int chunkZ)
 	{
-		return this.map.containsKey(ChunkPos.chunkXZ2Int(chunkX, chunkZ));
+		return this.map.containsKey(ChunkPos.asLong(chunkX, chunkZ));
 	}
 
 	public T get(int chunkX, int chunkZ)
 	{
-		return this.map.get(ChunkPos.chunkXZ2Int(chunkX, chunkZ));
+		return this.map.get(ChunkPos.asLong(chunkX, chunkZ));
 	}
 
 	public T put(int chunkX, int chunkZ, T value)
 	{
-		long hash = ChunkPos.chunkXZ2Int(chunkX, chunkZ);
+		long hash = ChunkPos.asLong(chunkX, chunkZ);
 		T old = this.map.get(hash);
 		this.map.put(hash, value);
 		this.values.add(value);
@@ -45,7 +45,7 @@ public class ChunkMap<T>
 
 	public T remove(int chunkX, int chunkZ)
 	{
-		T ob = this.map.remove(ChunkPos.chunkXZ2Int(chunkX, chunkZ));
+		T ob = this.map.remove(ChunkPos.asLong(chunkX, chunkZ));
 		this.values.remove(ob);
 		return ob;
 	}

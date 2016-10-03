@@ -125,7 +125,7 @@ public class SpawnManager
 				{
 					//Shuffle the list to allow for more variation, seeing as the algorithm
 					//has bias towards entries earlier in the list.
-					long randomSeed = world.getSeed() + ChunkPos.chunkXZ2Int(areaX, areaZ);
+					long randomSeed = world.getSeed() + ChunkPos.asLong(areaX, areaZ);
 					Random random = new Random(randomSeed);
 					final List<SpawnEntry> shuffledRegistered = new ArrayList<>(this.tickSpawningRegister);
 					Collections.shuffle(shuffledRegistered, random);
