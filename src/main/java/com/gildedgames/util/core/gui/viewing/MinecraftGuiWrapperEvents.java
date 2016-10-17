@@ -1,12 +1,7 @@
 package com.gildedgames.util.core.gui.viewing;
 
-import com.gildedgames.util.modules.tab.TabModule;
-import com.gildedgames.util.modules.tab.common.util.ITabClient;
-import com.gildedgames.util.modules.tab.common.util.ITabGroup;
-import com.gildedgames.util.modules.tab.common.util.ITabGroupHandler;
 import com.gildedgames.util.modules.ui.UiModule;
 import com.gildedgames.util.modules.ui.UiServices.Overlay;
-import com.gildedgames.util.modules.ui.UiServices.RenderOrder;
 import com.gildedgames.util.modules.ui.common.GuiFrame;
 import com.gildedgames.util.modules.ui.common.GuiViewer;
 import com.gildedgames.util.modules.ui.data.TickInfo;
@@ -20,7 +15,6 @@ import com.gildedgames.util.modules.ui.input.MouseInputPool;
 import com.gildedgames.util.modules.ui.input.MouseMotion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -30,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import scala.xml.Elem;
 
 import java.io.IOException;
 
@@ -163,16 +158,18 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		}
 	}
 
+	@SubscribeEvent(priority = EventPriority.NORMAL)
+	public void onRenderGui(RenderGameOverlayEvent event)
+	{
+		this.renderOverlays(event.getType());
+	}
+
 	@SubscribeEvent
 	public void tickEnd(TickEvent.RenderTickEvent event)
 	{
-		if (event.phase == TickEvent.Phase.START)
+		if (event.phase == TickEvent.Phase.END)
 		{
-			this.renderOverlays(RenderOrder.PRE);
-		}
-		else
-		{
-			this.renderOverlays(RenderOrder.POST);
+			this.renderOverlays(null);
 		}
 	}
 
@@ -194,7 +191,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 			{
 				GuiFrame frame = overlay.getFrame();
 				GuiViewer viewer = overlay.getViewer();
-				RenderOrder renderOrder = overlay.getRenderOrder();
+				RenderGameOverlayEvent.ElementType renderOrder = overlay.getRenderOrder();
 
 				InputProvider input = viewer.getInputProvider();
 
@@ -216,7 +213,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		}
 	}
 
-	private void renderOverlays(RenderOrder desiredOrder)
+	private void renderOverlays(RenderGameOverlayEvent.ElementType desiredOrder)
 	{
 		if (!this.worldStarted)
 		{
@@ -229,9 +226,9 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 		{
 			GuiFrame frame = overlay.getFrame();
 			GuiViewer viewer = overlay.getViewer();
-			RenderOrder renderOrder = overlay.getRenderOrder();
+			RenderGameOverlayEvent.ElementType renderOrder = overlay.getRenderOrder();
 
-			if (renderOrder.equals(desiredOrder))
+			if (renderOrder == desiredOrder)
 			{
 				GL11.glPushMatrix();
 

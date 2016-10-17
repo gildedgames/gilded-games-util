@@ -9,6 +9,7 @@ import com.gildedgames.util.modules.ui.util.factory.Factory;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,17 +34,12 @@ public class UiServices
 
 	private Map<String, RegisteredOverlay> registeredOverlays = new LinkedHashMap<>();
 
-	public enum RenderOrder
-	{
-		PRE, POST
-	}
-
 	public static class RegisteredOverlay extends Overlay
 	{
 
 		private Factory<GuiFrame> factory;
 
-		public RegisteredOverlay(Factory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
+		public RegisteredOverlay(Factory<GuiFrame> factory, GuiViewer viewer, RenderGameOverlayEvent.ElementType renderOrder)
 		{
 			super(null, viewer, renderOrder);
 
@@ -71,9 +67,9 @@ public class UiServices
 
 		protected GuiViewer viewer;
 
-		protected RenderOrder renderOrder;
+		protected RenderGameOverlayEvent.ElementType renderOrder;
 
-		public Overlay(GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)
+		public Overlay(GuiFrame frame, GuiViewer viewer, RenderGameOverlayEvent.ElementType renderOrder)
 		{
 			this.frame = frame;
 			this.viewer = viewer;
@@ -90,7 +86,7 @@ public class UiServices
 			return this.viewer;
 		}
 
-		public RenderOrder getRenderOrder()
+		public RenderGameOverlayEvent.ElementType getRenderOrder()
 		{
 			return this.renderOrder;
 		}
@@ -135,7 +131,7 @@ public class UiServices
 
 			Factory<GuiFrame> factory = overlay.getFactory();
 			GuiViewer viewer = overlay.getViewer();
-			RenderOrder renderOrder = overlay.getRenderOrder();
+			RenderGameOverlayEvent.ElementType renderOrder = overlay.getRenderOrder();
 			//TODO: renderOrder isn't used
 
 			UiModule.locate().overlay(uniqueSaveName, factory.create(), viewer);
@@ -159,20 +155,20 @@ public class UiServices
 
 	public void registerOverlay(String uniqueSaveName, Factory<GuiFrame> factory, GuiViewer viewer)
 	{
-		this.registerOverlay(uniqueSaveName, factory, viewer, RenderOrder.POST);
+		this.registerOverlay(uniqueSaveName, factory, viewer, null);
 	}
 
-	public void registerOverlay(String uniqueSaveName, Factory<GuiFrame> factory, GuiViewer viewer, RenderOrder renderOrder)
+	public void registerOverlay(String uniqueSaveName, Factory<GuiFrame> factory, GuiViewer viewer, RenderGameOverlayEvent.ElementType renderOrder)
 	{
 		this.registeredOverlays.put(uniqueSaveName, new RegisteredOverlay(factory, viewer, renderOrder));
 	}
 
 	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer)
 	{
-		this.overlay(uniqueSaveName, frame, viewer, RenderOrder.POST);
+		this.overlay(uniqueSaveName, frame, viewer, null);
 	}
 
-	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer, RenderOrder renderOrder)
+	public void overlay(String uniqueSaveName, GuiFrame frame, GuiViewer viewer, RenderGameOverlayEvent.ElementType renderOrder)
 	{
 		frame.init(viewer.getInputProvider());
 
