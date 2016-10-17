@@ -4,15 +4,86 @@ import com.gildedgames.util.core.util.BlockPosDimension;
 import com.gildedgames.util.io.ClassSerializer;
 import com.gildedgames.util.io_manager.io.NBT;
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class NBTHelper
 {
+
+	public static <T extends NBT> void fullySerializeList(String key, List<T> nbt, NBTTagCompound tag)
+	{
+		tag.setBoolean(key + "_null", nbt == null);
+
+		if (nbt == null)
+		{
+			return;
+		}
+
+		NBTTagCompound list_data = new NBTTagCompound();
+
+		list_data.setInteger("size", nbt.size());
+		int i = 0;
+
+		for (T obj : nbt)
+		{
+			tag.setBoolean("data_" + i + "_null", obj == null);
+
+			if (obj == null)
+			{
+				i++;
+				continue;
+			}
+
+			ClassSerializer.writeSerialNumber("data_" + i + "_srl", nbt, tag);
+
+			NBTTagCompound data = new NBTTagCompound();
+			obj.write(data);
+
+			list_data.setTag("data_" + i, data);
+
+			i++;
+		}
+
+		tag.setTag(key + "_list_data", list_data);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends NBT> List<T> fullyDeserializeList(String key, NBTTagCompound tag)
+	{
+		if (!tag.hasKey(key + "_null") || tag.getBoolean(key + "_null"))
+		{
+			return null;
+		}
+
+		NBTTagCompound list_data = tag.getCompoundTag(key + "_list_data");
+
+		List<T> list = Lists.newArrayList();
+
+		int size = list_data.getInteger("size");
+
+		for (int i = 0; i < size; i++)
+		{
+			if (!tag.hasKey("data_" + i + "_null") || tag.getBoolean("data_" + i + "_null"))
+			{
+				continue;
+			}
+
+			T nbt = (T) ClassSerializer.instantiate("data_" + i + "_srl", list_data);
+
+			nbt.read(list_data.getCompoundTag("data_" + i));
+
+			list.add(nbt);
+		}
+
+		return list;
+	}
+
 	public static <T extends NBT> void fullySerialize(String key, T nbt, NBTTagCompound tag)
 	{
 		tag.setBoolean(key + "_null", nbt == null);
@@ -33,7 +104,7 @@ public class NBTHelper
 	@SuppressWarnings("unchecked")
 	public static <T extends NBT> T fullyDeserialize(String key, NBTTagCompound tag)
 	{
-		if (tag.getBoolean(key + "_null"))
+		if (!tag.hasKey(key + "_null") || tag.getBoolean(key + "_null"))
 		{
 			return null;
 		}
