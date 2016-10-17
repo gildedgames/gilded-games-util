@@ -69,7 +69,7 @@ public class NBTHelper
 
 		for (int i = 0; i < size; i++)
 		{
-			if (!tag.hasKey("data_" + i + "_null") || tag.getBoolean("data_" + i + "_null"))
+			if (!list_data.hasKey("data_" + i + "_null") || list_data.getBoolean("data_" + i + "_null"))
 			{
 				continue;
 			}
