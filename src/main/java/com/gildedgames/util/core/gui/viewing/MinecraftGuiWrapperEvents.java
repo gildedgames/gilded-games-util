@@ -169,7 +169,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			this.renderOverlays(null);
+			//this.renderOverlays(null);
 		}
 	}
 
@@ -191,7 +191,6 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 			{
 				GuiFrame frame = overlay.getFrame();
 				GuiViewer viewer = overlay.getViewer();
-				RenderGameOverlayEvent.ElementType renderOrder = overlay.getRenderOrder();
 
 				InputProvider input = viewer.getInputProvider();
 

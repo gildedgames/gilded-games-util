@@ -132,9 +132,8 @@ public class UiServices
 			Factory<GuiFrame> factory = overlay.getFactory();
 			GuiViewer viewer = overlay.getViewer();
 			RenderGameOverlayEvent.ElementType renderOrder = overlay.getRenderOrder();
-			//TODO: renderOrder isn't used
 
-			UiModule.locate().overlay(uniqueSaveName, factory.create(), viewer);
+			UiModule.locate().overlay(uniqueSaveName, factory.create(), viewer, renderOrder);
 		}
 	}
 
