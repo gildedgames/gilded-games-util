@@ -169,7 +169,7 @@ public class MinecraftGuiWrapperEvents implements TickInfo
 	{
 		if (event.phase == TickEvent.Phase.END)
 		{
-			//this.renderOverlays(null);
+			this.renderOverlays(null);
 		}
 	}
 
