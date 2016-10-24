@@ -170,9 +170,11 @@ public class ScrollBar extends GuiFrame
 		{
 			if (pool.has(ButtonState.HOLD) && (input.isHovered(this.baseBar.dim()) || input.isHovered(this.grabbableBar.dim()) || this.grabbedBar))
 			{
-				this.grabbedBar = true;
-
-				this.grabbedMouseYOffset = -(this.grabbableBar.dim().height() / 2) + 1;
+				if (!this.grabbedBar)
+				{
+					this.grabbedMouseYOffset = input.getMouseY() - this.baseBar.dim().y() + 1;
+					this.grabbedBar = true;
+				}
 			}
 			else if (pool.has(ButtonState.RELEASE))
 			{
@@ -184,8 +186,6 @@ public class ScrollBar extends GuiFrame
 	@Override
 	public void draw(Graphics2D graphics, InputProvider input)
 	{
-		//System.out.println(this.getScrollPercentage());
-
 		if (this.scrollingAreas != null && this.contentArea != null)
 		{
 			double contentAndScrollHeightDif = Math.abs(this.contentArea.dim().height() - this.scrollingAreas.dim().height());
@@ -199,7 +199,7 @@ public class ScrollBar extends GuiFrame
 
 		if (this.grabbedBar)
 		{
-			double basePosY = input.getMouseY() - this.baseBar.dim().y() + this.grabbedMouseYOffset;
+			double basePosY = input.getMouseY() - this.baseBar.dim().y() - this.grabbedMouseYOffset;
 
 			float percent = this.contentArea.dim().height() < this.dim().height() ? 0f : (float) basePosY / (this.baseBar.dim().height() - this.grabbableBar.dim().height());
 
