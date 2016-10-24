@@ -24,7 +24,7 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 
 	protected TextureElement backdrop, backdropEmbedded;
 
-	protected final int padding;
+	protected final int padding, scrollBarPadding;
 
 	public ScrollableGui(Rect windowSize, Gui scrolledGui)
 	{
@@ -33,10 +33,10 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 
 	public ScrollableGui(Rect windowSize, Gui scrolledGui, ScrollBar scrollBar)
 	{
-		this(windowSize, scrolledGui, scrollBar, GuiFactory.panel(Dim2D.flush()), GuiFactory.panelEmbedded(Dim2D.flush()), 7);
+		this(windowSize, scrolledGui, scrollBar, GuiFactory.panel(Dim2D.flush()), GuiFactory.panelEmbedded(Dim2D.flush()), 7, 0);
 	}
 
-	public ScrollableGui(Rect windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding)
+	public ScrollableGui(Rect windowSize, Gui scrolledGui, ScrollBar scrollBar, TextureElement backdrop, TextureElement backdropEmbedded, int padding, int scrollBarPadding)
 	{
 		this.dim().set(windowSize);
 
@@ -45,12 +45,14 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 		int posPadding = this.padding + 1;
 		int areaPadding = this.padding * 2 + 1;
 
-		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding).area(-areaPadding, -areaPadding).flush();
+		Rect dim = ModDim2D.build().add(this, ModifierType.ALL).mod().pos(posPadding, posPadding - 1f).area(-areaPadding + scrollBarPadding, -areaPadding + 1f).flush();
 		this.scrolledGui = new ScissorableGui(dim, scrolledGui);
 		this.scrollBar = scrollBar;
 
 		this.backdrop = backdrop;
 		this.backdropEmbedded = backdropEmbedded;
+
+		this.scrollBarPadding = scrollBarPadding;
 	}
 
 	@Override
@@ -104,7 +106,7 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 		this.scrollBar.dim().mod().resetPos().flush();
 
 		this.scrollBar.dim().mod().center(false).pos(this.padding + 1, this.padding + 1).height(-this.padding * 2 - 2).flush();
-		this.scrolledGui.dim().mod().center(false).pos(this.scrollBar.dim().maxX(), this.padding).addArea(-this.scrollBar.dim().width() - (this.padding * 2), -this.padding * 2).flush();
+		this.scrolledGui.dim().mod().center(false).pos(this.scrollBar.dim().maxX() + this.scrollBarPadding, this.padding).addArea(-this.scrollBar.dim().width() - (this.padding * 2), -this.padding * 2).flush();
 
 		RectCollection scrollingArea = RectCollection.build().addHolder(this).flush();
 
@@ -114,11 +116,17 @@ public class ScrollableGui extends GuiFrame implements Decorator<GuiFrame>
 		Rect backdropDim = ModDim2D.build().add(this, ModifierType.AREA).mod().flush();
 		Rect embeddedDim = ModDim2D.build().add(this, ModifierType.AREA).mod().addArea(-this.padding * 2, -this.padding * 2).pos(this.padding, this.padding).flush();
 
-		this.backdrop.dim().clear().set(backdropDim);
-		this.backdropEmbedded.dim().clear().set(embeddedDim);
+		if (this.backdrop != null)
+		{
+			this.backdrop.dim().clear().set(backdropDim);
+			this.content().set("backdrop", this.backdrop);
+		}
 
-		this.content().set("backdrop", this.backdrop);
-		this.content().set("backdropEmbedded", this.backdropEmbedded);
+		if (this.backdropEmbedded != null)
+		{
+			this.backdropEmbedded.dim().clear().set(embeddedDim);
+			this.content().set("backdropEmbedded", this.backdropEmbedded);
+		}
 
 		this.content().set("scrolledGui", this.scrolledGui);
 		this.content().set("scrollBar", this.scrollBar);
