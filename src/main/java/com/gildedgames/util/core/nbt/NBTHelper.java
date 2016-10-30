@@ -10,11 +10,81 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.List;
 
 public class NBTHelper
 {
+
+	public static <T extends NBT> void fullySerializeArray(String key, T[] nbt, NBTTagCompound tag)
+	{
+		tag.setBoolean(key + "_null", nbt == null);
+
+		if (nbt == null)
+		{
+			return;
+		}
+
+		NBTTagCompound list_data = new NBTTagCompound();
+
+		list_data.setInteger("size", nbt.length);
+		int i = 0;
+
+		for (T obj : nbt)
+		{
+			list_data.setBoolean("data_" + i + "_null", obj == null);
+
+			if (obj == null)
+			{
+				i++;
+				continue;
+			}
+
+			ClassSerializer.writeSerialNumber("data_" + i + "_srl", obj, list_data);
+
+			NBTTagCompound data = new NBTTagCompound();
+			obj.write(data);
+
+			list_data.setTag("data_" + i, data);
+
+			i++;
+		}
+
+		tag.setTag(key + "_list_data", list_data);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends NBT> T[] fullyDeserializeArray(String key, Class<T[]> clazz, NBTTagCompound tag)
+	{
+		if (!tag.hasKey(key + "_null") || tag.getBoolean(key + "_null"))
+		{
+			return null;
+		}
+
+		NBTTagCompound list_data = tag.getCompoundTag(key + "_list_data");
+
+		int size = list_data.getInteger("size");
+
+		T[] objects = clazz.cast(Array.newInstance(clazz.getComponentType(), size));
+
+		for (int i = 0; i < size; i++)
+		{
+			if (list_data.hasKey("data_" + i + "_null") && list_data.getBoolean("data_" + i + "_null"))
+			{
+				continue;
+			}
+
+			T nbt = (T) ClassSerializer.instantiate("data_" + i + "_srl", list_data);
+
+			nbt.read(list_data.getCompoundTag("data_" + i));
+
+			objects[i] = nbt;
+		}
+
+		return objects;
+	}
+
 
 	public static <T extends NBT> void fullySerializeList(String key, List<T> nbt, NBTTagCompound tag)
 	{
@@ -32,7 +102,7 @@ public class NBTHelper
 
 		for (T obj : nbt)
 		{
-			tag.setBoolean("data_" + i + "_null", obj == null);
+			list_data.setBoolean("data_" + i + "_null", obj == null);
 
 			if (obj == null)
 			{
@@ -40,7 +110,7 @@ public class NBTHelper
 				continue;
 			}
 
-			ClassSerializer.writeSerialNumber("data_" + i + "_srl", nbt, tag);
+			ClassSerializer.writeSerialNumber("data_" + i + "_srl", obj, list_data);
 
 			NBTTagCompound data = new NBTTagCompound();
 			obj.write(data);
@@ -69,7 +139,7 @@ public class NBTHelper
 
 		for (int i = 0; i < size; i++)
 		{
-			if (!list_data.hasKey("data_" + i + "_null") || list_data.getBoolean("data_" + i + "_null"))
+			if (list_data.hasKey("data_" + i + "_null") && list_data.getBoolean("data_" + i + "_null"))
 			{
 				continue;
 			}
