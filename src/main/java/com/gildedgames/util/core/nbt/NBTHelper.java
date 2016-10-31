@@ -124,11 +124,11 @@ public class NBTHelper
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends NBT> List<T> fullyDeserializeList(String key, NBTTagCompound tag)
+	public static <T extends NBT> List<T> fullyDeserializeList(String key, NBTTagCompound tag, List<T> returnedIfNull)
 	{
 		if (!tag.hasKey(key + "_null") || tag.getBoolean(key + "_null"))
 		{
-			return null;
+			return returnedIfNull;
 		}
 
 		NBTTagCompound list_data = tag.getCompoundTag(key + "_list_data");
